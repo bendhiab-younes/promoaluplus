@@ -40,9 +40,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->navigationGroups([
-                'Demandes' => fn () => __('Demandes'),
-                'Contenu' => fn () => __('Contenu'),
-                'Paramètres' => fn () => __('Paramètres'),
+                'Demandes',
+                'Contenu',
+                'Paramètres',
             ])
             ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
