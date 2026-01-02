@@ -4,18 +4,18 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="hero-gradient pt-20 min-h-screen flex items-center relative overflow-hidden">
-        <div class="container mx-auto px-4 py-12 md:py-20 relative z-10">
+    <section class="hero-gradient pt-24 md:pt-28 min-h-screen flex items-center relative overflow-hidden">
+        <div class="container mx-auto px-6 md:px-8 py-16 md:py-24 relative z-10">
             <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="text-white scroll-fade-left">
-                    <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-blue-200 mb-6 border border-white/20">
+                    <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-blue-200 mb-4 md:mb-6 border border-white/20">
                         ✨ {{ __('messages.premium_quality') }}
                     </span>
-                    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">
                         {{ __('messages.hero_title') }}
                         <span class="text-gradient bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ __('messages.hero_subtitle') }}</span>
                     </h1>
-                    <p class="text-lg md:text-xl mb-8 text-blue-100/90 leading-relaxed max-w-lg">
+                    <p class="text-base md:text-lg lg:text-xl mb-6 md:mb-8 text-blue-100/90 leading-relaxed max-w-lg">
                         {{ __('messages.hero_description') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
@@ -60,8 +60,8 @@
         </div>
         
         <!-- Trust indicators - Mobile & Desktop -->
-        <div class="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 w-full px-4">
-            <div class="flex items-center justify-center gap-6 md:gap-12 text-white/90">
+        <div class="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 w-full px-6">
+            <div class="flex items-center justify-center gap-4 sm:gap-8 md:gap-12 text-white/90">
                 <div class="text-center">
                     <div class="text-2xl md:text-3xl font-bold">500+</div>
                     <div class="text-xs md:text-sm text-blue-200">{{ __('messages.projects_completed') }}</div>
@@ -81,21 +81,21 @@
     </section>
 
     <!-- Services Section Preview -->
-    <section class="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12 md:mb-16 scroll-fade">
-                <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
+    <section class="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div class="container mx-auto px-6 md:px-8">
+            <div class="text-center mb-10 md:mb-14 scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
                     {{ __('messages.nav_services') }}
                 </span>
-                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">{{ __('messages.our_services') }}</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{{ __('messages.our_services') }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
                     {{ __('messages.services_intro') }}
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-12">
                 @forelse($services as $index => $service)
-                <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in {{ $index > 0 ? 'fade-in-delay-' . $index : '' }}">
+                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in {{ $index > 0 ? 'fade-in-delay-' . $index : '' }}">
                     <div class="w-16 h-16 bg-{{ $service->color }}-100 rounded-lg flex items-center justify-center mb-6">
                         <i data-lucide="{{ $service->icon ?? 'home' }}" class="w-8 h-8 text-{{ $service->color }}-600"></i>
                     </div>
@@ -120,8 +120,8 @@
                 </div>
                 @empty
                 <!-- Default services if none in database -->
-                <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in">
-                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
                         <i data-lucide="home" class="w-8 h-8 text-blue-600"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.windows') }}</h3>
@@ -137,8 +137,8 @@
                     </a>
                 </div>
                 
-                <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in fade-in-delay-1">
-                    <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
+                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in fade-in-delay-1">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
                         <i data-lucide="door-open" class="w-8 h-8 text-orange-600"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.doors') }}</h3>
@@ -154,8 +154,8 @@
                     </a>
                 </div>
                 
-                <div class="service-card bg-white p-8 rounded-xl shadow-lg fade-in fade-in-delay-2">
-                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in fade-in-delay-2">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-green-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
                         <i data-lucide="building" class="w-8 h-8 text-green-600"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.facades') }}</h3>
@@ -182,17 +182,17 @@
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section class="py-12 md:py-20 lg:py-24 bg-white relative overflow-hidden">
         <!-- Background decoration -->
         <div class="absolute top-0 left-0 w-72 h-72 bg-blue-100 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-orange-100 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
         
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-12 md:mb-16 scroll-fade">
-                <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-4">
+        <div class="container mx-auto px-6 md:px-8 relative z-10">
+            <div class="text-center mb-10 md:mb-14 scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
                     {{ __('messages.why_choose_us') }}
                 </span>
-                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">{{ __('messages.advantages_that_matter') }}</h2>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.advantages_that_matter') }}</h2>
             </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -240,21 +240,21 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 md:py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
+    <section class="py-12 md:py-20 lg:py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
         <!-- Background pattern -->
         <div class="absolute inset-0 opacity-10">
             <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
         
-        <div class="container mx-auto px-4 text-center relative z-10">
+        <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
             <div class="max-w-3xl mx-auto scroll-fade">
-                <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-6 border border-white/20">
+                <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 md:mb-6 border border-white/20">
                     🚀 {{ __('messages.start_your_project') }}
                 </span>
-                <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 leading-tight">
                     {{ __('messages.ready_to_start') }}
                 </h2>
-                <p class="text-lg md:text-xl text-blue-200 mb-8 md:mb-10 leading-relaxed">
+                <p class="text-base md:text-lg lg:text-xl text-blue-200 mb-6 md:mb-8 leading-relaxed px-4">
                     {{ __('messages.cta_description') }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">

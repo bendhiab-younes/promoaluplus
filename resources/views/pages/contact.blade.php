@@ -134,7 +134,6 @@
                                     <option value="doors" {{ old('project_type') == 'doors' ? 'selected' : '' }}>{{ __('messages.doors') }}</option>
                                     <option value="curtains" {{ old('project_type') == 'curtains' ? 'selected' : '' }}>{{ __('messages.curtains') }}</option>
                                     <option value="railings" {{ old('project_type') == 'railings' ? 'selected' : '' }}>{{ __('messages.railings') }}</option>
-                                    <option value="stainless" {{ old('project_type') == 'stainless' ? 'selected' : '' }}>{{ __('messages.stainless') }}</option>
                                     <option value="pergola" {{ old('project_type') == 'pergola' ? 'selected' : '' }}>{{ __('messages.pergola') }}</option>
                                     <option value="kitchen" {{ old('project_type') == 'kitchen' ? 'selected' : '' }}>{{ __('messages.kitchen') }}</option>
                                     <option value="shelter" {{ old('project_type') == 'shelter' ? 'selected' : '' }}>{{ __('messages.shelter') }}</option>

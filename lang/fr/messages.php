@@ -2,8 +2,8 @@
 
 return [
     // Site
-    'site_description' => 'Promo Alu Plus - Spécialiste en menuiserie aluminium et inox en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.',
-    'site_tagline' => 'Menuiserie Aluminium & Inox de Qualité',
+    'site_description' => 'Promo Alu Plus - Spécialiste en menuiserie aluminium en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.',
+    'site_tagline' => 'Menuiserie Aluminium de Qualité',
 
     // Navigation
     'nav_home' => 'Accueil',
@@ -14,16 +14,16 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Aluminium & Inox',
+    'hero_title' => 'Menuiserie Aluminium',
     'hero_subtitle' => 'Sur Mesure',
-    'hero_description' => 'Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines, abris et volets électriques. Tout article en aluminium et inox de qualité supérieure.',
+    'hero_description' => 'Donnez vie à vos projets avec nos portes, fenêtres, pergolas, cuisines et volets électriques. Un savoir-faire artisanal au service de votre confort.',
     'premium_quality' => 'Qualité Premium Garantie',
     'start_your_project' => 'Lancez Votre Projet',
 
     // Services
     'our_services' => 'Nos Services',
-    'services_intro' => 'Découvrez notre gamme complète de solutions en aluminium et inox pour tous vos projets de construction et rénovation.',
-    'services_page_intro' => 'Des solutions complètes en menuiserie aluminium et inox, de la conception à l\'installation.',
+    'services_intro' => 'Des solutions sur mesure pour embellir et sécuriser votre maison. Qualité, durabilité et design moderne.',
+    'services_page_intro' => 'Des solutions complètes en menuiserie aluminium, de la conception à l\'installation.',
     'view_all_services' => 'Voir tous nos services',
     'learn_more' => 'En savoir plus',
 
@@ -32,7 +32,6 @@ return [
     'doors' => 'Portes',
     'curtains' => 'Rideaux',
     'railings' => 'Garde-Corps',
-    'stainless' => 'Inox',
     'pergola' => 'Pergola',
     'kitchen' => 'Cuisine',
     'shelter' => 'Abri',
@@ -43,8 +42,7 @@ return [
     'windows_desc' => 'Fenêtres aluminium sur mesure avec double vitrage et isolation optimale.',
     'doors_desc' => 'Portes d\'entrée, coulissantes et baies vitrées sécurisées.',
     'curtains_desc' => 'Rideaux métalliques et stores pour commerces et habitations.',
-    'railings_desc' => 'Garde-corps en aluminium ou inox, design moderne et sécurisé.',
-    'stainless_desc' => 'Fabrication sur mesure en inox: rampes, mains courantes, mobilier.',
+    'railings_desc' => 'Garde-corps en aluminium, design moderne et sécurisé.',
     'pergola_desc' => 'Pergolas bioclimatiques et traditionnelles pour vos espaces extérieurs.',
     'kitchen_desc' => 'Cuisines en aluminium modernes, durables et faciles d\'entretien.',
     'shelter_desc' => 'Abris de voiture, terrasses couvertes et structures extérieures.',
@@ -150,7 +148,7 @@ return [
     'about_us' => 'À Propos de Nous',
     'about_intro' => 'Plus de 15 ans d\'expertise en menuiserie aluminium au service des Tunisiens du monde entier.',
     'our_story' => 'Notre Histoire',
-    'story_p1' => 'Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium et inox en Tunisie.',
+    'story_p1' => 'Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium en Tunisie.',
     'story_p2' => 'Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent leur maison en Tunisie.',
     'story_p3' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins: communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.',
     'our_workshop' => 'Notre Atelier',
@@ -199,7 +197,7 @@ return [
     'step_installation_desc' => 'Pose par nos experts',
 
     // Footer
-    'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium et inox en Tunisie.',
+    'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium en Tunisie.',
     'all_rights_reserved' => 'Tous droits réservés.',
 
     // WhatsApp

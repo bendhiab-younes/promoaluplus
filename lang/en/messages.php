@@ -2,8 +2,8 @@
 
 return [
     // Site
-    'site_description' => 'Promo Alu Plus - Aluminum and stainless steel specialist in Tunisia. Doors, windows, curtains, railings, pergolas, kitchens and electric shutters.',
-    'site_tagline' => 'Quality Aluminum & Stainless Steel',
+    'site_description' => 'Promo Alu Plus - Aluminum specialist in Tunisia. Doors, windows, curtains, railings, pergolas, kitchens and electric shutters.',
+    'site_tagline' => 'Quality Aluminum Joinery',
 
     // Navigation
     'nav_home' => 'Home',
@@ -14,16 +14,16 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Aluminum & Stainless Steel',
+    'hero_title' => 'Aluminum Joinery',
     'hero_subtitle' => 'Custom Made',
-    'hero_description' => 'Doors, windows, curtains, railings, pergolas, kitchens, shelters and electric shutters. All aluminum and stainless steel items of superior quality.',
+    'hero_description' => 'Bring your projects to life with our doors, windows, pergolas, kitchens and electric shutters. Craftmanship at the service of your comfort.',
     'premium_quality' => 'Premium Quality Guaranteed',
     'start_your_project' => 'Start Your Project',
 
     // Services
     'our_services' => 'Our Services',
-    'services_intro' => 'Discover our complete range of aluminum and stainless steel solutions for all your construction and renovation projects.',
-    'services_page_intro' => 'Complete aluminum and stainless steel solutions, from design to installation.',
+    'services_intro' => 'Custom solutions to beautify and secure your home. Quality, durability and modern design.',
+    'services_page_intro' => 'Complete aluminum solutions, from design to installation.',
     'view_all_services' => 'View all services',
     'learn_more' => 'Learn more',
 
@@ -32,7 +32,6 @@ return [
     'doors' => 'Doors',
     'curtains' => 'Curtains',
     'railings' => 'Railings',
-    'stainless' => 'Stainless Steel',
     'pergola' => 'Pergola',
     'kitchen' => 'Kitchen',
     'shelter' => 'Shelter',
@@ -43,8 +42,7 @@ return [
     'windows_desc' => 'Custom aluminum windows with double glazing and optimal insulation.',
     'doors_desc' => 'Secure entrance doors, sliding doors and bay windows.',
     'curtains_desc' => 'Metal curtains and blinds for shops and homes.',
-    'railings_desc' => 'Aluminum or stainless steel railings, modern and secure design.',
-    'stainless_desc' => 'Custom stainless steel fabrication: handrails, railings, furniture.',
+    'railings_desc' => 'Aluminum railings, modern and secure design.',
     'pergola_desc' => 'Bioclimatic and traditional pergolas for your outdoor spaces.',
     'kitchen_desc' => 'Modern aluminum kitchens, durable and easy to maintain.',
     'shelter_desc' => 'Car shelters, covered terraces and outdoor structures.',
@@ -142,7 +140,7 @@ return [
     'portfolio_intro' => 'Discover our projects completed for expatriate and local clients across Tunisia.',
     'all' => 'All',
     'client_testimonials' => 'Client Testimonials',
-    'testimonial_1' => 'Excellent work! I managed the entire project from Paris and AluminiumCraft perfectly met my expectations.',
+    'testimonial_1' => 'Excellent work! Promo Alu Plus perfectly met my expectations for my windows and railings.',
     'testimonial_2' => 'European quality at Tunisian prices. Impeccable communication despite the time difference.',
     'testimonial_3' => 'Professional and attentive. I highly recommend for any construction project in Tunisia.',
 
@@ -150,7 +148,7 @@ return [
     'about_us' => 'About Us',
     'about_intro' => 'Over 15 years of aluminum joinery expertise serving Tunisians worldwide.',
     'our_story' => 'Our Story',
-    'story_p1' => 'Founded in 2009, AluminiumCraft was born from the vision of creating a company capable of offering Tunisian expatriates the European quality they know.',
+    'story_p1' => 'Promo Alu Plus is your trusted partner for all your aluminum projects in Tunisia.',
     'story_p2' => 'We understand the unique challenges faced by Tunisians living abroad when building or renovating their home in Tunisia.',
     'story_p3' => 'That\'s why we developed a service specially adapted to their needs: remote communication, photo and video follow-up, and strict respect of deadlines.',
     'our_workshop' => 'Our Workshop',
@@ -199,7 +197,7 @@ return [
     'step_installation_desc' => 'Installation by our experts',
 
     // Footer
-    'footer_description' => 'Your trusted partner for aluminum and stainless steel work in Tunisia.',
+    'footer_description' => 'Your trusted partner for aluminum joinery in Tunisia.',
     'all_rights_reserved' => 'All rights reserved.',
 
     // WhatsApp
