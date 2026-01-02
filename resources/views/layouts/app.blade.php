@@ -291,8 +291,8 @@
         /* WhatsApp floating button */
         .whatsapp-float {
             position: fixed;
-            bottom: 6rem;
-            right: 2rem;
+            bottom: 7rem;
+            right: 6rem;
             width: 56px;
             height: 56px;
             background: linear-gradient(135deg, #25D366, #128C7E);
@@ -422,8 +422,8 @@
             }
 
             .whatsapp-float {
-                bottom: 5rem;
-                right: 1rem;
+                bottom: 6rem;
+                right: 5.5rem;
                 width: 48px;
                 height: 48px;
             }
@@ -554,7 +554,7 @@
                     <h3 class="text-lg font-bold mb-4">{{ __('messages.nav_services') }}</h3>
                     <ul class="space-y-2">
                         <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.doors') }} & {{ __('messages.windows') }}</a></li>
-                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.railings') }} & {{ __('messages.stainless') }}</a></li>
+                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.railings') }}</a></li>
                         <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.pergola') }} & {{ __('messages.shelter') }}</a></li>
                         <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.shutters') }}</a></li>
                     </ul>
@@ -596,6 +596,9 @@
     <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
         <i data-lucide="arrow-up" class="w-6 h-6"></i>
     </button>
+
+    <!-- Chatbot Widget -->
+    @include('components.chatbot')
 
     <!-- JavaScript -->
     <script>

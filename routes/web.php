@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Support\Facades\Route;
@@ -16,3 +17,10 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // Quote submission
 Route::post('/quote', [QuoteController::class, 'store'])->name('quote.store');
+
+// Chatbot API
+Route::prefix('chatbot')->name('chatbot.')->group(function () {
+    Route::get('/welcome', [ChatbotController::class, 'getWelcome'])->name('welcome');
+    Route::post('/message', [ChatbotController::class, 'getResponse'])->name('message');
+    Route::get('/faqs', [ChatbotController::class, 'getFaqs'])->name('faqs');
+});
