@@ -17,6 +17,8 @@ return [
     'hero_title' => 'Menuiserie Aluminium',
     'hero_subtitle' => 'Qualité Européenne',
     'hero_description' => 'Spécialistes en fenêtres, portes et façades aluminium pour les expatriés tunisiens. Construisez votre maison en Tunisie avec nos standards européens.',
+    'premium_quality' => 'Qualité Premium Garantie',
+    'start_your_project' => 'Lancez Votre Projet',
 
     // Services
     'our_services' => 'Nos Services',
@@ -76,7 +78,9 @@ return [
 
     // Contact
     'contact_us' => 'Contactez-Nous',
-    'contact_intro' => 'Obtenez votre devis gratuit sous 48h. Notre équipe est à votre écoute pour répondre à toutes vos questions.',
+    'contact_intro' => 'Obtenez un devis gratuit pour votre projet en Tunisie. Notre équipe est à votre disposition pour répondre à toutes vos questions.',
+    'get_in_touch' => 'Contactez-nous',
+    'please_correct_errors' => 'Veuillez corriger les erreurs suivantes',
     'phone' => 'Téléphone',
     'address' => 'Adresse',
     'working_hours' => 'Lun-Ven: 8h-18h, Sam: 9h-13h',

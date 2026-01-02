@@ -17,6 +17,8 @@ return [
     'hero_title' => 'Aluminum Joinery',
     'hero_subtitle' => 'European Quality',
     'hero_description' => 'Specialists in aluminum windows, doors and facades for Tunisian expatriates. Build your home in Tunisia with our European standards.',
+    'premium_quality' => 'Premium Quality Guaranteed',
+    'start_your_project' => 'Start Your Project',
 
     // Services
     'our_services' => 'Our Services',
@@ -77,6 +79,8 @@ return [
     // Contact
     'contact_us' => 'Contact Us',
     'contact_intro' => 'Get your free quote within 48h. Our team is ready to answer all your questions.',
+    'get_in_touch' => 'Get in Touch',
+    'please_correct_errors' => 'Please correct the following errors',
     'phone' => 'Phone',
     'address' => 'Address',
     'working_hours' => 'Mon-Fri: 8am-6pm, Sat: 9am-1pm',
