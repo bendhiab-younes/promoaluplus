@@ -27,9 +27,24 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Promo Alu Plus')
+            ->brandLogo(null)
+            ->favicon(asset('favicon.ico'))
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Orange,
+                'danger' => Color::Red,
+                'gray' => Color::Slate,
+                'info' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
             ])
+            ->font('Inter')
+            ->navigationGroups([
+                'Demandes' => fn () => __('Demandes'),
+                'Contenu' => fn () => __('Contenu'),
+                'Paramètres' => fn () => __('Paramètres'),
+            ])
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -38,7 +53,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
