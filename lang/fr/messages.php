@@ -2,8 +2,8 @@
 
 return [
     // Site
-    'site_description' => 'Menuiserie aluminium en Tunisie pour expatriés. Fenêtres, portes, façades de qualité européenne.',
-    'site_tagline' => 'Menuiserie Aluminium de Qualité Européenne',
+    'site_description' => 'Promo Alu Plus - Spécialiste en menuiserie aluminium et inox en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.',
+    'site_tagline' => 'Menuiserie Aluminium & Inox de Qualité',
 
     // Navigation
     'nav_home' => 'Accueil',
@@ -14,33 +14,46 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Menuiserie Aluminium',
-    'hero_subtitle' => 'Qualité Européenne',
-    'hero_description' => 'Spécialistes en fenêtres, portes et façades aluminium pour les expatriés tunisiens. Construisez votre maison en Tunisie avec nos standards européens.',
+    'hero_title' => 'Aluminium & Inox',
+    'hero_subtitle' => 'Sur Mesure',
+    'hero_description' => 'Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines, abris et volets électriques. Tout article en aluminium et inox de qualité supérieure.',
     'premium_quality' => 'Qualité Premium Garantie',
     'start_your_project' => 'Lancez Votre Projet',
 
     // Services
     'our_services' => 'Nos Services',
-    'services_intro' => 'Découvrez notre gamme complète de solutions en menuiserie aluminium, conçues selon les standards européens pour votre projet en Tunisie.',
-    'services_page_intro' => 'Des solutions complètes en menuiserie aluminium, de la conception à l\'installation.',
+    'services_intro' => 'Découvrez notre gamme complète de solutions en aluminium et inox pour tous vos projets de construction et rénovation.',
+    'services_page_intro' => 'Des solutions complètes en menuiserie aluminium et inox, de la conception à l\'installation.',
     'view_all_services' => 'Voir tous nos services',
     'learn_more' => 'En savoir plus',
 
     // Service types
-    'windows' => 'Fenêtres Aluminium',
-    'doors' => 'Portes & Baies Vitrées',
-    'facades' => 'Façades & Vérandas',
-    'veranda' => 'Véranda',
+    'windows' => 'Fenêtres',
+    'doors' => 'Portes',
+    'curtains' => 'Rideaux',
+    'railings' => 'Garde-Corps',
+    'stainless' => 'Inox',
+    'pergola' => 'Pergola',
+    'kitchen' => 'Cuisine',
+    'shelter' => 'Abri',
+    'shutters' => 'Volets Électriques',
     'other' => 'Autre',
 
     // Service descriptions
-    'windows_desc' => 'Fenêtres sur mesure avec double vitrage, isolation thermique et acoustique optimale.',
-    'doors_desc' => 'Portes d\'entrée, coulissantes et baies vitrées sécurisées et esthétiques.',
-    'facades_desc' => 'Murs-rideaux, façades ventilées et vérandas pour agrandir votre espace de vie.',
-    'windows_full_desc' => 'Nos fenêtres en aluminium sont fabriquées selon les normes européennes les plus strictes, offrant une isolation thermique et acoustique exceptionnelle grâce à la technologie de rupture de pont thermique.',
-    'doors_full_desc' => 'Des portes d\'entrée sécurisées aux baies vitrées coulissantes, nous proposons une gamme complète de solutions pour sublimer votre espace tout en garantissant sécurité et confort.',
-    'facades_full_desc' => 'Transformez votre bâtiment avec nos solutions de façades en aluminium. Murs-rideaux modernes, façades ventilées performantes et vérandas élégantes.',
+    'windows_desc' => 'Fenêtres aluminium sur mesure avec double vitrage et isolation optimale.',
+    'doors_desc' => 'Portes d\'entrée, coulissantes et baies vitrées sécurisées.',
+    'curtains_desc' => 'Rideaux métalliques et stores pour commerces et habitations.',
+    'railings_desc' => 'Garde-corps en aluminium ou inox, design moderne et sécurisé.',
+    'stainless_desc' => 'Fabrication sur mesure en inox: rampes, mains courantes, mobilier.',
+    'pergola_desc' => 'Pergolas bioclimatiques et traditionnelles pour vos espaces extérieurs.',
+    'kitchen_desc' => 'Cuisines en aluminium modernes, durables et faciles d\'entretien.',
+    'shelter_desc' => 'Abris de voiture, terrasses couvertes et structures extérieures.',
+    'shutters_desc' => 'Volets roulants électriques motorisés pour confort et sécurité.',
+
+    // Full descriptions for services page
+    'windows_full_desc' => 'Nos fenêtres en aluminium sont fabriquées sur mesure avec double vitrage, offrant une isolation thermique et acoustique optimale pour votre confort.',
+    'doors_full_desc' => 'Des portes d\'entrée sécurisées aux baies vitrées coulissantes, nous proposons une gamme complète de solutions pour sublimer votre espace.',
+    'facades_full_desc' => 'Transformez votre bâtiment avec nos solutions de pergolas, abris et structures extérieures en aluminium de qualité supérieure.',
 
     // Features
     'double_glazing' => 'Double vitrage',
@@ -50,11 +63,17 @@ return [
     'enhanced_security' => 'Sécurité renforcée',
     'modern_design' => 'Design moderne',
     'perfect_sealing' => 'Étanchéité parfaite',
+    'motorized' => 'Motorisé',
+    'weather_resistant' => 'Résistant aux intempéries',
+    'easy_maintenance' => 'Entretien facile',
+    'durable' => 'Durable',
+    'corrosion_resistant' => 'Anti-corrosion',
     'sliding_doors' => 'Portes coulissantes',
     'curtain_walls' => 'Murs-rideaux',
     'custom_verandas' => 'Vérandas sur mesure',
     'ventilated_facades' => 'Façades ventilées',
     'modern_architecture' => 'Architecture moderne',
+    'facades' => 'Pergolas & Abris',
 
     // Why choose us
     'why_choose_us' => 'Pourquoi Nous Choisir?',
@@ -123,7 +142,7 @@ return [
     'portfolio_intro' => 'Découvrez nos projets réalisés pour des clients expatriés et locaux à travers la Tunisie.',
     'all' => 'Tous',
     'client_testimonials' => 'Témoignages Clients',
-    'testimonial_1' => 'Excellent travail! J\'ai géré tout le projet depuis Paris et AluminiumCraft a parfaitement respecté mes attentes.',
+    'testimonial_1' => 'Excellent travail! Promo Alu Plus a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
     'testimonial_2' => 'Qualité européenne à prix tunisien. Communication impeccable malgré le décalage horaire.',
     'testimonial_3' => 'Professionnels et à l\'écoute. Je recommande vivement pour tout projet de construction en Tunisie.',
 
@@ -131,7 +150,7 @@ return [
     'about_us' => 'À Propos de Nous',
     'about_intro' => 'Plus de 15 ans d\'expertise en menuiserie aluminium au service des Tunisiens du monde entier.',
     'our_story' => 'Notre Histoire',
-    'story_p1' => 'Fondée en 2009, AluminiumCraft est née de la vision de créer une entreprise capable d\'offrir aux expatriés tunisiens la qualité européenne qu\'ils connaissent.',
+    'story_p1' => 'Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium et inox en Tunisie.',
     'story_p2' => 'Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent leur maison en Tunisie.',
     'story_p3' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins: communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.',
     'our_workshop' => 'Notre Atelier',
@@ -180,11 +199,11 @@ return [
     'step_installation_desc' => 'Pose par nos experts',
 
     // Footer
-    'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium en Tunisie.',
+    'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium et inox en Tunisie.',
     'all_rights_reserved' => 'Tous droits réservés.',
 
     // WhatsApp
-    'whatsapp_message' => 'Bonjour, je souhaite obtenir un devis pour un projet de menuiserie aluminium.',
+    'whatsapp_message' => 'Bonjour, je souhaite obtenir un devis pour un projet chez Promo Alu Plus.',
 
     // Misc
     'modern_aluminum_windows' => 'Fenêtres aluminium modernes',

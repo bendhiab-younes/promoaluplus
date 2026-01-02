@@ -2,8 +2,8 @@
 
 return [
     // Site
-    'site_description' => 'Aluminum joinery in Tunisia for expatriates. European quality windows, doors, and facades.',
-    'site_tagline' => 'European Quality Aluminum Joinery',
+    'site_description' => 'Promo Alu Plus - Aluminum and stainless steel specialist in Tunisia. Doors, windows, curtains, railings, pergolas, kitchens and electric shutters.',
+    'site_tagline' => 'Quality Aluminum & Stainless Steel',
 
     // Navigation
     'nav_home' => 'Home',
@@ -14,33 +14,46 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Aluminum Joinery',
-    'hero_subtitle' => 'European Quality',
-    'hero_description' => 'Specialists in aluminum windows, doors and facades for Tunisian expatriates. Build your home in Tunisia with our European standards.',
+    'hero_title' => 'Aluminum & Stainless Steel',
+    'hero_subtitle' => 'Custom Made',
+    'hero_description' => 'Doors, windows, curtains, railings, pergolas, kitchens, shelters and electric shutters. All aluminum and stainless steel items of superior quality.',
     'premium_quality' => 'Premium Quality Guaranteed',
     'start_your_project' => 'Start Your Project',
 
     // Services
     'our_services' => 'Our Services',
-    'services_intro' => 'Discover our complete range of aluminum joinery solutions, designed to European standards for your project in Tunisia.',
-    'services_page_intro' => 'Complete aluminum joinery solutions, from design to installation.',
+    'services_intro' => 'Discover our complete range of aluminum and stainless steel solutions for all your construction and renovation projects.',
+    'services_page_intro' => 'Complete aluminum and stainless steel solutions, from design to installation.',
     'view_all_services' => 'View all services',
     'learn_more' => 'Learn more',
 
     // Service types
-    'windows' => 'Aluminum Windows',
-    'doors' => 'Doors & Sliding Doors',
-    'facades' => 'Facades & Verandas',
-    'veranda' => 'Veranda',
+    'windows' => 'Windows',
+    'doors' => 'Doors',
+    'curtains' => 'Curtains',
+    'railings' => 'Railings',
+    'stainless' => 'Stainless Steel',
+    'pergola' => 'Pergola',
+    'kitchen' => 'Kitchen',
+    'shelter' => 'Shelter',
+    'shutters' => 'Electric Shutters',
     'other' => 'Other',
 
     // Service descriptions
-    'windows_desc' => 'Custom windows with double glazing, optimal thermal and acoustic insulation.',
-    'doors_desc' => 'Secure and aesthetic entrance doors, sliding doors and bay windows.',
-    'facades_desc' => 'Curtain walls, ventilated facades and verandas to expand your living space.',
-    'windows_full_desc' => 'Our aluminum windows are manufactured according to the strictest European standards, offering exceptional thermal and acoustic insulation thanks to thermal break technology.',
-    'doors_full_desc' => 'From secure entrance doors to sliding bay windows, we offer a complete range of solutions to enhance your space while ensuring security and comfort.',
-    'facades_full_desc' => 'Transform your building with our aluminum facade solutions. Modern curtain walls, high-performance ventilated facades and elegant verandas.',
+    'windows_desc' => 'Custom aluminum windows with double glazing and optimal insulation.',
+    'doors_desc' => 'Secure entrance doors, sliding doors and bay windows.',
+    'curtains_desc' => 'Metal curtains and blinds for shops and homes.',
+    'railings_desc' => 'Aluminum or stainless steel railings, modern and secure design.',
+    'stainless_desc' => 'Custom stainless steel fabrication: handrails, railings, furniture.',
+    'pergola_desc' => 'Bioclimatic and traditional pergolas for your outdoor spaces.',
+    'kitchen_desc' => 'Modern aluminum kitchens, durable and easy to maintain.',
+    'shelter_desc' => 'Car shelters, covered terraces and outdoor structures.',
+    'shutters_desc' => 'Motorized electric roller shutters for comfort and security.',
+
+    // Full descriptions for services page
+    'windows_full_desc' => 'Our aluminum windows are custom-made with double glazing, offering optimal thermal and acoustic insulation for your comfort.',
+    'doors_full_desc' => 'From secure entrance doors to sliding bay windows, we offer a complete range of solutions to enhance your space.',
+    'facades_full_desc' => 'Transform your building with our pergola, shelter and outdoor structure solutions in premium aluminum.',
 
     // Features
     'double_glazing' => 'Double glazing',
@@ -50,11 +63,17 @@ return [
     'enhanced_security' => 'Enhanced security',
     'modern_design' => 'Modern design',
     'perfect_sealing' => 'Perfect sealing',
+    'motorized' => 'Motorized',
+    'weather_resistant' => 'Weather resistant',
+    'easy_maintenance' => 'Easy maintenance',
+    'durable' => 'Durable',
+    'corrosion_resistant' => 'Corrosion resistant',
     'sliding_doors' => 'Sliding doors',
     'curtain_walls' => 'Curtain walls',
     'custom_verandas' => 'Custom verandas',
     'ventilated_facades' => 'Ventilated facades',
     'modern_architecture' => 'Modern architecture',
+    'facades' => 'Pergolas & Shelters',
 
     // Why choose us
     'why_choose_us' => 'Why Choose Us?',
@@ -180,11 +199,11 @@ return [
     'step_installation_desc' => 'Installation by our experts',
 
     // Footer
-    'footer_description' => 'Your trusted partner for aluminum joinery in Tunisia.',
+    'footer_description' => 'Your trusted partner for aluminum and stainless steel work in Tunisia.',
     'all_rights_reserved' => 'All rights reserved.',
 
     // WhatsApp
-    'whatsapp_message' => 'Hello, I would like to get a quote for an aluminum joinery project.',
+    'whatsapp_message' => 'Hello, I would like to get a quote for a project at Promo Alu Plus.',
 
     // Misc
     'modern_aluminum_windows' => 'Modern aluminum windows',

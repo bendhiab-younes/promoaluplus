@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="@yield('meta_description', __('messages.site_description'))">
-    <meta name="keywords" content="menuiserie aluminium tunisie, fenêtres aluminium, portes, façades, expatriés tunisiens">
-    <meta name="author" content="AluminiumCraft Tunisie">
+    <meta name="keywords" content="menuiserie aluminium tunisie, fenêtres aluminium, portes, garde-corps, inox, pergola, volets, cuisine aluminium">
+    <meta name="author" content="Promo Alu Plus">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'AluminiumCraft Tunisie') - {{ __('messages.site_tagline') }}</title>
+    <title>@yield('title', 'Promo Alu Plus') - {{ __('messages.site_tagline') }}</title>
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="@yield('og_title', 'AluminiumCraft Tunisie - Menuiserie Aluminium')">
+    <meta property="og:title" content="@yield('og_title', 'Promo Alu Plus - Menuiserie Aluminium & Inox')">
     <meta property="og:description" content="@yield('og_description', __('messages.site_description'))">
     <meta property="og:type" content="website">
     
@@ -490,8 +490,8 @@
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <i data-lucide="building-2" class="w-8 h-8 text-blue-400 transition-colors duration-300"></i>
-                    <span class="text-xl font-bold text-white transition-colors duration-300">AluminiumCraft</span>
+                    <i data-lucide="hexagon" class="w-8 h-8 text-orange-400 transition-colors duration-300"></i>
+                    <span class="text-xl font-bold text-white transition-colors duration-300">Promo Alu Plus</span>
                 </a>
                 
                 <div class="hidden md:flex space-x-8">
@@ -531,8 +531,8 @@
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
-                        <i data-lucide="building-2" class="w-8 h-8 text-blue-500"></i>
-                        <span class="text-xl font-bold">AluminiumCraft</span>
+                        <i data-lucide="hexagon" class="w-8 h-8 text-orange-500"></i>
+                        <span class="text-xl font-bold">Promo Alu Plus</span>
                     </div>
                     <p class="text-gray-400">
                         {{ __('messages.footer_description') }}
@@ -553,10 +553,10 @@
                 <div>
                     <h3 class="text-lg font-bold mb-4">{{ __('messages.nav_services') }}</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('services') }}#windows" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.windows') }}</a></li>
-                        <li><a href="{{ route('services') }}#doors" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.doors') }}</a></li>
-                        <li><a href="{{ route('services') }}#facades" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.facades') }}</a></li>
-                        <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.free_quote') }}</a></li>
+                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.doors') }} & {{ __('messages.windows') }}</a></li>
+                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.railings') }} & {{ __('messages.stainless') }}</a></li>
+                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.pergola') }} & {{ __('messages.shelter') }}</a></li>
+                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.shutters') }}</a></li>
                     </ul>
                 </div>
                 
@@ -573,14 +573,14 @@
                         </li>
                         <li class="flex items-center">
                             <i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                            <span>contact@aluminiumcraft.tn</span>
+                            <span>contact@promoaluplus.tn</span>
                         </li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} AluminiumCraft Tunisie. {{ __('messages.all_rights_reserved') }}</p>
+                <p>&copy; {{ date('Y') }} Promo Alu Plus. {{ __('messages.all_rights_reserved') }}</p>
             </div>
         </div>
     </footer>
