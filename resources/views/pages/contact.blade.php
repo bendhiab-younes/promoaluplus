@@ -132,8 +132,13 @@
                                     <option value="">{{ __('messages.select_type') }}</option>
                                     <option value="windows" {{ old('project_type') == 'windows' ? 'selected' : '' }}>{{ __('messages.windows') }}</option>
                                     <option value="doors" {{ old('project_type') == 'doors' ? 'selected' : '' }}>{{ __('messages.doors') }}</option>
-                                    <option value="facades" {{ old('project_type') == 'facades' ? 'selected' : '' }}>{{ __('messages.facades') }}</option>
-                                    <option value="veranda" {{ old('project_type') == 'veranda' ? 'selected' : '' }}>{{ __('messages.veranda') }}</option>
+                                    <option value="curtains" {{ old('project_type') == 'curtains' ? 'selected' : '' }}>{{ __('messages.curtains') }}</option>
+                                    <option value="railings" {{ old('project_type') == 'railings' ? 'selected' : '' }}>{{ __('messages.railings') }}</option>
+                                    <option value="stainless" {{ old('project_type') == 'stainless' ? 'selected' : '' }}>{{ __('messages.stainless') }}</option>
+                                    <option value="pergola" {{ old('project_type') == 'pergola' ? 'selected' : '' }}>{{ __('messages.pergola') }}</option>
+                                    <option value="kitchen" {{ old('project_type') == 'kitchen' ? 'selected' : '' }}>{{ __('messages.kitchen') }}</option>
+                                    <option value="shelter" {{ old('project_type') == 'shelter' ? 'selected' : '' }}>{{ __('messages.shelter') }}</option>
+                                    <option value="shutters" {{ old('project_type') == 'shutters' ? 'selected' : '' }}>{{ __('messages.shutters') }}</option>
                                     <option value="other" {{ old('project_type') == 'other' ? 'selected' : '' }}>{{ __('messages.other') }}</option>
                                 </select>
                             </div>

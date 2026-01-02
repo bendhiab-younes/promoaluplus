@@ -54,8 +54,13 @@ class QuoteResource extends Resource
                             ->options([
                                 'windows' => 'Fenêtres',
                                 'doors' => 'Portes',
-                                'facades' => 'Façades',
-                                'veranda' => 'Véranda',
+                                'curtains' => 'Rideaux métalliques',
+                                'railings' => 'Garde-corps',
+                                'stainless' => 'Inox',
+                                'pergola' => 'Pergola',
+                                'kitchen' => 'Cuisine aluminium',
+                                'shelter' => 'Abri',
+                                'shutters' => 'Volets électriques',
                                 'other' => 'Autre',
                             ])
                             ->required(),
@@ -147,8 +152,13 @@ class QuoteResource extends Resource
                     ->options([
                         'windows' => 'Fenêtres',
                         'doors' => 'Portes',
-                        'facades' => 'Façades',
-                        'veranda' => 'Véranda',
+                        'curtains' => 'Rideaux',
+                        'railings' => 'Garde-corps',
+                        'stainless' => 'Inox',
+                        'pergola' => 'Pergola',
+                        'kitchen' => 'Cuisine',
+                        'shelter' => 'Abri',
+                        'shutters' => 'Volets',
                         'other' => 'Autre',
                     ]),
             ])
