@@ -36,6 +36,25 @@ class SiteSetting extends Model
         return static::where('group', $group)->pluck('value', 'key')->toArray();
     }
 
+    /**
+     * Get a translated setting based on current locale
+     * Looks for {key}_fr, {key}_en, {key}_ar based on app locale
+     */
+    public static function getTranslated(string $key, $default = null)
+    {
+        $locale = app()->getLocale();
+        $translatedKey = "{$key}_{$locale}";
+        
+        $value = static::get($translatedKey);
+        
+        // Fallback to French if translation not found
+        if (empty($value) && $locale !== 'fr') {
+            $value = static::get("{$key}_fr");
+        }
+        
+        return $value ?: $default;
+    }
+
     protected static function booted(): void
     {
         static::saved(function ($setting) {

@@ -14,8 +14,51 @@ class SiteSettingsSeeder extends Seeder
         $settings = [
             // Entreprise
             ['key' => 'company_name', 'value' => 'Promo Alu Plus', 'group' => 'general'],
-            ['key' => 'company_slogan', 'value' => 'Menuiserie Aluminium & Inox de Qualité', 'group' => 'general'],
-            ['key' => 'company_description', 'value' => 'Spécialiste en menuiserie aluminium et inox en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.', 'group' => 'general'],
+            
+            // Hero - FR
+            ['key' => 'hero_badge_fr', 'value' => 'Qualité Premium Garantie', 'group' => 'hero'],
+            ['key' => 'hero_title_fr', 'value' => 'Menuiserie Aluminium', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_fr', 'value' => 'Sur Mesure', 'group' => 'hero'],
+            ['key' => 'hero_description_fr', 'value' => 'Donnez vie à vos projets avec nos portes, fenêtres, pergolas, cuisines et volets électriques. Un savoir-faire artisanal au service de votre confort.', 'group' => 'hero'],
+            // Hero - EN
+            ['key' => 'hero_badge_en', 'value' => 'Premium Quality Guaranteed', 'group' => 'hero'],
+            ['key' => 'hero_title_en', 'value' => 'Aluminum Joinery', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_en', 'value' => 'Custom Made', 'group' => 'hero'],
+            ['key' => 'hero_description_en', 'value' => 'Bring your projects to life with our doors, windows, pergolas, kitchens and electric shutters. Craftsmanship at the service of your comfort.', 'group' => 'hero'],
+            // Hero - AR
+            ['key' => 'hero_badge_ar', 'value' => 'جودة ممتازة مضمونة', 'group' => 'hero'],
+            ['key' => 'hero_title_ar', 'value' => 'نجارة ألمنيوم', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_ar', 'value' => 'حسب الطلب', 'group' => 'hero'],
+            ['key' => 'hero_description_ar', 'value' => 'حقق أحلامك مع أبوابنا، نوافذنا، برجولاتنا، مطابخنا وشترنا الكهربائي. حرفية في خدمة راحتك.', 'group' => 'hero'],
+            
+            // Stats
+            ['key' => 'stats_projects', 'value' => '500', 'group' => 'stats'],
+            ['key' => 'stats_years', 'value' => '15', 'group' => 'stats'],
+            ['key' => 'stats_satisfaction', 'value' => '98', 'group' => 'stats'],
+            ['key' => 'stats_team', 'value' => '12', 'group' => 'stats'],
+            
+            // CTA - FR
+            ['key' => 'cta_title_fr', 'value' => 'Prêt à Démarrer Votre Projet?', 'group' => 'cta'],
+            ['key' => 'cta_description_fr', 'value' => 'Obtenez un devis gratuit et détaillé sous 48h. Notre équipe est à votre écoute.', 'group' => 'cta'],
+            // CTA - EN
+            ['key' => 'cta_title_en', 'value' => 'Ready to Start Your Project?', 'group' => 'cta'],
+            ['key' => 'cta_description_en', 'value' => 'Get a free detailed quote within 48h. Our team is at your service.', 'group' => 'cta'],
+            // CTA - AR
+            ['key' => 'cta_title_ar', 'value' => 'مستعد لبدء مشروعك؟', 'group' => 'cta'],
+            ['key' => 'cta_description_ar', 'value' => 'احصل على عرض سعر مجاني ومفصل خلال 48 ساعة. فريقنا في خدمتك.', 'group' => 'cta'],
+            
+            // About - FR
+            ['key' => 'about_story_fr', 'value' => 'Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium en Tunisie. Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent leur maison en Tunisie.', 'group' => 'about'],
+            ['key' => 'about_mission_fr', 'value' => 'Offrir aux expatriés tunisiens une expérience de construction sereine grâce à des produits de qualité européenne et un service client irréprochable.', 'group' => 'about'],
+            ['key' => 'about_values_fr', 'value' => 'Qualité, transparence, ponctualité et engagement client sont les piliers de notre entreprise.', 'group' => 'about'],
+            // About - EN
+            ['key' => 'about_story_en', 'value' => 'Promo Alu Plus is your trusted partner for all your aluminum projects in Tunisia. We understand the unique challenges faced by Tunisians living abroad when building or renovating their home in Tunisia.', 'group' => 'about'],
+            ['key' => 'about_mission_en', 'value' => 'Offer Tunisian expatriates a peaceful construction experience through European quality products and impeccable customer service.', 'group' => 'about'],
+            ['key' => 'about_values_en', 'value' => 'Quality, transparency, punctuality and customer commitment are the pillars of our company.', 'group' => 'about'],
+            // About - AR
+            ['key' => 'about_story_ar', 'value' => 'Promo Alu Plus شريكك الموثوق لجميع مشاريعك في الألمنيوم في تونس. نحن نفهم التحديات الفريدة التي يواجهها التونسيون المقيمون في الخارج عند بناء أو تجديد منازلهم في تونس.', 'group' => 'about'],
+            ['key' => 'about_mission_ar', 'value' => 'تقديم تجربة بناء هادئة للتونسيين المغتربين من خلال منتجات بجودة أوروبية وخدمة عملاء لا تشوبها شائبة.', 'group' => 'about'],
+            ['key' => 'about_values_ar', 'value' => 'الجودة والشفافية والالتزام بالمواعيد والتزامنا تجاه العميل هي ركائز شركتنا.', 'group' => 'about'],
             
             // Contact
             ['key' => 'contact_phone', 'value' => '+216 12 345 678', 'group' => 'contact'],

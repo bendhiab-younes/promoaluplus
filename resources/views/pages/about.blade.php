@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    use App\Models\SiteSetting;
+@endphp
 @section('title', __('messages.nav_about'))
 
 @section('content')
@@ -37,19 +39,19 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 text-center text-white">
                 <div>
-                    <div class="text-5xl font-bold mb-2">15+</div>
+                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_years', '15') }}+</div>
                     <div class="text-blue-100">{{ __('messages.years_experience') }}</div>
                 </div>
                 <div>
-                    <div class="text-5xl font-bold mb-2">500+</div>
+                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_projects', '500') }}+</div>
                     <div class="text-blue-100">{{ __('messages.projects_completed') }}</div>
                 </div>
                 <div>
-                    <div class="text-5xl font-bold mb-2">98%</div>
+                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_satisfaction', '98') }}%</div>
                     <div class="text-blue-100">{{ __('messages.satisfied_clients') }}</div>
                 </div>
                 <div>
-                    <div class="text-5xl font-bold mb-2">25+</div>
+                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_team', '12') }}+</div>
                     <div class="text-blue-100">{{ __('messages.team_members') }}</div>
                 </div>
             </div>

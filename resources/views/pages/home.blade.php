@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    use App\Models\SiteSetting;
+@endphp
 @section('title', __('messages.nav_home'))
 
 @section('content')
@@ -9,14 +11,14 @@
             <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="text-white scroll-fade-left">
                     <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-blue-200 mb-4 md:mb-6 border border-white/20">
-                        ✨ {{ __('messages.premium_quality') }}
+                        ✨ {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
                     </span>
                     <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">
-                        {{ __('messages.hero_title') }}
-                        <span class="text-gradient bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ __('messages.hero_subtitle') }}</span>
+                        {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
+                        <span class="text-gradient bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                     </h1>
                     <p class="text-base md:text-lg lg:text-xl mb-6 md:mb-8 text-blue-100/90 leading-relaxed max-w-lg">
-                        {{ __('messages.hero_description') }}
+                        {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group">
@@ -63,17 +65,17 @@
         <div class="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 w-full px-6">
             <div class="flex items-center justify-center gap-4 sm:gap-8 md:gap-12 text-white/90">
                 <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">500+</div>
+                    <div class="text-2xl md:text-3xl font-bold">{{ SiteSetting::get('stats_projects', '500') }}+</div>
                     <div class="text-xs md:text-sm text-blue-200">{{ __('messages.projects_completed') }}</div>
                 </div>
                 <div class="w-px h-10 bg-white/20 hidden sm:block"></div>
                 <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">15+</div>
+                    <div class="text-2xl md:text-3xl font-bold">{{ SiteSetting::get('stats_years', '15') }}+</div>
                     <div class="text-xs md:text-sm text-blue-200">{{ __('messages.years_experience') }}</div>
                 </div>
                 <div class="w-px h-10 bg-white/20 hidden sm:block"></div>
                 <div class="text-center">
-                    <div class="text-2xl md:text-3xl font-bold">98%</div>
+                    <div class="text-2xl md:text-3xl font-bold">{{ SiteSetting::get('stats_satisfaction', '98') }}%</div>
                     <div class="text-xs md:text-sm text-blue-200">{{ __('messages.satisfied_clients') }}</div>
                 </div>
             </div>
@@ -252,10 +254,10 @@
                     🚀 {{ __('messages.start_your_project') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 leading-tight">
-                    {{ __('messages.ready_to_start') }}
+                    {{ SiteSetting::getTranslated('cta_title', __('messages.ready_to_start')) }}
                 </h2>
                 <p class="text-base md:text-lg lg:text-xl text-blue-200 mb-6 md:mb-8 leading-relaxed px-4">
-                    {{ __('messages.cta_description') }}
+                    {{ SiteSetting::getTranslated('cta_description', __('messages.cta_description')) }}
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('contact') }}" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 inline-flex items-center justify-center shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1">
