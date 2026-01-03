@@ -1,26 +1,59 @@
-# AluminiumCraft Tunisie - Laravel Application
+# Promo Alu Plus - Laravel Application
 
-A modern Laravel web application for AluminiumCraft, a premium aluminum joinery company in Tunisia specializing in services for expatriates.
+A comprehensive Laravel web application for **Promo Alu Plus**, a premium aluminum joinery company in Tunisia specializing in high-quality aluminum products and services for residential and commercial clients.
 
-## 🚀 Features
+## ✨ Key Features
 
-- **Multi-language Support**: French, English, and Arabic with RTL support
-- **Quote Request System**: Full quote management with email notifications
-- **Portfolio Management**: Filterable project gallery with categories
-- **Admin Panel**: Filament-powered admin dashboard for content management
-- **Responsive Design**: Modern UI with Tailwind CSS
+### 🌐 Public Website
+- **Multi-language Support**: French, English, and Arabic with full RTL support
+- **Modern Responsive Design**: Beautiful UI with Tailwind CSS, smooth animations, and mobile-first approach
+- **Service Showcase**: Dynamic services page with detailed descriptions
+- **Portfolio Gallery**: Filterable project gallery by category (windows, doors, facades, etc.)
+- **Quote Request System**: Comprehensive quote form with email notifications
+- **AI Chatbot**: Interactive chatbot with predefined conversation flows and FAQ integration
+- **WhatsApp Integration**: Quick contact via WhatsApp floating button
+
+### 🛠️ Admin Panel (Filament)
+- **Dashboard**: Overview of business metrics
+- **Quote Management**: Full workflow for handling quote requests
+  - Status tracking (New → Contacted → Quoted → Accepted/Rejected → Completed)
+  - Line items management with automatic total calculations
+  - PDF generation for professional quotes
+  - One-click invoice creation from accepted quotes
+- **Invoice Management**: Complete invoicing system
+  - Auto-generated invoice numbers (FAC-YYYY-XXXX)
+  - Status tracking (Draft → Sent → Paid/Overdue)
+  - PDF generation for professional invoices
+  - Link to original quote
+- **Content Management**:
+  - Projects with multilingual titles/descriptions
+  - Services with icons, colors, and features
+  - Testimonials from clients
+  - FAQ management for chatbot
+  - Chatbot conversation flows
+- **Site Settings**: Customizable company info, hero content, statistics
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Laravel 12.x
-- **Admin Panel**: Filament 3.x
-- **CSS**: Tailwind CSS (CDN)
-- **Icons**: Lucide Icons
-- **Database**: SQLite (configured and seeded)
+| Component | Technology |
+|-----------|------------|
+| Framework | Laravel 12.x |
+| Admin Panel | Filament 3.x |
+| CSS | Tailwind CSS |
+| Icons | Lucide Icons |
+| PDF Generation | DomPDF |
+| Database | SQLite |
+| Frontend | Blade + Alpine.js |
 
 ## 🚀 Quick Start
 
 ```bash
+# Install dependencies
+composer install
+
+# Run migrations and seed data
+php artisan migrate --seed
+
 # Start development server
 php artisan serve
 ```
@@ -29,101 +62,138 @@ php artisan serve
 **Admin Panel**: http://127.0.0.1:8000/admin
 
 ### Admin Credentials
-- Email: `admin@aluminiumcraft.tn`
-- Password: `password`
+- **Email**: `admin@aluminiumcraft.tn`
+- **Password**: `password`
 
-## 📊 Database
+## 📊 Database Schema
 
-**Current Setup**: SQLite database with demo data seeded
+### Core Tables
 
-### Main Tables
+| Table | Purpose |
+|-------|---------|
+| `quotes` | Customer quote requests with workflow status |
+| `quote_items` | Line items for quotes |
+| `invoices` | Generated invoices |
+| `invoice_items` | Line items for invoices |
+| `projects` | Portfolio projects (multilingual) |
+| `services` | Service offerings (multilingual) |
+| `testimonials` | Client testimonials (multilingual) |
+| `faqs` | Frequently asked questions |
+| `chatbot_flows` | Chatbot conversation trees |
+| `site_settings` | Dynamic site configuration |
 
-| Table | Purpose | Multilingual Fields |
-|-------|---------|---------------------|
-| `quotes` | Customer quote requests | - |
-| `projects` | Portfolio projects | title, description (fr/en/ar) |
-| `services` | Service offerings | title, short_description (fr/en/ar) |
-| `testimonials` | Client reviews | content (fr/en/ar) |
-| `users` | Admin users | - |
-
-## 📁 Key Files
+## 📁 Project Structure
 
 ```
 app/
-├── Filament/Resources/     # Admin panel (Quote, Project, Service, Testimonial)
-├── Http/Controllers/       # PageController, QuoteController
-├── Mail/                   # Email templates
+├── Filament/
+│   ├── Resources/          # Admin CRUD resources
+│   │   ├── QuoteResource   # Quote management with workflow
+│   │   ├── InvoiceResource # Invoice management
+│   │   ├── ProjectResource # Portfolio projects
+│   │   ├── ServiceResource # Services
+│   │   └── ...
+│   └── Pages/
+│       └── SiteSettings    # Site configuration page
+├── Http/Controllers/
+│   ├── PageController      # Public pages
+│   ├── QuoteController     # Quote form submission
+│   ├── PdfController       # PDF generation
+│   └── ChatbotController   # Chatbot API
 ├── Models/                 # Eloquent models
-└── Http/Middleware/SetLocale.php  # Language switching
+└── Mail/                   # Email notifications
 
 resources/views/
-├── layouts/app.blade.php   # Main layout
+├── layouts/app.blade.php   # Main layout with nav, footer, chatbot
 ├── pages/                  # home, services, portfolio, about, contact
-└── emails/                 # Quote email templates
+├── components/chatbot.blade.php  # Chatbot widget
+├── pdf/                    # PDF templates (quote, invoice)
+└── emails/                 # Email templates
 
-lang/                       # Translations (fr/en/ar)
-database/seeders/DemoSeeder.php  # Sample data
+lang/{fr,en,ar}/            # Translation files
 ```
 
 ## 🌐 Routes
 
+### Public Routes
 | URL | Description |
 |-----|-------------|
-| `/` | Homepage |
-| `/services` | Services page |
-| `/portfolio` | Portfolio (filterable by category) |
-| `/about` | About page |
-| `/contact` | Contact & quote form |
+| `/` | Homepage with hero, services, projects, testimonials |
+| `/services` | All services with details |
+| `/portfolio` | Project gallery with category filter |
+| `/about` | Company information |
+| `/contact` | Contact info & quote request form |
 | `/locale/{locale}` | Language switcher (fr/en/ar) |
-| `/admin` | Admin panel |
 
-## 🛠️ Development
+### API Routes
+| URL | Method | Description |
+|-----|--------|-------------|
+| `/quote` | POST | Submit quote request |
+| `/chatbot/welcome` | GET | Get chatbot welcome message |
+| `/chatbot/message` | POST | Send message to chatbot |
 
-### Content Management
-Use the admin panel at `/admin` to:
-- Manage quote requests (Demandes → Demandes de devis)
-- Add/edit projects (Contenu → Projets)
-- Manage services and testimonials
+### Admin Routes
+| URL | Description |
+|-----|-------------|
+| `/admin` | Dashboard |
+| `/admin/quotes` | Quote management |
+| `/admin/invoices` | Invoice management |
+| `/admin/projects` | Project management |
+| `/admin/services` | Service management |
+| `/admin/site-settings` | Site configuration |
 
-### Customization
-- **Pages**: Edit `resources/views/pages/*.blade.php`
-- **Translations**: Update `lang/{fr,en,ar}/messages.php`
-- **Admin Theme**: Modify `app/Providers/Filament/AdminPanelProvider.php`
+## 📋 Quote/Invoice Workflow
+
+```
+┌─────────────┐     ┌───────────┐     ┌─────────────┐     ┌──────────┐
+│  New Quote  │ ──► │ Contacted │ ──► │ Quote Sent  │ ──► │ Accepted │
+│   Request   │     │           │     │ (with PDF)  │     │          │
+└─────────────┘     └───────────┘     └─────────────┘     └────┬─────┘
+                                              │                 │
+                                              ▼                 ▼
+                                        ┌──────────┐    ┌─────────────┐
+                                        │ Rejected │    │ Create      │
+                                        │          │    │ Invoice     │
+                                        └──────────┘    └─────────────┘
+```
+
+## 🔧 Configuration
 
 ### Email Setup
-Configure SMTP in `.env`:
 ```env
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
+MAIL_FROM_ADDRESS=contact@promoaluplus.tn
+```
+
+### WhatsApp
+Update the WhatsApp number in `resources/views/layouts/app.blade.php`:
+```javascript
+function openWhatsApp() {
+    window.open('https://wa.me/21612345678', '_blank');
+}
 ```
 
 ## 🔧 Useful Commands
 
 ```bash
-# Reset database with demo data
+# Reset database with fresh data
 php artisan migrate:fresh --seed
 
 # Clear all caches
 php artisan optimize:clear
 
-# Create admin user
+# Generate new admin user
 php artisan tinker
 >>> User::create(['name' => 'Admin', 'email' => 'admin@example.com', 'password' => Hash::make('password')]);
+
+# Run chatbot seeder
+php artisan db:seed --class=ChatbotFlowSeeder
 ```
 
-## Code of Conduct
+## 📄 License
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-hello dev
+This project is proprietary software developed for Promo Alu Plus.

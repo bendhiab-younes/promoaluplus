@@ -18,7 +18,7 @@ class QuoteController extends Controller
             'phone' => 'required|string|max:50',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
-            'project_type' => 'required|string|in:windows,doors,facades,veranda,other',
+            'project_type' => 'required|string|in:windows,doors,curtains,railings,pergola,kitchen,shelter,shutters,facades,veranda,other',
             'description' => 'required|string|max:2000',
             'budget_range' => 'nullable|string|max:100',
             'timeline' => 'nullable|string|max:100',
