@@ -341,6 +341,13 @@ class QuoteResource extends Resource
                             $record->markAsRejected();
                             Notification::make()->warning()->title('Devis refusé')->send();
                         }),
+                    Tables\Actions\Action::make('download_pdf')
+                        ->label('Télécharger PDF')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('info')
+                        ->url(fn (Quote $record) => route('quote.pdf', $record))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Quote $record) => $record->items->count() > 0),
                     Tables\Actions\Action::make('create_invoice')
                         ->label('Créer facture')
                         ->icon('heroicon-o-banknotes')

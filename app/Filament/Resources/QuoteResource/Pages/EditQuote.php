@@ -20,7 +20,8 @@ class EditQuote extends EditRecord
                 ->color('info')
                 ->url(fn () => route('quote.pdf', $this->record))
                 ->openUrlInNewTab()
-                ->visible(fn () => $this->record->items->count() > 0),
+                ->disabled(fn () => $this->record->items->count() === 0)
+                ->tooltip(fn () => $this->record->items->count() === 0 ? 'Ajoutez des lignes au devis d\'abord' : 'Télécharger le devis en PDF'),
             Actions\DeleteAction::make(),
         ];
     }
