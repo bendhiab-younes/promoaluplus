@@ -24,3 +24,9 @@ Route::prefix('chatbot')->name('chatbot.')->group(function () {
     Route::post('/message', [ChatbotController::class, 'getResponse'])->name('message');
     Route::get('/faqs', [ChatbotController::class, 'getFaqs'])->name('faqs');
 });
+
+// PDF generation (admin only)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/quote/{quote}/pdf', [\App\Http\Controllers\PdfController::class, 'quote'])->name('quote.pdf');
+    Route::get('/invoice/{invoice}/pdf', [\App\Http\Controllers\PdfController::class, 'invoice'])->name('invoice.pdf');
+});
