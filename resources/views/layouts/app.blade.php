@@ -213,6 +213,62 @@
         .stagger-3 { transition-delay: 0.3s; }
         .stagger-4 { transition-delay: 0.4s; }
 
+        /* Carousel animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .carousel-slide {
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, z-index;
+        }
+
+        .carousel-slide.active {
+            opacity: 1 !important;
+        }
+
+        /* Slide content animation */
+        .carousel-slide .slide-content > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .carousel-slide.active .slide-content > *:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        .carousel-slide.active .slide-content > *:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+
+        .carousel-slide.active .slide-content > *:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
+        .carousel-slide.active .slide-content > *:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.8s;
+        }
+
         /* Mobile menu elegant */
         .mobile-menu {
             position: fixed;
