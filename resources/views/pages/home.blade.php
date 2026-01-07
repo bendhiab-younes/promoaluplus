@@ -346,93 +346,91 @@
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-12">
-                @forelse($services as $index => $service)
-                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in {{ $index > 0 ? 'fade-in-delay-' . $index : '' }}">
-                    <div class="w-16 h-16 bg-{{ $service->color }}-100 rounded-lg flex items-center justify-center mb-6">
-                        <i data-lucide="{{ $service->icon ?? 'home' }}" class="w-8 h-8 text-{{ $service->color }}-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ $service->getTranslatedTitle() }}</h3>
-                    <p class="text-gray-600 mb-6">
-                        {{ $service->getTranslatedShortDescription() }}
-                    </p>
-                    @if($service->features)
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        @foreach(array_slice($service->features, 0, 3) as $feature)
-                        <li class="flex items-center">
-                            <i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>
-                            {{ $feature }}
-                        </li>
+            <!-- Horizontal Scrolling Service Cards -->
+            <div class="relative">
+                <!-- Scroll Container -->
+                <div class="overflow-x-auto scrollbar-hide pb-6 -mx-6 px-6">
+                    <div class="flex gap-6 min-w-max">
+                        @php
+                            $newServices = [
+                                ['name' => 'doors', 'icon' => 'door-open', 'color' => 'orange', 'emoji' => '🚪'],
+                                ['name' => 'windows', 'icon' => 'square', 'color' => 'blue', 'emoji' => '🪟'],
+                                ['name' => 'sliding', 'icon' => 'move-horizontal', 'color' => 'cyan', 'emoji' => '↔️'],
+                                ['name' => 'rolling_shutters', 'icon' => 'blinds', 'color' => 'purple', 'emoji' => '🎚️'],
+                                ['name' => 'railings', 'icon' => 'fence', 'color' => 'green', 'emoji' => '🛡️'],
+                                ['name' => 'pergola', 'icon' => 'tent', 'color' => 'amber', 'emoji' => '🏕️'],
+                                ['name' => 'sun_breakers', 'icon' => 'sun', 'color' => 'yellow', 'emoji' => '☀️'],
+                                ['name' => 'mosquito_nets', 'icon' => 'bug', 'color' => 'teal', 'emoji' => '🦟'],
+                                ['name' => 'space_design', 'icon' => 'layout-grid', 'color' => 'indigo', 'emoji' => '✨'],
+                            ];
+                        @endphp
+
+                        @foreach($newServices as $service)
+                        <a href="{{ route('services') }}#{{ $service['name'] }}" 
+                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8 transition-all duration-500 hover:shadow-2xl hover:scale-110 hover:-translate-y-2 cursor-pointer min-w-[200px] w-[200px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
+                            <!-- Icon Container -->
+                            <div class="w-20 h-20 mb-4 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
+                                <span class="text-3xl">{{ $service['emoji'] }}</span>
+                            </div>
+                            
+                            <!-- Service Name -->
+                            <h3 class="text-lg font-bold text-gray-800 text-center mb-2 transition-colors group-hover:text-{{ $service['color'] }}-600">
+                                {{ __('messages.' . $service['name']) }}
+                            </h3>
+                            
+                            <!-- Short Description -->
+                            <p class="text-sm text-gray-600 text-center leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -bottom-16 left-0 right-0 bg-white/95 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+                                {{ __('messages.' . $service['name'] . '_desc') }}
+                            </p>
+                            
+                            <!-- Hover Arrow -->
+                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-2">
+                                <i data-lucide="chevron-down" class="w-6 h-6 text-{{ $service['color'] }}-600 animate-bounce"></i>
+                            </div>
+                        </a>
                         @endforeach
-                    </ul>
-                    @endif
-                    <a href="{{ route('services') }}#{{ $service->slug }}" class="text-{{ $service->color }}-600 hover:text-{{ $service->color }}-800 font-semibold inline-flex items-center">
-                        {{ __('messages.learn_more') }}
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                    </a>
-                </div>
-                @empty
-                <!-- Default services if none in database -->
-                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in">
-                    <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
-                        <i data-lucide="home" class="w-8 h-8 text-blue-600"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.windows') }}</h3>
-                    <p class="text-gray-600 mb-6">{{ __('messages.windows_desc') }}</p>
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.double_glazing') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.thermal_insulation') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.custom_made') }}</li>
-                    </ul>
-                    <a href="{{ route('services') }}#windows" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center">
-                        {{ __('messages.learn_more') }}
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                    </a>
                 </div>
                 
-                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in fade-in-delay-1">
-                    <div class="w-14 h-14 md:w-16 md:h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
-                        <i data-lucide="door-open" class="w-8 h-8 text-orange-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.doors') }}</h3>
-                    <p class="text-gray-600 mb-6">{{ __('messages.doors_desc') }}</p>
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.enhanced_security') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.modern_design') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.perfect_sealing') }}</li>
-                    </ul>
-                    <a href="{{ route('services') }}#doors" class="text-orange-600 hover:text-orange-800 font-semibold inline-flex items-center">
-                        {{ __('messages.learn_more') }}
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                    </a>
-                </div>
-                
-                <div class="service-card bg-white p-6 md:p-8 rounded-xl shadow-lg fade-in fade-in-delay-2">
-                    <div class="w-14 h-14 md:w-16 md:h-16 bg-green-100 rounded-lg flex items-center justify-center mb-4 md:mb-6">
-                        <i data-lucide="building" class="w-8 h-8 text-green-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.facades') }}</h3>
-                    <p class="text-gray-600 mb-6">{{ __('messages.facades_desc') }}</p>
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.curtain_walls') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.custom_verandas') }}</li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-500 mr-2"></i>{{ __('messages.modern_architecture') }}</li>
-                    </ul>
-                    <a href="{{ route('services') }}#facades" class="text-green-600 hover:text-green-800 font-semibold inline-flex items-center">
-                        {{ __('messages.learn_more') }}
-                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
-                    </a>
-                </div>
-                @endforelse
+                <!-- Scroll Indicators -->
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
             </div>
-            
-            <div class="text-center">
-                <a href="{{ route('services') }}" class="btn-primary inline-block">
+
+            <!-- View All Button -->
+            <div class="text-center mt-12">
+                <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group">
                     {{ __('messages.view_all_services') }}
+                    <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
         </div>
     </section>
+
+    <style>
+        /* Hide scrollbar but keep functionality */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Service item animation improvements */
+        .service-item {
+            flex-shrink: 0;
+        }
+
+        .service-item:hover {
+            z-index: 10;
+        }
+
+        /* Smooth scroll behavior */
+        .overflow-x-auto {
+            scroll-behavior: smooth;
+        }
+    </style>
 
     <!-- Why Choose Us Section -->
     <section class="py-12 md:py-20 lg:py-24 bg-white relative overflow-hidden">
