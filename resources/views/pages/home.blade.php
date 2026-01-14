@@ -6,8 +6,8 @@
 
 @section('content')
     <!-- Hero Carousel Section -->
-    <section class="relative pt-16 md:pt-20">
-        <div class="carousel-container relative w-full h-[85vh] md:h-[90vh] overflow-hidden bg-gray-900">
+    <section class="relative">
+        <div class="carousel-container relative w-full h-screen overflow-hidden bg-gray-900">
             <!-- Carousel Slides -->
             <div class="carousel-slides relative h-full">
                 <!-- Slide 1 - Modern Aluminum Windows -->
@@ -22,7 +22,8 @@
                             <div class="container mx-auto px-6 md:px-8">
                                 <div class="max-w-3xl text-white slide-content">
                                     <span class="inline-block px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 border border-white/20 shadow-lg">
-                                        ✨ {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+                                        {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
                                     </span>
                                     <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
@@ -59,7 +60,8 @@
                             <div class="container mx-auto px-6 md:px-8">
                                 <div class="max-w-3xl text-white slide-content">
                                     <span class="inline-block px-5 py-2.5 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 border border-orange-300/30 shadow-lg">
-                                        🚪 {{ __('messages.doors') }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                        {{ __('messages.doors') }}
                                     </span>
                                     <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
                                         {{ __('messages.modern_design') }}
@@ -90,7 +92,8 @@
                             <div class="container mx-auto px-6 md:px-8">
                                 <div class="max-w-3xl text-white slide-content">
                                     <span class="inline-block px-5 py-2.5 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 border border-blue-300/30 shadow-lg">
-                                        🏢 {{ __('messages.facades') }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                                        {{ __('messages.facades') }}
                                     </span>
                                     <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
                                         {{ __('messages.curtain_walls') }}
@@ -121,7 +124,8 @@
                             <div class="container mx-auto px-6 md:px-8">
                                 <div class="max-w-3xl text-white slide-content">
                                     <span class="inline-block px-5 py-2.5 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 border border-green-300/30 shadow-lg">
-                                        ⭐ {{ __('messages.guaranteed_quality') }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                        {{ __('messages.guaranteed_quality') }}
                                     </span>
                                     <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
@@ -155,26 +159,6 @@
                 <button onclick="goToSlide(1)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 2"></button>
                 <button onclick="goToSlide(2)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 3"></button>
                 <button onclick="goToSlide(3)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 4"></button>
-            </div>
-
-            <!-- Trust indicators overlay (positioned at bottom of carousel) -->
-            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent pt-20 pb-6 z-15">
-                <div class="container mx-auto px-6">
-                    <div class="grid grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
-                        <div class="text-center px-2">
-                            <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-lg">{{ SiteSetting::get('stats_projects', '500') }}+</div>
-                            <div class="text-xs sm:text-sm md:text-base text-gray-200 font-medium">{{ __('messages.projects_completed') }}</div>
-                        </div>
-                        <div class="text-center px-2 border-x border-white/30">
-                            <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-lg">{{ SiteSetting::get('stats_years', '15') }}+</div>
-                            <div class="text-xs sm:text-sm md:text-base text-gray-200 font-medium">{{ __('messages.years_experience') }}</div>
-                        </div>
-                        <div class="text-center px-2">
-                            <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-lg">{{ SiteSetting::get('stats_satisfaction', '98') }}%</div>
-                            <div class="text-xs sm:text-sm md:text-base text-gray-200 font-medium">{{ __('messages.satisfied_clients') }}</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -335,9 +319,11 @@
 
     <!-- Services Section Preview -->
     <section class="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <!-- Header with container -->
         <div class="container mx-auto px-6 md:px-8">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     {{ __('messages.nav_services') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{{ __('messages.our_services') }}</h2>
@@ -345,60 +331,48 @@
                     {{ __('messages.services_intro') }}
                 </p>
             </div>
-            
-            <!-- Horizontal Scrolling Service Cards -->
-            <div class="relative">
-                <!-- Scroll Container -->
-                <div class="overflow-x-auto scrollbar-hide pb-6 -mx-6 px-6">
-                    <div class="flex gap-6 min-w-max">
+        </div>
+        
+        <!-- Full Width Horizontal Scrolling Service Cards -->
+        <div class="relative w-full">
+            <!-- Scroll Container - Full Width -->
+            <div class="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 w-full">
+                    <div class="flex gap-6 min-w-max py-4 px-6 md:px-8">
                         @php
                             $newServices = [
-                                ['name' => 'doors', 'icon' => 'door-open', 'color' => 'orange', 'emoji' => '🚪'],
-                                ['name' => 'windows', 'icon' => 'square', 'color' => 'blue', 'emoji' => '🪟'],
-                                ['name' => 'sliding', 'icon' => 'move-horizontal', 'color' => 'cyan', 'emoji' => '↔️'],
-                                ['name' => 'rolling_shutters', 'icon' => 'blinds', 'color' => 'purple', 'emoji' => '🎚️'],
-                                ['name' => 'railings', 'icon' => 'fence', 'color' => 'green', 'emoji' => '🛡️'],
-                                ['name' => 'pergola', 'icon' => 'tent', 'color' => 'amber', 'emoji' => '🏕️'],
-                                ['name' => 'sun_breakers', 'icon' => 'sun', 'color' => 'yellow', 'emoji' => '☀️'],
-                                ['name' => 'mosquito_nets', 'icon' => 'bug', 'color' => 'teal', 'emoji' => '🦟'],
-                                ['name' => 'space_design', 'icon' => 'layout-grid', 'color' => 'indigo', 'emoji' => '✨'],
+                                ['name' => 'doors', 'color' => 'orange', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>'],
+                                ['name' => 'windows', 'color' => 'blue', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line></svg>'],
+                                ['name' => 'sliding', 'color' => 'cyan', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="18" y2="12"/></svg>'],
+                                ['name' => 'rolling_shutters', 'color' => 'purple', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="19" x2="21" y2="19"/></svg>'],
+                                ['name' => 'railings', 'color' => 'green', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M22 8l-2 2-2-2"/><path d="M6 8l-2 2-2-2"/><path d="M6 22v-4"/><path d="M18 22v-4"/></svg>'],
+                                ['name' => 'pergola', 'color' => 'amber', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V6"/><path d="M20 22V6"/><path d="M2 6h20"/><path d="M2 10h20"/><path d="M12 6v16"/></svg>'],
+                                ['name' => 'sun_breakers', 'color' => 'yellow', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'],
+                                ['name' => 'mosquito_nets', 'color' => 'teal', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>'],
+                                ['name' => 'space_design', 'color' => 'indigo', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'],
                             ];
                         @endphp
 
                         @foreach($newServices as $service)
                         <a href="{{ route('services') }}#{{ $service['name'] }}" 
-                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8 transition-all duration-500 hover:shadow-2xl hover:scale-110 hover:-translate-y-2 cursor-pointer min-w-[200px] w-[200px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
+                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:scale-110 cursor-pointer min-w-[180px] w-[180px] md:min-w-[200px] md:w-[200px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
                             <!-- Icon Container -->
-                            <div class="w-20 h-20 mb-4 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
-                                <span class="text-3xl">{{ $service['emoji'] }}</span>
+                            <div class="w-16 h-16 md:w-20 md:h-20 mb-4 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
+                                {!! $service['icon'] !!}
                             </div>
                             
                             <!-- Service Name -->
-                            <h3 class="text-lg font-bold text-gray-800 text-center mb-2 transition-colors group-hover:text-{{ $service['color'] }}-600">
+                            <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $service['color'] }}-600">
                                 {{ __('messages.' . $service['name']) }}
                             </h3>
-                            
-                            <!-- Short Description -->
-                            <p class="text-sm text-gray-600 text-center leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -bottom-16 left-0 right-0 bg-white/95 backdrop-blur-sm p-3 rounded-lg shadow-lg">
-                                {{ __('messages.' . $service['name'] . '_desc') }}
-                            </p>
-                            
-                            <!-- Hover Arrow -->
-                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-2">
-                                <i data-lucide="chevron-down" class="w-6 h-6 text-{{ $service['color'] }}-600 animate-bounce"></i>
-                            </div>
                         </a>
                         @endforeach
                     </div>
                 </div>
-                
-                <!-- Scroll Indicators -->
-                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none"></div>
-                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
             </div>
+        </div>
 
-            <!-- View All Button -->
-            <div class="text-center mt-12">
+        <!-- View All Button - Inside Container -->
+        <div class="container mx-auto px-6 md:px-8 text-center mt-12">
                 <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group">
                     {{ __('messages.view_all_services') }}
                     <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
@@ -420,15 +394,23 @@
         /* Service item animation improvements */
         .service-item {
             flex-shrink: 0;
+            will-change: transform;
         }
 
         .service-item:hover {
-            z-index: 10;
+            z-index: 20;
         }
 
         /* Smooth scroll behavior */
         .overflow-x-auto {
             scroll-behavior: smooth;
+            /* Allow vertical overflow to prevent clipping on scale */
+            overflow-y: visible !important;
+        }
+
+        /* Prevent parent from clipping transformed children */
+        .overflow-x-auto > div {
+            transform-style: preserve-3d;
         }
     </style>
 
@@ -441,6 +423,7 @@
         <div class="container mx-auto px-6 md:px-8 relative z-10">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     {{ __('messages.why_choose_us') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.advantages_that_matter') }}</h2>
@@ -500,7 +483,8 @@
         <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
             <div class="max-w-3xl mx-auto scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 md:mb-6 border border-white/20">
-                    🚀 {{ __('messages.start_your_project') }}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    {{ __('messages.start_your_project') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 leading-tight">
                     {{ SiteSetting::getTranslated('cta_title', __('messages.ready_to_start')) }}

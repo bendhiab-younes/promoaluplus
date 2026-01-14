@@ -7,7 +7,8 @@
     <section class="hero-gradient pt-28 md:pt-32 pb-16 md:pb-20 relative">
         <div class="container mx-auto px-4 text-center relative z-10">
             <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 border border-white/20">
-                📞 {{ __('messages.get_in_touch') }}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                {{ __('messages.get_in_touch') }}
             </span>
             <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6">{{ __('messages.contact_us') }}</h1>
             <p class="text-lg md:text-xl text-blue-100/90 max-w-2xl mx-auto leading-relaxed">
@@ -59,7 +60,8 @@
                 <div class="bg-gradient-to-br from-gray-50 to-blue-50/30 p-6 md:p-10 lg:p-12 rounded-3xl border border-gray-100 shadow-sm">
                     <div class="text-center mb-8">
                         <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
-                            📋 {{ __('messages.free_quote') }}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H3v10h6V11z"/><path d="M9 11V7a3 3 0 1 1 6 0v4"/><path d="M15 11h6v10h-6V11z"/></svg>
+                            {{ __('messages.free_quote') }}
                         </span>
                         <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ __('messages.request_free_quote') }}</h2>
                         <p class="text-gray-600">{{ __('messages.quote_form_intro') }}</p>
@@ -192,7 +194,8 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-10 md:mb-12 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-4">
-                    ❓ FAQ
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    FAQ
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{{ __('messages.faq_title') }}</h2>
             </div>

@@ -49,6 +49,15 @@
             scroll-behavior: smooth;
         }
 
+        /* Scroll margin for anchor links */
+        [id] {
+            scroll-margin-top: 100px;
+        }
+
+        .scroll-mt-24 {
+            scroll-margin-top: 6rem;
+        }
+
         /* Hero gradient with subtle animation */
         .hero-gradient {
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #3b82f6 100%);
@@ -66,30 +75,30 @@
             pointer-events: none;
         }
 
-        /* Elegant glass effect */
+        /* Elegant glass effect - Always blue */
         .glass-effect {
-            background: rgba(15, 23, 42, 0.85);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .navbar-scrolled {
-            background: rgba(255, 255, 255, 0.98) !important;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
         .navbar-scrolled a, .navbar-scrolled span, .navbar-scrolled button {
-            color: #1e3a8a !important;
+            color: white !important;
         }
 
         .navbar-scrolled .nav-link:hover {
-            color: #f97316 !important;
+            color: #60a5fa !important;
         }
 
         .navbar-scrolled .logo-icon {
-            color: #1e3a8a !important;
+            color: #f97316 !important;
         }
 
         /* Elegant buttons */
@@ -560,10 +569,10 @@
                 
                 <div class="flex items-center space-x-4">
                     <div class="relative hidden md:block">
-                        <select id="language-selector" onchange="window.location.href='/locale/' + this.value" class="bg-transparent text-white border border-white/30 rounded px-2 py-1 cursor-pointer transition-colors duration-300">
-                            <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }}>🇫🇷 FR</option>
-                            <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }}>🇹🇳 AR</option>
-                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>🇬🇧 EN</option>
+                        <select id="language-selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded px-2 py-1 cursor-pointer transition-colors duration-300 hover:bg-white/20">
+                            <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }} class="text-gray-800">FR</option>
+                            <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }} class="text-gray-800">AR</option>
+                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }} class="text-gray-800">EN</option>
                         </select>
                     </div>
                     <a href="{{ route('contact') }}" class="hidden md:block bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
