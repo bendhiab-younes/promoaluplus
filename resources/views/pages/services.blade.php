@@ -163,29 +163,35 @@
         <div class="container mx-auto px-6 md:px-8">
             <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
                 <div class="{{ $index % 2 == 1 ? 'order-2 md:order-1' : '' }}">
-                    <!-- Clickable Image with Gallery Icon -->
-                    <div class="relative group cursor-pointer" onclick="openServiceModal('{{ $service['id'] }}')">
-                        <img src="{{ $service['image'] }}" 
-                             alt="{{ __('messages.' . $service['id']) }}" 
-                             class="rounded-2xl shadow-2xl w-full h-[400px] object-cover transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-3xl">
-                        <!-- Overlay with View Gallery indicator -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300">
-                            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                                <span class="text-white font-semibold text-lg drop-shadow-lg">{{ __('messages.view_gallery') }}</span>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-white/80 text-sm">{{ count($service['gallery']) }} {{ __('messages.photos') }}</span>
-                                    <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <!-- Interactive Gallery -->
+                    <div class="space-y-3">
+                        <!-- Main Image - Click to open modal -->
+                        <div class="relative group cursor-pointer" onclick="openServiceModal('{{ $service['id'] }}')">
+                            <img id="main-image-{{ $service['id'] }}" 
+                                 src="{{ $service['gallery'][0] }}" 
+                                 alt="{{ __('messages.' . $service['id']) }}" 
+                                 class="rounded-2xl shadow-2xl w-full h-[400px] object-cover transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-3xl">
+                            <!-- Overlay with View Gallery indicator -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                                    <span class="text-white font-semibold text-lg drop-shadow-lg">{{ __('messages.view_gallery') }}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-white/80 text-sm">{{ count($service['gallery']) }} {{ __('messages.photos') }}</span>
+                                        <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Thumbnail preview -->
-                        <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 group-hover:-bottom-6 transition-all duration-300">
-                            @foreach(array_slice($service['gallery'], 0, 4) as $thumbIndex => $thumb)
-                            <div class="w-10 h-10 rounded-lg overflow-hidden border-2 border-white shadow-lg">
+                        <!-- Thumbnail Navigation -->
+                        <div class="flex gap-2 justify-center">
+                            @foreach($service['gallery'] as $thumbIndex => $thumb)
+                            <button onclick="event.stopPropagation(); changeServiceImage('{{ $service['id'] }}', {{ $thumbIndex }}, '{{ $thumb }}')" 
+                                    id="thumb-{{ $service['id'] }}-{{ $thumbIndex }}"
+                                    class="w-16 h-16 rounded-xl overflow-hidden border-3 {{ $thumbIndex === 0 ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-200 hover:border-blue-300' }} shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                 <img src="{{ $thumb }}" alt="" class="w-full h-full object-cover">
-                            </div>
+                            </button>
                             @endforeach
                         </div>
                     </div>
@@ -380,6 +386,37 @@
         let currentServiceData = null;
         let currentImageIndex = 0;
 
+        // Function to change the main image in a service card when clicking thumbnails
+        function changeServiceImage(serviceId, index, imageSrc) {
+            // Update main image
+            const mainImage = document.getElementById(`main-image-${serviceId}`);
+            if (mainImage) {
+                mainImage.style.opacity = '0';
+                setTimeout(() => {
+                    mainImage.src = imageSrc;
+                    mainImage.style.opacity = '1';
+                }, 150);
+            }
+
+            // Update thumbnail active states
+            const dataElement = document.getElementById(`service-data-${serviceId}`);
+            if (dataElement) {
+                const serviceData = JSON.parse(dataElement.dataset.service);
+                serviceData.gallery.forEach((_, thumbIndex) => {
+                    const thumb = document.getElementById(`thumb-${serviceId}-${thumbIndex}`);
+                    if (thumb) {
+                        if (thumbIndex === index) {
+                            thumb.classList.remove('border-gray-200', 'hover:border-blue-300');
+                            thumb.classList.add('border-blue-500', 'ring-2', 'ring-blue-500/30');
+                        } else {
+                            thumb.classList.remove('border-blue-500', 'ring-2', 'ring-blue-500/30');
+                            thumb.classList.add('border-gray-200', 'hover:border-blue-300');
+                        }
+                    }
+                });
+            }
+        }
+
         function openServiceModal(serviceId) {
             const dataElement = document.getElementById(`service-data-${serviceId}`);
             if (!dataElement) {
@@ -533,6 +570,14 @@
         }
         #modalContent.opacity-100 {
             opacity: 1;
+        }
+        /* Smooth image transitions for service cards */
+        [id^="main-image-"] {
+            transition: opacity 0.15s ease-in-out;
+        }
+        /* Thumbnail border styling */
+        .border-3 {
+            border-width: 3px;
         }
     </style>
 @endsection
