@@ -4,46 +4,50 @@
 
 @section('content')
     <!-- Page Header -->
-    <section class="hero-gradient pt-32 pb-20">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">{{ __('messages.our_projects') }}</h1>
-            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+    <section class="hero-gradient pt-28 md:pt-32 pb-16 md:pb-20 relative">
+        <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
+            <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                {{ __('messages.nav_portfolio') }}
+            </span>
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6">{{ __('messages.our_projects') }}</h1>
+            <p class="text-lg md:text-xl text-blue-100/90 max-w-2xl mx-auto leading-relaxed">
                 {{ __('messages.portfolio_intro') }}
             </p>
         </div>
     </section>
 
     <!-- Portfolio Filter -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-8">
             <!-- Filter Buttons -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-14 scroll-fade">
                 <a href="{{ route('portfolio') }}" 
-                   class="portfolio-filter px-6 py-2 rounded-full font-medium transition-all {{ $category === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'all' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                     {{ __('messages.all') }}
                 </a>
                 <a href="{{ route('portfolio', ['category' => 'windows']) }}" 
-                   class="portfolio-filter px-6 py-2 rounded-full font-medium transition-all {{ $category === 'windows' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'windows' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                     {{ __('messages.windows') }}
                 </a>
                 <a href="{{ route('portfolio', ['category' => 'doors']) }}" 
-                   class="portfolio-filter px-6 py-2 rounded-full font-medium transition-all {{ $category === 'doors' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'doors' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                     {{ __('messages.doors') }}
                 </a>
                 <a href="{{ route('portfolio', ['category' => 'facades']) }}" 
-                   class="portfolio-filter px-6 py-2 rounded-full font-medium transition-all {{ $category === 'facades' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'facades' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                     {{ __('messages.facades') }}
                 </a>
             </div>
 
             <!-- Portfolio Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @forelse($projects as $project)
-                <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
+                <div class="portfolio-item group relative overflow-hidden rounded-2xl shadow-lg scroll-fade">
                     <img src="{{ $project->image ? asset('storage/' . $project->image) : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' }}" 
                          alt="{{ $project->getTranslatedTitle() }}" 
-                         class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                         class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
                             <h3 class="text-xl font-bold mb-2">{{ $project->getTranslatedTitle() }}</h3>
                             <p class="text-sm text-gray-200 mb-2">{{ $project->location }}</p>

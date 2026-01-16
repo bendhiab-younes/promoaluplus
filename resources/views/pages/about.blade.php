@@ -6,149 +6,173 @@
 
 @section('content')
     <!-- Page Header -->
-    <section class="hero-gradient pt-32 pb-20">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">{{ __('messages.about_us') }}</h1>
-            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+    <section class="hero-gradient pt-28 md:pt-32 pb-16 md:pb-20 relative">
+        <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
+            <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                {{ __('messages.about_us') }}
+            </span>
+            <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6">{{ __('messages.about_us') }}</h1>
+            <p class="text-lg md:text-xl text-blue-100/90 max-w-2xl mx-auto leading-relaxed">
                 {{ __('messages.about_intro') }}
             </p>
         </div>
     </section>
 
     <!-- Company Story -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl font-bold text-gray-800 mb-6">{{ __('messages.our_story') }}</h2>
-                    <p class="text-gray-600 mb-4 text-lg">{{ __('messages.story_p1') }}</p>
-                    <p class="text-gray-600 mb-4 text-lg">{{ __('messages.story_p2') }}</p>
-                    <p class="text-gray-600 text-lg">{{ __('messages.story_p3') }}</p>
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-8">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="scroll-fade">
+                    <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                        {{ __('messages.our_story') }}
+                    </span>
+                    <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-6">{{ __('messages.our_story') }}</h2>
+                    <p class="text-gray-600 mb-4 text-base md:text-lg leading-relaxed">{{ __('messages.story_p1') }}</p>
+                    <p class="text-gray-600 mb-4 text-base md:text-lg leading-relaxed">{{ __('messages.story_p2') }}</p>
+                    <p class="text-gray-600 text-base md:text-lg leading-relaxed">{{ __('messages.story_p3') }}</p>
                 </div>
-                <div>
+                <div class="scroll-fade stagger-1">
                     <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                          alt="{{ __('messages.our_workshop') }}" 
-                         class="rounded-lg shadow-xl">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats -->
-    <section class="py-20 bg-blue-600">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8 text-center text-white">
-                <div>
-                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_years', '15') }}+</div>
-                    <div class="text-blue-100">{{ __('messages.years_experience') }}</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_projects', '500') }}+</div>
-                    <div class="text-blue-100">{{ __('messages.projects_completed') }}</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_satisfaction', '98') }}%</div>
-                    <div class="text-blue-100">{{ __('messages.satisfied_clients') }}</div>
-                </div>
-                <div>
-                    <div class="text-5xl font-bold mb-2">{{ SiteSetting::get('stats_team', '12') }}+</div>
-                    <div class="text-blue-100">{{ __('messages.team_members') }}</div>
+                         class="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-500">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Mission & Values -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ __('messages.mission_values') }}</h2>
-                <p class="text-xl text-gray-600">{{ __('messages.what_drives_us') }}</p>
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6 md:px-8">
+            <div class="text-center mb-10 md:mb-14 scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    {{ __('messages.mission_values') }}
+                </span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.mission_values') }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.what_drives_us') }}</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="target" class="w-8 h-8 text-blue-600"></i>
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <div class="scroll-fade stagger-1 group">
+                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="target" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_mission') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.mission_desc') }}</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.our_mission') }}</h3>
-                    <p class="text-gray-600">{{ __('messages.mission_desc') }}</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="eye" class="w-8 h-8 text-orange-600"></i>
+                <div class="scroll-fade stagger-2 group">
+                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="eye" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_vision') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.vision_desc') }}</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.our_vision') }}</h3>
-                    <p class="text-gray-600">{{ __('messages.vision_desc') }}</p>
                 </div>
-                <div class="bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="heart" class="w-8 h-8 text-green-600"></i>
+                <div class="scroll-fade stagger-3 group">
+                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_values') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.values_desc') }}</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">{{ __('messages.our_values') }}</h3>
-                    <p class="text-gray-600">{{ __('messages.values_desc') }}</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Why Expats Choose Us -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ __('messages.why_expats_choose_us') }}</h2>
-                <p class="text-xl text-gray-600">{{ __('messages.expats_intro') }}</p>
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-8">
+            <div class="text-center mb-10 md:mb-14 scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    {{ __('messages.why_expats_choose_us') }}
+                </span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.why_expats_choose_us') }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.expats_intro') }}</p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="globe" class="w-8 h-8 text-blue-600"></i>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="scroll-fade stagger-1 group">
+                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="globe" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.multilingual_team') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.multilingual_desc') }}</p>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ __('messages.multilingual_team') }}</h3>
-                    <p class="text-gray-600 text-sm">{{ __('messages.multilingual_desc') }}</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="video" class="w-8 h-8 text-green-600"></i>
+                <div class="scroll-fade stagger-2 group">
+                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="video" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.remote_follow_up') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.remote_desc') }}</p>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ __('messages.remote_follow_up') }}</h3>
-                    <p class="text-gray-600 text-sm">{{ __('messages.remote_desc') }}</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="shield-check" class="w-8 h-8 text-orange-600"></i>
+                <div class="scroll-fade stagger-3 group">
+                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="shield-check" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.european_standards') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.standards_desc') }}</p>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ __('messages.european_standards') }}</h3>
-                    <p class="text-gray-600 text-sm">{{ __('messages.standards_desc') }}</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="credit-card" class="w-8 h-8 text-purple-600"></i>
+                <div class="scroll-fade stagger-4 group">
+                    <div class="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="credit-card" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.flexible_payment') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.payment_desc') }}</p>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ __('messages.flexible_payment') }}</h3>
-                    <p class="text-gray-600 text-sm">{{ __('messages.payment_desc') }}</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Certifications -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold text-gray-800 mb-12">{{ __('messages.certifications') }}</h2>
-            <div class="flex flex-wrap justify-center gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <i data-lucide="award" class="w-12 h-12 text-blue-600 mx-auto mb-2"></i>
-                    <p class="font-medium text-gray-800">ISO 9001</p>
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6 md:px-8 text-center">
+            <div class="scroll-fade mb-10 md:mb-14">
+                <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    {{ __('messages.certifications') }}
+                </span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.certifications') }}</h2>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8">
+                <div class="scroll-fade stagger-1 group">
+                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl min-w-[140px]">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="award" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
+                        </div>
+                        <p class="font-bold text-gray-900">ISO 9001</p>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <i data-lucide="shield" class="w-12 h-12 text-green-600 mx-auto mb-2"></i>
-                    <p class="font-medium text-gray-800">CE {{ __('messages.marking') }}</p>
+                <div class="scroll-fade stagger-2 group">
+                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl min-w-[140px]">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="shield" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
+                        </div>
+                        <p class="font-bold text-gray-900">CE {{ __('messages.marking') }}</p>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <i data-lucide="check-circle" class="w-12 h-12 text-orange-600 mx-auto mb-2"></i>
-                    <p class="font-medium text-gray-800">{{ __('messages.guarantee_10_years') }}</p>
+                <div class="scroll-fade stagger-3 group">
+                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl min-w-[140px]">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="check-circle" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
+                        </div>
+                        <p class="font-bold text-gray-900">{{ __('messages.guarantee_10_years') }}</p>
+                    </div>
                 </div>
             </div>
         </div>
