@@ -224,9 +224,9 @@ return [
     'about_us' => 'À Propos de Nous',
     'about_intro' => 'Plus de 15 ans d\'expertise en menuiserie aluminium au service des Tunisiens du monde entier.',
     'our_story' => 'Notre Histoire',
-    'story_p1' => 'Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium en Tunisie.',
-    'story_p2' => 'Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent leur maison en Tunisie.',
-    'story_p3' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins: communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.',
+    'story_p1' => 'Grâce à une expertise éprouvée et à un savoir‑faire reconnu qui dépassent quinze années d\'expérience dans la menuiserie de l\'aluminium, nous accompagnons nos clients dans la conception et la réalisation de solutions modernes et durables : portes, fenêtres et portes-fenêtres, pergolas, garde‑corps, cloisons et structures sur mesure.',
+    'story_p2' => 'Alliant robustesse, design et innovation, nos produits répondent aux normes les plus exigeantes tout en valorisant chaque projet, qu\'il soit résidentiel ou professionnel.',
+    'story_p3' => 'Grâce à une équipe qualifiée et à des technologies de pointe, nous offrons des solutions fiables, esthétiques et adaptées aux besoins du marché.',
     'our_workshop' => 'Notre Atelier',
 
     // Stats
@@ -239,11 +239,11 @@ return [
     'mission_values' => 'Mission & Valeurs',
     'what_drives_us' => 'Ce qui nous anime au quotidien',
     'our_mission' => 'Notre Mission',
-    'mission_desc' => 'Offrir aux expatriés tunisiens une expérience de construction sereine grâce à des produits de qualité européenne et un service client irréprochable.',
+    'mission_desc' => 'Notre mission est de garantir sécurité, confort et design à travers des produits durables et esthétiques, tout en accompagnant nos clients avec un service personnalisé et de qualité qui répond aux normes nationales et internationales.',
     'our_vision' => 'Notre Vision',
-    'vision_desc' => 'Devenir le partenaire de référence pour tout projet de menuiserie aluminium en Tunisie, reconnu pour notre excellence et notre fiabilité.',
+    'vision_desc' => 'Nous travaillons à consolider notre position de référence en menuiserie aluminium pour devenir un des leaders du secteur.',
     'our_values' => 'Nos Valeurs',
-    'values_desc' => 'Qualité, transparence, ponctualité et engagement client sont les piliers de notre entreprise.',
+    'values_desc' => 'Qualité et robustesse : des produits fiables qui résistent au temps et aux conditions locales. Proximité client : un accompagnement personnalisé, basé sur l\'écoute et la satisfaction. Durabilité : des solutions respectueuses de l\'environnement et conçues pour durer. Innovation et design : allier performance technique et esthétique contemporaine. Intégrité et professionnalisme : transparence, rigueur et respect des engagements.',
 
     // Why expats choose us
     'why_expats_choose_us' => 'Pourquoi les Expatriés Nous Choisissent',

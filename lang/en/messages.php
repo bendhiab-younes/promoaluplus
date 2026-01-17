@@ -219,11 +219,11 @@ return [
 
     // About
     'about_us' => 'About Us',
-    'about_intro' => 'Over 15 years of aluminum joinery expertise serving Tunisians worldwide.',
+    'about_intro' => 'Over 15 years of aluminum joinery expertise serving customers worldwide.',
     'our_story' => 'Our Story',
-    'story_p1' => 'Promo Alu Plus is your trusted partner for all your aluminum projects in Tunisia.',
-    'story_p2' => 'We understand the unique challenges faced by Tunisians living abroad when building or renovating their home in Tunisia.',
-    'story_p3' => 'That\'s why we developed a service specially adapted to their needs: remote communication, photo and video follow-up, and strict respect of deadlines.',
+    'story_p1' => 'With proven expertise and recognized know-how spanning over fifteen years of experience in aluminum joinery, we support our clients in the design and execution of modern and sustainable solutions: doors, windows and French doors, pergolas, railings, partitions and custom structures.',
+    'story_p2' => 'Combining robustness, design and innovation, our products meet the most demanding standards while adding value to each project, whether residential or commercial.',
+    'story_p3' => 'Thanks to a qualified team and cutting-edge technologies, we offer reliable, aesthetic and market-adapted solutions.',
     'our_workshop' => 'Our Workshop',
 
     // Stats
@@ -236,11 +236,11 @@ return [
     'mission_values' => 'Mission & Values',
     'what_drives_us' => 'What drives us every day',
     'our_mission' => 'Our Mission',
-    'mission_desc' => 'Offer Tunisian expatriates a peaceful construction experience through European quality products and impeccable customer service.',
+    'mission_desc' => 'Our mission is to guarantee safety, comfort and design through durable and aesthetic products, while supporting our clients with personalized and quality service that meets national and international standards.',
     'our_vision' => 'Our Vision',
-    'vision_desc' => 'Become the reference partner for any aluminum joinery project in Tunisia, recognized for our excellence and reliability.',
+    'vision_desc' => 'We work to consolidate our position as a reference in aluminum joinery to become one of the sector\'s leaders.',
     'our_values' => 'Our Values',
-    'values_desc' => 'Quality, transparency, punctuality and customer commitment are the pillars of our company.',
+    'values_desc' => 'Quality and robustness: reliable products that withstand time and local conditions. Customer proximity: personalized support, based on listening and satisfaction. Sustainability: environmentally friendly solutions designed to last. Innovation and design: combining technical performance and contemporary aesthetics. Integrity and professionalism: transparency, rigor and commitment to our promises.',
 
     // Why expats choose us
     'why_expats_choose_us' => 'Why Expatriates Choose Us',
