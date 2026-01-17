@@ -28,25 +28,33 @@ return [
     'learn_more' => 'اعرف المزيد',
 
     // Service types
-    'windows' => 'نوافذ',
+    'windows' => 'نوافذ وأبواب فرنسية',
     'doors' => 'أبواب',
     'curtains' => 'ستائر',
     'railings' => 'حواجز',
     'pergola' => 'برجولا',
-    'kitchen' => 'مطبخ',
+    'kitchen' => 'مطابخ',
     'shelter' => 'مظلة',
     'shutters' => 'شتر كهربائي',
+    'rolling_shutters' => 'شتر متحرك',
+    'sun_breakers' => 'كاسر الشمس',
+    'mosquito_nets' => 'شبكات الناموس',
+    'space_design' => 'فواصل وأقسام',
     'other' => 'أخرى',
 
-    // Service descriptions
-    'windows_desc' => 'نوافذ ألمنيوم مخصصة مع زجاج مزدوج وعزل مثالي.',
-    'doors_desc' => 'أبواب مدخل آمنة وأبواب منزلقة ونوافذ كبيرة.',
+    // Service descriptions (Option 2 - detailed for modal)
+    'windows_desc' => 'اختر التميز: النوافذ والأبواب الفرنسية المصنوعة من الألمنيوم هي الخيار الأمثل لإحياء مشروعك. عصرية وموثوقة وأنيقة، تجمع بين الراحة والأمان والأداء الطاقوي. مع مجموعة واسعة من الملفات الشخصية - من نماذج الكفاءة الطاقية العالية إلى النسخ المعززة ضد السطو - تصنع الحل المخصص الذي يلبي احتياجاتك.',
+    'doors_desc' => 'أبوابنا المصنوعة من الألمنيوم تجسد القوة والأمان، مع توفير تخصيص كامل لمداخل ومخارج استثنائية. مع مجموعة واسعة من الخيارات الوظيفية، المتوافقة تماماً مع أنظمة النوافذ والأبواب الفرنسية لدينا، تستفيد من حرية تصميم غير محدودة لإحياء مشاريع البناء أو التجديد الخاصة بك.',
     'curtains_desc' => 'ستائر معدنية للمحلات والمنازل.',
-    'railings_desc' => 'حواجز ألمنيوم، تصميم عصري وآمن.',
-    'pergola_desc' => 'برجولات بيومناخية وتقليدية لمساحاتك الخارجية.',
-    'kitchen_desc' => 'مطابخ ألمنيوم عصرية، متينة وسهلة الصيانة.',
+    'railings_desc' => 'حواجزنا المصنوعة من الألمنيوم والزجاج تجسد المزيج المثالي من القوة والأناقة وسهولة التركيب. سواء كان ذلك لتأمين شرفة أو بلكون أو درج أو طابق علوي، أنظمتنا تجمع بين التصميم العصري والموثوقية، مع احترام أصعب معايير السلامة.',
+    'pergola_desc' => 'امنح مساحاتك الخارجية الكمال مع برجولاتنا المصنوعة من الألمنيوم: متينة وقوية ومستعدة لمواجهة جميع الفصول. على عكس الخشب، يوفر الألمنيوم حلاً بدون متاعب: لا حاجة لصيانة منتظمة ومتانة استثنائية مع مرور الوقت. برجولا الألمنيوم تجمع بين راحة البال والأداء.',
+    'kitchen_desc' => 'المطبخ المصنوع من الألمنيوم هو اليوم الحل المثالي للمنازل التونسية التي تبحث عن الحداثة والمتانة والعملية. مقاوم للرطوبة والصدمات والتغيرات المناخية، يضمن متانة استثنائية مع تقديم تصميم أنيق وعصري. سهل الصيانة ومتوفر بمجموعة واسعة من التشطيبات، يتناسب المطبخ المصنوع من الألمنيوم تماماً مع جميع أنماط الديكور الداخلي.',
     'shelter_desc' => 'مظلات سيارات، تراسات مغطاة وهياكل خارجية.',
     'shutters_desc' => 'شتر كهربائي آلي للراحة والأمان.',
+    'rolling_shutters_desc' => 'الشتر المتحرك أكثر بكثير من مجرد ملحق: إنها ميزة رئيسية لأمان وراحة منزلك. دروع حقيقية، تحميك من الاقتحامات وتغيرات درجة الحرارة والطقس السيئ، مع تعزيز جماليات واجهتك. باختيار الشتر اليدوي أو الآلي، تستثمر في حل يجمع بين الحماية والراحة والتصميم.',
+    'sun_breakers_desc' => 'كاسر الشمس المصنوع من الألمنيوم هو الحل المثالي للجمع بين الراحة الحرارية والتصميم العصري والمتانة في مشاريعك. مصمم لتحمل الحرارة الشديدة في الصيف والتغيرات المناخية، يقلل بشكل فعال من تأثير الإشعاع الشمسي مع إضافة لمسة معمارية أنيقة على واجهاتك.',
+    'mosquito_nets_desc' => 'شبكات الناموس المصنوعة من الألمنيوم هي حل عملي وأنيق لحماية منزلك من الحشرات مع الحفاظ على تدفق الهواء والضوء الطبيعي. متينة وقوية وسهلة التركيب، تتكيف تماماً مع النوافذ والأبواب والنوافذ الكبيرة.',
+    'space_design_desc' => 'الفواصل والأقسام المصنوعة من الألمنيوم والزجاج هي الحل المثالي لإنشاء مساحات عصرية ومشرقة وعملية. تجمع بين قوة الألمنيوم وأناقة الزجاج، تسمح لك بهيكلة داخلياتك مع الحفاظ على الشفافية والسيولة. سهلة التركيب وبدون صيانة، تتكيف مع المنازل أو المكاتب أو المحلات.',
 
     // Full descriptions for services page
     'windows_full_desc' => 'نوافذنا الألمنيوم مصنوعة حسب الطلب مع زجاج مزدوج، توفر عزلاً حرارياً وصوتياً مثالياً لراحتك.',
@@ -72,6 +80,71 @@ return [
     'ventilated_facades' => 'واجهات مهواة',
     'modern_architecture' => 'هندسة معمارية حديثة',
     'facades' => 'برجولات ومظلات',
+
+    // Kitchen features (Option 1)
+    'kitchen_robustness' => 'المتانة والعمر الطويل',
+    'kitchen_modern_design' => 'تصميم عصري',
+    'kitchen_easy_maintenance' => 'سهولة الصيانة',
+    'kitchen_customization' => 'التخصيص والقابلية للتكيف',
+    'kitchen_comfort' => 'الراحة والطمأنينة',
+
+    // Doors features (Option 1)
+    'doors_power_strength' => 'القوة والمتانة',
+    'doors_sealing_efficiency' => 'الإحكام والكفاءة الطاقية',
+    'doors_style_elegance' => 'الأناقة والجمال',
+    'doors_free_design' => 'تصميم حر',
+
+    // Windows features (Option 1)
+    'windows_security_durability' => 'الأمان والمتانة',
+    'windows_performance_efficiency' => 'الأداء والكفاءة الطاقية',
+    'windows_free_design_aesthetic' => 'تصميم حر وجماليات',
+
+    // Rolling shutters features (Option 1)
+    'shutters_enhanced_security' => 'أمان معزز وكامل',
+    'shutters_thermal_comfort' => 'راحة حرارية',
+    'shutters_weather_protection' => 'حماية من الطقس',
+    'shutters_aesthetic' => 'جماليات محسنة',
+    'shutters_peace_of_mind' => 'راحة البال',
+
+    // Railings features (Option 1)
+    'railings_guaranteed_strength' => 'قوة مضمونة',
+    'railings_modern_elegance' => 'أناقة عصرية',
+    'railings_easy_installation' => 'تركيب سهل',
+    'railings_optimal_security' => 'أمان مثالي',
+    'railings_versatility' => 'تعدد الاستخدامات',
+    'railings_harmonious_integration' => 'تكامل متناغم',
+
+    // Pergola features (Option 1)
+    'pergola_robustness_durability' => 'المتانة والقوة',
+    'pergola_refined_aesthetic' => 'جماليات راقية',
+    'pergola_no_maintenance' => 'بدون صيانة',
+    'pergola_layout_ally' => 'حليف تنسيقاتك',
+    'pergola_peace_of_mind' => 'راحة البال',
+
+    // Sun breakers features (Option 1)
+    'sunbreaker_thermal_comfort' => 'راحة حرارية',
+    'sunbreaker_robustness' => 'المتانة والقوة',
+    'sunbreaker_modern_design' => 'تصميم عصري',
+    'sunbreaker_no_maintenance' => 'بدون صيانة',
+    'sunbreaker_harmonious_integration' => 'تكامل متناغم',
+    'sunbreaker_energy_savings' => 'توفير الطاقة',
+
+    // Mosquito nets features (Option 1)
+    'mosquito_effective_protection' => 'حماية فعالة',
+    'mosquito_robustness' => 'المتانة والقوة',
+    'mosquito_easy_installation' => 'تركيب سهل',
+    'mosquito_optimal_comfort' => 'راحة مثالية',
+    'mosquito_discreet_design' => 'تصميم أنيق',
+    'mosquito_peace_of_mind' => 'راحة البال',
+
+    // Partitions features (Option 1)
+    'partition_robustness' => 'المتانة والموثوقية',
+    'partition_glass_elegance' => 'أناقة الزجاج',
+    'partition_preserved_brightness' => 'إضاءة محفوظة',
+    'partition_versatility' => 'تعدد الاستخدامات',
+    'partition_easy_installation' => 'تركيب سهل',
+    'partition_no_maintenance' => 'بدون صيانة',
+    'partition_contemporary_design' => 'تصميم معاصر',
 
     // Why choose us
     'why_choose_us' => 'لماذا تختارنا؟',
@@ -220,6 +293,7 @@ return [
     'mesh_density' => 'كثافة الشبكة',
     'frame_profile' => 'ملف الإطار',
     'max_height' => 'الارتفاع الأقصى',
+    'finish_options' => 'خيارات التشطيب',
     
     // Materials
     'aluminum_profiles' => 'ملفات الألمنيوم',

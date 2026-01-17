@@ -28,25 +28,33 @@ return [
     'learn_more' => 'Learn more',
 
     // Service types
-    'windows' => 'Windows',
+    'windows' => 'Windows & French Doors',
     'doors' => 'Doors',
     'curtains' => 'Curtains',
     'railings' => 'Railings',
     'pergola' => 'Pergola',
-    'kitchen' => 'Kitchen',
+    'kitchen' => 'Kitchens',
     'shelter' => 'Shelter',
     'shutters' => 'Electric Shutters',
+    'rolling_shutters' => 'Rolling Shutters',
+    'sun_breakers' => 'Sun Breakers',
+    'mosquito_nets' => 'Mosquito Nets',
+    'space_design' => 'Partitions & Dividers',
     'other' => 'Other',
 
-    // Service descriptions
-    'windows_desc' => 'Custom aluminum windows with double glazing and optimal insulation.',
-    'doors_desc' => 'Secure entrance doors, sliding doors and bay windows.',
+    // Service descriptions (Option 2 - detailed for modal)
+    'windows_desc' => 'Choose excellence: aluminum windows and French doors are the essential choice to bring your project to life. Modern, reliable and elegant, they combine comfort, security and energy performance. With a wide range of profiles – from high energy efficiency models to reinforced anti-burglary versions – you create the custom solution that meets your needs.',
+    'doors_desc' => 'Our aluminum doors embody strength and security, while offering total customization for exceptional entrances and exits. With a wide range of functional variants, perfectly compatible with our window and French door systems, you benefit from unlimited design freedom to bring your construction or renovation projects to life.',
     'curtains_desc' => 'Metal curtains and blinds for shops and homes.',
-    'railings_desc' => 'Aluminum railings, modern and secure design.',
-    'pergola_desc' => 'Bioclimatic and traditional pergolas for your outdoor spaces.',
-    'kitchen_desc' => 'Modern aluminum kitchens, durable and easy to maintain.',
+    'railings_desc' => 'Our aluminum and glass railings embody the perfect combination of strength, elegance and ease of installation. Whether securing a terrace, balcony, staircase or mezzanine, our systems combine modern design and reliability, while meeting the most demanding safety standards.',
+    'pergola_desc' => 'Give your outdoor spaces perfection with our aluminum pergolas: robust, durable and ready to face all seasons. Unlike wood, aluminum offers a hassle-free solution: no regular maintenance required and exceptional durability over time. The aluminum pergola combines peace of mind with performance.',
+    'kitchen_desc' => 'The aluminum kitchen is today the ideal solution for Tunisian homes looking for modernity, robustness and practicality. Resistant to humidity, shocks and climate variations, it guarantees exceptional durability while offering an elegant and contemporary design. Easy to maintain and available in a wide range of finishes, the aluminum kitchen fits perfectly with all interior styles.',
     'shelter_desc' => 'Car shelters, covered terraces and outdoor structures.',
     'shutters_desc' => 'Motorized electric roller shutters for comfort and security.',
+    'rolling_shutters_desc' => 'Rolling shutters are much more than a simple accessory: they are a major asset for the security and comfort of your home. True shields, they protect you from intrusions, temperature variations and bad weather, while enhancing the aesthetics of your facade. By choosing manual or motorized rolling shutters, you invest in a solution that combines protection, comfort and design.',
+    'sun_breakers_desc' => 'The aluminum sun breaker is the ideal solution to combine thermal comfort, modern design and durability in your projects. Designed to withstand intense summer heat and climate variations, it effectively reduces solar radiation impact while bringing an elegant architectural touch to your facades.',
+    'mosquito_nets_desc' => 'Aluminum mosquito nets are a practical and elegant solution to protect your home from insects while preserving air circulation and natural light. Robust, durable and easy to install, they adapt perfectly to windows, doors and bay windows.',
+    'space_design_desc' => 'Aluminum and glass partitions and dividers are the ideal solution to create modern, bright and functional spaces. Combining the strength of aluminum with the elegance of glass, they allow you to structure your interiors while preserving transparency and fluidity. Easy to install and maintenance-free, they adapt to homes, offices or shops.',
 
     // Full descriptions for services page
     'windows_full_desc' => 'Our aluminum windows are custom-made with double glazing, offering optimal thermal and acoustic insulation for your comfort.',
@@ -72,6 +80,71 @@ return [
     'ventilated_facades' => 'Ventilated facades',
     'modern_architecture' => 'Modern architecture',
     'facades' => 'Pergolas & Shelters',
+
+    // Kitchen features (Option 1)
+    'kitchen_robustness' => 'Robustness and longevity',
+    'kitchen_modern_design' => 'Modern design',
+    'kitchen_easy_maintenance' => 'Easy maintenance',
+    'kitchen_customization' => 'Customization and adaptability',
+    'kitchen_comfort' => 'Comfort and serenity',
+
+    // Doors features (Option 1)
+    'doors_power_strength' => 'Power and strength',
+    'doors_sealing_efficiency' => 'Sealing and energy efficiency',
+    'doors_style_elegance' => 'Style and elegance',
+    'doors_free_design' => 'Free design',
+
+    // Windows features (Option 1)
+    'windows_security_durability' => 'Security and durability',
+    'windows_performance_efficiency' => 'Performance and energy efficiency',
+    'windows_free_design_aesthetic' => 'Free design and aesthetics',
+
+    // Rolling shutters features (Option 1)
+    'shutters_enhanced_security' => 'Enhanced and complete security',
+    'shutters_thermal_comfort' => 'Thermal comfort',
+    'shutters_weather_protection' => 'Weather protection',
+    'shutters_aesthetic' => 'Enhanced aesthetics',
+    'shutters_peace_of_mind' => 'Peace of mind',
+
+    // Railings features (Option 1)
+    'railings_guaranteed_strength' => 'Guaranteed strength',
+    'railings_modern_elegance' => 'Modern elegance',
+    'railings_easy_installation' => 'Easy installation',
+    'railings_optimal_security' => 'Optimal security',
+    'railings_versatility' => 'Versatility of use',
+    'railings_harmonious_integration' => 'Harmonious integration',
+
+    // Pergola features (Option 1)
+    'pergola_robustness_durability' => 'Robustness and durability',
+    'pergola_refined_aesthetic' => 'Refined aesthetics',
+    'pergola_no_maintenance' => 'No maintenance required',
+    'pergola_layout_ally' => 'Your layout ally',
+    'pergola_peace_of_mind' => 'Peace of mind',
+
+    // Sun breakers features (Option 1)
+    'sunbreaker_thermal_comfort' => 'Thermal comfort',
+    'sunbreaker_robustness' => 'Robustness and durability',
+    'sunbreaker_modern_design' => 'Modern design',
+    'sunbreaker_no_maintenance' => 'No maintenance',
+    'sunbreaker_harmonious_integration' => 'Harmonious integration',
+    'sunbreaker_energy_savings' => 'Energy savings',
+
+    // Mosquito nets features (Option 1)
+    'mosquito_effective_protection' => 'Effective protection',
+    'mosquito_robustness' => 'Robustness and durability',
+    'mosquito_easy_installation' => 'Easy installation',
+    'mosquito_optimal_comfort' => 'Optimal comfort',
+    'mosquito_discreet_design' => 'Discreet design',
+    'mosquito_peace_of_mind' => 'Peace of mind',
+
+    // Partitions features (Option 1)
+    'partition_robustness' => 'Robustness and reliability',
+    'partition_glass_elegance' => 'Glass elegance',
+    'partition_preserved_brightness' => 'Preserved brightness',
+    'partition_versatility' => 'Versatility of use',
+    'partition_easy_installation' => 'Easy installation',
+    'partition_no_maintenance' => 'No maintenance',
+    'partition_contemporary_design' => 'Contemporary design',
 
     // Why choose us
     'why_choose_us' => 'Why Choose Us?',
@@ -220,6 +293,7 @@ return [
     'mesh_density' => 'Mesh Density',
     'frame_profile' => 'Frame Profile',
     'max_height' => 'Maximum Height',
+    'finish_options' => 'Finish Options',
     
     // Materials
     'aluminum_profiles' => 'Aluminum Profiles',

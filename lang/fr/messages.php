@@ -28,7 +28,7 @@ return [
     'learn_more' => 'En savoir plus',
 
     // Service types
-    'windows' => 'Fenêtres',
+    'windows' => 'Fenêtres & Portes-Fenêtres',
     'doors' => 'Portes',
     'sliding' => 'Coulissant',
     'rolling_shutters' => 'Volets Roulants',
@@ -36,27 +36,27 @@ return [
     'pergola' => 'Pergola',
     'sun_breakers' => 'Brises Soleil',
     'mosquito_nets' => 'Moustiquaire',
-    'space_design' => 'Agencement d\'Espace',
+    'space_design' => 'Séparations & Cloisons',
     'curtains' => 'Rideaux',
-    'kitchen' => 'Cuisine',
+    'kitchen' => 'Cuisines',
     'shelter' => 'Abri',
     'shutters' => 'Volets Électriques',
     'other' => 'Autre',
 
-    // Service descriptions
-    'windows_desc' => 'Fenêtres aluminium sur mesure avec double vitrage et isolation optimale.',
-    'doors_desc' => 'Portes d\'entrée, coulissantes et baies vitrées sécurisées.',
+    // Service descriptions (Option 2 - detailed for modal)
+    'windows_desc' => 'Optez pour l\'excellence : les fenêtres et portes-fenêtres en aluminium sont le choix incontournable pour donner vie à votre projet. Modernes, fiables et élégantes, elles conjuguent confort, sécurité et performance énergétique. Avec une large gamme de profilés – des modèles à haute efficacité énergétique aux versions renforcées contre l\'effraction – vous composez la solution sur mesure qui correspond à vos besoins.',
+    'doors_desc' => 'Nos portes en aluminium incarnent la robustesse et la sécurité, tout en offrant une personnalisation totale pour des entrées et sorties d\'exception. Grâce à une large gamme de variantes fonctionnelles, parfaitement compatibles avec nos systèmes de fenêtres et de portes-fenêtres, vous bénéficiez d\'une liberté de conception illimitée pour donner vie à vos projets de construction ou de rénovation.',
     'sliding_desc' => 'Systèmes coulissants modernes pour baies vitrées et portes.',
-    'rolling_shutters_desc' => 'Volets roulants manuels et motorisés pour protection et isolation.',
-    'railings_desc' => 'Garde-corps en aluminium, design moderne et sécurisé.',
-    'pergola_desc' => 'Pergolas bioclimatiques et traditionnelles pour vos espaces extérieurs.',
-    'sun_breakers_desc' => 'Brises soleil architecturaux pour contrôle solaire et design.',
-    'mosquito_nets_desc' => 'Moustiquaires sur mesure pour fenêtres et portes.',
-    'space_design_desc' => 'Agencement et design d\'espaces intérieurs et extérieurs.',
+    'rolling_shutters_desc' => 'Les volets roulants sont bien plus qu\'un simple accessoire : ils constituent un atout majeur pour la sécurité et le confort de votre maison. Véritables boucliers, ils vous protègent des intrusions, des variations de température et des intempéries, tout en valorisant l\'esthétique de votre façade. En choisissant les volets roulants manuels ou motorisés, vous investissez dans une solution qui allie protection, confort et design.',
+    'railings_desc' => 'Nos garde-corps en aluminium et en verre incarnent la combinaison parfaite de robustesse, d\'élégance et de simplicité d\'installation. Que ce soit pour sécuriser une terrasse, un balcon, un escalier ou une mezzanine, nos systèmes allient design moderne et fiabilité, tout en respectant les normes de sécurité les plus exigeantes.',
+    'pergola_desc' => 'Offrez à vos extérieurs la perfection avec nos pergolas en aluminium : robustes, durables et prêtes à affronter toutes les saisons. À la différence du bois, l\'aluminium offre une solution sans contraintes : aucun entretien régulier nécessaire et une durabilité exceptionnelle dans le temps. La pergola aluminium, c\'est la tranquillité d\'esprit alliée à la performance.',
+    'sun_breakers_desc' => 'Le brise-soleil en aluminium est la solution idéale pour conjuguer confort thermique, design moderne et durabilité dans vos projets. Conçu pour résister aux fortes chaleurs estivales et aux variations climatiques, il réduit efficacement l\'impact du rayonnement solaire tout en apportant une touche architecturale élégante à vos façades.',
+    'mosquito_nets_desc' => 'Les moustiquaires en aluminium représentent une solution pratique et élégante pour protéger votre maison des insectes tout en préservant la circulation de l\'air et la luminosité naturelle. Robustes, durables et faciles à installer, elles s\'adaptent parfaitement aux fenêtres, portes et baies vitrées.',
     'curtains_desc' => 'Rideaux métalliques et stores pour commerces et habitations.',
-    'kitchen_desc' => 'Cuisines en aluminium modernes, durables et faciles d\'entretien.',
+    'kitchen_desc' => 'La cuisine en aluminium s\'impose aujourd\'hui comme la solution idéale pour les foyers tunisiens à la recherche de modernité, de robustesse et de praticité. Résistante à l\'humidité, aux chocs et aux variations climatiques, elle garantit une durabilité exceptionnelle tout en offrant un design élégant et contemporain. Facile à entretenir et disponible dans une large gamme de finitions, la cuisine en aluminium s\'intègre parfaitement à tous les styles d\'intérieur.',
     'shelter_desc' => 'Abris de voiture, terrasses couvertes et structures extérieures.',
     'shutters_desc' => 'Volets roulants électriques motorisés pour confort et sécurité.',
+    'space_design_desc' => 'Les séparations et cloisons en aluminium et en verre sont la solution idéale pour créer des espaces modernes, lumineux et fonctionnels. Alliant la robustesse de l\'aluminium à l\'élégance du verre, elles permettent de structurer vos intérieurs tout en préservant la transparence et la fluidité. Faciles à installer et sans entretien, elles s\'adaptent aussi bien aux maisons qu\'aux bureaux ou commerces.',
 
     // Full descriptions for services page
     'windows_full_desc' => 'Nos fenêtres en aluminium sont fabriquées sur mesure avec double vitrage, offrant une isolation thermique et acoustique optimale pour votre confort.',
@@ -83,6 +83,71 @@ return [
     'modern_architecture' => 'Architecture moderne',
     'facades' => 'Pergolas & Abris',
     'rolling_shutters' => 'Volets roulants',
+
+    // Kitchen features (Option 1)
+    'kitchen_robustness' => 'Robustesse et longévité',
+    'kitchen_modern_design' => 'Design moderne',
+    'kitchen_easy_maintenance' => 'Entretien facile',
+    'kitchen_customization' => 'Personnalisation et adaptabilité',
+    'kitchen_comfort' => 'Confort et sérénité',
+
+    // Doors features (Option 1)
+    'doors_power_strength' => 'Puissance et solidité',
+    'doors_sealing_efficiency' => 'Étanchéité et efficacité énergétique',
+    'doors_style_elegance' => 'Style et élégance',
+    'doors_free_design' => 'Design libre',
+
+    // Windows features (Option 1)
+    'windows_security_durability' => 'Sécurité et durabilité',
+    'windows_performance_efficiency' => 'Performance et efficacité énergétique',
+    'windows_free_design_aesthetic' => 'Design libre et esthétique',
+
+    // Rolling shutters features (Option 1)
+    'shutters_enhanced_security' => 'Sécurité renforcée et complète',
+    'shutters_thermal_comfort' => 'Confort thermique',
+    'shutters_weather_protection' => 'Protection contre les intempéries',
+    'shutters_aesthetic' => 'Esthétique valorisée',
+    'shutters_peace_of_mind' => 'Tranquillité d\'esprit',
+
+    // Railings features (Option 1)
+    'railings_guaranteed_strength' => 'Robustesse garantie',
+    'railings_modern_elegance' => 'Élégance moderne',
+    'railings_easy_installation' => 'Installation simplifiée',
+    'railings_optimal_security' => 'Sécurité optimale',
+    'railings_versatility' => 'Polyvalence d\'usage',
+    'railings_harmonious_integration' => 'Intégration harmonieuse',
+
+    // Pergola features (Option 1)
+    'pergola_robustness_durability' => 'Robustesse et durabilité',
+    'pergola_refined_aesthetic' => 'Esthétique épurée',
+    'pergola_no_maintenance' => 'Sans contraintes d\'entretien',
+    'pergola_layout_ally' => 'Alliée de vos aménagements',
+    'pergola_peace_of_mind' => 'Tranquillité d\'esprit',
+
+    // Sun breakers features (Option 1)
+    'sunbreaker_thermal_comfort' => 'Confort thermique',
+    'sunbreaker_robustness' => 'Robustesse et durabilité',
+    'sunbreaker_modern_design' => 'Design moderne',
+    'sunbreaker_no_maintenance' => 'Sans entretien',
+    'sunbreaker_harmonious_integration' => 'Intégration harmonieuse',
+    'sunbreaker_energy_savings' => 'Économie d\'énergie',
+
+    // Mosquito nets features (Option 1)
+    'mosquito_effective_protection' => 'Protection efficace',
+    'mosquito_robustness' => 'Robustesse et durabilité',
+    'mosquito_easy_installation' => 'Installation facile',
+    'mosquito_optimal_comfort' => 'Confort optimal',
+    'mosquito_discreet_design' => 'Design discret',
+    'mosquito_peace_of_mind' => 'Tranquillité d\'esprit',
+
+    // Partitions features (Option 1)
+    'partition_robustness' => 'Robustesse et fiabilité',
+    'partition_glass_elegance' => 'Élégance du verre',
+    'partition_preserved_brightness' => 'Luminosité préservée',
+    'partition_versatility' => 'Polyvalence d\'usage',
+    'partition_easy_installation' => 'Installation simplifiée',
+    'partition_no_maintenance' => 'Sans entretien',
+    'partition_contemporary_design' => 'Design contemporain',
 
     // Why choose us
     'why_choose_us' => 'Pourquoi Nous Choisir?',
@@ -231,6 +296,7 @@ return [
     'mesh_density' => 'Densité du Maillage',
     'frame_profile' => 'Profil du Cadre',
     'max_height' => 'Hauteur Maximale',
+    'finish_options' => 'Options de Finition',
     
     // Materials
     'aluminum_profiles' => 'Profilés Aluminium',

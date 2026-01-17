@@ -20,11 +20,26 @@
     @php
         $services = [
             [
+                'id' => 'kitchen', 
+                'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M12 3v6"/><path d="M8 21v-4"/><path d="M16 21v-4"/></svg>', 
+                'color' => 'rose', 
+                'image' => 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
+                'features' => ['kitchen_robustness', 'kitchen_modern_design', 'kitchen_easy_maintenance', 'kitchen_customization', 'kitchen_comfort'],
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                ],
+                'materials' => ['aluminum_profiles', 'tempered_glass', 'stainless_hardware', 'powder_coating'],
+                'specs' => ['thickness_range' => '1.2 - 2.0 mm', 'finish_options' => 'Mat / Brillant', 'colors' => '200+']
+            ],
+            [
                 'id' => 'doors', 
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>', 
                 'color' => 'orange', 
                 'image' => 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['enhanced_security', 'modern_design', 'perfect_sealing', 'custom_made'],
+                'features' => ['doors_power_strength', 'doors_sealing_efficiency', 'doors_style_elegance', 'doors_free_design'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -39,7 +54,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line></svg>', 
                 'color' => 'blue', 
                 'image' => 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['double_glazing', 'thermal_insulation', 'acoustic_insulation', 'custom_made'],
+                'features' => ['windows_security_durability', 'windows_performance_efficiency', 'windows_free_design_aesthetic'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -50,26 +65,11 @@
                 'specs' => ['thickness_range' => '1.4 - 1.8 mm', 'glass_options' => '4+12+4 mm', 'colors' => '200+']
             ],
             [
-                'id' => 'sliding', 
-                'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="18" y2="12"/></svg>', 
-                'color' => 'cyan', 
-                'image' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['modern_design', 'easy_maintenance', 'perfect_sealing', 'durable'],
-                'gallery' => [
-                    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1600607687644-c7171b42498f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                ],
-                'materials' => ['aluminum_profiles', 'tempered_glass', 'roller_system', 'multi_point_lock'],
-                'specs' => ['thickness_range' => '1.6 - 2.0 mm', 'glass_options' => '6 - 28 mm', 'colors' => '200+']
-            ],
-            [
                 'id' => 'rolling_shutters', 
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="19" x2="21" y2="19"/></svg>', 
                 'color' => 'purple', 
                 'image' => 'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['motorized', 'enhanced_security', 'thermal_insulation', 'weather_resistant'],
+                'features' => ['shutters_enhanced_security', 'shutters_thermal_comfort', 'shutters_weather_protection', 'shutters_aesthetic', 'shutters_peace_of_mind'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -84,7 +84,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M22 8l-2 2-2-2"/><path d="M6 8l-2 2-2-2"/><path d="M6 22v-4"/><path d="M18 22v-4"/></svg>', 
                 'color' => 'green', 
                 'image' => 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['enhanced_security', 'modern_design', 'corrosion_resistant', 'easy_maintenance'],
+                'features' => ['railings_guaranteed_strength', 'railings_modern_elegance', 'railings_easy_installation', 'railings_optimal_security', 'railings_versatility', 'railings_harmonious_integration'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -99,7 +99,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V6"/><path d="M20 22V6"/><path d="M2 6h20"/><path d="M2 10h20"/><path d="M12 6v16"/></svg>', 
                 'color' => 'amber', 
                 'image' => 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['weather_resistant', 'modern_architecture', 'durable', 'custom_made'],
+                'features' => ['pergola_robustness_durability', 'pergola_refined_aesthetic', 'pergola_no_maintenance', 'pergola_layout_ally', 'pergola_peace_of_mind'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -114,7 +114,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>', 
                 'color' => 'yellow', 
                 'image' => 'https://images.unsplash.com/photo-1545259742-14b90aaa3a60?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['modern_architecture', 'thermal_insulation', 'weather_resistant', 'custom_made'],
+                'features' => ['sunbreaker_thermal_comfort', 'sunbreaker_robustness', 'sunbreaker_modern_design', 'sunbreaker_no_maintenance', 'sunbreaker_harmonious_integration', 'sunbreaker_energy_savings'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1545259742-14b90aaa3a60?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -129,7 +129,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>', 
                 'color' => 'teal', 
                 'image' => 'https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['easy_maintenance', 'custom_made', 'durable', 'modern_design'],
+                'features' => ['mosquito_effective_protection', 'mosquito_robustness', 'mosquito_easy_installation', 'mosquito_optimal_comfort', 'mosquito_discreet_design', 'mosquito_peace_of_mind'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -144,7 +144,7 @@
                 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', 
                 'color' => 'indigo', 
                 'image' => 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', 
-                'features' => ['modern_architecture', 'custom_made', 'modern_design', 'durable'],
+                'features' => ['partition_robustness', 'partition_glass_elegance', 'partition_preserved_brightness', 'partition_versatility', 'partition_easy_installation', 'partition_no_maintenance', 'partition_contemporary_design'],
                 'gallery' => [
                     'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                     'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -299,30 +299,35 @@
                 <!-- Modal Content -->
                 <div class="relative w-full max-w-5xl transform overflow-hidden rounded-3xl bg-white shadow-2xl transition-all" id="modalContent">
                     <!-- Close Button -->
-                    <button onclick="closeServiceModal()" class="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <button onclick="closeServiceModal()" class="absolute top-4 right-4 z-20 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                     
                     <div class="grid md:grid-cols-2">
-                        <!-- Gallery Section -->
-                        <div class="relative bg-gray-100">
-                            <!-- Main Image -->
-                            <div class="relative aspect-[4/3] md:aspect-auto md:h-full">
-                                <img id="modalMainImage" src="" alt="" class="w-full h-full object-cover">
-                                <!-- Image Navigation -->
-                                <button onclick="prevModalImage()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-gray-700 shadow-lg transition-all duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        <!-- Gallery Section - Fixed Height -->
+                        <div class="relative bg-gradient-to-br from-gray-100 to-gray-200 h-[300px] md:h-[600px]">
+                            <!-- Main Image - Object Fit Cover -->
+                            <div class="relative w-full h-full overflow-hidden">
+                                <img id="modalMainImage" src="" alt="" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                                <!-- Gradient Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+                                
+                                <!-- Image Navigation Buttons -->
+                                <button onclick="prevModalImage()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-700 shadow-lg transition-all duration-200 hover:scale-110 hover:shadow-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                                 </button>
-                                <button onclick="nextModalImage()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-gray-700 shadow-lg transition-all duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                <button onclick="nextModalImage()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-700 shadow-lg transition-all duration-200 hover:scale-110 hover:shadow-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                                 </button>
-                                <!-- Image Counter -->
-                                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-black/50 backdrop-blur-sm rounded-full text-white text-sm">
+                                
+                                <!-- Image Counter Badge -->
+                                <div class="absolute top-4 left-4 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-white text-sm font-medium">
                                     <span id="currentImageIndex">1</span> / <span id="totalImages">4</span>
                                 </div>
                             </div>
-                            <!-- Thumbnail Strip -->
-                            <div class="absolute bottom-16 left-0 right-0 px-3">
+                            
+                            <!-- Thumbnail Strip - Fixed at Bottom -->
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
                                 <div id="modalThumbnails" class="flex gap-2 justify-center">
                                     <!-- Thumbnails will be inserted here -->
                                 </div>
@@ -330,17 +335,38 @@
                         </div>
                         
                         <!-- Details Section -->
-                        <div class="p-6 md:p-8 max-h-[70vh] md:max-h-[80vh] overflow-y-auto">
+                        <div class="p-6 md:p-8 h-[300px] md:h-[600px] overflow-y-auto bg-white">
+                            <!-- Service Badge -->
+                            <div id="modalBadge" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                {{ __('messages.nav_services') }}
+                            </div>
+                            
                             <!-- Title -->
                             <h3 id="modalTitle" class="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4"></h3>
                             
                             <!-- Description -->
-                            <p id="modalDescription" class="text-gray-600 mb-6 leading-relaxed"></p>
+                            <p id="modalDescription" class="text-gray-600 mb-6 leading-relaxed text-base"></p>
                             
-                            <!-- Materials Used -->
-                            <div class="mb-6">
-                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            <!-- Features Section -->
+                            <div class="mb-6 p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-100">
+                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                                    <div class="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    </div>
+                                    {{ __('messages.key_features') }}
+                                </h4>
+                                <ul id="modalFeatures" class="grid gap-2">
+                                    <!-- Features will be inserted here -->
+                                </ul>
+                            </div>
+                            
+                            <!-- Materials Section -->
+                            <div class="mb-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                                    </div>
                                     {{ __('messages.materials_used') }}
                                 </h4>
                                 <div id="modalMaterials" class="flex flex-wrap gap-2">
@@ -348,10 +374,12 @@
                                 </div>
                             </div>
                             
-                            <!-- Specifications -->
-                            <div class="mb-6">
-                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <!-- Specifications Section -->
+                            <div class="mb-6 p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border border-orange-100">
+                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                                    <div class="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                    </div>
                                     {{ __('messages.specifications') }}
                                 </h4>
                                 <div id="modalSpecs" class="space-y-2">
@@ -359,19 +387,8 @@
                                 </div>
                             </div>
                             
-                            <!-- Features -->
-                            <div class="mb-6">
-                                <h4 class="flex items-center gap-2 text-lg font-bold text-gray-900 mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                    {{ __('messages.key_features') }}
-                                </h4>
-                                <ul id="modalFeatures" class="space-y-2">
-                                    <!-- Features will be inserted here -->
-                                </ul>
-                            </div>
-                            
                             <!-- CTA Button -->
-                            <a href="{{ route('contact') }}" class="btn-primary w-full text-center inline-flex items-center justify-center group shadow-xl hover:shadow-2xl">
+                            <a href="{{ route('contact') }}" class="btn-primary w-full text-center inline-flex items-center justify-center group shadow-xl hover:shadow-2xl text-lg py-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                                 {{ __('messages.request_quote') }}
                             </a>
@@ -440,24 +457,24 @@
             // Set main image
             updateMainImage();
             
-            // Generate thumbnails
+            // Generate thumbnails with improved styling
             const thumbnailsContainer = document.getElementById('modalThumbnails');
             thumbnailsContainer.innerHTML = currentServiceData.gallery.map((img, index) => `
-                <button onclick="goToImage(${index})" class="w-12 h-12 rounded-lg overflow-hidden border-2 ${index === 0 ? 'border-blue-500' : 'border-white/50'} hover:border-blue-400 transition-all duration-200 shadow-md">
+                <button onclick="goToImage(${index})" class="w-14 h-14 md:w-16 md:h-16 rounded-xl overflow-hidden border-2 ${index === 0 ? 'border-white ring-2 ring-white/50' : 'border-white/30'} hover:border-white transition-all duration-200 shadow-lg hover:scale-105 transform">
                     <img src="${img}" alt="" class="w-full h-full object-cover">
                 </button>
             `).join('');
             
-            // Generate materials
+            // Generate materials with improved styling
             const materialsContainer = document.getElementById('modalMaterials');
             materialsContainer.innerHTML = currentServiceData.materials.map(material => `
-                <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="inline-flex items-center px-3 py-2 bg-white text-blue-700 rounded-xl text-sm font-medium shadow-sm border border-blue-100 hover:shadow-md transition-shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     ${material}
                 </span>
             `).join('');
             
-            // Generate specs
+            // Generate specs with improved styling
             const specsContainer = document.getElementById('modalSpecs');
             const specLabels = {
                 'thickness_range': '{{ __("messages.thickness_range") }}',
@@ -469,23 +486,24 @@
                 'span_max': '{{ __("messages.max_span") }}',
                 'mesh_density': '{{ __("messages.mesh_density") }}',
                 'frame_profile': '{{ __("messages.frame_profile") }}',
-                'height_max': '{{ __("messages.max_height") }}'
+                'height_max': '{{ __("messages.max_height") }}',
+                'finish_options': '{{ __("messages.finish_options") }}'
             };
             specsContainer.innerHTML = Object.entries(currentServiceData.specs).map(([key, value]) => `
-                <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
-                    <span class="text-gray-600 text-sm">${specLabels[key] || key}</span>
-                    <span class="font-semibold text-gray-900">${value}</span>
+                <div class="flex items-center justify-between py-3 px-4 bg-white rounded-xl shadow-sm border border-orange-100 hover:shadow-md transition-shadow">
+                    <span class="text-gray-600 text-sm font-medium">${specLabels[key] || key}</span>
+                    <span class="font-bold text-gray-900 bg-orange-100 px-3 py-1 rounded-lg text-sm">${value}</span>
                 </div>
             `).join('');
             
-            // Generate features
+            // Generate features with improved styling
             const featuresContainer = document.getElementById('modalFeatures');
             featuresContainer.innerHTML = currentServiceData.features.map(feature => `
-                <li class="flex items-start gap-2">
-                    <div class="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <li class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/50 transition-colors">
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mt-0.5 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
-                    <span class="text-gray-700 text-sm">${feature}</span>
+                    <span class="text-gray-700 font-medium">${feature}</span>
                 </li>
             `).join('');
 
@@ -522,11 +540,11 @@
             const thumbnails = document.querySelectorAll('#modalThumbnails button');
             thumbnails.forEach((thumb, index) => {
                 if (index === currentImageIndex) {
-                    thumb.classList.remove('border-white/50');
-                    thumb.classList.add('border-blue-500');
+                    thumb.classList.remove('border-white/30');
+                    thumb.classList.add('border-white', 'ring-2', 'ring-white/50');
                 } else {
-                    thumb.classList.remove('border-blue-500');
-                    thumb.classList.add('border-white/50');
+                    thumb.classList.remove('border-white', 'ring-2', 'ring-white/50');
+                    thumb.classList.add('border-white/30');
                 }
             });
         }
@@ -578,6 +596,21 @@
         /* Thumbnail border styling */
         .border-3 {
             border-width: 3px;
+        }
+        /* Custom scrollbar for modal content */
+        #serviceModal .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+        #serviceModal .overflow-y-auto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        #serviceModal .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        #serviceModal .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
         }
     </style>
 @endsection
