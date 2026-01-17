@@ -7,33 +7,33 @@
 @section('content')
     <!-- Hero Carousel Section -->
     <section class="relative">
-        <div class="carousel-container relative w-full h-screen overflow-hidden bg-gray-900">
+        <div class="carousel-container relative w-full min-h-[100svh] overflow-hidden bg-gray-900">
             <!-- Carousel Slides -->
-            <div class="carousel-slides relative h-full">
+            <div class="carousel-slides relative h-full min-h-[100svh]">
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" style="opacity: 1; z-index: 10;">
-                    <div class="relative h-full">
+                    <div class="relative h-full min-h-[100svh]">
                         <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Aluminum Windows" 
-                             class="w-full h-full object-cover object-center"
+                             class="w-full h-full min-h-[100svh] object-cover object-center"
                              loading="eager">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-                        <div class="absolute inset-0 flex items-center pb-24 md:pb-32">
-                            <div class="container mx-auto px-6 md:px-8">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
                                 <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-block px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 border border-white/20 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 border border-white/20 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
                                         {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
                                     </span>
-                                    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                                     </h1>
-                                    <p class="text-lg md:text-xl lg:text-2xl mb-8 text-gray-100 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
                                         {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
                                     </p>
-                                    <div class="flex flex-col sm:flex-row gap-4">
-                                        <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/50">
+                                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                        <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
                                             <i data-lucide="phone" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"></i>
                                             {{ __('messages.request_quote') }}
                                         </a>
@@ -50,27 +50,27 @@
 
                 <!-- Slide 2 - Aluminum Doors -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
+                    <div class="relative h-full min-h-[100svh]">
                         <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Aluminum Doors" 
-                             class="w-full h-full object-cover object-center"
+                             class="w-full h-full min-h-[100svh] object-cover object-center"
                              loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-                        <div class="absolute inset-0 flex items-center pb-24 md:pb-32">
-                            <div class="container mx-auto px-6 md:px-8">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
                                 <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-block px-5 py-2.5 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 border border-orange-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-5 border border-orange-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                         {{ __('messages.doors') }}
                                     </span>
-                                    <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
                                         {{ __('messages.modern_design') }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3">{{ __('messages.enhanced_security') }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ __('messages.enhanced_security') }}</span>
                                     </h2>
-                                    <p class="text-lg md:text-xl lg:text-2xl mb-8 text-gray-100 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
                                         {{ __('messages.doors_desc') }}
                                     </p>
-                                    <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/50">
+                                    <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
                                         {{ __('messages.learn_more') }}
                                         <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
@@ -82,27 +82,27 @@
 
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
+                    <div class="relative h-full min-h-[100svh]">
                         <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Glass Facades" 
-                             class="w-full h-full object-cover object-center"
+                             class="w-full h-full min-h-[100svh] object-cover object-center"
                              loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-                        <div class="absolute inset-0 flex items-center pb-24 md:pb-32">
-                            <div class="container mx-auto px-6 md:px-8">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
                                 <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-block px-5 py-2.5 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 border border-blue-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 border border-blue-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                         {{ __('messages.facades') }}
                                     </span>
-                                    <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
                                         {{ __('messages.curtain_walls') }}
-                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-3">{{ __('messages.modern_architecture') }}</span>
+                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-2">{{ __('messages.modern_architecture') }}</span>
                                     </h2>
-                                    <p class="text-lg md:text-xl lg:text-2xl mb-8 text-gray-100 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
                                         {{ __('messages.facades_desc') }}
                                     </p>
-                                    <a href="{{ route('portfolio') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-blue-500/50">
+                                    <a href="{{ route('portfolio') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-blue-500/40">
                                         {{ __('messages.view_our_work') }}
                                         <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
@@ -114,27 +114,27 @@
 
                 <!-- Slide 4 - Company Experience -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
+                    <div class="relative h-full min-h-[100svh]">
                         <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Professional Construction Team" 
-                             class="w-full h-full object-cover object-center"
+                             class="w-full h-full min-h-[100svh] object-cover object-center"
                              loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-                        <div class="absolute inset-0 flex items-center pb-24 md:pb-32">
-                            <div class="container mx-auto px-6 md:px-8">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
                                 <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-block px-5 py-2.5 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 border border-green-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-5 border border-green-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         {{ __('messages.guaranteed_quality') }}
                                     </span>
-                                    <h2 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-3">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-2">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
                                     </h2>
-                                    <p class="text-lg md:text-xl lg:text-2xl mb-8 text-gray-100 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
                                         {{ __('messages.european_standards') }}
                                     </p>
-                                    <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-green-500/50">
+                                    <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-green-500/40">
                                         {{ __('messages.start_your_project') }}
                                         <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
@@ -146,19 +146,19 @@
             </div>
 
             <!-- Navigation Arrows -->
-            <button onclick="prevSlide()" class="carousel-prev absolute left-3 md:left-8 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/25 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-xl hover:scale-110" aria-label="Previous slide">
-                <i data-lucide="chevron-left" class="w-6 h-6 md:w-8 md:h-8"></i>
+            <button onclick="prevSlide()" class="carousel-prev absolute left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Previous slide">
+                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6"></i>
             </button>
-            <button onclick="nextSlide()" class="carousel-next absolute right-3 md:right-8 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/25 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-xl hover:scale-110" aria-label="Next slide">
-                <i data-lucide="chevron-right" class="w-6 h-6 md:w-8 md:h-8"></i>
+            <button onclick="nextSlide()" class="carousel-next absolute right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Next slide">
+                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6"></i>
             </button>
 
             <!-- Dots Indicators -->
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 z-20">
-                <button onclick="goToSlide(0)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-white/40 hover:bg-white/70 shadow-lg transition-all duration-300 hover:scale-125" aria-label="Go to slide 4"></button>
+            <div class="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 bg-black/20 backdrop-blur-sm rounded-full">
+                <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
+                <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
+                <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
+                <button onclick="goToSlide(3)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
             </div>
         </div>
     </section>
