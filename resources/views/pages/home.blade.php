@@ -20,16 +20,16 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-8">
-                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 md:mb-6 border border-white/20 shadow-lg">
+                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-white/20 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
                                         {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
                                     </span>
-                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
+                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                                     </h1>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
                                     </p>
                                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -58,16 +58,16 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-8">
-                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-5 md:mb-6 border border-orange-300/30 shadow-lg">
+                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 md:mb-8 border border-orange-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                         {{ __('messages.doors') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ __('messages.modern_design') }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ __('messages.enhanced_security') }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ __('messages.enhanced_security') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.doors_desc') }}
                                     </p>
                                     <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
@@ -90,16 +90,16 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-8">
-                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 md:mb-6 border border-blue-300/30 shadow-lg">
+                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-blue-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                         {{ __('messages.facades') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ __('messages.curtain_walls') }}
-                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ __('messages.modern_architecture') }}</span>
+                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ __('messages.modern_architecture') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.facades_desc') }}
                                     </p>
                                     <a href="{{ route('portfolio') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-blue-500/40">
@@ -122,16 +122,16 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-8">
-                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-5 md:mb-6 border border-green-300/30 shadow-lg">
+                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 md:mb-8 border border-green-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         {{ __('messages.guaranteed_quality') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.european_standards') }}
                                     </p>
                                     <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-green-500/40">
