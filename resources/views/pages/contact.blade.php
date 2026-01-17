@@ -22,35 +22,37 @@
         <div class="container mx-auto px-6 md:px-8">
             <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-16">
                 <div class="scroll-fade stagger-1 group">
-                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 h-full">
+                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="phone" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.phone') }}</h3>
-                        <p class="text-gray-700 font-medium mb-1">+216 12 345 678</p>
-                        <p class="text-sm text-gray-500">{{ __('messages.working_hours') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.phone') }}</h3>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">+216 12 345 678</p>
+                        <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.working_hours') }}</p>
                     </div>
                 </div>
                 
                 <div class="scroll-fade stagger-2 group">
-                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-green-50 rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-300 h-full">
+                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-green-50 rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="mail" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">Email</h3>
-                        <p class="text-gray-700 font-medium mb-1">contact@aluminiumcraft.tn</p>
-                        <p class="text-sm text-gray-500">{{ __('messages.response_time') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">Email</h3>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">contact@aluminiumcraft.tn</p>
+                        <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.response_time') }}</p>
                     </div>
                 </div>
                 
                 <div class="scroll-fade stagger-3 group sm:col-span-2 md:col-span-1">
-                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 h-full">
+                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="map-pin" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.address') }}</h3>
-                        <p class="text-gray-700 font-medium mb-1">Zone Industrielle,<br>Tunis, Tunisie</p>
-                        <p class="text-sm text-gray-500">{{ __('messages.showroom_appointment') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.address') }}</h3>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">
+                            {{ __('messages.full_address') }}
+                        </p>
+                        <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.showroom_appointment') }}</p>
                     </div>
                 </div>
             </div>
@@ -68,19 +70,19 @@
                     </div>
 
                     @if(session('success'))
-                    <div class="bg-green-50 border border-green-200 text-green-800 px-5 py-4 rounded-xl mb-6 flex items-start">
-                        <i data-lucide="check-circle" class="w-5 h-5 mr-3 mt-0.5 text-green-600"></i>
+                    <div class="bg-green-50 border border-green-200 text-green-800 px-5 py-4 rounded-xl mb-6 flex items-start {{ app()->getLocale() === 'ar' ? 'flex-row-reverse text-right font-arabic' : '' }}">
+                        <i data-lucide="check-circle" class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }} mt-0.5 text-green-600"></i>
                         <span>{{ session('success') }}</span>
                     </div>
                     @endif
 
                     @if($errors->any())
-                    <div class="bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl mb-6">
-                        <div class="flex items-start mb-2">
-                            <i data-lucide="alert-circle" class="w-5 h-5 mr-3 mt-0.5 text-red-600"></i>
+                    <div class="bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl mb-6 {{ app()->getLocale() === 'ar' ? 'text-right font-arabic' : '' }}">
+                        <div class="flex items-start mb-2 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                            <i data-lucide="alert-circle" class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }} mt-0.5 text-red-600"></i>
                             <span class="font-semibold">{{ __('messages.please_correct_errors') }}</span>
                         </div>
-                        <ul class="list-disc list-inside ml-8 text-sm">
+                        <ul class="list-disc list-inside {{ app()->getLocale() === 'ar' ? 'mr-8' : 'ml-8' }} text-sm">
                             @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                             @endforeach
@@ -178,8 +180,8 @@
                         </div>
 
                         <div class="text-center pt-4">
-                            <button type="submit" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 md:px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1 inline-flex items-center">
-                                <i data-lucide="send" class="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            <button type="submit" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 md:px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1 inline-flex items-center {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">
+                                <i data-lucide="send" class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'ml-2 -scale-x-100' : 'mr-2' }} group-hover:translate-x-1 transition-transform"></i>
                                 {{ __('messages.send_request') }}
                             </button>
                         </div>
@@ -197,31 +199,19 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     FAQ
                 </span>
-                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{{ __('messages.faq_title') }}</h2>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.frequently_asked_questions') }}</h2>
             </div>
             
             <div class="max-w-3xl mx-auto space-y-4">
-                <div class="scroll-fade stagger-1 bg-white p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300">
-                    <h3 class="font-bold text-gray-900 mb-2 flex items-start">
-                        <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 text-purple-600 text-sm font-bold">1</span>
-                        {{ __('messages.faq_q1') }}
+                @foreach($faqs as $index => $faq)
+                <div class="scroll-fade stagger-{{ ($index % 3) + 1 }} bg-white p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300 {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
+                    <h3 class="font-bold text-gray-900 mb-3 flex items-start {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                        <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center {{ app()->getLocale() === 'ar' ? 'ml-3 mr-0' : 'mr-3' }} flex-shrink-0 text-purple-600 text-sm font-bold">{{ $index + 1 }}</span>
+                        <span class="flex-1 {{ app()->getLocale() === 'ar' ? 'font-arabic text-right' : '' }}">{{ $faq->getTranslatedQuestion() }}</span>
                     </h3>
-                    <p class="text-gray-600 ml-11">{{ __('messages.faq_a1') }}</p>
+                    <p class="text-gray-600 {{ app()->getLocale() === 'ar' ? 'mr-11 pr-11 font-arabic text-right' : 'ml-11 pl-11' }}">{{ $faq->getTranslatedAnswer() }}</p>
                 </div>
-                <div class="scroll-fade stagger-2 bg-white p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300">
-                    <h3 class="font-bold text-gray-900 mb-2 flex items-start">
-                        <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 text-purple-600 text-sm font-bold">2</span>
-                        {{ __('messages.faq_q2') }}
-                    </h3>
-                    <p class="text-gray-600 ml-11">{{ __('messages.faq_a2') }}</p>
-                </div>
-                <div class="scroll-fade stagger-3 bg-white p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300">
-                    <h3 class="font-bold text-gray-900 mb-2 flex items-start">
-                        <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 text-purple-600 text-sm font-bold">3</span>
-                        {{ __('messages.faq_q3') }}
-                    </h3>
-                    <p class="text-gray-600 ml-11">{{ __('messages.faq_a3') }}</p>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

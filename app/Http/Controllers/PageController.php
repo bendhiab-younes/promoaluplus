@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Testimonial;
@@ -48,7 +49,9 @@ class PageController extends Controller
 
     public function contact()
     {
-        return view('pages.contact');
+        $faqs = Faq::active()->ordered()->get();
+        
+        return view('pages.contact', compact('faqs'));
     }
 
     public function setLocale(string $locale)

@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         // Seed services
         $this->call([
             ServiceSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }
