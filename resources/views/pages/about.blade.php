@@ -45,7 +45,7 @@
     <!-- Mission & Values -->
     <section class="py-16 md:py-24 bg-gray-50">
         <div class="container mx-auto px-6 md:px-8">
-            <div class="text-center mb-10 md:mb-14 scroll-fade">
+            <div class="text-center mb-10 md:mb-16 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     {{ __('messages.mission_values') }}
@@ -54,32 +54,67 @@
                 <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.what_drives_us') }}</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
-                <div class="scroll-fade stagger-1 group">
-                    <div class="bg-gradient-to-br from-white to-blue-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="target" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+            <!-- Mission & Vision in Two Columns -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-10 mb-8 md:mb-10">
+                <div class="scroll-fade stagger-1">
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border-2 border-blue-200 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/30">
+                                <i data-lucide="target" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">{{ __('messages.our_mission') }}</h3>
+                            </div>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_mission') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.mission_desc') }}</p>
+                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ __('messages.mission_desc') }}</p>
                     </div>
                 </div>
-                <div class="scroll-fade stagger-2 group">
-                    <div class="bg-gradient-to-br from-white to-orange-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="eye" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                
+                <div class="scroll-fade stagger-2">
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border-2 border-orange-200 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange-500/30">
+                                <i data-lucide="eye" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">{{ __('messages.our_vision') }}</h3>
+                            </div>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_vision') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.vision_desc') }}</p>
+                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ __('messages.vision_desc') }}</p>
                     </div>
                 </div>
-                <div class="scroll-fade stagger-3 group md:col-span-3">
-                    <div class="bg-gradient-to-br from-white to-green-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+            </div>
+            
+            <!-- Values in Full Width -->
+            <div class="scroll-fade stagger-3">
+                <div class="bg-white p-8 md:p-12 rounded-3xl border-2 border-green-200 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-center gap-4 mb-8">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/30">
+                            <i data-lucide="heart" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_values') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base leading-relaxed max-w-5xl mx-auto whitespace-pre-line">{{ __('messages.values_desc') }}</p>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900">{{ __('messages.our_values') }}</h3>
+                    </div>
+                    <div class="max-w-5xl mx-auto">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+                            @php
+                                $values = [
+                                    ['title' => 'Qualité et robustesse', 'desc' => 'Des produits fiables qui résistent au temps et aux conditions locales', 'icon' => 'shield-check', 'color' => 'blue'],
+                                    ['title' => 'Proximité client', 'desc' => 'Un accompagnement personnalisé, basé sur l\'écoute et la satisfaction', 'icon' => 'users', 'color' => 'green'],
+                                    ['title' => 'Durabilité', 'desc' => 'Des solutions respectueuses de l\'environnement et conçues pour durer', 'icon' => 'leaf', 'color' => 'emerald'],
+                                    ['title' => 'Innovation et design', 'desc' => 'Allier performance technique et esthétique contemporaine', 'icon' => 'lightbulb', 'color' => 'orange'],
+                                    ['title' => 'Intégrité et professionnalisme', 'desc' => 'Transparence, rigueur et respect des engagements', 'icon' => 'award', 'color' => 'purple'],
+                                ];
+                            @endphp
+                            @foreach($values as $value)
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-{{ $value['color'] }}-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                                    <i data-lucide="{{ $value['icon'] }}" class="w-6 h-6 text-{{ $value['color'] }}-600"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-900 mb-2 text-sm md:text-base">{{ $value['title'] }}</h4>
+                                <p class="text-gray-600 text-xs md:text-sm leading-relaxed">{{ $value['desc'] }}</p>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,7 +133,7 @@
                 <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.expats_intro') }}</p>
             </div>
             
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <div class="scroll-fade stagger-1 group">
                     <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
@@ -126,21 +161,12 @@
                         <p class="text-gray-600 text-sm md:text-base">{{ __('messages.standards_desc') }}</p>
                     </div>
                 </div>
-                <div class="scroll-fade stagger-4 group">
-                    <div class="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="credit-card" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.flexible_payment') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.payment_desc') }}</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Certifications -->
-    <section class="py-16 md:py-24 bg-gray-50">
+    {{-- Certifications - Hidden for now --}}
+    {{-- <section class="py-16 md:py-24 bg-gray-50">
         <div class="container mx-auto px-6 md:px-8 text-center">
             <div class="scroll-fade mb-10 md:mb-14">
                 <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
@@ -176,7 +202,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- CTA -->
     <section class="py-12 md:py-20 lg:py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
