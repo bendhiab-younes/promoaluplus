@@ -1,5 +1,5 @@
 <!-- Chatbot Widget -->
-<div id="chatbot-widget" class="fixed bottom-6 right-6 z-50 font-sans" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+<div id="chatbot-widget" class="fixed bottom-6 {{ app()->getLocale() === 'ar' ? 'left-6' : 'right-6' }} z-[60] font-sans" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <!-- Chat Window -->
     <div id="chatbot-window" class="hidden mb-4 w-[360px] max-w-[calc(100vw-3rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
         <!-- Header -->
