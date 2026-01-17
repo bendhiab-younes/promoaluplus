@@ -20,21 +20,21 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 border border-white/20 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
+                                <div class="max-w-3xl text-white slide-content py-8">
+                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 md:mb-6 border border-white/20 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
                                         {{ SiteSetting::getTranslated('hero_badge', __('messages.premium_quality')) }}
                                     </span>
-                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
+                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                                     </h1>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
                                     </p>
                                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                                         <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
-                                            <i data-lucide="phone" class="w-5 h-5 me-2 group-hover:scale-110 transition-transform"></i>
+                                            <i data-lucide="phone" class="w-5 h-5 me-2 flex-shrink-0 group-hover:scale-110 transition-transform"></i>
                                             {{ __('messages.request_quote') }}
                                         </a>
                                         <button onclick="openWhatsApp()" class="btn-secondary inline-flex items-center justify-center group shadow-xl">
@@ -58,21 +58,21 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-5 border border-orange-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <div class="max-w-3xl text-white slide-content py-8">
+                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-5 md:mb-6 border border-orange-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                         {{ __('messages.doors') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
                                         {{ __('messages.modern_design') }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2">{{ __('messages.enhanced_security') }}</span>
+                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ __('messages.enhanced_security') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.doors_desc') }}
                                     </p>
                                     <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
                                         {{ __('messages.learn_more') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 group-hover:translate-x-1 transition-transform"></i>
+                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
                                 </div>
                             </div>
@@ -90,21 +90,21 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 border border-blue-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                                <div class="max-w-3xl text-white slide-content py-8">
+                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-5 md:mb-6 border border-blue-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                         {{ __('messages.facades') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
                                         {{ __('messages.curtain_walls') }}
-                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-2">{{ __('messages.modern_architecture') }}</span>
+                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ __('messages.modern_architecture') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.facades_desc') }}
                                     </p>
                                     <a href="{{ route('portfolio') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-blue-500/40">
                                         {{ __('messages.view_our_work') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 group-hover:translate-x-1 transition-transform"></i>
+                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
                                 </div>
                             </div>
@@ -122,21 +122,21 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content">
-                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-5 border border-green-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <div class="max-w-3xl text-white slide-content py-8">
+                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-5 md:mb-6 border border-green-300/30 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         {{ __('messages.guaranteed_quality') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 leading-[1.1] drop-shadow-2xl">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-5 md:mb-6 leading-[1.15] drop-shadow-2xl">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-2">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-2 md:mt-3">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
                                     </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-7 text-gray-200 leading-relaxed max-w-xl drop-shadow-lg">
+                                    <p class="text-base sm:text-lg md:text-xl mb-7 md:mb-8 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.european_standards') }}
                                     </p>
                                     <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-green-500/40">
                                         {{ __('messages.start_your_project') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 group-hover:translate-x-1 transition-transform"></i>
+                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
                                     </a>
                                 </div>
                             </div>
@@ -354,14 +354,14 @@
 
                         @foreach($newServices as $service)
                         <a href="{{ route('services') }}#{{ $service['name'] }}" 
-                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:scale-110 cursor-pointer min-w-[180px] w-[180px] md:min-w-[200px] md:w-[200px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
+                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:scale-110 cursor-pointer min-w-[180px] w-[180px] md:min-w-[220px] md:w-[220px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
                             <!-- Icon Container -->
-                            <div class="w-16 h-16 md:w-20 md:h-20 mb-4 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
+                            <div class="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-5 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
                                 {!! $service['icon'] !!}
                             </div>
                             
                             <!-- Service Name -->
-                            <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $service['color'] }}-600">
+                            <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $service['color'] }}-600 px-2 leading-snug">
                                 {{ __('messages.' . $service['name']) }}
                             </h3>
                         </a>
@@ -431,42 +431,42 @@
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 <div class="scroll-fade stagger-1 group">
-                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                             <i data-lucide="award" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.guaranteed_quality') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.european_standards') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.guaranteed_quality') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.european_standards') }}</p>
                     </div>
                 </div>
                 
                 <div class="scroll-fade stagger-2 group">
-                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                             <i data-lucide="users" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.expat_service') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.remote_follow_up') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.expat_service') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.remote_follow_up') }}</p>
                     </div>
                 </div>
                 
                 <div class="scroll-fade stagger-3 group">
-                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                             <i data-lucide="clock" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.deadlines_respected') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.clear_planning') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.deadlines_respected') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.clear_planning') }}</p>
                     </div>
                 </div>
                 
                 <div class="scroll-fade stagger-4 group">
-                    <div class="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <div class="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                             <i data-lucide="shield-check" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.transparent_pricing') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.detailed_quotes') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.transparent_pricing') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.detailed_quotes') }}</p>
                     </div>
                 </div>
             </div>
@@ -481,18 +481,18 @@
         </div>
         
         <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
-            <div class="max-w-3xl mx-auto scroll-fade">
+            <div class="max-w-3xl mx-auto scroll-fade py-4">
                 <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 md:mb-6 border border-white/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     {{ __('messages.start_your_project') }}
                 </span>
-                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 leading-tight">
+                <h2 class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight px-4">
                     {{ SiteSetting::getTranslated('cta_title', __('messages.ready_to_start')) }}
                 </h2>
-                <p class="text-base md:text-lg lg:text-xl text-blue-200 mb-6 md:mb-8 leading-relaxed px-4">
+                <p class="text-base md:text-lg lg:text-xl text-blue-200 mb-6 md:mb-8 leading-relaxed px-4 max-w-2xl mx-auto">
                     {{ SiteSetting::getTranslated('cta_description', __('messages.cta_description')) }}
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
                     <a href="{{ route('contact') }}" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 inline-flex items-center justify-center shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2 group-hover:scale-110 transition-transform flex-shrink-0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                         {{ __('messages.request_quote') }}

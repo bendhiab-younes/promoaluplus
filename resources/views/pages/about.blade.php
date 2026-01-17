@@ -56,30 +56,30 @@
             
             <div class="grid md:grid-cols-3 gap-6 md:gap-8">
                 <div class="scroll-fade stagger-1 group">
-                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                    <div class="bg-gradient-to-br from-white to-blue-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="target" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_mission') }}</h3>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_mission') }}</h3>
                         <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.mission_desc') }}</p>
                     </div>
                 </div>
                 <div class="scroll-fade stagger-2 group">
-                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                    <div class="bg-gradient-to-br from-white to-orange-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="eye" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_vision') }}</h3>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_vision') }}</h3>
                         <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.vision_desc') }}</p>
                     </div>
                 </div>
-                <div class="scroll-fade stagger-3 group">
-                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
+                <div class="scroll-fade stagger-3 group md:col-span-3">
+                    <div class="bg-gradient-to-br from-white to-green-50 p-8 md:p-10 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.our_values') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base leading-relaxed">{{ __('messages.values_desc') }}</p>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-4">{{ __('messages.our_values') }}</h3>
+                        <p class="text-gray-600 text-sm md:text-base leading-relaxed max-w-5xl mx-auto whitespace-pre-line">{{ __('messages.values_desc') }}</p>
                     </div>
                 </div>
             </div>
