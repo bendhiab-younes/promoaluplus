@@ -173,6 +173,7 @@ return [
     'please_correct_errors' => 'Please correct the following errors',
     'phone' => 'Phone',
     'address' => 'Address',
+    'full_address' => 'Industrial Zone, Tunis, Tunisia',
     'working_hours' => 'Mon-Fri: 8am-6pm, Sat: 9am-1pm',
     'response_time' => 'Response within 24h',
     'showroom_appointment' => 'Showroom open by appointment',
@@ -201,6 +202,7 @@ return [
 
     // FAQ
     'faq_title' => 'Frequently Asked Questions',
+    'frequently_asked_questions' => 'Frequently Asked Questions',
     'faq_q1' => 'How do I get a quote?',
     'faq_a1' => 'Simply fill out our online form or contact us by phone/WhatsApp. We will respond within 48h with a detailed quote.',
     'faq_q2' => 'Do you work with expatriates?',

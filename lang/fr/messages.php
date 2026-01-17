@@ -176,6 +176,7 @@ return [
     'please_correct_errors' => 'Veuillez corriger les erreurs suivantes',
     'phone' => 'Téléphone',
     'address' => 'Adresse',
+    'full_address' => 'Zone Industrielle, Tunis, Tunisie',
     'working_hours' => 'Lun-Ven: 8h-18h, Sam: 9h-13h',
     'response_time' => 'Réponse sous 24h',
     'showroom_appointment' => 'Showroom ouvert sur RDV',
@@ -204,6 +205,7 @@ return [
 
     // FAQ
     'faq_title' => 'Questions Fréquentes',
+    'frequently_asked_questions' => 'Questions Fréquentes',
     'faq_q1' => 'Comment obtenir un devis?',
     'faq_a1' => 'Remplissez simplement notre formulaire en ligne ou contactez-nous par téléphone/WhatsApp. Nous vous répondrons sous 48h avec un devis détaillé.',
     'faq_q2' => 'Travaillez-vous avec les expatriés?',
