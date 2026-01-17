@@ -13,7 +13,14 @@ class ListServices extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('view_site')
+                ->label('Voir sur le site')
+                ->icon('heroicon-o-globe-alt')
+                ->color('gray')
+                ->url(route('services'))
+                ->openUrlInNewTab(),
+            Actions\CreateAction::make()
+                ->label('Nouveau service'),
         ];
     }
 }
