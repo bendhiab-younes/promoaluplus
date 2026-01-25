@@ -95,14 +95,15 @@
                         <h3 class="text-xl md:text-2xl font-bold text-gray-900">{{ __('messages.our_values') }}</h3>
                     </div>
                     <div class="max-w-5xl mx-auto">
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8">
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                             @php
                                 $values = [
-                                    ['title' => 'Qualité et robustesse', 'desc' => 'Des produits fiables qui résistent au temps et aux conditions locales', 'icon' => 'shield-check', 'color' => 'blue'],
-                                    ['title' => 'Proximité client', 'desc' => 'Un accompagnement personnalisé, basé sur l\'écoute et la satisfaction', 'icon' => 'users', 'color' => 'green'],
-                                    ['title' => 'Durabilité', 'desc' => 'Des solutions respectueuses de l\'environnement et conçues pour durer', 'icon' => 'leaf', 'color' => 'emerald'],
-                                    ['title' => 'Innovation et design', 'desc' => 'Allier performance technique et esthétique contemporaine', 'icon' => 'lightbulb', 'color' => 'orange'],
-                                    ['title' => 'Intégrité et professionnalisme', 'desc' => 'Transparence, rigueur et respect des engagements', 'icon' => 'award', 'color' => 'purple'],
+                                    ['title' => __('messages.value_quality_title'), 'desc' => __('messages.value_quality_desc'), 'icon' => 'shield-check', 'color' => 'blue'],
+                                    ['title' => __('messages.value_proximity_title'), 'desc' => __('messages.value_proximity_desc'), 'icon' => 'users', 'color' => 'green'],
+                                    ['title' => __('messages.value_sustainability_title'), 'desc' => __('messages.value_sustainability_desc'), 'icon' => 'leaf', 'color' => 'emerald'],
+                                    ['title' => __('messages.value_innovation_title'), 'desc' => __('messages.value_innovation_desc'), 'icon' => 'lightbulb', 'color' => 'orange'],
+                                    ['title' => __('messages.value_integrity_title'), 'desc' => __('messages.value_integrity_desc'), 'icon' => 'award', 'color' => 'purple'],
+                                    ['title' => __('messages.value_timely_title'), 'desc' => __('messages.value_timely_desc'), 'icon' => 'clock', 'color' => 'red'],
                                 ];
                             @endphp
                             @foreach($values as $value)
@@ -122,7 +123,7 @@
     </section>
 
     <!-- Why Expats Choose Us -->
-    <section class="py-16 md:py-24 bg-white">
+    <!-- <section class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-6 md:px-8">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-3">
@@ -143,15 +144,7 @@
                         <p class="text-gray-600 text-sm md:text-base">{{ __('messages.multilingual_desc') }}</p>
                     </div>
                 </div>
-                <div class="scroll-fade stagger-2 group">
-                    <div class="bg-gradient-to-br from-white to-green-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-green-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="video" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.remote_follow_up') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.remote_desc') }}</p>
-                    </div>
-                </div>
+                
                 <div class="scroll-fade stagger-3 group">
                     <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
@@ -163,7 +156,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     {{-- Certifications - Hidden for now --}}
     {{-- <section class="py-16 md:py-24 bg-gray-50">

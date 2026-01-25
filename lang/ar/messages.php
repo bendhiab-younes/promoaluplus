@@ -151,8 +151,6 @@ return [
     'advantages_that_matter' => 'مزايا تصنع الفرق',
     'guaranteed_quality' => 'جودة مضمونة',
     'european_standards' => 'معايير أوروبية وضمان 10 سنوات',
-    'expat_service' => 'خدمة المغتربين',
-    'remote_follow_up' => 'متابعة عن بُعد وتواصل سهل',
     'deadlines_respected' => 'احترام المواعيد',
     'clear_planning' => 'تخطيط واضح والتزام بالوعود',
     'transparent_pricing' => 'أسعار شفافة',
@@ -244,6 +242,20 @@ return [
     'our_values' => 'قيمنا',
     'values_desc' => 'الجودة والمتانة: منتجات موثوقة تقاوم الزمن والظروف المحلية. القرب من العميل: مرافقة شخصية، مبنية على الاستماع والرضا. الاستدامة: حلول صديقة للبيئة ومصممة لتدوم. الابتكار والتصميم: الجمع بين الأداء التقني والجمالية المعاصرة. النزاهة والاحترافية: الشفافية، الدقة واحترام الالتزامات.',
 
+    // Individual Values
+    'value_quality_title' => 'الجودة والمتانة',
+    'value_quality_desc' => 'منتجات موثوقة تقاوم الزمن والظروف المحلية',
+    'value_proximity_title' => 'القرب من العميل',
+    'value_proximity_desc' => 'مرافقة شخصية، مبنية على الاستماع والرضا',
+    'value_sustainability_title' => 'الاستدامة',
+    'value_sustainability_desc' => 'حلول صديقة للبيئة ومصممة لتدوم',
+    'value_innovation_title' => 'الابتكار والتصميم',
+    'value_innovation_desc' => 'الجمع بين الأداء التقني والجمالية المعاصرة',
+    'value_integrity_title' => 'النزاهة والاحترافية',
+    'value_integrity_desc' => 'الشفافية، الدقة واحترام الالتزامات',
+    'value_timely_title' => 'الالتزام بالمواعيد',
+    'value_timely_desc' => 'التسليم الموثوق في المواعيد المتفق عليها',
+
     // Why expats choose us
     'why_expats_choose_us' => 'لماذا يختارنا المغتربون',
     'expats_intro' => 'خدمة مصممة خصيصاً للتونسيين حول العالم.',
@@ -270,6 +282,11 @@ return [
     'step_production_desc' => 'التصنيع في الورشة',
     'step_installation' => 'التركيب',
     'step_installation_desc' => 'التركيب بواسطة خبرائنا',
+
+    // Partners / Suppliers
+    'our_partners' => 'شركاؤنا',
+    'trusted_suppliers' => 'موردون موثوقون',
+    'partners_description' => 'نعمل مع أفضل الموردين لضمان منتجات عالية الجودة.',
 
     // Footer
     'footer_description' => 'شريكك الموثوق لنجارة الألمنيوم في تونس.',

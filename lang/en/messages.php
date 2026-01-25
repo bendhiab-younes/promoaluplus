@@ -151,8 +151,6 @@ return [
     'advantages_that_matter' => 'Advantages that make the difference',
     'guaranteed_quality' => 'Guaranteed Quality',
     'european_standards' => 'European standards and 10-year warranty',
-    'expat_service' => 'Expat Service',
-    'remote_follow_up' => 'Remote follow-up and easy communication',
     'deadlines_respected' => 'Deadlines Respected',
     'clear_planning' => 'Clear planning and commitments kept',
     'transparent_pricing' => 'Transparent Pricing',
@@ -244,6 +242,20 @@ return [
     'our_values' => 'Our Values',
     'values_desc' => 'Quality and robustness: reliable products that withstand time and local conditions. Customer proximity: personalized support, based on listening and satisfaction. Sustainability: environmentally friendly solutions designed to last. Innovation and design: combining technical performance and contemporary aesthetics. Integrity and professionalism: transparency, rigor and commitment to our promises.',
 
+    // Individual Values
+    'value_quality_title' => 'Quality & Robustness',
+    'value_quality_desc' => 'Reliable products that withstand time and local conditions',
+    'value_proximity_title' => 'Customer Proximity',
+    'value_proximity_desc' => 'Personalized support, based on listening and satisfaction',
+    'value_sustainability_title' => 'Sustainability',
+    'value_sustainability_desc' => 'Environmentally friendly solutions designed to last',
+    'value_innovation_title' => 'Innovation & Design',
+    'value_innovation_desc' => 'Combining technical performance and contemporary aesthetics',
+    'value_integrity_title' => 'Integrity & Professionalism',
+    'value_integrity_desc' => 'Transparency, rigor and commitment to our promises',
+    'value_timely_title' => 'Timely Delivery',
+    'value_timely_desc' => 'Reliable delivery within agreed deadlines',
+
     // Why expats choose us
     'why_expats_choose_us' => 'Why Expatriates Choose Us',
     'expats_intro' => 'A service designed especially for Tunisians worldwide.',
@@ -270,6 +282,11 @@ return [
     'step_production_desc' => 'Workshop manufacturing',
     'step_installation' => 'Installation',
     'step_installation_desc' => 'Installation by our experts',
+
+    // Partners / Suppliers
+    'our_partners' => 'Our Partners',
+    'trusted_suppliers' => 'Trusted Suppliers',
+    'partners_description' => 'We work with the best suppliers to guarantee you superior quality products.',
 
     // Footer
     'footer_description' => 'Your trusted partner for aluminum joinery in Tunisia.',

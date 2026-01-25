@@ -41,7 +41,7 @@ class ServiceSeeder extends Seeder
                     'https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 ],
                 'features' => [
-                    ['fr' => 'Robustesse et résistance à l\'humidité', 'en' => 'Robustness and moisture resistance', 'ar' => 'متانة ومقاومة للرطوبة'],
+                    ['fr' => 'Résistance à l\'humidité', 'en' => 'Moisture resistance', 'ar' => 'مقاومة للرطوبة'],
                     ['fr' => 'Design moderne et épuré', 'en' => 'Modern and sleek design', 'ar' => 'تصميم عصري وأنيق'],
                     ['fr' => 'Entretien facile', 'en' => 'Easy maintenance', 'ar' => 'سهولة الصيانة'],
                     ['fr' => 'Personnalisation complète', 'en' => 'Full customization', 'ar' => 'تخصيص كامل'],
@@ -88,8 +88,8 @@ class ServiceSeeder extends Seeder
                     'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 ],
                 'features' => [
+                    ['fr' => 'Sécurité et durabilité', 'en' => 'Security and durability', 'ar' => 'الأمان والمتانة'],
                     ['fr' => 'Puissance et résistance', 'en' => 'Power and strength', 'ar' => 'القوة والمتانة'],
-                    ['fr' => 'Excellente étanchéité', 'en' => 'Excellent sealing', 'ar' => 'إحكام ممتاز'],
                     ['fr' => 'Style et élégance', 'en' => 'Style and elegance', 'ar' => 'الأناقة والرقي'],
                     ['fr' => 'Design personnalisable', 'en' => 'Customizable design', 'ar' => 'تصميم قابل للتخصيص'],
                 ],
@@ -127,7 +127,7 @@ class ServiceSeeder extends Seeder
                 'svg_icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line></svg>',
                 'color' => 'blue',
                 'features' => [
-                    ['fr' => 'Sécurité et durabilité', 'en' => 'Security and durability', 'ar' => 'الأمان والمتانة'],
+                    ['fr' => 'Robustesse et durabilité', 'en' => 'Robustness and durability', 'ar' => 'المتانة والديمومة'],
                     ['fr' => 'Performance énergétique', 'en' => 'Energy performance', 'ar' => 'كفاءة الطاقة'],
                     ['fr' => 'Design esthétique', 'en' => 'Aesthetic design', 'ar' => 'تصميم جمالي'],
                 ],

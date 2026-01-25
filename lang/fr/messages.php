@@ -154,8 +154,6 @@ return [
     'advantages_that_matter' => 'Des avantages qui font la différence',
     'guaranteed_quality' => 'Qualité Garantie',
     'european_standards' => 'Standards européens et garantie 10 ans',
-    'expat_service' => 'Service Expatriés',
-    'remote_follow_up' => 'Suivi à distance et communication facilitée',
     'deadlines_respected' => 'Délais Respectés',
     'clear_planning' => 'Planning clair et engagements tenus',
     'transparent_pricing' => 'Prix Transparents',
@@ -247,6 +245,20 @@ return [
     'our_values' => 'Nos Valeurs',
     'values_desc' => 'Qualité et robustesse : des produits fiables qui résistent au temps et aux conditions locales. Proximité client : un accompagnement personnalisé, basé sur l\'écoute et la satisfaction. Durabilité : des solutions respectueuses de l\'environnement et conçues pour durer. Innovation et design : allier performance technique et esthétique contemporaine. Intégrité et professionnalisme : transparence, rigueur et respect des engagements.',
 
+    // Individual Values
+    'value_quality_title' => 'Qualité & Robustesse',
+    'value_quality_desc' => 'Des produits fiables qui résistent au temps et aux conditions locales',
+    'value_proximity_title' => 'Proximité Client',
+    'value_proximity_desc' => 'Un accompagnement personnalisé, basé sur l\'écoute et la satisfaction',
+    'value_sustainability_title' => 'Durabilité',
+    'value_sustainability_desc' => 'Des solutions respectueuses de l\'environnement et conçues pour durer',
+    'value_innovation_title' => 'Innovation & Design',
+    'value_innovation_desc' => 'Allier performance technique et esthétique contemporaine',
+    'value_integrity_title' => 'Intégrité & Professionnalisme',
+    'value_integrity_desc' => 'Transparence, rigueur et respect des engagements',
+    'value_timely_title' => 'Délais Respectés',
+    'value_timely_desc' => 'Livraison dans les délais convenus avec fiabilité',
+
     // Why expats choose us
     'why_expats_choose_us' => 'Pourquoi les Expatriés Nous Choisissent',
     'expats_intro' => 'Un service pensé spécialement pour les Tunisiens du monde entier.',
@@ -273,6 +285,11 @@ return [
     'step_production_desc' => 'Production en atelier',
     'step_installation' => 'Installation',
     'step_installation_desc' => 'Pose par nos experts',
+
+    // Partners / Suppliers
+    'our_partners' => 'Nos Partenaires',
+    'trusted_suppliers' => 'Fournisseurs de Confiance',
+    'partners_description' => 'Nous travaillons avec les meilleurs fournisseurs pour vous garantir des produits de qualité supérieure.',
 
     // Footer
     'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium en Tunisie.',
