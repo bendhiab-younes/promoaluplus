@@ -1,0 +1,34 @@
+{
+  "settings": [
+    {
+      "key": "about_story_fr",
+      "value": "Promo Alu Plus est votre partenaire de confiance pour tous vos projets en aluminium en Tunisie. Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l'étranger lorsqu'ils construisent ou rénovent leur maison en Tunisie.",
+      "group": "about"
+    },
+    {
+      "key": "about_story_en",
+      "value": "Promo Alu Plus is your trusted partner for all your aluminum projects in Tunisia. We understand the unique challenges faced by Tunisians living abroad when building or renovating their home in Tunisia.",
+      "group": "about"
+    },
+    {
+      "key": "about_story_ar",
+      "value": "Promo Alu Plus شريكك الموثوق لجميع مشاريعك في الألمنيوم في تونس. نحن نفهم التحديات الفريدة التي يواجهها التونسيون المقيمون في الخارج عند بناء أو تجديد منازلهم في تونس.",
+      "group": "about"
+    }
+  ],
+  "faqs": [
+    {
+      "question": {
+        "fr": "Comment obtenir un devis ?",
+        "en": "How to get a quote?",
+        "ar": "كيف أحصل على عرض سعر؟"
+      },
+      "answer": {
+        "fr": "Remplissez simplement notre formulaire en ligne ou contactez-nous par téléphone/WhatsApp. Nous vous répondrons sous 48h avec un devis détaillé.",
+        "en": "Simply fill out our online form or contact us by phone/WhatsApp. We will respond within 48h with a detailed quote.",
+        "ar": "املأ نموذجنا عبر الإنترنت أو اتصل بنا عبر الهاتف/واتساب. سنرد عليك خلال 48 ساعة بعرض سعر مفصل."
+      },
+      "sort_order": 1
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "services": [
+    {
+      "slug": "kitchen",
+      "title": {
+        "fr": "Cuisines en Aluminium",
+        "en": "Aluminum Kitchens",
+        "ar": "مطابخ الألومنيوم"
+      },
+      "short_description": {
+        "fr": "Des cuisines modernes et durables en aluminium de haute qualité.",
+        "en": "Modern and durable kitchens made from high-quality aluminum.",
+        "ar": "مطابخ حديثة ومتينة من الألومنيوم عالي الجودة."
+      },
+      "description": {
+        "fr": "Nos cuisines en aluminium allient modernité et durabilité. Conçues sur mesure, elles offrent une résistance exceptionnelle à l'humidité et à la chaleur, tout en étant faciles à entretenir.",
+        "en": "Our aluminum kitchens combine modernity and durability. Custom-designed, they offer exceptional resistance to humidity and heat while being easy to maintain.",
+        "ar": "تجمع مطابخنا المصنوعة من الألومنيوم بين الحداثة والمتانة. مصممة حسب الطلب، توفر مقاومة استثنائية للرطوبة والحرارة مع سهولة الصيانة."
+      },
+      "icon": "utensils",
+      "color": "rose",
+      "sort_order": 1
+    }
+  ]
+}
