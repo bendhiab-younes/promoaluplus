@@ -16,6 +16,16 @@ class ServiceSeeder extends Seeder
         $servicesFile = base_path('../content_docs/json/services.json');
         $servicesData = json_decode(file_get_contents($servicesFile), true);
 
+        // Load gallery overrides from the centralized image list
+        $serviceImagesFile = base_path('../service_images.json');
+        $serviceImagesData = file_exists($serviceImagesFile)
+            ? json_decode(file_get_contents($serviceImagesFile), true)
+            : [];
+
+        if (! is_array($serviceImagesData)) {
+            $serviceImagesData = [];
+        }
+
         $slugMap = [
             'cuisines' => 'kitchen',
             'portes' => 'doors',
@@ -26,6 +36,11 @@ class ServiceSeeder extends Seeder
             $slug = $slugMap[$key] ?? $key;
             $serviceEn = $servicesData['en'][$key] ?? [];
             $serviceAr = $servicesData['ar'][$key] ?? [];
+            $gallery = $serviceImagesData[$slug] ?? $serviceImagesData[$key] ?? ($service['images'] ?? []);
+
+            if (! is_array($gallery)) {
+                $gallery = [];
+            }
 
             Service::updateOrCreate(
                 ['slug' => $slug],
@@ -45,7 +60,7 @@ class ServiceSeeder extends Seeder
                         'en' => $serviceEn['features'] ?? [],
                         'ar' => $serviceAr['features'] ?? [],
                     ],
-                    'gallery' => $service['images'] ?? [],
+                    'gallery' => array_values($gallery),
                 ]
             );
         }
