@@ -1,6 +1,63 @@
 @extends('layouts.app')
 @php
     use App\Models\SiteSetting;
+
+    $splitLines = static function (?string $text): array {
+        if (! is_string($text) || trim($text) === '') {
+            return [];
+        }
+
+        $normalized = str_replace(['•', ';'], ["\n", "\n"], $text);
+        $parts = preg_split('/\r\n|\r|\n/', $normalized) ?: [];
+
+        return array_values(array_filter(array_map(
+            static fn ($part) => trim($part, " \t\n\r\0\x0B-"),
+            $parts
+        )));
+    };
+
+    $aboutStory = SiteSetting::getTranslated('about_story', implode("\n\n", [
+        __('messages.story_p1'),
+        __('messages.story_p2'),
+        __('messages.story_p3'),
+    ]));
+
+    $missionText = SiteSetting::getTranslated(
+        'about_history_mission',
+        SiteSetting::getTranslated('about_mission', __('messages.mission_desc'))
+    );
+    $visionText = SiteSetting::getTranslated(
+        'about_history_vision',
+        SiteSetting::getTranslated('about_vision', __('messages.vision_desc'))
+    );
+
+    $aboutValuesRaw = SiteSetting::getTranslated(
+        'about_history_values',
+        SiteSetting::getTranslated('about_values', __('messages.values_desc'))
+    );
+    $aboutValues = $splitLines($aboutValuesRaw);
+    if (empty($aboutValues)) {
+        $aboutValues = [__('messages.values_desc')];
+    }
+
+    $expatTitle = SiteSetting::getTranslated('expat_service_title', __('messages.why_expats_choose_us'));
+    $expatIntro = SiteSetting::getTranslated('expat_service_intro', __('messages.expats_intro'));
+    $expatFeaturesRaw = SiteSetting::getTranslated(
+        'expat_service_features',
+        implode("\n", [
+            __('messages.multilingual_desc'),
+            __('messages.remote_desc'),
+            __('messages.standards_desc'),
+        ])
+    );
+    $expatFeatures = $splitLines($expatFeaturesRaw);
+    if (empty($expatFeatures)) {
+        $expatFeatures = [
+            __('messages.multilingual_desc'),
+            __('messages.remote_desc'),
+            __('messages.standards_desc'),
+        ];
+    }
 @endphp
 @section('title', __('messages.nav_about'))
 
@@ -29,9 +86,7 @@
                         {{ __('messages.our_story') }}
                     </span>
                     <h2 class="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-6">{{ __('messages.our_story') }}</h2>
-                    <p class="text-gray-600 mb-4 text-base md:text-lg leading-relaxed">{{ __('messages.story_p1') }}</p>
-                    <p class="text-gray-600 mb-4 text-base md:text-lg leading-relaxed">{{ __('messages.story_p2') }}</p>
-                    <p class="text-gray-600 text-base md:text-lg leading-relaxed">{{ __('messages.story_p3') }}</p>
+                    <div class="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-line">{!! nl2br(e($aboutStory)) !!}</div>
                 </div>
                 <div class="scroll-fade stagger-1">
                     <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -66,7 +121,7 @@
                                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">{{ __('messages.our_mission') }}</h3>
                             </div>
                         </div>
-                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ __('messages.mission_desc') }}</p>
+                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ $missionText }}</p>
                     </div>
                 </div>
                 
@@ -80,7 +135,7 @@
                                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">{{ __('messages.our_vision') }}</h3>
                             </div>
                         </div>
-                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ __('messages.vision_desc') }}</p>
+                        <p class="text-gray-700 text-base md:text-lg leading-relaxed">{{ $visionText }}</p>
                     </div>
                 </div>
             </div>
@@ -97,22 +152,26 @@
                     <div class="max-w-5xl mx-auto">
                         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                             @php
-                                $values = [
-                                    ['title' => __('messages.value_quality_title'), 'desc' => __('messages.value_quality_desc'), 'icon' => 'shield-check', 'color' => 'blue'],
-                                    ['title' => __('messages.value_proximity_title'), 'desc' => __('messages.value_proximity_desc'), 'icon' => 'users', 'color' => 'green'],
-                                    ['title' => __('messages.value_sustainability_title'), 'desc' => __('messages.value_sustainability_desc'), 'icon' => 'leaf', 'color' => 'emerald'],
-                                    ['title' => __('messages.value_innovation_title'), 'desc' => __('messages.value_innovation_desc'), 'icon' => 'lightbulb', 'color' => 'orange'],
-                                    ['title' => __('messages.value_integrity_title'), 'desc' => __('messages.value_integrity_desc'), 'icon' => 'award', 'color' => 'purple'],
-                                    ['title' => __('messages.value_timely_title'), 'desc' => __('messages.value_timely_desc'), 'icon' => 'clock', 'color' => 'red'],
+                                $valueIcons = ['shield-check', 'users', 'leaf', 'lightbulb', 'award', 'clock'];
+                                $valueStyles = [
+                                    ['bg' => 'bg-blue-100', 'text' => 'text-blue-600'],
+                                    ['bg' => 'bg-green-100', 'text' => 'text-green-600'],
+                                    ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-600'],
+                                    ['bg' => 'bg-orange-100', 'text' => 'text-orange-600'],
+                                    ['bg' => 'bg-purple-100', 'text' => 'text-purple-600'],
+                                    ['bg' => 'bg-red-100', 'text' => 'text-red-600'],
                                 ];
                             @endphp
-                            @foreach($values as $value)
+                            @foreach($aboutValues as $index => $value)
                             <div class="text-center">
-                                <div class="w-12 h-12 bg-{{ $value['color'] }}-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                                    <i data-lucide="{{ $value['icon'] }}" class="w-6 h-6 text-{{ $value['color'] }}-600"></i>
+                                @php
+                                    $icon = $valueIcons[$index % count($valueIcons)];
+                                    $style = $valueStyles[$index % count($valueStyles)];
+                                @endphp
+                                <div class="w-12 h-12 {{ $style['bg'] }} rounded-xl flex items-center justify-center mx-auto mb-3">
+                                    <i data-lucide="{{ $icon }}" class="w-6 h-6 {{ $style['text'] }}"></i>
                                 </div>
-                                <h4 class="font-bold text-gray-900 mb-2 text-sm md:text-base">{{ $value['title'] }}</h4>
-                                <p class="text-gray-600 text-xs md:text-sm leading-relaxed">{{ $value['desc'] }}</p>
+                                <p class="text-gray-600 text-xs md:text-sm leading-relaxed">{{ $value }}</p>
                             </div>
                             @endforeach
                         </div>
@@ -123,40 +182,59 @@
     </section>
 
     <!-- Why Expats Choose Us -->
-    <!-- <section class="py-16 md:py-24 bg-white">
+    <section class="py-16 md:py-24 bg-white">
         <div class="container mx-auto px-6 md:px-8">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    {{ __('messages.why_expats_choose_us') }}
+                    {{ $expatTitle }}
                 </span>
-                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.why_expats_choose_us') }}</h2>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.expats_intro') }}</p>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ $expatTitle }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ $expatIntro }}</p>
             </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <div class="scroll-fade stagger-1 group">
-                    <div class="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="globe" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                @php
+                    $expatStyles = [
+                        [
+                            'icon' => 'globe',
+                            'panel' => 'from-white to-blue-50',
+                            'border' => 'hover:border-blue-200',
+                            'badge' => 'from-blue-500 to-blue-600',
+                            'shadow' => 'shadow-blue-500/30',
+                        ],
+                        [
+                            'icon' => 'video',
+                            'panel' => 'from-white to-purple-50',
+                            'border' => 'hover:border-purple-200',
+                            'badge' => 'from-purple-500 to-purple-600',
+                            'shadow' => 'shadow-purple-500/30',
+                        ],
+                        [
+                            'icon' => 'shield-check',
+                            'panel' => 'from-white to-orange-50',
+                            'border' => 'hover:border-orange-200',
+                            'badge' => 'from-orange-500 to-orange-600',
+                            'shadow' => 'shadow-orange-500/30',
+                        ],
+                    ];
+                @endphp
+                @foreach($expatFeatures as $index => $feature)
+                @php
+                    $style = $expatStyles[$index % count($expatStyles)];
+                @endphp
+                <div class="scroll-fade stagger-{{ ($index % 3) + 1 }} group">
+                    <div class="bg-gradient-to-br {{ $style['panel'] }} p-6 md:p-8 rounded-2xl border border-gray-100 {{ $style['border'] }} transition-all duration-300 hover:shadow-xl text-center h-full">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br {{ $style['badge'] }} rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg {{ $style['shadow'] }} group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="{{ $style['icon'] }}" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.multilingual_team') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.multilingual_desc') }}</p>
+                        <p class="text-gray-600 text-sm md:text-base">{{ $feature }}</p>
                     </div>
                 </div>
-                
-                <div class="scroll-fade stagger-3 group">
-                    <div class="bg-gradient-to-br from-white to-orange-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 hover:shadow-xl text-center h-full">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="shield-check" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2">{{ __('messages.european_standards') }}</h3>
-                        <p class="text-gray-600 text-sm md:text-base">{{ __('messages.standards_desc') }}</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
-    </section> -->
+    </section>
 
     {{-- Certifications - Hidden for now --}}
     {{-- <section class="py-16 md:py-24 bg-gray-50">

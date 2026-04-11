@@ -26,11 +26,23 @@ class ServiceSeeder extends Seeder
             $serviceImagesData = [];
         }
 
+        if (! is_array($servicesData) || ! isset($servicesData['fr']) || ! is_array($servicesData['fr'])) {
+            return;
+        }
+
         $slugMap = [
             'cuisines' => 'kitchen',
             'portes' => 'doors',
             'fenetres' => 'windows',
+            'rolling_shutters' => 'rolling_shutters',
+            'railings' => 'railings',
+            'pergola' => 'pergola',
+            'sun_breakers' => 'sun_breakers',
+            'mosquito_nets' => 'mosquito_nets',
+            'space_design' => 'space_design',
         ];
+
+        $sortOrder = 1;
 
         foreach ($servicesData['fr'] as $key => $service) {
             $slug = $slugMap[$key] ?? $key;
@@ -61,8 +73,11 @@ class ServiceSeeder extends Seeder
                         'ar' => $serviceAr['features'] ?? [],
                     ],
                     'gallery' => array_values($gallery),
+                    'sort_order' => $sortOrder,
                 ]
             );
+
+            $sortOrder++;
         }
     }
 }

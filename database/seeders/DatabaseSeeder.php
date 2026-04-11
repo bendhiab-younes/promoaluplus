@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
 
         // Seed services
         $this->call([
+            SiteSettingsSeeder::class,
             ServiceSeeder::class,
             FaqSeeder::class,
             ChatbotFlowSeeder::class,
