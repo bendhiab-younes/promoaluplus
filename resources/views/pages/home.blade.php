@@ -27,7 +27,7 @@
                                     </span>
                                     <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
+                                        <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                                     </h1>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
@@ -65,7 +65,7 @@
                                     </span>
                                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ __('messages.modern_design') }}
-                                        <span class="bg-gradient-to-r from-orange-400 via-orange-300 to-yellow-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ __('messages.enhanced_security') }}</span>
+                                        <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.enhanced_security') }}</span>
                                     </h2>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.doors_desc') }}
@@ -97,7 +97,7 @@
                                     </span>
                                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ __('messages.curtain_walls') }}
-                                        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ __('messages.modern_architecture') }}</span>
+                                        <span class="text-cyan-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.modern_architecture') }}</span>
                                     </h2>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.facades_desc') }}
@@ -129,7 +129,7 @@
                                     </span>
                                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="bg-gradient-to-r from-green-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
                                     </h2>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.european_standards') }}
@@ -154,11 +154,11 @@
             </button>
 
             <!-- Dots Indicators -->
-            <div class="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 bg-black/20 backdrop-blur-sm rounded-full">
-                <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
+            <div class="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 bg-slate-900/20 backdrop-blur-sm rounded-full">
+                <button onclick="goToSlide(0)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
+                <button onclick="goToSlide(1)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
+                <button onclick="goToSlide(2)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
+                <button onclick="goToSlide(3)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
             </div>
         </div>
     </section>
@@ -167,6 +167,7 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
+        const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         let autoplayInterval;
         let isTransitioning = false;
 
@@ -234,6 +235,9 @@
         }
 
         function startAutoplay() {
+            if (reduceMotionQuery.matches) {
+                return;
+            }
             autoplayInterval = setInterval(nextSlide, 6000); // Change slide every 6 seconds
         }
 
@@ -559,8 +563,8 @@
                 </div>
                 
                 <div class="scroll-fade stagger-4 group">
-                    <div class="bg-gradient-to-br from-white to-purple-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <div class="bg-gradient-to-br from-white to-sky-50 p-6 md:p-8 rounded-2xl border border-gray-100 hover:border-sky-200 transition-all duration-300 hover:shadow-xl text-center h-full flex flex-col">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-lg shadow-sky-500/30 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                             <i data-lucide="shield-check" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-3">{{ __('messages.transparent_pricing') }}</h3>

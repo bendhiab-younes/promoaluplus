@@ -33,19 +33,21 @@
                     <div class="space-y-3">
                         <!-- Main Image -->
                         <div class="relative group">
-                            <img id="main-image-{{ $service->slug }}" 
-                                 src="{{ $gallery[0] ?? asset('images/placeholder.jpg') }}" 
-                                 alt="{{ $service->getTranslatedTitle() }}" 
-                                 class="rounded-2xl shadow-2xl w-full h-[400px] object-cover transition-all duration-500">
+                               <img id="main-image-{{ $service->slug }}" 
+                                   src="{{ $gallery[0] ?? asset('images/placeholder.jpg') }}" 
+                                   alt="{{ $service->getTranslatedTitle() }}" 
+                                   loading="lazy"
+                                   decoding="async"
+                                   class="rounded-2xl shadow-2xl w-full h-[400px] object-cover transition-all duration-500">
                         </div>
                         <!-- Thumbnail Navigation -->
                         @if(count($gallery) > 1)
                         <div class="flex gap-2 justify-center">
                             @foreach($gallery as $thumbIndex => $thumb)
-                            <button onclick="event.stopPropagation(); changeServiceImage('{{ $service->slug }}', {{ $thumbIndex }}, '{{ $thumb }}')" 
+                            <button type="button" onclick="event.stopPropagation(); changeServiceImage('{{ $service->slug }}', {{ $thumbIndex }}, '{{ $thumb }}')" 
                                     id="thumb-{{ $service->slug }}-{{ $thumbIndex }}"
                                     class="w-16 h-16 rounded-xl overflow-hidden border-3 {{ $thumbIndex === 0 ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-200 hover:border-blue-300' }} shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                                <img src="{{ $thumb }}" alt="" class="w-full h-full object-cover">
+                                <img src="{{ $thumb }}" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             </button>
                             @endforeach
                         </div>

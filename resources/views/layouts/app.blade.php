@@ -23,7 +23,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <style>
@@ -37,7 +37,7 @@
         }
 
         * {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
         }
 
         .font-display {
@@ -113,7 +113,7 @@
             border-radius: 0.75rem;
             font-weight: 600;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.22);
             position: relative;
             overflow: hidden;
         }
@@ -135,7 +135,7 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
         }
 
         .btn-secondary {
@@ -345,7 +345,7 @@
             visibility: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 50;
-            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.3);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.2);
         }
 
         .back-to-top.show {
@@ -356,7 +356,7 @@
 
         .back-to-top:hover {
             transform: translateX(-50%) translateY(-3px) scale(1.1);
-            box-shadow: 0 8px 30px rgba(30, 58, 138, 0.4);
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.28);
         }
 
         /* WhatsApp floating button - bottom left */
@@ -374,19 +374,19 @@
             justify-content: center;
             cursor: pointer;
             z-index: 50;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.25);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: pulse-green 2s infinite;
         }
 
         .whatsapp-float:hover {
             transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.32);
         }
 
         @keyframes pulse-green {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
-            50% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(15, 23, 42, 0.25); }
+            50% { box-shadow: 0 0 0 15px rgba(15, 23, 42, 0); }
         }
 
         /* Portfolio elegant */
@@ -417,7 +417,7 @@
         .portfolio-filter.active {
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)) !important;
             color: white !important;
-            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
         }
 
         /* Section dividers */
@@ -535,14 +535,35 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .scroll-fade,
+            .scroll-fade-left,
+            .scroll-fade-right,
+            .carousel-slide .slide-content > * {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
     </style>
 
     @stack('styles')
 </head>
 <body class="bg-white">
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu">
-        <button id="close-menu-btn" class="absolute top-4 right-4 text-white">
+    <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+        <button id="close-menu-btn" type="button" class="absolute top-4 right-4 text-white" aria-label="Close mobile menu">
             <i data-lucide="x" class="w-8 h-8"></i>
         </button>
         <nav class="flex flex-col space-y-6 mt-12">
@@ -573,7 +594,7 @@
                 
                 <div class="flex items-center space-x-4">
                     <div class="relative hidden md:block">
-                        <select id="language-selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded px-2 py-1 cursor-pointer transition-colors duration-300 hover:bg-white/20">
+                        <select id="language-selector" aria-label="Language selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded px-2 py-1 cursor-pointer transition-colors duration-300 hover:bg-white/20">
                             <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }} class="text-gray-800">FR</option>
                             <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }} class="text-gray-800">AR</option>
                             <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }} class="text-gray-800">EN</option>
@@ -584,7 +605,7 @@
                     </a>
                 </div>
                 
-                <button id="mobile-menu-btn" class="md:hidden text-white">
+                <button id="mobile-menu-btn" type="button" class="md:hidden text-white" aria-label="Open mobile menu" aria-controls="mobile-menu" aria-expanded="false">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -683,23 +704,33 @@
             const closeMenuBtn = document.getElementById('close-menu-btn');
 
             if (mobileMenuBtn && mobileMenu) {
+                const setMobileMenuState = (isOpen) => {
+                    mobileMenu.classList.toggle('active', isOpen);
+                    mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+                    mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    document.body.style.overflow = isOpen ? 'hidden' : '';
+                };
+
                 mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.add('active');
-                    document.body.style.overflow = 'hidden';
+                    setMobileMenuState(true);
                 });
 
                 if (closeMenuBtn) {
                     closeMenuBtn.addEventListener('click', () => {
-                        mobileMenu.classList.remove('active');
-                        document.body.style.overflow = '';
+                        setMobileMenuState(false);
                     });
                 }
 
                 mobileMenu.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('active');
-                        document.body.style.overflow = '';
+                        setMobileMenuState(false);
                     });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                        setMobileMenuState(false);
+                    }
                 });
             }
 
@@ -728,7 +759,6 @@
                     } else {
                         header.classList.remove('navbar-scrolled');
                     }
-                    lucide.createIcons();
                 });
             }
 
@@ -743,12 +773,6 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Re-initialize Lucide icons after element becomes visible
-                        setTimeout(() => {
-                            if (typeof lucide !== 'undefined') {
-                                lucide.createIcons();
-                            }
-                        }, 100);
                     }
                 });
             }, observerOptions);

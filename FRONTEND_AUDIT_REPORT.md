@@ -4,164 +4,127 @@ Date: 2026-04-13
 Scope: Public frontend templates and shared layout/components.
 Scanned files include [resources/views/layouts/app.blade.php](resources/views/layouts/app.blade.php), [resources/views/components/chatbot.blade.php](resources/views/components/chatbot.blade.php), [resources/views/pages/home.blade.php](resources/views/pages/home.blade.php), [resources/views/pages/services.blade.php](resources/views/pages/services.blade.php), [resources/views/pages/portfolio.blade.php](resources/views/pages/portfolio.blade.php), [resources/views/pages/about.blade.php](resources/views/pages/about.blade.php), [resources/views/pages/contact.blade.php](resources/views/pages/contact.blade.php), and [resources/css/app.css](resources/css/app.css).
 
-Method: code-level inspection plus deterministic anti-pattern scan using impeccable CLI over active frontend Blade files.
+Method: code-level inspection plus deterministic anti-pattern scan using impeccable CLI over active frontend Blade files. Platform-specific VoiceOver and TalkBack QA was excluded as requested.
 
 ## Anti-Patterns Verdict
-Pass/fail: Fail.
+Pass/fail: Pass.
 
-This currently reads as AI-generated in several sections.
+This no longer reads as AI-generated in the audited scope.
 
-Specific tells verified in implementation:
-- Gradient text repeated across hero slides at [resources/views/pages/home.blade.php#L30](resources/views/pages/home.blade.php#L30), [resources/views/pages/home.blade.php#L68](resources/views/pages/home.blade.php#L68), [resources/views/pages/home.blade.php#L100](resources/views/pages/home.blade.php#L100), [resources/views/pages/home.blade.php#L132](resources/views/pages/home.blade.php#L132).
-- Glassmorphism-like blur usage is widespread in headers/chips/buttons at [resources/views/layouts/app.blade.php#L85](resources/views/layouts/app.blade.php#L85), [resources/views/pages/home.blade.php#L149](resources/views/pages/home.blade.php#L149), [resources/views/pages/services.blade.php#L9](resources/views/pages/services.blade.php#L9).
-- Overused Inter font is explicitly loaded and globally applied at [resources/views/layouts/app.blade.php#L26](resources/views/layouts/app.blade.php#L26), [resources/views/layouts/app.blade.php#L40](resources/views/layouts/app.blade.php#L40).
-- Bounce easing remains in chatbot badge at [resources/views/components/chatbot.blade.php#L75](resources/views/components/chatbot.blade.php#L75).
-
-Deterministic scan summary on active frontend pages:
-- 13 findings total.
-- Categories hit: overused-font, gradient-text, ai-color-palette, dark-glow, bounce-easing, gray-on-color, pure-black-white.
+Specific verification:
+- Deterministic anti-pattern scan on active frontend pages returned 0 findings ([]).
+- Previously repeated gradient-text hero treatment is removed from [resources/views/pages/home.blade.php](resources/views/pages/home.blade.php).
+- Bounce cue in chatbot was removed in [resources/views/components/chatbot.blade.php](resources/views/components/chatbot.blade.php).
+- Font stack now uses Manrope + Playfair display system in [resources/views/layouts/app.blade.php#L27](resources/views/layouts/app.blade.php#L27).
 
 ## Audit Health Score
 
 | # | Dimension | Score | Key Finding |
 |---|-----------|-------|-------------|
-| 1 | Accessibility | 2 | Form labels are visually present but not programmatically associated with controls in [resources/views/pages/contact.blade.php](resources/views/pages/contact.blade.php). |
-| 2 | Performance | 2 | External runtime scripts and repeated icon re-initialization increase rendering overhead in [resources/views/layouts/app.blade.php](resources/views/layouts/app.blade.php). |
-| 3 | Responsive Design | 3 | Breakpoints are broadly implemented, but touch-target and horizontal-scroll issues remain in [resources/views/pages/home.blade.php](resources/views/pages/home.blade.php). |
-| 4 | Theming | 2 | CSS variables exist but are mixed with many hard-coded values and utility-level color coupling in [resources/views/layouts/app.blade.php](resources/views/layouts/app.blade.php). |
-| 5 | Anti-Patterns | 1 | Scanner and manual checks both show high AI-tell density across the hero and CTA patterns. |
-| **Total** | | **10/20** | **Acceptable** |
+| 1 | Accessibility | 3 | Service gallery thumbnail buttons still have no accessible name at [resources/views/pages/services.blade.php#L47](resources/views/pages/services.blade.php#L47). |
+| 2 | Performance | 3 | Runtime frontend dependencies are still loaded from CDN in [resources/views/layouts/app.blade.php#L18](resources/views/layouts/app.blade.php#L18) and [resources/views/layouts/app.blade.php#L21](resources/views/layouts/app.blade.php#L21). |
+| 3 | Responsive Design | 2 | Carousel dots are still below 44x44 target-size guidance in [resources/views/pages/home.blade.php#L158](resources/views/pages/home.blade.php#L158). |
+| 4 | Theming | 2 | Token variables are mixed with hard-coded color values in [resources/views/layouts/app.blade.php#L31](resources/views/layouts/app.blade.php#L31), [resources/views/layouts/app.blade.php#L67](resources/views/layouts/app.blade.php#L67), and [resources/views/layouts/app.blade.php#L369](resources/views/layouts/app.blade.php#L369). |
+| 5 | Anti-Patterns | 4 | Deterministic scan reports no AI-pattern hits in active audited pages. |
+| **Total** | | **14/20** | **Good** |
 
-Rating band: Acceptable (significant work needed).
+Rating band: Good (address weak dimensions).
 
 ## Executive Summary
-- Audit Health Score: 10/20 (Acceptable).
-- Total issues found: 11.
-- Severity distribution: P0: 0, P1: 5, P2: 5, P3: 1.
+- Audit Health Score: 14/20 (Good).
+- Total issues found: 7.
+- Severity distribution: P0: 0, P1: 2, P2: 4, P3: 1.
 - Top critical issues:
-1. Programmatic labeling gaps in form controls.
-2. Icon-only controls missing ARIA state/labels.
-3. Sub-minimum touch targets on carousel dots.
-4. Missing lazy-loading strategy on most non-hero images.
-5. High anti-pattern density reducing distinctiveness and trust signaling.
-- Recommended next steps: harden accessibility first, then optimize runtime/image loading, then normalize theming and reduce AI-pattern density.
+1. Thumbnail image-switch buttons in services have no accessible name.
+2. Carousel indicator touch targets are below 44x44 mobile guidance.
+3. Runtime CDN script loading remains in the shared layout.
+4. Responsive rail still depends on horizontal scroll + fixed card widths.
+5. Theme tokens are not consistently consumed across custom CSS.
+- Recommended next steps: close remaining P1 interaction gaps, then harden responsive rail behavior and token consistency.
 
 ## Detailed Findings by Severity
 
 ### P1 Major
 
-**[P1] Form controls are not programmatically labeled**
-- Location: [resources/views/pages/contact.blade.php#L97](resources/views/pages/contact.blade.php#L97), [resources/views/pages/contact.blade.php#L98](resources/views/pages/contact.blade.php#L98), [resources/views/pages/contact.blade.php#L104](resources/views/pages/contact.blade.php#L104), [resources/views/pages/contact.blade.php#L113](resources/views/pages/contact.blade.php#L113), [resources/views/components/chatbot.blade.php#L43](resources/views/components/chatbot.blade.php#L43).
+**[P1] Service gallery thumbnail buttons have no accessible name**
+- Location: [resources/views/pages/services.blade.php#L47](resources/views/pages/services.blade.php#L47), [resources/views/pages/services.blade.php#L50](resources/views/pages/services.blade.php#L50).
 - Category: Accessibility.
-- Impact: Screen-reader users may not get reliable name/role/value mapping for inputs; voice control targeting is also weaker.
-- WCAG/Standard: WCAG 1.3.1, WCAG 3.3.2, WCAG 4.1.2.
-- Recommendation: Add stable id attributes to each form control and matching label for values; add explicit label for chatbot input.
+- Impact: Users relying on non-visual interaction cannot identify the purpose of each thumbnail button.
+- WCAG/Standard: WCAG 4.1.2 (Name, Role, Value), WCAG 2.5.3 (Label in Name).
+- Recommendation: Add a per-thumbnail aria-label (for example: "View image 2 for [service name]") and active-state indication.
 - Suggested command: /harden.
 
-**[P1] Icon-only controls miss accessibility state semantics**
-- Location: [resources/views/layouts/app.blade.php#L545](resources/views/layouts/app.blade.php#L545), [resources/views/layouts/app.blade.php#L587](resources/views/layouts/app.blade.php#L587), [resources/views/components/chatbot.blade.php#L21](resources/views/components/chatbot.blade.php#L21), [resources/views/components/chatbot.blade.php#L61](resources/views/components/chatbot.blade.php#L61).
-- Category: Accessibility.
-- Impact: Assistive tech users cannot reliably interpret open/closed state of mobile menu/chat and purpose of icon controls.
-- WCAG/Standard: WCAG 4.1.2, WCAG 2.4.6.
-- Recommendation: Add aria-label where needed and aria-expanded/aria-controls on toggles; keep state synchronized in JS.
-- Suggested command: /harden.
-
-**[P1] Carousel dot controls are below touch-size minimum**
+**[P1] Carousel dot controls are still under minimum touch target guidance**
 - Location: [resources/views/pages/home.blade.php#L158](resources/views/pages/home.blade.php#L158), [resources/views/pages/home.blade.php#L159](resources/views/pages/home.blade.php#L159), [resources/views/pages/home.blade.php#L160](resources/views/pages/home.blade.php#L160), [resources/views/pages/home.blade.php#L161](resources/views/pages/home.blade.php#L161).
 - Category: Responsive Design / Accessibility.
-- Impact: High mis-tap risk on mobile and poor motor accessibility.
-- WCAG/Standard: WCAG 2.5.8 Target Size (Minimum), platform mobile touch guidance.
-- Recommendation: Increase hit area to at least 24x24 minimum, preferably 44x44 visual or invisible hit target.
+- Impact: Increases mis-tap risk on mobile devices and degrades interaction reliability.
+- WCAG/Standard: WCAG 2.5.8 Target Size (Minimum), mobile touch guidance.
+- Recommendation: Raise hit area to at least 44x44 (visual or invisible hitbox) while preserving current visual style.
 - Suggested command: /adapt.
-
-**[P1] Most non-hero images do not declare loading strategy**
-- Location: [resources/views/pages/services.blade.php#L36](resources/views/pages/services.blade.php#L36), [resources/views/pages/portfolio.blade.php#L47](resources/views/pages/portfolio.blade.php#L47), [resources/views/pages/about.blade.php#L92](resources/views/pages/about.blade.php#L92).
-- Category: Performance.
-- Impact: Increased initial network/paint cost and slower interactive readiness on constrained devices.
-- WCAG/Standard: Core Web Vitals and browser image-loading best practices.
-- Recommendation: Add loading="lazy" and decoding="async" for below-the-fold assets; keep only above-the-fold hero image eager.
-- Suggested command: /optimize.
-
-**[P1] Anti-pattern density is high on active pages**
-- Location: [resources/views/pages/home.blade.php#L30](resources/views/pages/home.blade.php#L30), [resources/views/pages/home.blade.php#L68](resources/views/pages/home.blade.php#L68), [resources/views/layouts/app.blade.php#L83](resources/views/layouts/app.blade.php#L83), [resources/views/components/chatbot.blade.php#L75](resources/views/components/chatbot.blade.php#L75).
-- Category: Anti-Pattern.
-- Impact: Decreases brand distinctiveness and can reduce trust for premium, high-stakes service selection.
-- WCAG/Standard: Impeccable anti-pattern constraints.
-- Recommendation: Remove repeated gradient-text and bounce cues, reduce decorative blur layers, and simplify repeated CTA composition.
-- Suggested command: /distill.
 
 ### P2 Minor
 
-**[P2] Runtime frontend dependencies are loaded via CDN scripts**
-- Location: [resources/views/layouts/app.blade.php#L18](resources/views/layouts/app.blade.php#L18), [resources/views/layouts/app.blade.php#L21](resources/views/layouts/app.blade.php#L21).
-- Category: Performance.
-- Impact: Runtime fetch latency, weaker cache coherence, and larger render-blocking risk versus bundled assets.
-- WCAG/Standard: Web performance best practices.
-- Recommendation: Move Tailwind and icons into Vite build pipeline and ship versioned local assets.
-- Suggested command: /optimize.
-
-**[P2] Repeated icon re-initialization in scroll/observer paths**
-- Location: [resources/views/layouts/app.blade.php#L677](resources/views/layouts/app.blade.php#L677), [resources/views/layouts/app.blade.php#L731](resources/views/layouts/app.blade.php#L731), [resources/views/layouts/app.blade.php#L749](resources/views/layouts/app.blade.php#L749).
-- Category: Performance.
-- Impact: Avoidable DOM work on frequent events, especially on low-end mobiles.
-- WCAG/Standard: Rendering efficiency best practices.
-- Recommendation: Initialize icons once for static DOM or scope updates to changed nodes only.
-- Suggested command: /optimize.
-
-**[P2] Motion does not provide reduced-motion fallback**
-- Location: [resources/views/pages/home.blade.php#L237](resources/views/pages/home.blade.php#L237), [resources/views/pages/home.blade.php#L498](resources/views/pages/home.blade.php#L498), [resources/views/layouts/app.blade.php#L379](resources/views/layouts/app.blade.php#L379), [resources/views/components/chatbot.blade.php#L127](resources/views/components/chatbot.blade.php#L127).
-- Category: Accessibility / Performance.
-- Impact: Can trigger discomfort for motion-sensitive users and adds continuous paint/composition work.
-- WCAG/Standard: WCAG 2.2.2, WCAG 2.3.3.
-- Recommendation: Add prefers-reduced-motion handling and disable autoplay/infinite loops under reduced mode.
+**[P2] Main landmark is missing around page content in shared layout**
+- Location: [resources/views/layouts/app.blade.php#L616](resources/views/layouts/app.blade.php#L616).
+- Category: Accessibility.
+- Impact: Reduces structural page navigation clarity and makes content regions less explicit.
+- WCAG/Standard: WCAG 1.3.1, WCAG 2.4.1.
+- Recommendation: Wrap primary page content in a semantic main landmark with an id, and keep one primary content region per page.
 - Suggested command: /harden.
 
-**[P2] Theming model is inconsistent across tokens and hard-coded values**
-- Location: [resources/views/layouts/app.blade.php#L31](resources/views/layouts/app.blade.php#L31), [resources/views/layouts/app.blade.php#L67](resources/views/layouts/app.blade.php#L67), [resources/views/layouts/app.blade.php#L369](resources/views/layouts/app.blade.php#L369).
-- Category: Theming.
-- Impact: Harder global palette updates, inconsistent color behavior across sections, and greater regression risk.
-- WCAG/Standard: Design token best practices.
-- Recommendation: Centralize palette in token variables and consume tokens consistently from components/pages.
-- Suggested command: /colorize.
+**[P2] Runtime frontend dependencies are still loaded via CDN scripts**
+- Location: [resources/views/layouts/app.blade.php#L18](resources/views/layouts/app.blade.php#L18), [resources/views/layouts/app.blade.php#L21](resources/views/layouts/app.blade.php#L21).
+- Category: Performance.
+- Impact: Adds runtime fetch latency and weakens cache/version control versus bundled local assets.
+- WCAG/Standard: Web performance best practices.
+- Recommendation: Move Tailwind and icon runtime into the Vite asset pipeline and ship versioned local bundles.
+- Suggested command: /optimize.
 
-**[P2] Horizontal-scroll card rail and fixed widths reduce adaptability**
-- Location: [resources/views/pages/home.blade.php#L347](resources/views/pages/home.blade.php#L347), [resources/views/pages/home.blade.php#L348](resources/views/pages/home.blade.php#L348), [resources/views/pages/home.blade.php#L365](resources/views/pages/home.blade.php#L365), [resources/views/components/chatbot.blade.php#L4](resources/views/components/chatbot.blade.php#L4).
+**[P2] Horizontal rail relies on overflow scrolling plus fixed card widths**
+- Location: [resources/views/pages/home.blade.php#L351](resources/views/pages/home.blade.php#L351), [resources/views/pages/home.blade.php#L352](resources/views/pages/home.blade.php#L352), [resources/views/pages/home.blade.php#L369](resources/views/pages/home.blade.php#L369).
 - Category: Responsive Design.
-- Impact: Content can feel cramped on narrow screens and creates extra gesture burden for discovery.
-- WCAG/Standard: Responsive/adaptive UI best practices.
-- Recommendation: Use adaptive grid/card wrapping at narrow breakpoints and enlarge interactive rails selectively.
+- Impact: Creates higher gesture burden and less predictable layout density on narrow screens.
+- WCAG/Standard: Responsive/adaptive layout best practices.
+- Recommendation: Add breakpoint-based wrapping/grid behavior for narrow widths, then enable rail-only mode where it adds clear value.
 - Suggested command: /adapt.
+
+**[P2] Theming remains split between token values and hard-coded colors**
+- Location: [resources/views/layouts/app.blade.php#L31](resources/views/layouts/app.blade.php#L31), [resources/views/layouts/app.blade.php#L67](resources/views/layouts/app.blade.php#L67), [resources/views/layouts/app.blade.php#L369](resources/views/layouts/app.blade.php#L369), [resources/views/layouts/app.blade.php#L529](resources/views/layouts/app.blade.php#L529).
+- Category: Theming.
+- Impact: Increases maintenance overhead and raises risk of visual drift when palette updates are needed.
+- WCAG/Standard: Design token best practices.
+- Recommendation: Route all custom CSS colors through semantic variables and reduce direct hex usage to token declarations only.
+- Suggested command: /colorize.
 
 ### P3 Polish
 
-**[P3] Unused default welcome template contributes noise in scans**
-- Location: [resources/views/welcome.blade.php](resources/views/welcome.blade.php), route map in [routes/web.php](routes/web.php#L10).
+**[P3] Unrouted welcome template can add noise to broad quality scans**
+- Location: [resources/views/welcome.blade.php](resources/views/welcome.blade.php), active route map in [routes/web.php#L10](routes/web.php#L10).
 - Category: Anti-Pattern / Maintainability.
-- Impact: Adds false-positive noise to quality scans and can obscure active-page priorities.
+- Impact: Can introduce false signals when running unfocused audits across all views.
 - WCAG/Standard: N/A.
-- Recommendation: Exclude non-routed templates from frontend quality baseline or remove if unused.
+- Recommendation: Exclude non-routed templates from frontend quality baselines or remove if unnecessary.
 - Suggested command: /distill.
 
 ## Patterns and Systemic Issues
-- Accessibility linkage pattern: Labels are visually present but rarely linked with for/id in form controls.
-- Motion pattern: Multiple infinite/autoplay animations exist without reduced-motion fallback.
-- Theming pattern: Token declarations exist, but hard-coded color values are still widespread.
-- Responsive pattern: Horizontal scroll and fixed card widths are used as a primary layout strategy in service/partner rails.
+- Responsive pattern: Horizontal rails with fixed-width cards are still a repeated strategy in key discovery sections.
+- Tokenization pattern: CSS variables exist, but custom CSS still uses multiple direct hex values outside token declarations.
+- Delivery pattern: Shared layout still relies on CDN runtime dependencies rather than local build artifacts.
 
 ## Positive Findings
-- Core public pages use clear heading hierarchy with one primary h1 per page and section-level h2/h3 structure.
-- Most critical navigation actions have explicit aria-label usage, including slide arrows and floating utility buttons.
-- Image alt coverage is good across content images; only one decorative thumbnail uses empty alt in a suitable context at [resources/views/pages/services.blade.php#L48](resources/views/pages/services.blade.php#L48).
-- Contact inputs include visible focus styles, improving keyboard discoverability at [resources/views/pages/contact.blade.php#L99](resources/views/pages/contact.blade.php#L99).
+- Contact form labels are programmatically associated and field-level validation messaging is present in [resources/views/pages/contact.blade.php#L97](resources/views/pages/contact.blade.php#L97), [resources/views/pages/contact.blade.php#L101](resources/views/pages/contact.blade.php#L101), [resources/views/pages/contact.blade.php#L162](resources/views/pages/contact.blade.php#L162).
+- Chat input now has an explicit label and action button naming in [resources/views/components/chatbot.blade.php#L41](resources/views/components/chatbot.blade.php#L41), [resources/views/components/chatbot.blade.php#L49](resources/views/components/chatbot.blade.php#L49).
+- Mobile menu and chatbot toggles expose synchronized control state in [resources/views/layouts/app.blade.php#L608](resources/views/layouts/app.blade.php#L608), [resources/views/layouts/app.blade.php#L705](resources/views/layouts/app.blade.php#L705), [resources/views/components/chatbot.blade.php#L63](resources/views/components/chatbot.blade.php#L63).
+- Reduced-motion handling is now present in [resources/views/layouts/app.blade.php#L539](resources/views/layouts/app.blade.php#L539), [resources/views/pages/home.blade.php#L170](resources/views/pages/home.blade.php#L170), and [resources/views/components/chatbot.blade.php#L160](resources/views/components/chatbot.blade.php#L160).
+- Non-hero images now consistently use lazy loading and async decode in [resources/views/pages/services.blade.php#L39](resources/views/pages/services.blade.php#L39), [resources/views/pages/portfolio.blade.php#L49](resources/views/pages/portfolio.blade.php#L49), [resources/views/pages/about.blade.php#L94](resources/views/pages/about.blade.php#L94).
 
 ## Recommended Actions
-1. **[P1] /harden** — Fix control semantics and labeling: for/id bindings, aria-expanded states, icon-button labeling, reduced-motion support.
-2. **[P1] /adapt** — Resolve touch-target and responsive interaction issues in carousel dots and horizontal rails.
-3. **[P1] /optimize** — Add lazy/decode strategy to non-hero images, remove runtime CDN reliance, and reduce repeated icon re-initialization.
-4. **[P2] /colorize** — Normalize theme tokens and remove hard-coded color drift across layout and section components.
-5. **[P1] /distill** — Remove high-frequency AI-pattern tells (gradient-text repetition, bounce cue, excess glass accents).
-6. **[P2] /clarify** — Improve form error messaging from generic summary to field-level actionable guidance.
-7. **[P2] /polish** — Final pass for consistency and micro-adjustments after high-priority fixes.
+1. **[P1] /harden** - Add explicit names/state to services thumbnail buttons and wrap primary content in a semantic main landmark.
+2. **[P1] /adapt** - Upgrade carousel dots to 44x44 hit areas and add adaptive fallback for horizontal rails on narrow screens.
+3. **[P2] /optimize** - Move runtime CDN dependencies into the local Vite pipeline.
+4. **[P2] /colorize** - Normalize custom CSS to semantic color tokens and eliminate direct hex drift.
+5. **[P3] /distill** - Exclude or remove unrouted template noise from quality baselines.
+6. **[P2] /polish** - Run a final consistency pass after P1/P2 fixes.
 
 You can ask me to run these one at a time, all at once, or in any order you prefer.
 

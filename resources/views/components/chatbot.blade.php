@@ -18,7 +18,7 @@
                     </p>
                 </div>
             </div>
-            <button onclick="toggleChatbot()" class="p-1 hover:bg-white/20 rounded-lg transition-colors">
+            <button type="button" onclick="toggleChatbot()" class="p-1 hover:bg-white/20 rounded-lg transition-colors" aria-label="Close chat window">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -38,6 +38,7 @@
         <!-- Input Area -->
         <div class="p-4 bg-white border-t border-gray-200">
             <form id="chatbot-form" class="flex gap-2">
+                <label for="chatbot-input" class="sr-only">{{ app()->getLocale() === 'ar' ? 'رسالة الدردشة' : (app()->getLocale() === 'en' ? 'Chat message' : 'Message du chat') }}</label>
                 <input 
                     type="text" 
                     id="chatbot-input" 
@@ -47,6 +48,7 @@
                 >
                 <button 
                     type="submit" 
+                    aria-label="{{ app()->getLocale() === 'ar' ? 'إرسال الرسالة' : (app()->getLocale() === 'en' ? 'Send message' : 'Envoyer le message') }}"
                     class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors flex items-center justify-center"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,6 +63,9 @@
     <button 
         id="chatbot-toggle" 
         onclick="toggleChatbot()" 
+        aria-label="{{ app()->getLocale() === 'ar' ? 'فتح الدردشة' : (app()->getLocale() === 'en' ? 'Open chat' : 'Ouvrir le chat') }}"
+        aria-controls="chatbot-window"
+        aria-expanded="false"
         class="w-14 h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group relative"
     >
         <!-- Chat Icon -->
@@ -72,13 +77,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
         <!-- Notification Badge -->
-        <span id="chatbot-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-bounce">1</span>
+        <span id="chatbot-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold animate-pulse">1</span>
     </button>
 </div>
 
 <style>
     #chatbot-widget {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-family: 'Manrope', system-ui, -apple-system, sans-serif;
     }
     
     #chatbot-messages::-webkit-scrollbar {
@@ -151,6 +156,18 @@
     .quick-reply-btn:hover {
         transform: translateY(-1px);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .chatbot-message,
+        .quick-reply-btn {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        .chatbot-typing span {
+            animation: none !important;
+        }
+    }
 </style>
 
 <script>
@@ -167,11 +184,13 @@
     
     function toggleChatbot() {
         const window = document.getElementById('chatbot-window');
+        const toggleButton = document.getElementById('chatbot-toggle');
         const iconChat = document.getElementById('chatbot-icon-chat');
         const iconClose = document.getElementById('chatbot-icon-close');
         const badge = document.getElementById('chatbot-badge');
         
         chatbotOpen = !chatbotOpen;
+        toggleButton.setAttribute('aria-expanded', chatbotOpen ? 'true' : 'false');
         
         if (chatbotOpen) {
             window.classList.remove('hidden');
@@ -188,6 +207,7 @@
                 chatbotInitialized = true;
             }
             
+            document.getElementById('chatbot-input').focus();
             scrollToBottom();
         } else {
             window.classList.add('scale-95', 'opacity-0');
@@ -314,7 +334,7 @@
         
         replies.forEach(reply => {
             const btn = document.createElement('button');
-            btn.className = 'quick-reply-btn px-3 py-2 bg-white border border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-sm text-gray-700 hover:text-blue-600 transition-all';
+            btn.className = 'quick-reply-btn px-3 py-2 bg-white border border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl text-sm text-blue-700 hover:text-blue-800 transition-all';
             btn.textContent = reply.text;
             btn.onclick = () => handleQuickReply(reply.action);
             container.appendChild(btn);
@@ -402,4 +422,10 @@
             badge.classList.remove('hidden');
         }
     }, 5000);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && chatbotOpen) {
+            toggleChatbot();
+        }
+    });
 </script>

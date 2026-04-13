@@ -94,44 +94,59 @@
                         @csrf
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.full_name') }} <span class="text-red-500">*</span></label>
-                                <input type="text" name="name" value="{{ old('name') }}" required
+                                <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.full_name') }} <span class="text-red-500">*</span></label>
+                                <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.your_name') }}">
+                                @error('name')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
-                                <input type="email" name="email" value="{{ old('email') }}" required
+                                <label for="quote-email" class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
+                                <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="email@example.com">
+                                @error('email')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.phone') }} <span class="text-red-500">*</span></label>
-                                <input type="tel" name="phone" value="{{ old('phone') }}" required
+                                <label for="quote-phone" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.phone') }} <span class="text-red-500">*</span></label>
+                                <input id="quote-phone" type="tel" name="phone" value="{{ old('phone') }}" required
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="+216 XX XXX XXX">
+                                @error('phone')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.country') }}</label>
-                                <input type="text" name="country" value="{{ old('country') }}"
+                                <label for="quote-country" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.country') }}</label>
+                                <input id="quote-country" type="text" name="country" value="{{ old('country') }}"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.country_residence') }}">
+                                @error('country')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
-                                <input type="text" name="city" value="{{ old('city') }}"
+                                <label for="quote-city" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
+                                <input id="quote-city" type="text" name="city" value="{{ old('city') }}"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.project_city') }}">
+                                @error('city')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></label>
-                                <select name="project_type" required
+                                <label for="quote-project-type" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></label>
+                                <select id="quote-project-type" name="project_type" required
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
                                     <option value="">{{ __('messages.select_type') }}</option>
                                     <option value="windows" {{ old('project_type') == 'windows' ? 'selected' : '' }}>{{ __('messages.windows') }}</option>
@@ -144,13 +159,16 @@
                                     <option value="shutters" {{ old('project_type') == 'shutters' ? 'selected' : '' }}>{{ __('messages.shutters') }}</option>
                                     <option value="other" {{ old('project_type') == 'other' ? 'selected' : '' }}>{{ __('messages.other') }}</option>
                                 </select>
+                                @error('project_type')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.budget_range') }}</label>
-                                <select name="budget_range"
+                                <label for="quote-budget-range" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.budget_range') }}</label>
+                                <select id="quote-budget-range" name="budget_range"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
                                     <option value="">{{ __('messages.select_budget') }}</option>
                                     <option value="< 5000 TND" {{ old('budget_range') == '< 5000 TND' ? 'selected' : '' }}>< 5 000 TND</option>
@@ -158,10 +176,13 @@
                                     <option value="15000-30000 TND" {{ old('budget_range') == '15000-30000 TND' ? 'selected' : '' }}>15 000 - 30 000 TND</option>
                                     <option value="> 30000 TND" {{ old('budget_range') == '> 30000 TND' ? 'selected' : '' }}>> 30 000 TND</option>
                                 </select>
+                                @error('budget_range')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
-                                <select name="timeline"
+                                <label for="quote-timeline" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
+                                <select id="quote-timeline" name="timeline"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
                                     <option value="">{{ __('messages.select_timeline') }}</option>
                                     <option value="urgent" {{ old('timeline') == 'urgent' ? 'selected' : '' }}>{{ __('messages.urgent') }}</option>
@@ -169,14 +190,20 @@
                                     <option value="3-6 months" {{ old('timeline') == '3-6 months' ? 'selected' : '' }}>3-6 {{ __('messages.months') }}</option>
                                     <option value="6+ months" {{ old('timeline') == '6+ months' ? 'selected' : '' }}>6+ {{ __('messages.months') }}</option>
                                 </select>
+                                @error('timeline')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_description') }} <span class="text-red-500">*</span></label>
-                            <textarea name="description" rows="4" required
+                            <label for="quote-description" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_description') }} <span class="text-red-500">*</span></label>
+                            <textarea id="quote-description" name="description" rows="4" required
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white resize-none"
                                 placeholder="{{ __('messages.describe_project') }}">{{ old('description') }}</textarea>
+                            @error('description')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="text-center pt-4">

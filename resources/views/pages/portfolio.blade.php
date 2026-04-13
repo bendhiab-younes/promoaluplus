@@ -46,6 +46,8 @@
                 <div class="portfolio-item group relative overflow-hidden rounded-2xl shadow-lg scroll-fade">
                     <img src="{{ $project->image ? asset('storage/' . $project->image) : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' }}" 
                          alt="{{ $project->getTranslatedTitle() }}" 
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -60,6 +62,8 @@
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
                     <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                          alt="Villa Moderne - La Marsa" 
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -72,6 +76,8 @@
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
                     <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                          alt="Résidence Carthage" 
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -84,6 +90,8 @@
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
                     <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                          alt="Immeuble Commercial" 
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div class="absolute bottom-0 left-0 right-0 p-6 text-white">

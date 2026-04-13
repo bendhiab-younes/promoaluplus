@@ -91,6 +91,8 @@
                 <div class="scroll-fade stagger-1">
                     <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                          alt="{{ __('messages.our_workshop') }}" 
+                         loading="lazy"
+                         decoding="async"
                          class="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-500">
                 </div>
             </div>
@@ -205,10 +207,10 @@
                         ],
                         [
                             'icon' => 'video',
-                            'panel' => 'from-white to-purple-50',
-                            'border' => 'hover:border-purple-200',
-                            'badge' => 'from-purple-500 to-purple-600',
-                            'shadow' => 'shadow-purple-500/30',
+                            'panel' => 'from-white to-sky-50',
+                            'border' => 'hover:border-sky-200',
+                            'badge' => 'from-sky-500 to-sky-600',
+                            'shadow' => 'shadow-sky-500/30',
                         ],
                         [
                             'icon' => 'shield-check',
