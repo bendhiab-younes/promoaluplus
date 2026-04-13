@@ -12,25 +12,43 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        // Load services from the content JSON file
-        $servicesFile = base_path('../content_docs/json/services.json');
-        $servicesData = json_decode(file_get_contents($servicesFile), true);
+        $content = $this->readJson(base_path('../content_docs/json/services.json'));
 
-        // Load gallery overrides from the centralized image list
-        $serviceImagesFile = base_path('../service_images.json');
-        $serviceImagesData = file_exists($serviceImagesFile)
-            ? json_decode(file_get_contents($serviceImagesFile), true)
-            : [];
+        $sortOrder = 1;
 
-        if (! is_array($serviceImagesData)) {
-            $serviceImagesData = [];
+        foreach ($this->serviceSlugMap() as $sourceKey => $slug) {
+            $source = [
+                'fr' => $content['fr'][$sourceKey] ?? [],
+                'en' => $content['en'][$sourceKey] ?? [],
+                'ar' => $content['ar'][$sourceKey] ?? [],
+            ];
+
+            if (! is_array($source['fr']) || empty($source['fr'])) {
+                continue;
+            }
+
+            $descriptions = $this->buildLocalizedStrings($source, 'description');
+            $gallery = $this->buildGallery($source);
+
+            Service::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'title' => $this->buildLocalizedStrings($source, 'title'),
+                    'short_description' => $this->buildShortDescriptions($descriptions),
+                    'description' => $descriptions,
+                    'image' => $gallery[0] ?? null,
+                    'gallery' => $gallery,
+                    'features' => $this->transposeLocalizedArray($source, 'features'),
+                    'is_active' => true,
+                    'sort_order' => $sortOrder++,
+                ]
+            );
         }
+    }
 
-        if (! is_array($servicesData) || ! isset($servicesData['fr']) || ! is_array($servicesData['fr'])) {
-            return;
-        }
-
-        $slugMap = [
+    private function serviceSlugMap(): array
+    {
+        return [
             'cuisines' => 'kitchen',
             'portes' => 'doors',
             'fenetres' => 'windows',
@@ -41,43 +59,97 @@ class ServiceSeeder extends Seeder
             'mosquito_nets' => 'mosquito_nets',
             'space_design' => 'space_design',
         ];
+    }
 
-        $sortOrder = 1;
+    private function readJson(string $path): array
+    {
+        if (! file_exists($path)) {
+            return [];
+        }
 
-        foreach ($servicesData['fr'] as $key => $service) {
-            $slug = $slugMap[$key] ?? $key;
-            $serviceEn = $servicesData['en'][$key] ?? [];
-            $serviceAr = $servicesData['ar'][$key] ?? [];
-            $gallery = $serviceImagesData[$slug] ?? $serviceImagesData[$key] ?? ($service['images'] ?? []);
+        $decoded = json_decode(file_get_contents($path), true);
 
-            if (! is_array($gallery)) {
-                $gallery = [];
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    private function buildLocalizedStrings(array $source, string $field): array
+    {
+        $values = [];
+
+        foreach (['fr', 'en', 'ar'] as $locale) {
+            $value = $source[$locale][$field] ?? null;
+            $values[$locale] = is_string($value) ? $value : '';
+        }
+
+        return $values;
+    }
+
+    private function buildShortDescriptions(array $descriptions): array
+    {
+        $shortDescriptions = [];
+
+        foreach ($descriptions as $locale => $description) {
+            $shortDescriptions[$locale] = $this->firstSentence($description);
+        }
+
+        return $shortDescriptions;
+    }
+
+    private function transposeLocalizedArray(array $source, string $field): array
+    {
+        $locales = ['fr', 'en', 'ar'];
+        $itemsByLocale = [];
+
+        foreach ($locales as $locale) {
+            $itemsByLocale[$locale] = is_array($source[$locale][$field] ?? null) ? $source[$locale][$field] : [];
+        }
+
+        $maxCount = 0;
+
+        foreach ($itemsByLocale as $items) {
+            $maxCount = max($maxCount, count($items));
+        }
+
+        $transposed = [];
+
+        for ($index = 0; $index < $maxCount; $index++) {
+            $item = [];
+
+            foreach ($locales as $locale) {
+                $item[$locale] = $itemsByLocale[$locale][$index] ?? ($itemsByLocale['fr'][$index] ?? '');
             }
 
-            Service::updateOrCreate(
-                ['slug' => $slug],
-                [
-                    'title' => [
-                        'fr' => $service['title'] ?? $key,
-                        'en' => $serviceEn['title'] ?? null,
-                        'ar' => $serviceAr['title'] ?? null,
-                    ],
-                    'description' => [
-                        'fr' => $service['description'],
-                        'en' => $serviceEn['description'] ?? null,
-                        'ar' => $serviceAr['description'] ?? null,
-                    ],
-                    'features' => [
-                        'fr' => $service['features'] ?? [],
-                        'en' => $serviceEn['features'] ?? [],
-                        'ar' => $serviceAr['features'] ?? [],
-                    ],
-                    'gallery' => array_values($gallery),
-                    'sort_order' => $sortOrder,
-                ]
-            );
-
-            $sortOrder++;
+            $transposed[] = $item;
         }
+
+        return $transposed;
+    }
+
+    private function buildGallery(array $source): array
+    {
+        $gallery = $source['fr']['images'] ?? [];
+
+        if (! is_array($gallery) || empty($gallery)) {
+            return [];
+        }
+
+        return array_values(array_filter($gallery, static fn ($item) => is_string($item) && trim($item) !== ''));
+    }
+
+    private function firstSentence(?string $text): string
+    {
+        if (! is_string($text)) {
+            return '';
+        }
+
+        $trimmed = trim($text);
+
+        if ($trimmed === '') {
+            return '';
+        }
+
+        $parts = preg_split('/(?<=[.!?؟])\s+/u', $trimmed, 2);
+
+        return trim($parts[0] ?? $trimmed);
     }
 }
