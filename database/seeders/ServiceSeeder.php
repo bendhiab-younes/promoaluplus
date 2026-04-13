@@ -36,6 +36,8 @@ class ServiceSeeder extends Seeder
                     'title' => $this->buildLocalizedStrings($source, 'title'),
                     'short_description' => $this->buildShortDescriptions($descriptions),
                     'description' => $descriptions,
+                    'icon' => Service::DEFAULT_ICON_BY_SLUG[$slug] ?? 'wrench',
+                    'color' => Service::DEFAULT_COLOR_BY_SLUG[$slug] ?? 'blue',
                     'image' => $gallery[0] ?? null,
                     'gallery' => $gallery,
                     'features' => $this->transposeLocalizedArray($source, 'features'),

@@ -2,6 +2,102 @@
 
 @section('title', __('messages.nav_services'))
 
+@php
+    $servicesSchemaItems = [];
+
+    foreach ($services as $position => $schemaService) {
+        $schemaTitle = trim($schemaService->getTranslatedTitle());
+        $schemaDescription = trim(strip_tags((string) $schemaService->getTranslatedDescription()));
+
+        if ($schemaDescription === '') {
+            $schemaDescription = trim($schemaService->getTranslatedShortDescription());
+        }
+
+        $schemaGallery = array_values(array_filter($schemaService->getGalleryImages(), static fn ($image) => is_string($image) && trim($image) !== ''));
+        $schemaFeatures = array_values(array_filter($schemaService->getTranslatedFeatures(), static fn ($feature) => is_string($feature) && trim($feature) !== ''));
+        $schemaMaterials = array_values(array_filter($schemaService->getTranslatedMaterials(), static fn ($material) => is_string($material) && trim($material) !== ''));
+        $schemaSpecs = is_array($schemaService->specs) ? $schemaService->specs : [];
+
+        $schemaProperties = [];
+
+        foreach ($schemaFeatures as $feature) {
+            $schemaProperties[] = [
+                '@type' => 'PropertyValue',
+                'name' => __('messages.key_features'),
+                'value' => $feature,
+            ];
+        }
+
+        foreach ($schemaSpecs as $specKey => $specValue) {
+            $specLabel = __('messages.' . $specKey);
+
+            if ($specLabel === 'messages.' . $specKey) {
+                $specLabel = ucfirst(str_replace('_', ' ', (string) $specKey));
+            }
+
+            if (is_array($specValue)) {
+                $specValue = $specValue[app()->getLocale()] ?? $specValue['fr'] ?? '';
+            }
+
+            if (! is_string($specValue) || trim($specValue) === '') {
+                continue;
+            }
+
+            $schemaProperties[] = [
+                '@type' => 'PropertyValue',
+                'name' => $specLabel,
+                'value' => trim($specValue),
+            ];
+        }
+
+        $serviceUrl = route('services') . '#' . $schemaService->slug;
+
+        $serviceNode = [
+            '@type' => 'Service',
+            '@id' => $serviceUrl,
+            'name' => $schemaTitle,
+            'serviceType' => $schemaTitle,
+            'description' => $schemaDescription,
+            'url' => $serviceUrl,
+            'provider' => [
+                '@type' => 'LocalBusiness',
+                'name' => 'Promo Alu Plus',
+                'url' => config('app.url') ?: url('/'),
+            ],
+            'areaServed' => [
+                '@type' => 'Country',
+                'name' => 'Tunisia',
+            ],
+        ];
+
+        if (! empty($schemaGallery)) {
+            $serviceNode['image'] = $schemaGallery;
+        }
+
+        if (! empty($schemaMaterials)) {
+            $serviceNode['material'] = $schemaMaterials;
+        }
+
+        if (! empty($schemaProperties)) {
+            $serviceNode['additionalProperty'] = $schemaProperties;
+        }
+
+        $servicesSchemaItems[] = [
+            '@type' => 'ListItem',
+            'position' => $position + 1,
+            'url' => $serviceUrl,
+            'item' => $serviceNode,
+        ];
+    }
+
+    $servicesSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'ItemList',
+        'name' => __('messages.our_services'),
+        'itemListElement' => $servicesSchemaItems,
+    ];
+@endphp
+
 @section('content')
     <!-- Page Header -->
     <section class="hero-gradient pt-28 md:pt-32 pb-16 md:pb-20 relative">
@@ -20,9 +116,19 @@
     @foreach($services as $index => $service)
     @php
         $gallery = $service->getGalleryImages();
-        $features = $service->getTranslatedFeatures();
-        $materials = $service->getTranslatedMaterials();
-        $specs = $service->specs ?? [];
+        $serviceColor = $service->getDisplayColor();
+        $serviceIcon = $service->getDisplayIcon();
+        $features = array_values(array_filter($service->getTranslatedFeatures(), static fn ($feature) => is_string($feature) && trim($feature) !== ''));
+        $materials = array_values(array_filter($service->getTranslatedMaterials(), static fn ($material) => is_string($material) && trim($material) !== ''));
+        $specs = is_array($service->specs) ? $service->specs : [];
+        $descriptionHtml = trim((string) $service->getTranslatedDescription());
+        $descriptionText = trim(strip_tags($descriptionHtml));
+        $summaryText = trim($service->getTranslatedShortDescription());
+        if ($summaryText === '') {
+            $summaryText = $descriptionText;
+        }
+        $featurePreview = array_slice($features, 0, 3);
+        $hasDetailsPanel = $descriptionHtml !== '' || count($features) > 0 || count($materials) > 0 || count($specs) > 0;
     @endphp
     <!-- {{ $service->getTranslatedTitle() }} Section -->
     <section id="{{ $service->slug }}" class="py-16 md:py-24 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} scroll-fade scroll-mt-24">
@@ -46,6 +152,8 @@
                             @foreach($gallery as $thumbIndex => $thumb)
                             <button type="button" onclick="event.stopPropagation(); changeServiceImage('{{ $service->slug }}', {{ $thumbIndex }}, '{{ $thumb }}')" 
                                     id="thumb-{{ $service->slug }}-{{ $thumbIndex }}"
+                                    aria-label="{{ __('messages.view_gallery') }} {{ $service->getTranslatedTitle() }} - {{ $thumbIndex + 1 }}"
+                                    aria-pressed="{{ $thumbIndex === 0 ? 'true' : 'false' }}"
                                     class="w-16 h-16 rounded-xl overflow-hidden border-3 {{ $thumbIndex === 0 ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-200 hover:border-blue-300' }} shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                                 <img src="{{ $thumb }}" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             </button>
@@ -57,11 +165,11 @@
                 <div class="{{ $index % 2 == 1 ? 'order-1 md:order-2' : '' }}">
                     <!-- Service Icon -->
                     <div class="inline-flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-{{ $service->color }}-400 to-{{ $service->color }}-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
+                        <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
                             @if($service->svg_icon)
                                 {!! $service->svg_icon !!}
-                            @elseif($service->icon)
-                                <i data-lucide="{{ $service->icon }}" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
+                            @elseif($serviceIcon)
+                                <i data-lucide="{{ $serviceIcon }}" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                             @else
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                             @endif
@@ -71,27 +179,97 @@
                         </h2>
                     </div>
 
-                    <!-- Description -->
-                    <div class="text-base md:text-lg text-gray-600 mb-8 leading-relaxed prose prose-gray max-w-none">
-                        @if($service->getTranslatedDescription())
-                            {!! $service->getTranslatedDescription() !!}
-                        @else
-                            {{ $service->getTranslatedShortDescription() }}
-                        @endif
-                    </div>
+                    <!-- Service Summary -->
+                    @if($summaryText !== '')
+                    <p class="text-base md:text-lg text-gray-600 mb-6 leading-relaxed">
+                        {{ $summaryText }}
+                    </p>
+                    @endif
 
-                    <!-- Features List -->
-                    @if(count($features) > 0)
-                    <ul class="space-y-4 mb-8">
-                        @foreach($features as $feature)
-                        <li class="flex items-start gap-3">
-                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                                <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
-                            </div>
-                            <span class="text-gray-700 text-base">{{ $feature }}</span>
-                        </li>
+                    <!-- Feature Preview -->
+                    @if(count($featurePreview) > 0)
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        @foreach($featurePreview as $feature)
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-medium">
+                            {{ $feature }}
+                        </span>
                         @endforeach
-                    </ul>
+                    </div>
+                    @endif
+
+                    <!-- Expandable Details -->
+                    @if($hasDetailsPanel)
+                    <details class="service-details mb-8 bg-white/80 border border-gray-200 rounded-2xl shadow-sm">
+                        <summary class="service-details-summary px-5 py-4 cursor-pointer flex items-center justify-between gap-3">
+                            <span class="font-semibold text-gray-900">
+                                {{ __('messages.view_details') }}
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="details-chevron w-5 h-5 text-gray-500 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </summary>
+
+                        <div class="px-5 pb-5 pt-2 space-y-6">
+                            @if($descriptionHtml !== '')
+                            <div class="prose prose-gray max-w-none text-gray-700">
+                                {!! $descriptionHtml !!}
+                            </div>
+                            @endif
+
+                            @if(count($features) > 0)
+                            <div>
+                                <h3 class="text-sm uppercase tracking-wide text-gray-500 font-semibold mb-3">{{ __('messages.key_features') }}</h3>
+                                <ul class="space-y-3">
+                                    @foreach($features as $feature)
+                                    <li class="flex items-start gap-3">
+                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                                            <i data-lucide="check" class="w-4 h-4 text-green-600"></i>
+                                        </div>
+                                        <span class="text-gray-700 text-base">{{ $feature }}</span>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+                            @if(count($materials) > 0)
+                            <div>
+                                <h3 class="text-sm uppercase tracking-wide text-gray-500 font-semibold mb-3">{{ __('messages.materials_used') }}</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($materials as $material)
+                                    <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">{{ $material }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+
+                            @if(count($specs) > 0)
+                            <div>
+                                <h3 class="text-sm uppercase tracking-wide text-gray-500 font-semibold mb-3">{{ __('messages.specifications') }}</h3>
+                                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    @foreach($specs as $specKey => $specValue)
+                                    @php
+                                        $label = __('messages.' . $specKey);
+                                        if ($label === 'messages.' . $specKey) {
+                                            $label = ucfirst(str_replace('_', ' ', (string) $specKey));
+                                        }
+
+                                        $value = $specValue;
+                                        if (is_array($value)) {
+                                            $value = $value[app()->getLocale()] ?? $value['fr'] ?? '';
+                                        }
+                                    @endphp
+
+                                    @if(is_string($value) && trim($value) !== '')
+                                    <div class="rounded-xl border border-gray-200 p-3 bg-white">
+                                        <dt class="text-xs uppercase tracking-wide text-gray-500 font-semibold">{{ $label }}</dt>
+                                        <dd class="text-sm text-gray-800 mt-1">{{ $value }}</dd>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </dl>
+                            </div>
+                            @endif
+                        </div>
+                    </details>
                     @endif
 
                     <!-- Action Buttons -->
@@ -140,6 +318,10 @@
         </div>
     </section>
 
+    <script type="application/ld+json">
+        {!! json_encode($servicesSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+    </script>
+
     <script>
         // Function to change the main image in a service card when clicking thumbnails
         function changeServiceImage(serviceId, index, imageSrc) {
@@ -156,6 +338,9 @@
             // Update thumbnail active states - find all thumbnails for this service
             const thumbs = document.querySelectorAll(`[id^="thumb-${serviceId}-"]`);
             thumbs.forEach((thumb, thumbIndex) => {
+                const isActive = thumbIndex === index;
+                thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+
                 if (thumbIndex === index) {
                     thumb.classList.remove('border-gray-200', 'hover:border-blue-300');
                     thumb.classList.add('border-blue-500', 'ring-2', 'ring-blue-500/30');
@@ -172,9 +357,22 @@
         [id^="main-image-"] {
             transition: opacity 0.15s ease-in-out;
         }
+
         /* Thumbnail border styling */
         .border-3 {
             border-width: 3px;
+        }
+
+        .service-details summary {
+            list-style: none;
+        }
+
+        .service-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .service-details[open] .details-chevron {
+            transform: rotate(180deg);
         }
     </style>
 @endsection

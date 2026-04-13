@@ -6,6 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    public const DEFAULT_ICON_BY_SLUG = [
+        'kitchen' => 'chef-hat',
+        'doors' => 'door-open',
+        'windows' => 'app-window',
+        'rolling_shutters' => 'blinds',
+        'railings' => 'shield',
+        'pergola' => 'sun-dim',
+        'sun_breakers' => 'sun-medium',
+        'mosquito_nets' => 'bug',
+        'space_design' => 'layout-grid',
+    ];
+
+    public const DEFAULT_COLOR_BY_SLUG = [
+        'kitchen' => 'rose',
+        'doors' => 'orange',
+        'windows' => 'blue',
+        'rolling_shutters' => 'violet',
+        'railings' => 'emerald',
+        'pergola' => 'amber',
+        'sun_breakers' => 'yellow',
+        'mosquito_nets' => 'teal',
+        'space_design' => 'indigo',
+    ];
+
     protected $fillable = [
         'slug',
         'title',
@@ -105,6 +129,24 @@ class Service extends Model
     {
         $gallery = $this->getGalleryImages();
         return $gallery[0] ?? $this->image ?? null;
+    }
+
+    public function getDisplayIcon(): string
+    {
+        if (is_string($this->icon) && trim($this->icon) !== '') {
+            return $this->icon;
+        }
+
+        return self::DEFAULT_ICON_BY_SLUG[$this->slug] ?? 'wrench';
+    }
+
+    public function getDisplayColor(): string
+    {
+        if (is_string($this->color) && trim($this->color) !== '') {
+            return $this->color;
+        }
+
+        return self::DEFAULT_COLOR_BY_SLUG[$this->slug] ?? 'blue';
     }
 
     public function scopeActive($query)

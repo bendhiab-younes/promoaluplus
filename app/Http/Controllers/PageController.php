@@ -12,7 +12,7 @@ class PageController extends Controller
 {
     public function home()
     {
-        $services = Service::active()->orderBy('sort_order')->take(3)->get();
+        $services = Service::active()->orderBy('sort_order')->get();
         $featuredProjects = Project::active()->featured()->orderBy('sort_order')->take(6)->get();
         $testimonials = Testimonial::active()->orderBy('sort_order')->take(3)->get();
 

@@ -16,7 +16,9 @@
                         <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Aluminum Windows" 
                              class="w-full h-full min-h-[100svh] object-cover object-center"
-                             loading="eager">
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
@@ -54,7 +56,8 @@
                         <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Aluminum Doors" 
                              class="w-full h-full min-h-[100svh] object-cover object-center"
-                             loading="lazy">
+                                loading="lazy"
+                                decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
@@ -86,7 +89,8 @@
                         <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Modern Glass Facades" 
                              class="w-full h-full min-h-[100svh] object-cover object-center"
-                             loading="lazy">
+                                loading="lazy"
+                                decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
@@ -118,7 +122,8 @@
                         <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
                              alt="Professional Construction Team" 
                              class="w-full h-full min-h-[100svh] object-cover object-center"
-                             loading="lazy">
+                                loading="lazy"
+                                decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
@@ -155,170 +160,198 @@
 
             <!-- Dots Indicators -->
             <div class="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 bg-slate-900/20 backdrop-blur-sm rounded-full">
-                <button onclick="goToSlide(0)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
+                <button onclick="goToSlide(0)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
+                <button onclick="goToSlide(1)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
+                <button onclick="goToSlide(2)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
+                <button onclick="goToSlide(3)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
             </div>
         </div>
     </section>
 
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        let autoplayInterval;
-        let isTransitioning = false;
+        (() => {
+            const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+            const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+            const carouselContainer = document.querySelector('.carousel-container');
 
-        function showSlide(index) {
-            if (isTransitioning) return;
-            isTransitioning = true;
-
-            const oldSlide = currentSlide;
-            
-            // Immediately set z-index for proper layering
-            slides[oldSlide].style.zIndex = '5';
-            slides[index].style.zIndex = '10';
-            
-            // Start fade out of old slide and fade in of new slide
-            slides[oldSlide].style.opacity = '0';
-            slides[oldSlide].classList.remove('active');
-            
-            slides[index].style.opacity = '1';
-            slides[index].classList.add('active');
-            
-            // Update dots
-            dots.forEach((dot, i) => {
-                if (i === index) {
-                    dot.classList.remove('bg-white/40', 'hover:bg-white/70');
-                    dot.classList.add('bg-white', 'scale-125');
-                } else {
-                    dot.classList.remove('bg-white', 'scale-125');
-                    dot.classList.add('bg-white/40', 'hover:bg-white/70');
-                }
-            });
-
-            // Re-initialize Lucide icons for the new slide
-            setTimeout(() => {
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            }, 100);
-
-            // Allow next transition after animation completes
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 1000);
-        }
-
-        function nextSlide() {
-            const newSlide = (currentSlide + 1) % slides.length;
-            showSlide(newSlide);
-            currentSlide = newSlide;
-            resetAutoplay();
-        }
-
-        function prevSlide() {
-            const newSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(newSlide);
-            currentSlide = newSlide;
-            resetAutoplay();
-        }
-
-        function goToSlide(index) {
-            if (currentSlide !== index && !isTransitioning) {
-                showSlide(index);
-                currentSlide = index;
-                resetAutoplay();
-            }
-        }
-
-        function startAutoplay() {
-            if (reduceMotionQuery.matches) {
+            if (!slides.length || !dots.length || !carouselContainer) {
                 return;
             }
-            autoplayInterval = setInterval(nextSlide, 6000); // Change slide every 6 seconds
-        }
 
-        function resetAutoplay() {
-            clearInterval(autoplayInterval);
-            startAutoplay();
-        }
+            const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const autoplayDelay = 6000;
+            const swipeThreshold = 50;
+            const transitionDuration = 1000;
 
-        // Initialize carousel on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial state
-            slides.forEach((slide, i) => {
-                if (i === 0) {
-                    slide.style.opacity = '1';
-                    slide.style.zIndex = '10';
-                    slide.classList.add('active');
-                } else {
-                    slide.style.opacity = '0';
-                    slide.style.zIndex = '5';
-                    slide.classList.remove('active');
+            let currentSlide = 0;
+            let autoplayInterval = null;
+            let isTransitioning = false;
+            let isHovered = false;
+            let isInViewport = true;
+            let touchStartX = 0;
+
+            const setSlideState = (slide, isActive) => {
+                slide.style.opacity = isActive ? '1' : '0';
+                slide.style.zIndex = isActive ? '10' : '5';
+                slide.classList.toggle('active', isActive);
+            };
+
+            const updateDots = (activeIndex) => {
+                dots.forEach((dot, index) => {
+                    if (index === activeIndex) {
+                        dot.classList.remove('bg-white/40', 'hover:bg-white/60');
+                        dot.classList.add('bg-white', 'scale-125');
+                    } else {
+                        dot.classList.remove('bg-white', 'scale-125');
+                        dot.classList.add('bg-white/40', 'hover:bg-white/60');
+                    }
+                });
+            };
+
+            const canAutoplay = () => !reduceMotionQuery.matches && !document.hidden && !isHovered && isInViewport;
+
+            const stopAutoplay = () => {
+                if (autoplayInterval !== null) {
+                    window.clearInterval(autoplayInterval);
+                    autoplayInterval = null;
                 }
-            });
+            };
 
-            // Initialize dots
-            dots.forEach((dot, i) => {
-                if (i === 0) {
-                    dot.classList.add('bg-white', 'scale-125');
-                    dot.classList.remove('bg-white/40', 'hover:bg-white/70');
-                } else {
-                    dot.classList.add('bg-white/40', 'hover:bg-white/70');
-                    dot.classList.remove('bg-white', 'scale-125');
+            const startAutoplay = () => {
+                if (!canAutoplay() || autoplayInterval !== null) {
+                    return;
                 }
-            });
 
-            // Initialize Lucide icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
+                autoplayInterval = window.setInterval(() => {
+                    const nextIndex = (currentSlide + 1) % slides.length;
+                    showSlide(nextIndex);
+                }, autoplayDelay);
+            };
 
-            startAutoplay();
+            const showSlide = (nextIndex) => {
+                if (isTransitioning || nextIndex === currentSlide || nextIndex < 0 || nextIndex >= slides.length) {
+                    return;
+                }
 
-            // Pause autoplay on hover
-            const carouselContainer = document.querySelector('.carousel-container');
-            if (carouselContainer) {
-                carouselContainer.addEventListener('mouseenter', () => {
-                    clearInterval(autoplayInterval);
+                isTransitioning = true;
+                const previousIndex = currentSlide;
+
+                window.requestAnimationFrame(() => {
+                    setSlideState(slides[previousIndex], false);
+                    setSlideState(slides[nextIndex], true);
+                    updateDots(nextIndex);
+                    currentSlide = nextIndex;
                 });
 
-                carouselContainer.addEventListener('mouseleave', () => {
+                window.setTimeout(() => {
+                    isTransitioning = false;
+                }, reduceMotionQuery.matches ? 0 : transitionDuration);
+            };
+
+            const goToSlideInternal = (targetIndex) => {
+                showSlide(targetIndex);
+                stopAutoplay();
+                startAutoplay();
+            };
+
+            window.nextSlide = () => {
+                goToSlideInternal((currentSlide + 1) % slides.length);
+            };
+
+            window.prevSlide = () => {
+                goToSlideInternal((currentSlide - 1 + slides.length) % slides.length);
+            };
+
+            window.goToSlide = (index) => {
+                if (typeof index !== 'number') {
+                    return;
+                }
+                goToSlideInternal(index);
+            };
+
+            slides.forEach((slide, index) => {
+                setSlideState(slide, index === 0);
+            });
+            updateDots(0);
+
+            carouselContainer.addEventListener('mouseenter', () => {
+                isHovered = true;
+                stopAutoplay();
+            });
+
+            carouselContainer.addEventListener('mouseleave', () => {
+                isHovered = false;
+                startAutoplay();
+            });
+
+            carouselContainer.addEventListener('touchstart', (event) => {
+                touchStartX = event.changedTouches[0].screenX;
+            }, { passive: true });
+
+            carouselContainer.addEventListener('touchend', (event) => {
+                const touchEndX = event.changedTouches[0].screenX;
+                const deltaX = touchEndX - touchStartX;
+
+                if (Math.abs(deltaX) < swipeThreshold) {
+                    return;
+                }
+
+                if (deltaX < 0) {
+                    window.nextSlide();
+                } else {
+                    window.prevSlide();
+                }
+            }, { passive: true });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopAutoplay();
+                } else {
+                    startAutoplay();
+                }
+            });
+
+            if (typeof reduceMotionQuery.addEventListener === 'function') {
+                reduceMotionQuery.addEventListener('change', () => {
+                    stopAutoplay();
                     startAutoplay();
                 });
-
-                // Touch swipe support
-                let touchStartX = 0;
-                let touchEndX = 0;
-
-                carouselContainer.addEventListener('touchstart', (e) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                }, { passive: true });
-
-                carouselContainer.addEventListener('touchend', (e) => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                }, { passive: true });
-
-                function handleSwipe() {
-                    const swipeThreshold = 50;
-                    if (touchEndX < touchStartX - swipeThreshold) {
-                        nextSlide();
-                    } else if (touchEndX > touchStartX + swipeThreshold) {
-                        prevSlide();
-                    }
-                }
             }
 
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') prevSlide();
-                if (e.key === 'ArrowRight') nextSlide();
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    const [entry] = entries;
+                    isInViewport = Boolean(entry?.isIntersecting);
+
+                    if (!isInViewport) {
+                        stopAutoplay();
+                    } else {
+                        startAutoplay();
+                    }
+                }, {
+                    threshold: 0.25,
+                });
+
+                observer.observe(carouselContainer);
+            }
+
+            document.addEventListener('keydown', (event) => {
+                const tagName = event.target?.tagName;
+                if (tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT') {
+                    return;
+                }
+
+                if (event.key === 'ArrowLeft') {
+                    window.prevSlide();
+                }
+
+                if (event.key === 'ArrowRight') {
+                    window.nextSlide();
+                }
             });
-        });
+
+            startAutoplay();
+        })();
     </script>
 
     <!-- Services Section Preview -->
@@ -340,45 +373,53 @@
         <!-- Full Width Horizontal Scrolling Service Cards -->
         <div class="relative w-full">
             <!-- Navigation Arrows -->
-            <button onclick="scrollServices('left')" class="services-prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-2 md:p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200" aria-label="Previous services">
+            <button onclick="scrollServices('left')" class="services-prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200 lg:hidden" aria-label="Previous services">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
-            <button onclick="scrollServices('right')" class="services-next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-2 md:p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200" aria-label="Next services">
+            <button onclick="scrollServices('right')" class="services-next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200 lg:hidden" aria-label="Next services">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
             
             <!-- Scroll Container - Full Width -->
-            <div id="servicesScroller" class="overflow-x-auto overflow-y-visible scrollbar-hide pb-8 pt-4 w-full px-8 md:px-12">
-                    <div class="flex gap-6 min-w-max py-4 px-6 md:px-8">
-                        @php
-                            $newServices = [
-                                ['name' => 'kitchen', 'color' => 'rose', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M12 3v6"/><path d="M8 21v-4"/><path d="M16 21v-4"/></svg>'],
-                                ['name' => 'doors', 'color' => 'orange', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>'],
-                                ['name' => 'windows', 'color' => 'blue', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><line x1="3" y1="12" x2="21" y2="12"></line></svg>'],
-                                ['name' => 'rolling_shutters', 'color' => 'purple', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="3" y1="19" x2="21" y2="19"/></svg>'],
-                                ['name' => 'railings', 'color' => 'green', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M22 8l-2 2-2-2"/><path d="M6 8l-2 2-2-2"/><path d="M6 22v-4"/><path d="M18 22v-4"/></svg>'],
-                                ['name' => 'pergola', 'color' => 'amber', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V6"/><path d="M20 22V6"/><path d="M2 6h20"/><path d="M2 10h20"/><path d="M12 6v16"/></svg>'],
-                                ['name' => 'sun_breakers', 'color' => 'yellow', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'],
-                                ['name' => 'mosquito_nets', 'color' => 'teal', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>'],
-                                ['name' => 'space_design', 'color' => 'indigo', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'],
-                            ];
-                        @endphp
+            <div id="servicesScroller" class="overflow-x-auto lg:overflow-visible overflow-y-visible scrollbar-hide pb-8 pt-4 w-full px-8 md:px-12 lg:px-8">
+                <div class="flex gap-6 min-w-max lg:min-w-0 py-4 px-6 md:px-8 lg:px-0 lg:flex-wrap lg:justify-center lg:gap-8">
+                    @forelse($services as $service)
+                    @php
+                        $cardColor = $service->getDisplayColor();
+                        $cardIcon = $service->getDisplayIcon();
+                        $cardSummary = trim(strip_tags($service->getTranslatedShortDescription()));
+                    @endphp
+                    <a href="{{ route('services') }}#{{ $service->slug }}"
+                       aria-label="{{ __('messages.view_details') }} - {{ $service->getTranslatedTitle() }}"
+                       class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer min-w-[75vw] w-[75vw] sm:min-w-[250px] sm:w-[250px] md:min-w-[280px] md:w-[280px] lg:min-w-[220px] lg:w-[220px] border-2 border-transparent hover:border-{{ $cardColor }}-300">
+                        <div class="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-5 rounded-xl bg-gradient-to-br from-{{ $cardColor }}-400 to-{{ $cardColor }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg">
+                            @if($service->svg_icon)
+                                {!! $service->svg_icon !!}
+                            @elseif($cardIcon)
+                                <i data-lucide="{{ $cardIcon }}" class="w-8 h-8 text-white"></i>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            @endif
+                        </div>
 
-                        @foreach($newServices as $service)
-                        <a href="{{ route('services') }}#{{ $service['name'] }}" 
-                           class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:scale-110 cursor-pointer min-w-[180px] w-[180px] md:min-w-[220px] md:w-[220px] border-2 border-transparent hover:border-{{ $service['color'] }}-300">
-                            <!-- Icon Container -->
-                            <div class="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-5 rounded-xl bg-gradient-to-br from-{{ $service['color'] }}-400 to-{{ $service['color'] }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg group-hover:shadow-{{ $service['color'] }}-500/50">
-                                {!! $service['icon'] !!}
-                            </div>
-                            
-                            <!-- Service Name -->
-                            <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $service['color'] }}-600 px-2 leading-snug">
-                                {{ __('messages.' . $service['name']) }}
-                            </h3>
-                        </a>
-                        @endforeach
-                    </div>
+                        <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $cardColor }}-600 px-2 leading-snug">
+                            {{ $service->getTranslatedTitle() }}
+                        </h3>
+
+                        @if($cardSummary !== '')
+                            <p class="mt-3 text-sm text-gray-500 text-center leading-relaxed">
+                                {{ \Illuminate\Support\Str::limit($cardSummary, 96) }}
+                            </p>
+                        @endif
+
+                        <span class="mt-4 inline-flex items-center text-sm font-semibold text-{{ $cardColor }}-600">
+                            {{ __('messages.view_details') }}
+                            <i data-lucide="arrow-right" class="w-4 h-4 ms-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+                    @empty
+                    <p class="text-gray-500 text-center w-full">{{ __('messages.services_page_intro') }}</p>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -407,7 +448,6 @@
         /* Service item animation improvements */
         .service-item {
             flex-shrink: 0;
-            will-change: transform;
         }
 
         .service-item:hover {
@@ -415,15 +455,20 @@
         }
 
         /* Smooth scroll behavior */
-        .overflow-x-auto {
+        #servicesScroller {
             scroll-behavior: smooth;
-            /* Allow vertical overflow to prevent clipping on scale */
             overflow-y: visible !important;
         }
 
         /* Prevent parent from clipping transformed children */
-        .overflow-x-auto > div {
+        #servicesScroller > div {
             transform-style: preserve-3d;
+        }
+
+        @media (min-width: 1024px) {
+            .service-item {
+                flex-shrink: 1;
+            }
         }
     </style>
 
