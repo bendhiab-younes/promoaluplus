@@ -14,11 +14,26 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Aluminum Joinery',
-    'hero_subtitle' => 'Custom Made',
-    'hero_description' => 'Bring your projects to life with our doors, windows, pergolas, kitchens and electric shutters. Craftmanship at the service of your comfort.',
+    'hero_title' => 'Reliable Aluminum Solutions',
+    'hero_subtitle' => 'Quality, Transparency, Punctuality',
+    'hero_description' => 'From design to installation, we deliver durable doors, windows, pergolas, railings, and kitchens with clear communication at every step.',
     'premium_quality' => 'Premium Quality Guaranteed',
     'start_your_project' => 'Start Your Project',
+    'hero_values_badge' => '15+ Years of Proven Expertise',
+    'hero_slide1_alt' => 'Modern facade with aluminum joinery and large glazing',
+    'hero_slide2_badge' => 'Secure Doors & Access',
+    'hero_slide2_title' => 'Enhanced Security',
+    'hero_slide2_highlight' => 'Tailored Design',
+    'hero_slide2_description' => 'Entrance doors, sliding systems, and glazed openings combining strength, insulation, and elegance.',
+    'hero_slide2_alt' => 'Modern home entrance with designer front door',
+    'hero_slide3_badge' => 'Facades & Curtain Walls',
+    'hero_slide3_title' => 'Contemporary Architecture',
+    'hero_slide3_highlight' => 'Thermal Performance',
+    'hero_slide3_description' => 'Aluminum glazing and sun-control solutions designed for daylight, comfort, and long-term durability.',
+    'hero_slide3_alt' => 'Modern glass facade with geometric lines',
+    'hero_slide4_badge' => 'Service for Expats',
+    'hero_slide4_description' => 'Remote follow-up with video calls, photo updates, and regular reports to manage your Tunisia project from abroad.',
+    'hero_slide4_alt' => 'Construction team working on exterior installation',
 
     // Services
     'our_services' => 'Our Services',
@@ -158,7 +173,6 @@ return [
 
     // CTA
     'ready_to_start' => 'Ready to Start Your Project?',
-    'start_your_project' => 'Start Your Project',
     'cta_description' => 'Get a free detailed quote within 48h. Our team is at your service.',
     'request_quote' => 'Request a Quote',
     'free_quote' => 'Free Quote',

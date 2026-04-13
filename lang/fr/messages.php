@@ -14,11 +14,26 @@ return [
     'navigation' => 'Navigation',
 
     // Hero
-    'hero_title' => 'Menuiserie Aluminium',
-    'hero_subtitle' => 'Sur Mesure',
-    'hero_description' => 'Donnez vie à vos projets avec nos portes, fenêtres, pergolas, cuisines et volets électriques. Un savoir-faire artisanal au service de votre confort.',
+    'hero_title' => 'Solutions Aluminium Fiables',
+    'hero_subtitle' => 'Qualité, Transparence, Ponctualité',
+    'hero_description' => 'De la conception à la pose, nous réalisons des solutions durables pour portes, fenêtres, pergolas, garde-corps et cuisines, avec un suivi clair à chaque étape.',
     'premium_quality' => 'Qualité Premium Garantie',
     'start_your_project' => 'Lancez Votre Projet',
+    'hero_values_badge' => '15+ ans d\'expertise certifiée',
+    'hero_slide1_alt' => 'Façade moderne avec menuiserie aluminium et larges vitrages',
+    'hero_slide2_badge' => 'Portes & Accès Sécurisés',
+    'hero_slide2_title' => 'Sécurité Renforcée',
+    'hero_slide2_highlight' => 'Design Sur Mesure',
+    'hero_slide2_description' => 'Portes d\'entrée, coulissantes et baies vitrées qui combinent robustesse, étanchéité et élégance.',
+    'hero_slide2_alt' => 'Entrée de maison moderne avec porte design',
+    'hero_slide3_badge' => 'Façades & Murs-Rideaux',
+    'hero_slide3_title' => 'Architecture Contemporaine',
+    'hero_slide3_highlight' => 'Performance Thermique',
+    'hero_slide3_description' => 'Brises-soleil, vitrages et solutions aluminium pensés pour la lumière, le confort et la durabilité.',
+    'hero_slide3_alt' => 'Façade vitrée moderne avec lignes architecturales',
+    'hero_slide4_badge' => 'Service Expatriés',
+    'hero_slide4_description' => 'Suivi à distance par visio, photos et rapports réguliers pour piloter vos projets en Tunisie depuis l\'étranger.',
+    'hero_slide4_alt' => 'Équipe de chantier en intervention extérieure',
 
     // Services
     'our_services' => 'Nos Services',
@@ -82,7 +97,6 @@ return [
     'ventilated_facades' => 'Façades ventilées',
     'modern_architecture' => 'Architecture moderne',
     'facades' => 'Pergolas & Abris',
-    'rolling_shutters' => 'Volets roulants',
 
     // Kitchen features (Option 1)
     'kitchen_robustness' => 'Robustesse et longévité',
@@ -161,7 +175,6 @@ return [
 
     // CTA
     'ready_to_start' => 'Prêt à Démarrer Votre Projet?',
-    'start_your_project' => 'Démarrez Votre Projet',
     'cta_description' => 'Obtenez un devis gratuit et détaillé sous 48h. Notre équipe est à votre écoute.',
     'request_quote' => 'Demander un Devis',
     'free_quote' => 'Devis Gratuit',
