@@ -134,7 +134,7 @@
                                     </span>
                                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '500') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '100') }}+ {{ __('messages.projects_completed') }}</span>
                                     </h2>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.hero_slide4_description') }}
