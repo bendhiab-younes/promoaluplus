@@ -90,12 +90,12 @@
                     </div>
                     @endif
 
-                    <form id="quote-form" action="{{ route('quote.store') }}" method="POST" class="space-y-5">
+                    <form id="quote-form" action="{{ route('quote.store') }}" method="POST" class="space-y-5" data-quote-form>
                         @csrf
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
                                 <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.full_name') }} <span class="text-red-500">*</span></label>
-                                <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required
+                                <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required maxlength="255" autocomplete="name"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.your_name') }}">
                                 @error('name')
@@ -104,7 +104,7 @@
                             </div>
                             <div>
                                 <label for="quote-email" class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
-                                <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required
+                                <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="email@example.com">
                                 @error('email')
@@ -116,7 +116,7 @@
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
                                 <label for="quote-phone" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.phone') }} <span class="text-red-500">*</span></label>
-                                <input id="quote-phone" type="tel" name="phone" value="{{ old('phone') }}" required
+                                <input id="quote-phone" type="tel" name="phone" value="{{ old('phone') }}" required maxlength="50" autocomplete="tel"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="+216 XX XXX XXX">
                                 @error('phone')
@@ -125,7 +125,7 @@
                             </div>
                             <div>
                                 <label for="quote-country" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.country') }}</label>
-                                <input id="quote-country" type="text" name="country" value="{{ old('country') }}"
+                                <input id="quote-country" type="text" name="country" value="{{ old('country') }}" maxlength="100" autocomplete="country-name"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.country_residence') }}">
                                 @error('country')
@@ -137,7 +137,7 @@
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
                                 <label for="quote-city" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
-                                <input id="quote-city" type="text" name="city" value="{{ old('city') }}"
+                                <input id="quote-city" type="text" name="city" value="{{ old('city') }}" maxlength="100" autocomplete="address-level2"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
                                     placeholder="{{ __('messages.project_city') }}">
                                 @error('city')
@@ -198,7 +198,7 @@
 
                         <div>
                             <label for="quote-description" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_description') }} <span class="text-red-500">*</span></label>
-                            <textarea id="quote-description" name="description" rows="4" required
+                            <textarea id="quote-description" name="description" rows="4" required maxlength="2000"
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white resize-none"
                                 placeholder="{{ __('messages.describe_project') }}">{{ old('description') }}</textarea>
                             @error('description')
@@ -207,7 +207,7 @@
                         </div>
 
                         <div class="text-center pt-4">
-                            <button type="submit" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 md:px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1 inline-flex items-center {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">
+                            <button type="submit" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 md:px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1 inline-flex items-center {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" data-quote-submit>
                                 <i data-lucide="send" class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'ml-2 -scale-x-100' : 'mr-2' }} group-hover:translate-x-1 transition-transform"></i>
                                 {{ __('messages.send_request') }}
                             </button>
@@ -243,3 +243,33 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const quoteForm = document.querySelector('[data-quote-form]');
+
+    if (!quoteForm) {
+        return;
+    }
+
+    const submitButton = quoteForm.querySelector('[data-quote-submit]');
+
+    if (!submitButton) {
+        return;
+    }
+
+    quoteForm.addEventListener('submit', function (event) {
+        if (quoteForm.dataset.submitting === '1') {
+            event.preventDefault();
+            return;
+        }
+
+        quoteForm.dataset.submitting = '1';
+        submitButton.disabled = true;
+        submitButton.setAttribute('aria-disabled', 'true');
+        submitButton.classList.add('opacity-70', 'cursor-not-allowed');
+    });
+});
+</script>
+@endpush
