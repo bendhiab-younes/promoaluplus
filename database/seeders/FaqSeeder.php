@@ -32,7 +32,7 @@ class FaqSeeder extends Seeder
             $answerFr = $faqFr['answer'] ?? '';
 
             Faq::updateOrCreate(
-                ['question->fr' => $questionFr],
+                ['sort_order' => $index + 1],
                 [
                     'question' => [
                         'fr' => $questionFr,

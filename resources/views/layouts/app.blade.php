@@ -615,6 +615,14 @@
     <!-- Main Content -->
     @yield('content')
 
+    @php
+        $footerServices = \App\Support\CanonicalServiceCatalog::translatedOptions();
+        $footerPhone = \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678');
+        $footerWhatsApp = \App\Models\SiteSetting::get('contact_whatsapp', $footerPhone);
+        $footerEmail = \App\Models\SiteSetting::get('contact_email', 'contact@promoaluplus.tn');
+        $footerAddress = \App\Models\SiteSetting::get('contact_address', __('messages.full_address'));
+    @endphp
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="container mx-auto px-4">
@@ -643,10 +651,9 @@
                 <div>
                     <h3 class="text-lg font-bold mb-4">{{ __('messages.nav_services') }}</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.doors') }} & {{ __('messages.windows') }}</a></li>
-                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.railings') }}</a></li>
-                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.pergola') }} & {{ __('messages.shelter') }}</a></li>
-                        <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition-colors">{{ __('messages.shutters') }}</a></li>
+                        @foreach($footerServices as $serviceSlug => $serviceLabel)
+                            <li><a href="{{ route('services') }}#{{ $serviceSlug }}" class="text-gray-400 hover:text-white transition-colors">{{ $serviceLabel }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 
@@ -655,15 +662,21 @@
                     <ul class="space-y-2 text-gray-400">
                         <li class="flex items-start">
                             <i data-lucide="map-pin" class="w-5 h-5 mr-2 mt-1"></i>
-                            <span>Tunis, Tunisie</span>
+                            <span>{{ $footerAddress }}</span>
                         </li>
                         <li class="flex items-center">
                             <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
-                            <span>+216 12 345 678</span>
+                            <span>{{ $footerPhone }}</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                            </svg>
+                            <span>{{ $footerWhatsApp }}</span>
                         </li>
                         <li class="flex items-center">
                             <i data-lucide="mail" class="w-5 h-5 mr-2"></i>
-                            <span>contact@promoaluplus.tn</span>
+                            <span>{{ $footerEmail }}</span>
                         </li>
                     </ul>
                 </div>
@@ -792,7 +805,11 @@
 
         // WhatsApp Integration
         function openWhatsApp() {
-            const phoneNumber = '21612345678';
+            const configuredNumber = @json(\App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678')));
+            const phoneNumber = String(configuredNumber || '').replace(/\D/g, '');
+            if (!phoneNumber) {
+                return;
+            }
             const message = encodeURIComponent('{{ __("messages.whatsapp_message") }}');
             window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
         }

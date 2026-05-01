@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quote;
+use App\Support\CanonicalServiceCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\QuoteRequestReceived;
@@ -13,12 +14,13 @@ class QuoteController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'first_name' => 'required|string|max:100',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:50',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
-            'project_type' => 'required|string|in:windows,doors,curtains,railings,pergola,kitchen,shelter,shutters,facades,veranda,other',
+            'project_type' => CanonicalServiceCatalog::validationRule(),
             'description' => 'required|string|max:2000',
             'budget_range' => 'nullable|string|max:100',
             'timeline' => 'nullable|string|max:100',

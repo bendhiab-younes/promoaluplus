@@ -38,14 +38,19 @@ class QuoteResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $projectTypeOptions = Quote::projectTypeOptions('fr');
+
         return $form
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make('Informations client')
                             ->schema([
+                                Forms\Components\TextInput::make('first_name')
+                                    ->label('Prénom')
+                                    ->required(),
                                 Forms\Components\TextInput::make('name')
-                                    ->label('Nom')
+                                    ->label('Nom de famille')
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
@@ -64,17 +69,7 @@ class QuoteResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('project_type')
                                     ->label('Type de projet')
-                                    ->options([
-                                        'windows' => 'Fenêtres',
-                                        'doors' => 'Portes',
-                                        'curtains' => 'Rideaux métalliques',
-                                        'railings' => 'Garde-corps',
-                                        'pergola' => 'Pergola',
-                                        'kitchen' => 'Cuisine aluminium',
-                                        'shelter' => 'Abri',
-                                        'shutters' => 'Volets électriques',
-                                        'other' => 'Autre',
-                                    ])
+                                    ->options($projectTypeOptions)
                                     ->required(),
                                 Forms\Components\TextInput::make('budget_range')
                                     ->label('Budget client'),
@@ -197,12 +192,15 @@ class QuoteResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $projectTypeOptions = Quote::projectTypeOptions('fr');
+
         return $table
             ->modifyQueryUsing(
                 fn (Builder $query): Builder => $query
                     ->select([
                         'id',
                         'quote_number',
+                        'first_name',
                         'name',
                         'phone',
                         'project_type',
@@ -222,7 +220,8 @@ class QuoteResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Client')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(fn (Quote $record): string => trim(implode(' ', array_filter([$record->first_name, $record->name])))),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Téléphone')
                     ->searchable()
@@ -230,17 +229,7 @@ class QuoteResource extends Resource
                 Tables\Columns\TextColumn::make('project_type')
                     ->label('Type')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'windows' => 'Fenêtres',
-                        'doors' => 'Portes',
-                        'curtains' => 'Rideaux',
-                        'railings' => 'Garde-corps',
-                        'pergola' => 'Pergola',
-                        'kitchen' => 'Cuisine',
-                        'shelter' => 'Abri',
-                        'shutters' => 'Volets',
-                        default => $state,
-                    })
+                    ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr'))
                     ->color(fn (string $state): string => match ($state) {
                         'windows' => 'info',
                         'doors' => 'warning',
@@ -293,17 +282,7 @@ class QuoteResource extends Resource
                     ]),
                 Tables\Filters\SelectFilter::make('project_type')
                     ->label('Type de projet')
-                    ->options([
-                        'windows' => 'Fenêtres',
-                        'doors' => 'Portes',
-                        'curtains' => 'Rideaux',
-                        'railings' => 'Garde-corps',
-                        'pergola' => 'Pergola',
-                        'kitchen' => 'Cuisine',
-                        'shelter' => 'Abri',
-                        'shutters' => 'Volets',
-                        'other' => 'Autre',
-                    ]),
+                    ->options($projectTypeOptions),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

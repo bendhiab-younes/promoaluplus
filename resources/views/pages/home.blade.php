@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @php
     use App\Models\SiteSetting;
+
+    $heroBadge = SiteSetting::getTranslated('hero_badge', __('messages.hero_values_badge'));
+    if (preg_match('/promo\s*alu\s*plus/i', $heroBadge)) {
+        $heroBadge = 'PromoAlu+';
+    }
 @endphp
 @section('title', __('messages.nav_home'))
 
@@ -11,7 +16,7 @@
             <!-- Carousel Slides -->
             <div class="carousel-slides relative h-full min-h-[100svh]">
                 <!-- Slide 1 - Modern Aluminum Windows -->
-                <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" style="opacity: 1; z-index: 10;">
+                <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
                     <div class="relative h-full min-h-[100svh]">
                             <img src="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide1_alt') }}" 
@@ -22,10 +27,10 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
                                     <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-white/20 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
-                                        {{ SiteSetting::getTranslated('hero_badge', __('messages.hero_values_badge')) }}
+                                        {{ $heroBadge }}
                                     </span>
                                     <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
@@ -51,7 +56,7 @@
                 </div>
 
                 <!-- Slide 2 - Aluminum Doors -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" style="opacity: 0; z-index: 5;">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="2" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full min-h-[100svh]">
                             <img src="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide2_alt') }}" 
@@ -61,7 +66,7 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
                                     <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 md:mb-8 border border-orange-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                         {{ __('messages.hero_slide2_badge') }}
@@ -84,7 +89,7 @@
                 </div>
 
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" style="opacity: 0; z-index: 5;">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="3" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full min-h-[100svh]">
                             <img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide3_alt') }}" 
@@ -94,7 +99,7 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
                                     <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-blue-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                         {{ __('messages.hero_slide3_badge') }}
@@ -117,7 +122,7 @@
                 </div>
 
                 <!-- Slide 4 - Company Experience -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" style="opacity: 0; z-index: 5;">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="1" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full min-h-[100svh]">
                             <img src="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide4_alt') }}" 
@@ -127,14 +132,14 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content py-16 md:py-24 lg:py-32">
+                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
                                     <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 md:mb-8 border border-green-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         {{ __('messages.hero_slide4_badge') }}
                                     </span>
                                     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::get('stats_projects', '100') }}+ {{ __('messages.projects_completed') }}</span>
+                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hundreds_projects_completed') }}</span>
                                     </h2>
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ __('messages.hero_slide4_description') }}
@@ -159,18 +164,24 @@
             </button>
 
             <!-- Dots Indicators -->
-            <div class="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20 p-2 bg-slate-900/20 backdrop-blur-sm rounded-full">
-                <button onclick="goToSlide(0)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
+            <div class="absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-20 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
+                <button onclick="goToSlide(0)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
+                <button onclick="goToSlide(1)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
+                <button onclick="goToSlide(2)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
+                <button onclick="goToSlide(3)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
             </div>
         </div>
     </section>
 
     <script>
         (() => {
-            const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+            const slides = Array.from(document.querySelectorAll('.carousel-slide'))
+                .sort((leftSlide, rightSlide) => {
+                    const leftOrder = Number(leftSlide.dataset.order ?? leftSlide.dataset.slide ?? 0);
+                    const rightOrder = Number(rightSlide.dataset.order ?? rightSlide.dataset.slide ?? 0);
+
+                    return leftOrder - rightOrder;
+                });
             const dots = Array.from(document.querySelectorAll('.carousel-dot'));
             const carouselContainer = document.querySelector('.carousel-container');
 
@@ -200,9 +211,9 @@
                 dots.forEach((dot, index) => {
                     if (index === activeIndex) {
                         dot.classList.remove('bg-white/40', 'hover:bg-white/60');
-                        dot.classList.add('bg-white', 'scale-125');
+                        dot.classList.add('bg-white', 'scale-110');
                     } else {
-                        dot.classList.remove('bg-white', 'scale-125');
+                        dot.classList.remove('bg-white', 'scale-110');
                         dot.classList.add('bg-white/40', 'hover:bg-white/60');
                     }
                 });

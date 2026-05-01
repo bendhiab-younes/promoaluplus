@@ -15,7 +15,7 @@ class PdfController extends Controller
             'name' => SiteSetting::get('company_name', 'Promo Alu Plus'),
             'phone' => SiteSetting::get('contact_phone', '+216 12 345 678'),
             'email' => SiteSetting::get('contact_email', 'contact@promoaluplus.tn'),
-            'address' => SiteSetting::get('contact_address', 'Tunis, Tunisie'),
+            'address' => SiteSetting::get('contact_address', 'Sousse, Tunisie'),
         ];
     }
 

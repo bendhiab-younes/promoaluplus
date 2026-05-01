@@ -1,15 +1,22 @@
 @extends('layouts.app')
 
+@php
+    use App\Models\SiteSetting;
+    use App\Support\CanonicalServiceCatalog;
+
+    $contactPhone = SiteSetting::get('contact_phone', '+216 12 345 678');
+    $contactWhatsApp = SiteSetting::get('contact_whatsapp', $contactPhone);
+    $contactEmail = SiteSetting::get('contact_email', 'contact@promoaluplus.tn');
+    $contactAddress = SiteSetting::get('contact_address', __('messages.full_address'));
+    $projectTypeOptions = CanonicalServiceCatalog::translatedOptions();
+@endphp
+
 @section('title', __('messages.nav_contact'))
 
 @section('content')
     <!-- Page Header -->
     <section class="hero-gradient pt-28 md:pt-32 pb-16 md:pb-20 relative">
         <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
-            <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                {{ __('messages.get_in_touch') }}
-            </span>
             <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6">{{ __('messages.contact_us') }}</h1>
             <p class="text-lg md:text-xl text-blue-100/90 max-w-2xl mx-auto leading-relaxed">
                 {{ __('messages.contact_intro') }}
@@ -20,14 +27,14 @@
     <!-- Contact Information -->
     <section class="py-12 md:py-20 bg-white">
         <div class="container mx-auto px-6 md:px-8">
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-16">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-12 md:mb-16">
                 <div class="scroll-fade stagger-1 group">
                     <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="phone" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.phone') }}</h3>
-                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">+216 12 345 678</p>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $contactPhone }}</p>
                         <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.working_hours') }}</p>
                     </div>
                 </div>
@@ -38,19 +45,32 @@
                             <i data-lucide="mail" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">Email</h3>
-                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">contact@aluminiumcraft.tn</p>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $contactEmail }}</p>
                         <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.response_time') }}</p>
                     </div>
                 </div>
                 
-                <div class="scroll-fade stagger-3 group sm:col-span-2 md:col-span-1">
+                <div class="scroll-fade stagger-3 group">
+                    <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-emerald-50 rounded-2xl border border-gray-100 hover:border-emerald-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
+                        <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 md:w-8 md:h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">WhatsApp</h3>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $contactWhatsApp }}</p>
+                        <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.response_time') }}</p>
+                    </div>
+                </div>
+
+                <div class="scroll-fade stagger-4 group sm:col-span-2 lg:col-span-1">
                     <div class="text-center p-6 md:p-8 bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl transition-all duration-300 h-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}">
                         <div class="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform duration-300">
                             <i data-lucide="map-pin" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.address') }}</h3>
                         <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">
-                            {{ __('messages.full_address') }}
+                            {{ $contactAddress }}
                         </p>
                         <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.showroom_appointment') }}</p>
                     </div>
@@ -66,7 +86,6 @@
                             {{ __('messages.free_quote') }}
                         </span>
                         <h2 class="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ __('messages.request_free_quote') }}</h2>
-                        <p class="text-gray-600">{{ __('messages.quote_form_intro') }}</p>
                     </div>
 
                     @if(session('success'))
@@ -94,14 +113,26 @@
                         @csrf
                         <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.full_name') }} <span class="text-red-500">*</span></label>
+                                <label for="quote-first-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.first_name') }} <span class="text-red-500">*</span></label>
+                                <input id="quote-first-name" type="text" name="first_name" value="{{ old('first_name') }}" required maxlength="100" autocomplete="given-name"
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                    placeholder="{{ __('messages.your_first_name') }}">
+                                @error('first_name')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.last_name') }} <span class="text-red-500">*</span></label>
                                 <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required maxlength="255" autocomplete="name"
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="{{ __('messages.your_name') }}">
+                                    placeholder="{{ __('messages.your_last_name') }}">
                                 @error('name')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
                             <div>
                                 <label for="quote-email" class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
                                 <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email"
@@ -149,15 +180,9 @@
                                 <select id="quote-project-type" name="project_type" required
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
                                     <option value="">{{ __('messages.select_type') }}</option>
-                                    <option value="windows" {{ old('project_type') == 'windows' ? 'selected' : '' }}>{{ __('messages.windows') }}</option>
-                                    <option value="doors" {{ old('project_type') == 'doors' ? 'selected' : '' }}>{{ __('messages.doors') }}</option>
-                                    <option value="curtains" {{ old('project_type') == 'curtains' ? 'selected' : '' }}>{{ __('messages.curtains') }}</option>
-                                    <option value="railings" {{ old('project_type') == 'railings' ? 'selected' : '' }}>{{ __('messages.railings') }}</option>
-                                    <option value="pergola" {{ old('project_type') == 'pergola' ? 'selected' : '' }}>{{ __('messages.pergola') }}</option>
-                                    <option value="kitchen" {{ old('project_type') == 'kitchen' ? 'selected' : '' }}>{{ __('messages.kitchen') }}</option>
-                                    <option value="shelter" {{ old('project_type') == 'shelter' ? 'selected' : '' }}>{{ __('messages.shelter') }}</option>
-                                    <option value="shutters" {{ old('project_type') == 'shutters' ? 'selected' : '' }}>{{ __('messages.shutters') }}</option>
-                                    <option value="other" {{ old('project_type') == 'other' ? 'selected' : '' }}>{{ __('messages.other') }}</option>
+                                    @foreach($projectTypeOptions as $projectTypeValue => $projectTypeLabel)
+                                        <option value="{{ $projectTypeValue }}" {{ old('project_type') == $projectTypeValue ? 'selected' : '' }}>{{ $projectTypeLabel }}</option>
+                                    @endforeach
                                 </select>
                                 @error('project_type')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

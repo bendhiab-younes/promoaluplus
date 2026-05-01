@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\CanonicalServiceCatalog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Quote extends Model
 {
     protected $fillable = [
+        'first_name',
         'name',
         'email',
         'phone',
@@ -136,10 +138,12 @@ class Quote extends Model
 
     public function createInvoice(): Invoice
     {
+        $clientName = trim(implode(' ', array_filter([$this->first_name, $this->name])));
+
         $invoice = Invoice::create([
             'invoice_number' => Invoice::generateInvoiceNumber(),
             'quote_id' => $this->id,
-            'client_name' => $this->name,
+            'client_name' => $clientName !== '' ? $clientName : $this->name,
             'client_email' => $this->email,
             'client_phone' => $this->phone,
             'issue_date' => now(),
@@ -165,5 +169,15 @@ class Quote extends Model
         }
 
         return $invoice;
+    }
+
+    public static function projectTypeOptions(?string $locale = null): array
+    {
+        return CanonicalServiceCatalog::translatedOptions($locale);
+    }
+
+    public static function projectTypeLabel(string $projectType, ?string $locale = null): string
+    {
+        return CanonicalServiceCatalog::labelFor($projectType, $locale);
     }
 }
