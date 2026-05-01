@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuoteResource\Pages;
-use App\Filament\Resources\QuoteResource\RelationManagers;
 use App\Models\Quote;
-use App\Models\Invoice;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -133,7 +131,7 @@ class QuoteResource extends Resource
                                     ->reorderable()
                                     ->collapsible(),
                             ])
-                            ->collapsed(fn ($record) => $record && $record->items->isEmpty()),
+                                    ->collapsed(fn ($record) => $record && ! $record->items()->exists()),
                     ])
                     ->columnSpan(['lg' => 2]),
 
@@ -200,6 +198,21 @@ class QuoteResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(
+                fn (Builder $query): Builder => $query
+                    ->select([
+                        'id',
+                        'quote_number',
+                        'name',
+                        'phone',
+                        'project_type',
+                        'total',
+                        'status',
+                        'created_at',
+                    ])
+                    ->withCount('items')
+                    ->withExists('invoice')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('quote_number')
                     ->label('N° Devis')
@@ -313,7 +326,7 @@ class QuoteResource extends Resource
                         ->label('Envoyer devis')
                         ->icon('heroicon-o-paper-airplane')
                         ->color('primary')
-                        ->visible(fn (Quote $record) => $record->status === 'contacted' && $record->items->count() > 0)
+                        ->visible(fn (Quote $record) => $record->status === 'contacted' && $record->items_count > 0)
                         ->requiresConfirmation()
                         ->modalHeading('Envoyer le devis')
                         ->modalDescription('Le devis sera marqué comme envoyé. Voulez-vous continuer?')
@@ -347,12 +360,12 @@ class QuoteResource extends Resource
                         ->color('info')
                         ->url(fn (Quote $record) => route('quote.pdf', $record))
                         ->openUrlInNewTab()
-                        ->visible(fn (Quote $record) => $record->items->count() > 0),
+                        ->visible(fn (Quote $record) => $record->items_count > 0),
                     Tables\Actions\Action::make('create_invoice')
                         ->label('Créer facture')
                         ->icon('heroicon-o-banknotes')
                         ->color('success')
-                        ->visible(fn (Quote $record) => $record->status === 'accepted' && !$record->invoice)
+                        ->visible(fn (Quote $record) => $record->status === 'accepted' && ! $record->invoice_exists)
                         ->requiresConfirmation()
                         ->modalHeading('Créer une facture')
                         ->modalDescription('Une facture sera créée à partir de ce devis.')

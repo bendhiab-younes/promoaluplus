@@ -63,13 +63,14 @@ class Quote extends Model
     public static function generateQuoteNumber(): string
     {
         $year = date('Y');
-        $lastQuote = static::whereYear('created_at', $year)
-            ->whereNotNull('quote_number')
-            ->orderBy('id', 'desc')
-            ->first();
+        $prefix = sprintf('DEV-%s-', $year);
+        $lastQuoteNumber = static::query()
+            ->where('quote_number', 'like', $prefix . '%')
+            ->orderByDesc('quote_number')
+            ->value('quote_number');
 
-        $sequence = $lastQuote && $lastQuote->quote_number 
-            ? (int)substr($lastQuote->quote_number, -4) + 1 
+        $sequence = $lastQuoteNumber
+            ? (int) substr($lastQuoteNumber, -4) + 1
             : 1;
         
         return sprintf('DEV-%s-%04d', $year, $sequence);
@@ -77,12 +78,18 @@ class Quote extends Model
 
     public function calculateTotals(): void
     {
-        $this->subtotal = $this->items->sum('total');
-        $discount = $this->discount ?? 0;
-        $taxRate = $this->tax_rate ?? 19;
-        $this->tax_amount = ($this->subtotal - $discount) * ($taxRate / 100);
-        $this->total = $this->subtotal - $discount + $this->tax_amount;
-        $this->save();
+        $subtotal = (float) $this->items()->sum('total');
+        $discount = (float) ($this->discount ?? 0);
+        $taxRate = (float) ($this->tax_rate ?? 19);
+
+        $taxAmount = ($subtotal - $discount) * ($taxRate / 100);
+        $total = $subtotal - $discount + $taxAmount;
+
+        $this->forceFill([
+            'subtotal' => round($subtotal, 2),
+            'tax_amount' => round($taxAmount, 2),
+            'total' => round($total, 2),
+        ])->save();
     }
 
     public function markAsContacted(): void

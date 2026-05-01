@@ -16,7 +16,9 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // Quote submission
-Route::post('/quote', [QuoteController::class, 'store'])->name('quote.store');
+Route::post('/quote', [QuoteController::class, 'store'])
+    ->middleware('throttle:12,1')
+    ->name('quote.store');
 
 // Chatbot API
 Route::prefix('chatbot')->name('chatbot.')->group(function () {

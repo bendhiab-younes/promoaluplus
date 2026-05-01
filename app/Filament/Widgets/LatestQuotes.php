@@ -19,7 +19,10 @@ class LatestQuotes extends BaseWidget
     {
         return $table
             ->query(
-                Quote::query()->latest()->limit(5)
+                Quote::query()
+                    ->select(['id', 'name', 'phone', 'project_type', 'status', 'created_at'])
+                    ->latest()
+                    ->limit(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')

@@ -3,13 +3,23 @@
 namespace App\Filament\Resources\QuoteResource\Pages;
 
 use App\Filament\Resources\QuoteResource;
-use App\Models\Quote;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditQuote extends EditRecord
 {
     protected static string $resource = QuoteResource::class;
+
+    private ?bool $hasQuoteItems = null;
+
+    private function hasQuoteItems(): bool
+    {
+        if ($this->hasQuoteItems === null) {
+            $this->hasQuoteItems = $this->record->items()->exists();
+        }
+
+        return $this->hasQuoteItems;
+    }
 
     protected function getHeaderActions(): array
     {
@@ -20,8 +30,8 @@ class EditQuote extends EditRecord
                 ->color('info')
                 ->url(fn () => route('quote.pdf', $this->record))
                 ->openUrlInNewTab()
-                ->disabled(fn () => $this->record->items->count() === 0)
-                ->tooltip(fn () => $this->record->items->count() === 0 ? 'Ajoutez des lignes au devis d\'abord' : 'Télécharger le devis en PDF'),
+                ->disabled(fn () => ! $this->hasQuoteItems())
+                ->tooltip(fn () => ! $this->hasQuoteItems() ? 'Ajoutez des lignes au devis d\'abord' : 'Télécharger le devis en PDF'),
             Actions\DeleteAction::make(),
         ];
     }
@@ -29,5 +39,6 @@ class EditQuote extends EditRecord
     protected function afterSave(): void
     {
         $this->record->calculateTotals();
+        $this->hasQuoteItems = null;
     }
 }

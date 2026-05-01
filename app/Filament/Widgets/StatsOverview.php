@@ -14,9 +14,21 @@ class StatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $newQuotes = Quote::where('status', 'new')->count();
-        $totalQuotes = Quote::count();
-        $thisMonthQuotes = Quote::whereMonth('created_at', now()->month)->count();
+        $monthStart = now()->startOfMonth();
+        $nextMonthStart = (clone $monthStart)->addMonth();
+
+        $quoteStats = Quote::query()
+            ->selectRaw('COUNT(*) as total_quotes')
+            ->selectRaw("SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_quotes")
+            ->selectRaw('SUM(CASE WHEN created_at >= ? AND created_at < ? THEN 1 ELSE 0 END) as this_month_quotes', [
+                $monthStart,
+                $nextMonthStart,
+            ])
+            ->first();
+
+        $newQuotes = (int) ($quoteStats?->new_quotes ?? 0);
+        $totalQuotes = (int) ($quoteStats?->total_quotes ?? 0);
+        $thisMonthQuotes = (int) ($quoteStats?->this_month_quotes ?? 0);
         $totalProjects = Project::where('is_active', true)->count();
         $testimonials = Testimonial::where('is_active', true)->count();
 
