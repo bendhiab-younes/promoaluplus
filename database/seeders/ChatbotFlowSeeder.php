@@ -160,9 +160,9 @@ class ChatbotFlowSeeder extends Seeder
                 'trigger_type' => 'button',
                 'keywords' => ['contact', 'appeler', 'téléphone', 'conseiller', 'humain', 'call', 'phone', 'advisor', 'اتصال', 'هاتف'],
                 'message' => [
-                    'fr' => "💬 **Parler à un conseiller**\n\nNotre équipe est disponible pour vous :\n\n📞 Téléphone : +216 12 345 678\n📱 WhatsApp : +216 12 345 678\n📧 Email : contact@promoaluplus.tn\n\n⏰ Horaires :\n• Lun-Ven : 8h-18h\n• Samedi : 9h-13h",
-                    'en' => "💬 **Talk to an Advisor**\n\nOur team is available for you:\n\n📞 Phone: +216 12 345 678\n📱 WhatsApp: +216 12 345 678\n📧 Email: contact@promoaluplus.tn\n\n⏰ Hours:\n• Mon-Fri: 8am-6pm\n• Saturday: 9am-1pm",
-                    'ar' => "💬 **تحدث إلى مستشار**\n\nفريقنا متاح لك:\n\n📞 الهاتف: +216 12 345 678\n📱 واتساب: +216 12 345 678\n📧 البريد: contact@promoaluplus.tn\n\n⏰ أوقات العمل:\n• الإثنين-الجمعة: 8ص-6م\n• السبت: 9ص-1م",
+                    'fr' => "💬 **Parler à un conseiller**\n\nNotre équipe est disponible pour vous :\n\n📞 Téléphone : +216 26 192 898\n📱 WhatsApp : +216 26 192 898\n📧 Email : contact@promoaluplus.tn\n\n⏰ Horaires :\n• Lun-Ven : 8h-18h\n• Samedi : 9h-13h",
+                    'en' => "💬 **Talk to an Advisor**\n\nOur team is available for you:\n\n📞 Phone: +216 26 192 898\n📱 WhatsApp: +216 26 192 898\n📧 Email: contact@promoaluplus.tn\n\n⏰ Hours:\n• Mon-Fri: 8am-6pm\n• Saturday: 9am-1pm",
+                    'ar' => "💬 **تحدث إلى مستشار**\n\nفريقنا متاح لك:\n\n📞 الهاتف: +216 26 192 898\n📱 واتساب: +216 26 192 898\n📧 البريد: contact@promoaluplus.tn\n\n⏰ أوقات العمل:\n• الإثنين-الجمعة: 8ص-6م\n• السبت: 9ص-1م",
                 ],
                 'quick_replies' => [
                     ['text' => ['fr' => '📱 Ouvrir WhatsApp', 'en' => '📱 Open WhatsApp', 'ar' => '📱 فتح واتساب'], 'action' => 'flow:whatsapp'],

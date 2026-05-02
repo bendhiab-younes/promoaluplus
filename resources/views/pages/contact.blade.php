@@ -165,7 +165,7 @@
                             </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
+                        <div class="grid md:grid-cols-3 gap-4 md:gap-5">
                             <div>
                                 <label for="quote-city" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
                                 <input id="quote-city" type="text" name="city" value="{{ old('city') }}" maxlength="100" autocomplete="address-level2"
@@ -185,23 +185,6 @@
                                     @endforeach
                                 </select>
                                 @error('project_type')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                            <div>
-                                <label for="quote-budget-range" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.budget_range') }}</label>
-                                <select id="quote-budget-range" name="budget_range"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
-                                    <option value="">{{ __('messages.select_budget') }}</option>
-                                    <option value="< 5000 TND" {{ old('budget_range') == '< 5000 TND' ? 'selected' : '' }}>< 5 000 TND</option>
-                                    <option value="5000-15000 TND" {{ old('budget_range') == '5000-15000 TND' ? 'selected' : '' }}>5 000 - 15 000 TND</option>
-                                    <option value="15000-30000 TND" {{ old('budget_range') == '15000-30000 TND' ? 'selected' : '' }}>15 000 - 30 000 TND</option>
-                                    <option value="> 30000 TND" {{ old('budget_range') == '> 30000 TND' ? 'selected' : '' }}>> 30 000 TND</option>
-                                </select>
-                                @error('budget_range')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

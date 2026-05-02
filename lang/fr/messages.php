@@ -37,7 +37,7 @@ return [
 
     // Services
     'our_services' => 'Nos Services',
-    'services_intro' => 'Des solutions sur mesure pour embellir et sécuriser votre maison. Qualité, durabilité et design moderne.',
+    'services_intro' => 'Des solutions sur mesure pour embellir et sécuriser vos espaces résidentiels et professionnels. Qualité, durabilité et design moderne.',
     'services_page_intro' => 'Des solutions complètes en menuiserie aluminium, de la conception à l\'installation.',
     'view_all_services' => 'Voir tous nos services',
     'learn_more' => 'En savoir plus',
@@ -187,7 +187,7 @@ return [
     'please_correct_errors' => 'Veuillez corriger les erreurs suivantes',
     'phone' => 'Téléphone',
     'address' => 'Adresse',
-    'full_address' => 'Zone Industrielle, Tunis, Tunisie',
+    'full_address' => 'Zone Industrielle, Sousse, Tunisie',
     'working_hours' => 'Lun-Ven: 8h-18h, Sam: 9h-13h',
     'response_time' => 'Réponse sous 24h',
     'showroom_appointment' => 'Showroom ouvert sur RDV',
@@ -226,16 +226,16 @@ return [
 
     // Portfolio
     'our_projects' => 'Nos Réalisations',
-    'portfolio_intro' => 'Découvrez nos projets réalisés pour des clients expatriés et locaux à travers la Tunisie.',
+    'portfolio_intro' => 'Découvrez nos projets réalisés à travers la Tunisie pour nos clients locaux ainsi que nos clients résidant à l\'étranger.',
     'all' => 'Tous',
-    'client_testimonials' => 'Témoignages Clients',
+    'client_testimonials' => 'Ils nous ont faits confiance',
     'testimonial_1' => 'Excellent travail! Promo Alu Plus a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
     'testimonial_2' => 'Qualité européenne à prix tunisien. Communication impeccable malgré le décalage horaire.',
     'testimonial_3' => 'Professionnels et à l\'écoute. Je recommande vivement pour tout projet de construction en Tunisie.',
 
     // About
     'about_us' => 'À Propos de Nous',
-    'about_intro' => 'Plus de 15 ans d\'expertise en menuiserie aluminium au service des Tunisiens du monde entier.',
+    'about_intro' => 'Plus de 15 ans d\'expertise en menuiserie aluminium au service de nos clients en Tunisie et de nos clients résidant à l\'étranger.',
     'our_story' => 'Notre Histoire',
     'story_p1' => 'Grâce à une expertise éprouvée et à un savoir‑faire reconnu qui dépassent quinze années d\'expérience dans la menuiserie de l\'aluminium, nous accompagnons nos clients dans la conception et la réalisation de solutions modernes et durables : portes, fenêtres et portes-fenêtres, pergolas, garde‑corps, cloisons et structures sur mesure.',
     'story_p2' => 'Alliant robustesse, design et innovation, nos produits répondent aux normes les plus exigeantes tout en valorisant chaque projet, qu\'il soit résidentiel ou professionnel.',
@@ -274,7 +274,7 @@ return [
 
     // Why expats choose us
     'why_expats_choose_us' => 'Pourquoi les Expatriés Nous Choisissent',
-    'expats_intro' => 'Un service pensé spécialement pour les Tunisiens du monde entier.',
+    'expats_intro' => 'Un service pensé spécialement pour les résidents à l\'étranger.',
     'multilingual_team' => 'Équipe Multilingue',
     'multilingual_desc' => 'Communication en français, arabe et anglais.',
     'remote_desc' => 'Suivi par visio, photos et rapports réguliers.',

@@ -22,7 +22,6 @@ class QuoteController extends Controller
             'city' => 'nullable|string|max:100',
             'project_type' => CanonicalServiceCatalog::validationRule(),
             'description' => 'required|string|max:2000',
-            'budget_range' => 'nullable|string|max:100',
             'timeline' => 'nullable|string|max:100',
         ]);
 

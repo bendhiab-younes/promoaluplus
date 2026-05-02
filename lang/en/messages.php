@@ -185,7 +185,7 @@ return [
     'please_correct_errors' => 'Please correct the following errors',
     'phone' => 'Phone',
     'address' => 'Address',
-    'full_address' => 'Industrial Zone, Tunis, Tunisia',
+    'full_address' => 'Industrial Zone, Sousse, Tunisia',
     'working_hours' => 'Mon-Fri: 8am-6pm, Sat: 9am-1pm',
     'response_time' => 'Response within 24h',
     'showroom_appointment' => 'Showroom open by appointment',
@@ -224,9 +224,9 @@ return [
 
     // Portfolio
     'our_projects' => 'Our Projects',
-    'portfolio_intro' => 'Discover our projects completed for expatriate and local clients across Tunisia.',
+    'portfolio_intro' => 'Discover our projects completed across Tunisia for our local clients as well as our clients residing abroad.',
     'all' => 'All',
-    'client_testimonials' => 'Client Testimonials',
+    'client_testimonials' => 'They Trusted Us',
     'testimonial_1' => 'Excellent work! Promo Alu Plus perfectly met my expectations for my windows and railings.',
     'testimonial_2' => 'European quality at Tunisian prices. Impeccable communication despite the time difference.',
     'testimonial_3' => 'Professional and attentive. I highly recommend for any construction project in Tunisia.',
@@ -272,7 +272,7 @@ return [
 
     // Why expats choose us
     'why_expats_choose_us' => 'Why Expatriates Choose Us',
-    'expats_intro' => 'A service designed especially for Tunisians worldwide.',
+    'expats_intro' => 'A service designed especially for residents abroad.',
     'multilingual_team' => 'Multilingual Team',
     'multilingual_desc' => 'Communication in French, Arabic and English.',
     'remote_desc' => 'Video call follow-up, photos and regular reports.',
