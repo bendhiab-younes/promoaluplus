@@ -60,7 +60,7 @@
                 @empty
                 <!-- Default projects if none in database -->
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" 
                          alt="Villa Moderne - La Marsa" 
                          loading="lazy"
                          decoding="async"
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" 
                          alt="Résidence Carthage" 
                          loading="lazy"
                          decoding="async"
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" 
                          alt="Immeuble Commercial" 
                          loading="lazy"
                          decoding="async"
