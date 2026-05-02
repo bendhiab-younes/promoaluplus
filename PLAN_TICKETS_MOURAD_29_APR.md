@@ -110,16 +110,20 @@ Approach:
 | Workstream | Status | Files |
 |------------|--------|-------|
 | **1. Shared prerequisites** | Partial | `app.blade.php`, `contact.blade.php` |
-| **2. Homepage (T-1.1 → T-1.11)** | ✅ Done | `home.blade.php`, `app.blade.php` |
-| **6. Contact/Quote form (T-5.1 → T-5.6)** | ✅ Done | `contact.blade.php`, `QuoteController.php`, `Quote.php`, `QuoteResource.php`, migration `2026_05_01_160500_add_first_name_to_quotes_table.php` |
+| **2. Homepage (T-1.1 → T-1.11)** | ✅ Done (including T-1.6, T-1.8 fixes) | `home.blade.php`, `app.blade.php`, `lang/*/messages.php` |
+| **3. Services page media (T-2.1, T-2.2)** | ✅ Done | `content_docs/json/services.json` |
+| **4. Portfolio page (T-3.1, T-3.2, T-3.3)** | ✅ Done | `portfolio.blade.php`, `lang/*/messages.php` |
+| **5. About page (T-4.1 → T-4.4)** | ✅ Done | `lang/*/messages.php`, `content_docs/json/service_tunisiens_etranger.json` |
+| **8. Chatbot flow updates** | ✅ Done | `ChatbotFlowSeeder.php` |
+| **6. Contact/Quote form (T-5.1 → T-5.6)** | ✅ Done (including T-5.2 address fix) | `contact.blade.php`, `QuoteController.php`, `Quote.php`, `QuoteResource.php`, migration `2026_05_01_160500_add_first_name_to_quotes_table.php`, `lang/*/messages.php` |
 | **7. FAQ (T-5.7, T-5.8)** | ✅ Done | `FaqSeeder.php` |
 | **8. Cross-surface** | Partial | `app.blade.php`, `PdfController.php` |
 
 ### Remaining 🔲
-- Services page media (T-2.1, T-2.2)
-- Portfolio page (T-3.1, T-3.2, T-3.3)
-- About page (T-4.1 → T-4.4)
-- Chatbot flow updates
+- ~~Services page media (T-2.1, T-2.2)~~ ✅ Done (updated content_docs/json/services.json)
+- ~~Portfolio page (T-3.1, T-3.2, T-3.3)~~ ✅ Done (updated translations, fallback images)
+- ~~About page (T-4.1 → T-4.4)~~ ✅ Done (updated lang/*/messages.php, content_docs/json/service_tunisiens_etranger.json)
+- ~~Chatbot flow updates~~ ✅ Done (updated ChatbotFlowSeeder.php with real phone/WhatsApp)
 
 ---
 
