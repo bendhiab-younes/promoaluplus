@@ -6,11 +6,11 @@ Ce document regroupe toutes les demandes de modifications issues du retour de Mo
 ## 1. Page d'Accueil
 
 ### Slider 1 (Première puce du carrousel)
-- [ ] **T-1.1:** Remplacer le sigle « PROMO ALU PLUS » par le sigle choisi par Achraf « PromoAlu+ » (y compris la photo de fond associée).
-- [ ] **T-1.2:** Diminuer la taille des puces (boulettes) du carrousel car elles cachent le texte.
-- [ ] **T-1.3:** Texte d'accroche : Enlever le « et » avant cuisines et ajouter « et divers autres travaux en aluminium » après le mot cuisines.
-- [ ] **T-1.4:** Corriger le chevauchement (UI) : La barre blanche cache le rectangle qui active le contact et le rectangle qui active WhatsApp.
-- [ ] **T-1.5:** Changer la photo de fond : Remplacer la photo actuelle par une photo d’une réalisation concrète en Tunisie (mieux adaptée au contexte local).
+- [ ] **T-1.1:** Remplacer le sigle « PROMO ALU PLUS » par le sigle choisi par Achraf « PromoAlu+ », y compris sa photo de fond.
+- [ ] **T-1.2:** Diminuer la taille des puces (boulettes) du carrousel, car elles cachent le texte.
+- [ ] **T-1.3:** Dans le texte d'accroche, supprimer le « et » avant « cuisines » et ajouter après ce mot « et divers autres travaux en aluminium ».
+- [ ] **T-1.4:** Corriger le chevauchement (UI) : la barre blanche cache le rectangle qui active le contact et le rectangle qui active WhatsApp.
+- [ ] **T-1.5:** Remplacer la photo de fond actuelle par une photo d’une réalisation faite en Tunisie, mieux adaptée au contexte tunisien.
 
 ### Section "NOS SERVICES" (Accueil)
 - [ ] **T-1.6:** Sous le titre « NOS SERVICES », remplacer le mot « votre maison » par « vos espaces résidentiels et professionnels ».
@@ -39,8 +39,8 @@ Ce document regroupe toutes les demandes de modifications issues du retour de Mo
 ---
 
 ## 2. Page "Service"
-- [ ] **T-2.1:** Supprimer les photos incompatibles avec l’environnement tunisien (personnes occidentales, maisons avec toits en tuile en pente) ainsi que les photos comportant des logos d'autres sociétés.
-- [ ] **T-2.2:** Insérer de vraies photos de l'entreprise. En cas d'utilisation d'IA, s'assurer de garantir un aspect réaliste et adapté à l'architecture tunisienne.
+- [ ] **T-2.1:** Supprimer les photos incompatibles avec l’environnement tunisien. Certaines images montrent des personnes occidentales ou des maisons avec des toits en tuile et en pente, ce qui laisse entendre qu’elles ne sont pas prises en Tunisie. Supprimer aussi les photos comportant des logos d'autres sociétés.
+- [ ] **T-2.2:** Insérer de vraies photos de l'entreprise. En cas d’utilisation d’images générées par IA, garantir un aspect réaliste et adapté à l’architecture tunisienne.
 
 ---
 
@@ -54,25 +54,25 @@ Ce document regroupe toutes les demandes de modifications issues du retour de Mo
 ## 4. Page "A propos de nous"
 - [ ] **T-4.1:** Remplacer « Plus de 15 ans d'expertise en menuiserie aluminium au service des Tunisiens du monde entier » par *« Plus de 15 ans d'expertise en menuiserie aluminium au service de nos clients en Tunisie et de nos clients résidant à l’étranger ».*
 - [ ] **T-4.2:** Remplacer « Service pensé spécialement pour les Tunisiens à l'étranger » par *« Service pensé spécialement pour les résidents à l'étranger ».*
-- [ ] **T-4.3:** Remplacer « Nous comprenons les défis uniques auxquels font face les résidents à l'étranger lorsqu'ils construisent ou rénovent leur maison en Tunisie » par *« Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l'étranger lorsqu'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie. »*
-- [ ] **T-4.4:** Mettre à jour (ou vérifier la ponctuation de) la suite du texte : *« C'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais. »*
+- [ ] **T-4.3:** Remplacer « Nous comprenons les défis uniques auxquels font face les résidents à l'étranger lorsqu'ils construisent ou rénovent leur maison en Tunisie » par *« Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l'étranger lorsqu'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie ».*
+- [ ] **T-4.4:** Remplacer « C'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais » par *« C'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais. »*
 
 ---
 
 ## 5. Page "Contact"
 
 ### En-tête Contact
-- [ ] **T-5.1:** Supprimer le petit « Contactez-nous » avec l'icône téléphone (répétition du titre sous-jacent).
+- [ ] **T-5.1:** Supprimer le petit « Contactez-nous » avec l'icône téléphone, car il répète le titre juste en dessous.
 
 ### Informations de contact
-- [ ] **T-5.2:** Mettre l’adresse physique réelle à Sousse.
-- [ ] **T-5.3:** Mettre le bon numéro de téléphone et ajouter le logo/sigle WhatsApp.
+- [ ] **T-5.2:** Mettre l’adresse réelle de Sousse.
+- [ ] **T-5.3:** Mettre le bon numéro de téléphone et ajouter le sigle de WhatsApp.
 
 ### Formulaire de devis
-- [ ] **T-5.4:** Sous « demandez votre devis gratuit », supprimer le sous-titre « budget estimé ».
-- [ ] **T-5.5:** Ajouter un champ pour le **prénom** dans le formulaire.
-- [ ] **T-5.6:** Dans le menu déroulant « Type du projet », lister exactement les services tels qu'ils apparaissent sur la page d'accueil (voir T-1.7).
+- [ ] **T-5.4:** Sous le titre « demandez votre devis gratuit », supprimer le sous-titre « budget estimé ».
+- [ ] **T-5.5:** Ajouter une rubrique pour le prénom.
+- [ ] **T-5.6:** Sous le titre « Type du projet », lister les services tels qu’ils apparaissent sous le titre « services » sur la page principale du site web.
 
 ### Section FAQ
-- [ ] **T-5.7:** Remplacer la question « Travaillez-vous avec les expatriés? » par *« Travaillez-vous avec les résidents à l’étranger ? »*
-- [ ] **T-5.8:** Remplacer la réponse associée par *« Oui! Nous accompagnons nos clients résidant à l’étranger. Nous assurons un suivi à distance, visioconférences, et communication en français et en anglais. »*
+- [ ] **T-5.7:** Remplacer le titre « Travaillez-vous avec les expatriés? » par « Travaillez-vous avec les résidents à l’étranger ? ».
+- [ ] **T-5.8:** Remplacer la réponse associée par « Oui! Nous accompagnons nos clients résidant à l’étranger. Nous assurons un suivi à distance, visioconférences, et communication en français et en anglais. ».
