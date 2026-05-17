@@ -194,6 +194,15 @@
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ $expatTitle }}</h2>
                 <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ $expatIntro }}</p>
             </div>
+
+            <div class="max-w-4xl mx-auto text-center mb-8 md:mb-12 scroll-fade">
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-4">
+                    {{ __('messages.expats_context') }}
+                </p>
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed">
+                    {{ __('messages.expats_commitment') }}
+                </p>
+            </div>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @php

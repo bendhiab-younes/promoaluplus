@@ -11,16 +11,16 @@
 
 @section('content')
     <!-- Hero Carousel Section -->
-    <section class="relative">
-        <div class="carousel-container relative w-full min-h-[100svh] overflow-hidden bg-gray-900">
+    <section class="relative overflow-hidden home-hero-section" style="height: calc(100svh - var(--site-header-height, 96px)); margin-top: var(--site-header-height, 96px);">
+        <div class="carousel-container relative w-full h-full overflow-hidden bg-gray-900">
             <!-- Carousel Slides -->
-            <div class="carousel-slides relative h-full min-h-[100svh]">
+            <div class="carousel-slides relative h-full">
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
-                    <div class="relative h-full min-h-[100svh]">
+                    <div class="relative h-full">
                             <img src="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide1_alt') }}" 
-                             class="w-full h-full min-h-[100svh] object-cover object-center"
+                             class="w-full h-full object-cover object-center"
                                 loading="eager"
                                 fetchpriority="high"
                                 decoding="async">
@@ -56,11 +56,11 @@
                 </div>
 
                 <!-- Slide 2 - Aluminum Doors -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="2" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full min-h-[100svh]">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
+                    <div class="relative h-full">
                             <img src="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide2_alt') }}" 
-                             class="w-full h-full min-h-[100svh] object-cover object-center"
+                             class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
@@ -89,11 +89,11 @@
                 </div>
 
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="3" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full min-h-[100svh]">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
+                    <div class="relative h-full">
                             <img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide3_alt') }}" 
-                             class="w-full h-full min-h-[100svh] object-cover object-center"
+                             class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
@@ -122,11 +122,11 @@
                 </div>
 
                 <!-- Slide 4 - Company Experience -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="1" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full min-h-[100svh]">
+                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
+                    <div class="relative h-full">
                             <img src="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=2200&q=80" 
                                 alt="{{ __('messages.hero_slide4_alt') }}" 
-                             class="w-full h-full min-h-[100svh] object-cover object-center"
+                             class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
@@ -175,6 +175,15 @@
 
     <script>
         (() => {
+            const syncHeroHeightToHeader = () => {
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 96;
+                document.documentElement.style.setProperty('--site-header-height', `${headerHeight}px`);
+            };
+
+            syncHeroHeightToHeader();
+            window.addEventListener('resize', syncHeroHeightToHeader);
+
             const slides = Array.from(document.querySelectorAll('.carousel-slide'))
                 .sort((leftSlide, rightSlide) => {
                     const leftOrder = Number(leftSlide.dataset.order ?? leftSlide.dataset.slide ?? 0);

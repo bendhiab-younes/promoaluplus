@@ -4,9 +4,16 @@
     use App\Models\SiteSetting;
     use App\Support\CanonicalServiceCatalog;
 
-    $contactPhone = SiteSetting::get('contact_phone', '+216 12 345 678');
+    $contactPhone = SiteSetting::get('contact_phone', '+21626192898');
     $contactWhatsApp = SiteSetting::get('contact_whatsapp', $contactPhone);
-    $contactEmail = SiteSetting::get('contact_email', 'contact@promoaluplus.tn');
+    $formatPhone = function($phone) {
+        $clean = preg_replace('/[^0-9+]/', '', $phone);
+        if (preg_match('/(\+216)(\d{2})(\d{3})(\d{3})/', $clean, $matches)) {
+            return $matches[1] . ' ' . $matches[2] . ' ' . $matches[3] . ' ' . $matches[4];
+        }
+        return $phone;
+    };
+    $contactEmail = SiteSetting::get('contact_email', 'promoaluplus@gmail.com');
     $contactAddress = SiteSetting::get('contact_address', __('messages.full_address'));
     $projectTypeOptions = CanonicalServiceCatalog::translatedOptions();
 @endphp
@@ -34,7 +41,7 @@
                             <i data-lucide="phone" class="w-7 h-7 md:w-8 md:h-8 text-white"></i>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.phone') }}</h3>
-                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $contactPhone }}</p>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $formatPhone($contactPhone) }}</p>
                         <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.working_hours') }}</p>
                     </div>
                 </div>
@@ -58,7 +65,7 @@
                             </svg>
                         </div>
                         <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">WhatsApp</h3>
-                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $contactWhatsApp }}</p>
+                        <p class="text-gray-700 font-medium mb-1 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}" dir="ltr">{{ $formatPhone($contactWhatsApp) }}</p>
                         <p class="text-sm text-gray-500 {{ app()->getLocale() === 'ar' ? 'font-arabic' : '' }}">{{ __('messages.response_time') }}</p>
                     </div>
                 </div>

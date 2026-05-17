@@ -2,7 +2,7 @@
 
 return [
     // Site
-    'site_description' => 'Promo Alu Plus - Aluminum specialist in Tunisia. Doors, windows, curtains, railings, pergolas, kitchens and electric shutters.',
+    'site_description' => 'PromoAlu+ - Aluminum specialist in Tunisia. Doors, windows, curtains, railings, pergolas, kitchens and electric shutters.',
     'site_tagline' => 'Quality Aluminum Joinery',
 
     // Navigation
@@ -280,6 +280,8 @@ return [
     // Why expats choose us
     'why_expats_choose_us' => 'Why Expatriates Choose Us',
     'expats_intro' => 'A service designed especially for residents abroad.',
+    'expats_context' => 'We understand the unique challenges faced by Tunisians living abroad when they build or renovate residential or professional spaces in Tunisia.',
+    'expats_commitment' => 'That is why we developed a service tailored to their needs: remote communication, photo and video follow-up, and strict respect of deadlines.',
     'multilingual_team' => 'Multilingual Team',
     'multilingual_desc' => 'Communication in French, Arabic and English.',
     'remote_desc' => 'Video call follow-up, photos and regular reports.',
@@ -314,7 +316,7 @@ return [
     'all_rights_reserved' => 'All rights reserved.',
 
     // WhatsApp
-    'whatsapp_message' => 'Hello, I would like to get a quote for a project at Promo Alu Plus.',
+    'whatsapp_message' => 'Hello, I would like to get a quote for a project at PromoAlu+.',
 
     // Service Modal
     'view_gallery' => 'View Gallery',

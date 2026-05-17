@@ -2,7 +2,7 @@
 
 return [
     // Site
-    'site_description' => 'Promo Alu Plus - Spécialiste en menuiserie aluminium en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.',
+    'site_description' => 'PromoAlu+ - Spécialiste en menuiserie aluminium en Tunisie. Portes, fenêtres, rideaux, garde-corps, pergolas, cuisines et volets électriques.',
     'site_tagline' => 'Menuiserie Aluminium de Qualité',
 
     // Navigation
@@ -16,7 +16,7 @@ return [
     // Hero
     'hero_title' => 'Solutions Aluminium Fiables',
     'hero_subtitle' => 'Qualité, Transparence, Ponctualité',
-    'hero_description' => 'De la conception à la pose, nous réalisons des solutions durables pour portes, fenêtres, pergolas, garde-corps et cuisines, ainsi que divers autres travaux en aluminium, avec un suivi clair à chaque étape.',
+    'hero_description' => 'De la conception à la pose, nous réalisons des solutions durables pour portes, fenêtres, pergolas, garde-corps, cuisines et divers autres travaux en aluminium, avec un suivi clair à chaque étape.',
     'premium_quality' => 'Qualité Premium Garantie',
     'start_your_project' => 'Lancez Votre Projet',
     'hero_values_badge' => '15+ ans d\'expertise certifiée',
@@ -43,17 +43,17 @@ return [
     'learn_more' => 'En savoir plus',
 
     // Service types
-    'windows' => 'Fenêtres & Portes-Fenêtres',
+    'windows' => 'Fenêtres et Portes-fenêtres',
     'doors' => 'Portes',
     'sliding' => 'Coulissant',
-    'rolling_shutters' => 'Volets Roulants',
-    'railings' => 'Garde-Corps',
+    'rolling_shutters' => 'Volets roulants',
+    'railings' => 'Garde-corps',
     'pergola' => 'Pergola',
     'sun_breakers' => 'Brises Soleil',
-    'mosquito_nets' => 'Moustiquaire',
-    'space_design' => 'Séparations & Cloisons',
+    'mosquito_nets' => 'Moustiquaires',
+    'space_design' => 'Séparations et cloisons',
     'curtains' => 'Rideaux',
-    'kitchen' => 'Cuisines',
+    'kitchen' => 'Cuisine',
     'shelter' => 'Abri',
     'shutters' => 'Volets Électriques',
     'other' => 'Autre',
@@ -233,7 +233,7 @@ return [
     'portfolio_intro' => 'Découvrez nos projets réalisés à travers la Tunisie pour nos clients locaux ainsi que nos clients résidant à l\'étranger.',
     'all' => 'Tous',
     'client_testimonials' => 'Ils nous ont fait confiance',
-    'testimonial_1' => 'Excellent travail! Promo Alu Plus a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
+    'testimonial_1' => 'Excellent travail! PromoAlu+ a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
     'testimonial_2' => 'Qualité européenne à prix tunisien. Communication impeccable malgré le décalage horaire.',
     'testimonial_3' => 'Professionnels et à l\'écoute. Je recommande vivement pour tout projet de construction en Tunisie.',
 
@@ -280,6 +280,8 @@ return [
     // Why expats choose us
     'why_expats_choose_us' => 'Pourquoi les Expatriés Nous Choisissent',
     'expats_intro' => 'Un service pensé spécialement pour les résidents à l\'étranger.',
+    'expats_context' => 'Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie.',
+    'expats_commitment' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.',
     'multilingual_team' => 'Équipe Multilingue',
     'multilingual_desc' => 'Communication en français, arabe et anglais.',
     'remote_desc' => 'Suivi par visio, photos et rapports réguliers.',
@@ -314,7 +316,7 @@ return [
     'all_rights_reserved' => 'Tous droits réservés.',
 
     // WhatsApp
-    'whatsapp_message' => 'Bonjour, je souhaite obtenir un devis pour un projet chez Promo Alu Plus.',
+    'whatsapp_message' => 'Bonjour, je souhaite obtenir un devis pour un projet chez PromoAlu+.',
 
     // Service Modal
     'view_gallery' => 'Voir la Galerie',
