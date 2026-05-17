@@ -61,7 +61,7 @@
             'url' => $serviceUrl,
             'provider' => [
                 '@type' => 'LocalBusiness',
-                'name' => 'Promo Alu Plus',
+                'name' => 'PromoAlu+',
                 'url' => config('app.url') ?: url('/'),
             ],
             'areaServed' => [
