@@ -280,8 +280,8 @@ return [
     // Why expats choose us
     'why_expats_choose_us' => 'Why Expatriates Choose Us',
     'expats_intro' => 'A service designed especially for residents abroad.',
-    'expats_context' => 'We understand the unique challenges faced by Tunisians living abroad when they build or renovate residential or professional spaces in Tunisia.',
-    'expats_commitment' => 'That is why we developed a service tailored to their needs: remote communication, photo and video follow-up, and strict respect of deadlines.',
+    'expats_context' => 'We understand the challenges faced by Tunisians living abroad when they build or renovate residential or professional spaces in Tunisia.',
+    'expats_commitment' => 'That is why we developed a service tailored to their needs: remote communication, photo and video follow-up, and respect of deadlines.',
     'multilingual_team' => 'Multilingual Team',
     'multilingual_desc' => 'Communication in French, Arabic and English.',
     'remote_desc' => 'Video call follow-up, photos and regular reports.',

@@ -280,8 +280,8 @@ return [
     // Why expats choose us
     'why_expats_choose_us' => 'Pourquoi les Expatriés Nous Choisissent',
     'expats_intro' => 'Un service pensé spécialement pour les résidents à l\'étranger.',
-    'expats_context' => 'Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie.',
-    'expats_commitment' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.',
+    'expats_context' => 'Nous comprenons les défis auxquels font face les Tunisiens vivant à l\'étranger lorsqu\'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie.',
+    'expats_commitment' => 'C\'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect des délais.',
     'multilingual_team' => 'Équipe Multilingue',
     'multilingual_desc' => 'Communication en français, arabe et anglais.',
     'remote_desc' => 'Suivi par visio, photos et rapports réguliers.',
