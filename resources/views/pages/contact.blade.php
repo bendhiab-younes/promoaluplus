@@ -116,104 +116,109 @@
                     </div>
                     @endif
 
-                    <form id="quote-form" action="{{ route('quote.store') }}" method="POST" class="space-y-5" data-quote-form>
+                    <form id="quote-form" action="{{ route('quote.store') }}" method="POST" class="space-y-6 {{ app()->getLocale() === 'ar' ? 'text-right' : '' }}" data-quote-form>
                         @csrf
-                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                            <div>
-                                <label for="quote-first-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.first_name') }} <span class="text-red-500">*</span></label>
-                                <input id="quote-first-name" type="text" name="first_name" value="{{ old('first_name') }}" required maxlength="100" autocomplete="given-name"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="{{ __('messages.your_first_name') }}">
-                                @error('first_name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.last_name') }} <span class="text-red-500">*</span></label>
-                                <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required maxlength="255" autocomplete="name"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="{{ __('messages.your_last_name') }}">
-                                @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                            <div>
-                                <label for="quote-email" class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
-                                <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="email@example.com">
-                                @error('email')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                        <div class="rounded-2xl border border-blue-100/80 bg-white/80 p-4 md:p-6">
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-5">
+                                <div>
+                                    <label for="quote-first-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.first_name') }} <span class="text-red-500">*</span></label>
+                                    <input id="quote-first-name" type="text" name="first_name" value="{{ old('first_name') }}" required maxlength="100" autocomplete="given-name"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="{{ __('messages.your_first_name') }}">
+                                    @error('first_name')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="quote-name" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.last_name') }} <span class="text-red-500">*</span></label>
+                                    <input id="quote-name" type="text" name="name" value="{{ old('name') }}" required maxlength="255" autocomplete="name"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="{{ __('messages.your_last_name') }}">
+                                    @error('name')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                            <div>
-                                <label for="quote-phone" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.phone') }} <span class="text-red-500">*</span></label>
-                                <input id="quote-phone" type="tel" name="phone" value="{{ old('phone') }}" required maxlength="50" autocomplete="tel"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="+216 XX XXX XXX">
-                                @error('phone')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                        <div class="rounded-2xl border border-gray-200/80 bg-white/80 p-4 md:p-6">
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-5">
+                                <div>
+                                    <label for="quote-phone" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.phone') }} <span class="text-red-500">*</span></label>
+                                    <input id="quote-phone" type="tel" name="phone" value="{{ old('phone') }}" required maxlength="50" autocomplete="tel"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="+216 XX XXX XXX">
+                                    @error('phone')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="quote-email" class="block text-gray-700 font-semibold mb-2 text-sm">Email <span class="text-red-500">*</span></label>
+                                    <input id="quote-email" type="email" name="email" value="{{ old('email') }}" required maxlength="255" autocomplete="email"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="email@example.com">
+                                    @error('email')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
-                            <div>
-                                <label for="quote-country" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.country') }}</label>
-                                <input id="quote-country" type="text" name="country" value="{{ old('country') }}" maxlength="100" autocomplete="country-name"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="{{ __('messages.country_residence') }}">
-                                @error('country')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-4 md:gap-5">
-                            <div>
-                                <label for="quote-city" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
-                                <input id="quote-city" type="text" name="city" value="{{ old('city') }}" maxlength="100" autocomplete="address-level2"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
-                                    placeholder="{{ __('messages.project_city') }}">
-                                @error('city')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="quote-project-type" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></label>
-                                <select id="quote-project-type" name="project_type" required
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
-                                    <option value="">{{ __('messages.select_type') }}</option>
-                                    @foreach($projectTypeOptions as $projectTypeValue => $projectTypeLabel)
-                                        <option value="{{ $projectTypeValue }}" {{ old('project_type') == $projectTypeValue ? 'selected' : '' }}>{{ $projectTypeLabel }}</option>
-                                    @endforeach
-                                </select>
-                                @error('project_type')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div>
-                                <label for="quote-timeline" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
-                                <select id="quote-timeline" name="timeline"
-                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
-                                    <option value="">{{ __('messages.select_timeline') }}</option>
-                                    <option value="urgent" {{ old('timeline') == 'urgent' ? 'selected' : '' }}>{{ __('messages.urgent') }}</option>
-                                    <option value="1-3 months" {{ old('timeline') == '1-3 months' ? 'selected' : '' }}>1-3 {{ __('messages.months') }}</option>
-                                    <option value="3-6 months" {{ old('timeline') == '3-6 months' ? 'selected' : '' }}>3-6 {{ __('messages.months') }}</option>
-                                    <option value="6+ months" {{ old('timeline') == '6+ months' ? 'selected' : '' }}>6+ {{ __('messages.months') }}</option>
-                                </select>
-                                @error('timeline')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-5 mt-4">
+                                <div>
+                                    <label for="quote-country" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.country') }}</label>
+                                    <input id="quote-country" type="text" name="country" value="{{ old('country') }}" maxlength="100" autocomplete="country-name"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="{{ __('messages.country_residence') }}">
+                                    @error('country')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="quote-city" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.city') }}</label>
+                                    <input id="quote-city" type="text" name="city" value="{{ old('city') }}" maxlength="100" autocomplete="address-level2"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white"
+                                        placeholder="{{ __('messages.project_city') }}">
+                                    @error('city')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
-                        <div>
+                        <div class="rounded-2xl border border-orange-100/80 bg-white/90 p-4 md:p-6">
+                            <div class="grid md:grid-cols-2 gap-4 md:gap-5">
+                                <div>
+                                    <label for="quote-project-type" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></label>
+                                    <select id="quote-project-type" name="project_type" required
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
+                                        <option value="">{{ __('messages.select_type') }}</option>
+                                        @foreach($projectTypeOptions as $projectTypeValue => $projectTypeLabel)
+                                            <option value="{{ $projectTypeValue }}" {{ old('project_type') == $projectTypeValue ? 'selected' : '' }}>{{ $projectTypeLabel }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('project_type')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="quote-timeline" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
+                                    <select id="quote-timeline" name="timeline"
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
+                                        <option value="">{{ __('messages.select_timeline') }}</option>
+                                        <option value="urgent" {{ old('timeline') == 'urgent' ? 'selected' : '' }}>{{ __('messages.urgent') }}</option>
+                                        <option value="1-3 months" {{ old('timeline') == '1-3 months' ? 'selected' : '' }}>1-3 {{ __('messages.months') }}</option>
+                                        <option value="3-6 months" {{ old('timeline') == '3-6 months' ? 'selected' : '' }}>3-6 {{ __('messages.months') }}</option>
+                                        <option value="6+ months" {{ old('timeline') == '6+ months' ? 'selected' : '' }}>6+ {{ __('messages.months') }}</option>
+                                    </select>
+                                    @error('timeline')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-gray-200/80 bg-white/80 p-4 md:p-6">
                             <label for="quote-description" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_description') }} <span class="text-red-500">*</span></label>
-                            <textarea id="quote-description" name="description" rows="4" required maxlength="2000"
+                            <textarea id="quote-description" name="description" rows="5" required maxlength="2000"
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white resize-none"
                                 placeholder="{{ __('messages.describe_project') }}">{{ old('description') }}</textarea>
                             @error('description')
