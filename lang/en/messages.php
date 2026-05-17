@@ -45,6 +45,7 @@ return [
     // Service types
     'windows' => 'Windows & French Doors',
     'doors' => 'Doors',
+    'sliding' => 'Sliding',
     'curtains' => 'Curtains',
     'railings' => 'Railings',
     'pergola' => 'Pergola',
@@ -60,6 +61,7 @@ return [
     // Service descriptions (Option 2 - detailed for modal)
     'windows_desc' => 'Choose excellence: aluminum windows and French doors are the essential choice to bring your project to life. Modern, reliable and elegant, they combine comfort, security and energy performance. With a wide range of profiles – from high energy efficiency models to reinforced anti-burglary versions – you create the custom solution that meets your needs.',
     'doors_desc' => 'Our aluminum doors embody strength and security, while offering total customization for exceptional entrances and exits. With a wide range of functional variants, perfectly compatible with our window and French door systems, you benefit from unlimited design freedom to bring your construction or renovation projects to life.',
+    'sliding_desc' => 'Modern sliding systems for bay windows and doors.',
     'curtains_desc' => 'Metal curtains and blinds for shops and homes.',
     'railings_desc' => 'Our aluminum and glass railings embody the perfect combination of strength, elegance and ease of installation. Whether securing a terrace, balcony, staircase or mezzanine, our systems combine modern design and reliability, while meeting the most demanding safety standards.',
     'pergola_desc' => 'Give your outdoor spaces perfection with our aluminum pergolas: robust, durable and ready to face all seasons. Unlike wood, aluminum offers a hassle-free solution: no regular maintenance required and exceptional durability over time. The aluminum pergola combines peace of mind with performance.',
@@ -194,6 +196,10 @@ return [
     'request_free_quote' => 'Request Your Free Quote',
     'quote_form_intro' => 'Fill out the form below and receive a response within 48h.',
     'full_name' => 'Full name',
+    'first_name' => 'First name',
+    'last_name' => 'Last name',
+    'your_first_name' => 'Enter your first name',
+    'your_last_name' => 'Enter your last name',
     'your_name' => 'Your name',
     'country' => 'Country',
     'country_residence' => 'Country of residence',
