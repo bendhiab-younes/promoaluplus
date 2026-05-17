@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="@yield('meta_description', __('messages.site_description'))">
     <meta name="keywords" content="menuiserie aluminium tunisie, fenêtres aluminium, portes, garde-corps, inox, pergola, volets, cuisine aluminium">
-    <meta name="author" content="Promo Alu Plus">
+    <meta name="author" content="PromoAlu+">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Promo Alu Plus') - {{ __('messages.site_tagline') }}</title>
+    <title>@yield('title', 'PromoAlu+') - {{ __('messages.site_tagline') }}</title>
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="@yield('og_title', 'Promo Alu Plus - Menuiserie Aluminium & Inox')">
+    <meta property="og:title" content="@yield('og_title', 'PromoAlu+ - Menuiserie Aluminium & Inox')">
     <meta property="og:description" content="@yield('og_description', __('messages.site_description'))">
     <meta property="og:type" content="website">
     
@@ -585,7 +585,7 @@
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="Promo Alu Plus" class="h-16 w-auto">
+                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="PromoAlu+" class="h-16 w-auto">
                 </a>
                 
                 <div class="hidden md:flex space-x-8">
@@ -624,9 +624,16 @@
 
     @php
         $footerServices = \App\Support\CanonicalServiceCatalog::translatedOptions();
-        $footerPhone = \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678');
+        $footerPhone = \App\Models\SiteSetting::get('contact_phone', '+21626192898');
         $footerWhatsApp = \App\Models\SiteSetting::get('contact_whatsapp', $footerPhone);
-        $footerEmail = \App\Models\SiteSetting::get('contact_email', 'contact@promoaluplus.tn');
+        $formatPhone = function($phone) {
+            $clean = preg_replace('/[^0-9+]/', '', $phone);
+            if (preg_match('/(\+216)(\d{2})(\d{3})(\d{3})/', $clean, $matches)) {
+                return $matches[1] . ' ' . $matches[2] . ' ' . $matches[3] . ' ' . $matches[4];
+            }
+            return $phone;
+        };
+        $footerEmail = \App\Models\SiteSetting::get('contact_email', 'promoaluplus@gmail.com');
         $footerAddress = \App\Models\SiteSetting::get('contact_address', __('messages.full_address'));
     @endphp
 
@@ -635,9 +642,9 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i data-lucide="hexagon" class="w-8 h-8 text-orange-500"></i>
-                        <span class="text-xl font-bold">Promo Alu Plus</span>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="PromoAlu+" class="h-12 w-auto">
+                        <span class="text-xl font-bold">PromoAlu+</span>
                     </div>
                     <p class="text-gray-400">
                         {{ __('messages.footer_description') }}
@@ -673,13 +680,13 @@
                         </li>
                         <li class="flex items-center">
                             <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
-                            <span>{{ $footerPhone }}</span>
+                            <span>{{ $formatPhone($footerPhone) }}</span>
                         </li>
                         <li class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
                             </svg>
-                            <span>{{ $footerWhatsApp }}</span>
+                            <span>{{ $formatPhone($footerWhatsApp) }}</span>
                         </li>
                         <li class="flex items-center">
                             <i data-lucide="mail" class="w-5 h-5 mr-2"></i>
@@ -690,7 +697,7 @@
             </div>
             
             <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} Promo Alu Plus. {{ __('messages.all_rights_reserved') }}</p>
+                <p>&copy; {{ date('Y') }} PromoAlu+. {{ __('messages.all_rights_reserved') }}</p>
             </div>
         </div>
     </footer>
@@ -812,7 +819,7 @@
 
         // WhatsApp Integration
         function openWhatsApp() {
-            const configuredNumber = @json(\App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678')));
+            const configuredNumber = @json(\App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+21626192898')));
             const phoneNumber = String(configuredNumber || '').replace(/\D/g, '');
             if (!phoneNumber) {
                 return;

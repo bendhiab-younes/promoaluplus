@@ -11,7 +11,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-sm">Promo Alu Plus</h3>
+                    <h3 class="font-semibold text-sm">PromoAlu+</h3>
                     <p class="text-xs text-blue-100">
                         <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-1 animate-pulse"></span>
                         {{ app()->getLocale() === 'ar' ? 'متصل الآن' : (app()->getLocale() === 'en' ? 'Online now' : 'En ligne') }}
@@ -176,7 +176,7 @@
         messageUrl: '{{ route("chatbot.message") }}',
         csrfToken: '{{ csrf_token() }}',
         locale: '{{ app()->getLocale() }}',
-        whatsappNumber: '{{ \App\Models\SiteSetting::get("contact_whatsapp", "+21612345678") }}'
+        whatsappNumber: '{{ \App\Models\SiteSetting::get("contact_whatsapp", "+21626192898") }}'
     };
     
     let chatbotOpen = false;

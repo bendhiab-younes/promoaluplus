@@ -3,11 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Models\SiteSetting;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Pages\Page;
-use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Filament\Pages\Page;
 
 class SiteSettings extends Page implements Forms\Contracts\HasForms
 {
@@ -45,7 +45,7 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')
                                     ->label('Nom de l\'entreprise')
-                                    ->default('Promo Alu Plus'),
+                                    ->default('PromoAlu+'),
                                 Forms\Components\FileUpload::make('company_logo')
                                     ->label('Logo')
                                     ->image()
@@ -203,18 +203,19 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                 Forms\Components\TextInput::make('contact_phone')
                                     ->label('Téléphone principal')
                                     ->tel()
-                                    ->default('+216 12 345 678'),
+                                    ->default('+21626192898'),
                                 Forms\Components\TextInput::make('contact_phone_2')
                                     ->label('Téléphone secondaire')
                                     ->tel(),
                                 Forms\Components\TextInput::make('contact_whatsapp')
                                     ->label('WhatsApp')
                                     ->tel()
+                                    ->default('+21626192898')
                                     ->helperText('Numéro pour le bouton WhatsApp'),
                                 Forms\Components\TextInput::make('contact_email')
                                     ->label('Email')
                                     ->email()
-                                    ->default('contact@promoaluplus.tn'),
+                                    ->default('promoaluplus@gmail.com'),
                                 Forms\Components\Textarea::make('contact_address')
                                     ->label('Adresse')
                                     ->rows(2),

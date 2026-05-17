@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{ \\App\\Models\\SiteSetting::get('company_name', 'AluminiumCraft Tunisie') }}</h1>
+            <h1>{{ \App\Models\SiteSetting::get('company_name', 'AluminiumCraft Tunisie') }}</h1>
             <p>Menuiserie Aluminium de Qualité Européenne</p>
         </div>
         
@@ -41,17 +41,17 @@
             
             <p>En attendant, n'hésitez pas à nous contacter par :</p>
             <ul>
-                <li>📞 Téléphone : {{ \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678') }}</li>
-                <li>💬 WhatsApp : {{ \App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678')) }}</li>
-                <li>📧 Email : {{ \\App\\Models\\SiteSetting::get('contact_email', 'contact@aluminiumcraft.tn') }}</li>
+                <li>📞 Téléphone : {{ \App\Models\SiteSetting::get('contact_phone', '+21626192898') }}</li>
+                <li>💬 WhatsApp : {{ \App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+21626192898')) }}</li>
+                <li>📧 Email : {{ \App\Models\SiteSetting::get('contact_email', 'promoaluplus@gmail.com') }}</li>
             </ul>
             
             <p>Cordialement,<br>
-            <strong>L'équipe {{ \\App\\Models\\SiteSetting::get('company_name','AluminiumCraft Tunisie') }}</strong></p>
+            <strong>L'équipe {{ \App\Models\SiteSetting::get('company_name','AluminiumCraft Tunisie') }}</strong></p>
         </div>
         
         <div class="footer">
-            <p>{{ \\App\\Models\\SiteSetting::get('company_name','AluminiumCraft Tunisie') }} - {{ \\App\\Models\\SiteSetting::get('contact_address','Zone Industrielle, Sousse') }}</p>
+            <p>{{ \App\Models\SiteSetting::get('company_name','AluminiumCraft Tunisie') }} - {{ \App\Models\SiteSetting::get('contact_address','Zone Industrielle, Sousse') }}</p>
             <p>© {{ date('Y') }} AluminiumCraft. Tous droits réservés.</p>
         </div>
     </div>

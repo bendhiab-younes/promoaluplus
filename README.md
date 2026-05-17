@@ -166,14 +166,14 @@ MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
-MAIL_FROM_ADDRESS=contact@promoaluplus.tn
+MAIL_FROM_ADDRESS=promoaluplus@gmail.com
 ```
 
 ### WhatsApp
 Update the WhatsApp number in `resources/views/layouts/app.blade.php`:
 ```javascript
 function openWhatsApp() {
-    window.open('https://wa.me/21612345678', '_blank');
+    window.open('https://wa.me/21626192898', '_blank');
 }
 ```
 

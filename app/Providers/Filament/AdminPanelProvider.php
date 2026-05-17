@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Promo Alu Plus')
+            ->brandName('PromoAlu+')
             ->brandLogo(null)
             ->favicon(asset('favicon.ico'))
             ->colors([
