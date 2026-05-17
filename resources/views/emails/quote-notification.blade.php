@@ -55,12 +55,6 @@
                     <td>Type de projet</td>
                     <td><span class="badge">{{ ucfirst($quote->project_type) }}</span></td>
                 </tr>
-                @if($quote->budget_range)
-                <tr>
-                    <td>Budget estimé</td>
-                    <td>{{ $quote->budget_range }}</td>
-                </tr>
-                @endif
                 @if($quote->timeline)
                 <tr>
                     <td>Délai souhaité</td>

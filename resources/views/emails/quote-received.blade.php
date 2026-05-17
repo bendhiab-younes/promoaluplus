@@ -31,9 +31,7 @@
                 @if($quote->city)
                 <p><strong>Ville du projet :</strong> {{ $quote->city }}</p>
                 @endif
-                @if($quote->budget_range)
-                <p><strong>Budget estimé :</strong> {{ $quote->budget_range }}</p>
-                @endif
+                
                 @if($quote->timeline)
                 <p><strong>Délai souhaité :</strong> {{ $quote->timeline }}</p>
                 @endif
@@ -43,8 +41,8 @@
             
             <p>En attendant, n'hésitez pas à nous contacter par :</p>
             <ul>
-                <li>📞 Téléphone : +216 12 345 678</li>
-                <li>💬 WhatsApp : +216 12 345 678</li>
+                <li>📞 Téléphone : {{ \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678') }}</li>
+                <li>💬 WhatsApp : {{ \App\Models\SiteSetting::get('contact_whatsapp', \App\Models\SiteSetting::get('contact_phone', '+216 12 345 678')) }}</li>
                 <li>📧 Email : contact@aluminiumcraft.tn</li>
             </ul>
             
