@@ -28,7 +28,7 @@
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
                                 <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
-                                    <span class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-white/20 shadow-lg">
+                                    <span class="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold text-blue-200 mb-4 md:mb-6 border border-white/20 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
                                         {{ $heroBadge }}
                                     </span>
@@ -39,7 +39,7 @@
                                     <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
                                         {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
                                     </p>
-                                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-30">
                                         <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
                                             <i data-lucide="phone" class="w-5 h-5 me-2 flex-shrink-0 group-hover:scale-110 transition-transform"></i>
                                             {{ __('messages.request_quote') }}
@@ -164,11 +164,11 @@
             </button>
 
             <!-- Dots Indicators -->
-            <div class="absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-20 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
-                <button onclick="goToSlide(0)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
+            <div class="absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
+                <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
+                <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
+                <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
+                <button onclick="goToSlide(3)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
             </div>
         </div>
     </section>
