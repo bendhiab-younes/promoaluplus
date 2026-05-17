@@ -572,6 +572,11 @@
             <a href="{{ route('portfolio') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_portfolio') }}</a>
             <a href="{{ route('about') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_about') }}</a>
             <a href="{{ route('contact') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_contact') }}</a>
+            <div class="flex items-center space-x-4 pt-4 border-t border-white/20">
+                <a href="/locale/fr" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'fr' ? 'text-orange-400' : '' }}">🇫🇷 FR</a>
+                <a href="/locale/ar" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'ar' ? 'text-orange-400' : '' }}">🇹🇳 AR</a>
+                <a href="/locale/en" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'en' ? 'text-orange-400' : '' }}">🇬🇧 EN</a>
+            </div>
         </nav>
     </div>
 
@@ -579,9 +584,8 @@
     <header class="fixed w-full top-0 z-50 glass-effect">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <i data-lucide="hexagon" class="w-8 h-8 text-orange-400 transition-colors duration-300"></i>
-                    <span class="text-xl font-bold text-white transition-colors duration-300">Promo Alu Plus</span>
+                <a href="{{ route('home') }}" class="flex items-center">
+                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="Promo Alu Plus" class="h-16 w-auto">
                 </a>
                 
                 <div class="hidden md:flex space-x-8">
@@ -594,11 +598,14 @@
                 
                 <div class="flex items-center space-x-4">
                     <div class="relative hidden md:block">
-                        <select id="language-selector" aria-label="Language selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded px-2 py-1 cursor-pointer transition-colors duration-300 hover:bg-white/20">
-                            <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }} class="text-gray-800">FR</option>
-                            <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }} class="text-gray-800">AR</option>
-                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }} class="text-gray-800">EN</option>
+                        <select id="language-selector" aria-label="Language selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded-lg px-3 py-2 cursor-pointer transition-colors duration-300 hover:bg-white/20 appearance-none pr-8">
+                            <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }} class="text-gray-800">🇫🇷 Français</option>
+                            <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }} class="text-gray-800">🇹🇳 العربية</option>
+                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }} class="text-gray-800">🇬🇧 English</option>
                         </select>
+                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </div>
                     <a href="{{ route('contact') }}" class="hidden md:block bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
                         {{ __('messages.free_quote') }}
