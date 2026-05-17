@@ -16,7 +16,7 @@ return [
     // Hero
     'hero_title' => 'Solutions Aluminium Fiables',
     'hero_subtitle' => 'Qualité, Transparence, Ponctualité',
-    'hero_description' => 'De la conception à la pose, nous réalisons des solutions durables pour portes, fenêtres, pergolas, garde-corps et cuisines, avec un suivi clair à chaque étape.',
+    'hero_description' => 'De la conception à la pose, nous réalisons des solutions durables pour portes, fenêtres, pergolas, garde-corps et cuisines, ainsi que divers autres travaux en aluminium, avec un suivi clair à chaque étape.',
     'premium_quality' => 'Qualité Premium Garantie',
     'start_your_project' => 'Lancez Votre Projet',
     'hero_values_badge' => '15+ ans d\'expertise certifiée',
@@ -219,8 +219,8 @@ return [
     'frequently_asked_questions' => 'Questions Fréquentes',
     'faq_q1' => 'Comment obtenir un devis?',
     'faq_a1' => 'Remplissez simplement notre formulaire en ligne ou contactez-nous par téléphone/WhatsApp. Nous vous répondrons sous 48h avec un devis détaillé.',
-    'faq_q2' => 'Travaillez-vous avec les expatriés?',
-    'faq_a2' => 'Oui! Nous sommes spécialisés dans l\'accompagnement des expatriés tunisiens. Suivi à distance, visioconférences, et communication en français.',
+    'faq_q2' => 'Travaillez-vous avec les résidents à l\'étranger ?',
+    'faq_a2' => 'Oui ! Nous accompagnons nos clients résidant à l\'étranger. Nous assurons un suivi à distance, des visioconférences ainsi qu\'une communication en français et en anglais.',
     'faq_q3' => 'Quelle est la garantie?',
     'faq_a3' => 'Tous nos produits sont garantis 10 ans. Nous utilisons uniquement des matériaux certifiés aux normes européennes.',
 
@@ -228,7 +228,7 @@ return [
     'our_projects' => 'Nos Réalisations',
     'portfolio_intro' => 'Découvrez nos projets réalisés à travers la Tunisie pour nos clients locaux ainsi que nos clients résidant à l\'étranger.',
     'all' => 'Tous',
-    'client_testimonials' => 'Ils nous ont faits confiance',
+    'client_testimonials' => 'Ils nous ont fait confiance',
     'testimonial_1' => 'Excellent travail! Promo Alu Plus a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
     'testimonial_2' => 'Qualité européenne à prix tunisien. Communication impeccable malgré le décalage horaire.',
     'testimonial_3' => 'Professionnels et à l\'écoute. Je recommande vivement pour tout projet de construction en Tunisie.',
@@ -245,6 +245,7 @@ return [
     // Stats
     'years_experience' => 'Années d\'expérience',
     'projects_completed' => 'Projets réalisés',
+    'hundreds_projects_completed' => 'Des centaines de projets réalisés',
     'satisfied_clients' => 'Clients satisfaits',
     'team_members' => 'Membres de l\'équipe',
 
@@ -329,7 +330,7 @@ return [
     'frame_profile' => 'Profil du Cadre',
     'max_height' => 'Hauteur Maximale',
     'finish_options' => 'Options de Finition',
-    
+
     // Materials
     'aluminum_profiles' => 'Profilés Aluminium',
     'tempered_glass' => 'Verre Trempé',

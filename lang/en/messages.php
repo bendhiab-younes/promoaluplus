@@ -217,8 +217,8 @@ return [
     'frequently_asked_questions' => 'Frequently Asked Questions',
     'faq_q1' => 'How do I get a quote?',
     'faq_a1' => 'Simply fill out our online form or contact us by phone/WhatsApp. We will respond within 48h with a detailed quote.',
-    'faq_q2' => 'Do you work with expatriates?',
-    'faq_a2' => 'Yes! We specialize in supporting Tunisian expatriates. Remote follow-up, video calls, and communication in French.',
+    'faq_q2' => 'Do you work with clients residing abroad?',
+    'faq_a2' => 'Yes! We support our clients residing abroad. We provide remote follow-up, video calls, and communication in French and English.',
     'faq_q3' => 'What is the warranty?',
     'faq_a3' => 'All our products are guaranteed for 10 years. We only use materials certified to European standards.',
 
@@ -243,6 +243,7 @@ return [
     // Stats
     'years_experience' => 'Years of experience',
     'projects_completed' => 'Projects completed',
+    'hundreds_projects_completed' => 'Hundreds of completed projects',
     'satisfied_clients' => 'Satisfied clients',
     'team_members' => 'Team members',
 
@@ -327,7 +328,7 @@ return [
     'frame_profile' => 'Frame Profile',
     'max_height' => 'Maximum Height',
     'finish_options' => 'Finish Options',
-    
+
     // Materials
     'aluminum_profiles' => 'Aluminum Profiles',
     'tempered_glass' => 'Tempered Glass',
