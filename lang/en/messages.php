@@ -307,9 +307,9 @@ return [
     'step_installation_desc' => 'Installation by our experts',
 
     // Partners / Suppliers
-    'our_partners' => 'Our Partners',
-    'trusted_suppliers' => 'Trusted Suppliers',
-    'partners_description' => 'We work with the best suppliers to guarantee you superior quality products.',
+    'top_products_badge' => 'Our Products',
+    'top_products_title' => 'TOP Aluminum Products',
+    'top_products_subtitle' => 'The key elements of aluminum joinery, combining design, durability and made-to-measure performance.',
 
     // Footer
     'footer_description' => 'Your trusted partner for aluminum joinery in Tunisia.',

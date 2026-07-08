@@ -307,9 +307,9 @@ return [
     'step_installation_desc' => 'التركيب بواسطة خبرائنا',
 
     // Partners / Suppliers
-    'our_partners' => 'شركاؤنا',
-    'trusted_suppliers' => 'موردون موثوقون',
-    'partners_description' => 'نعمل مع أفضل الموردين لضمان منتجات عالية الجودة.',
+    'top_products_badge' => 'منتجاتنا',
+    'top_products_title' => 'أفضل منتجات الألمنيوم',
+    'top_products_subtitle' => 'العناصر الأساسية لنجارة الألمنيوم، تجمع بين التصميم والمتانة والأداء حسب الطلب.',
 
     // Footer
     'footer_description' => 'شريكك الموثوق لنجارة الألمنيوم في تونس.',

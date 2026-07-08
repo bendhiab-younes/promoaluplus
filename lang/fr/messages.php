@@ -307,9 +307,9 @@ return [
     'step_installation_desc' => 'Pose par nos experts',
 
     // Partners / Suppliers
-    'our_partners' => 'Nos Partenaires',
-    'trusted_suppliers' => 'Fournisseurs de Confiance',
-    'partners_description' => 'Nous travaillons avec les meilleurs fournisseurs pour vous garantir des produits de qualité supérieure.',
+    'top_products_badge' => 'Nos Produits',
+    'top_products_title' => 'TOP Produits Aluminium',
+    'top_products_subtitle' => 'Les éléments clés de la menuiserie aluminium, alliant design, durabilité et performance sur mesure.',
 
     // Footer
     'footer_description' => 'Votre partenaire de confiance pour la menuiserie aluminium en Tunisie.',
