@@ -11,14 +11,19 @@
 
 @section('content')
     <!-- Hero Carousel Section -->
-    <section class="relative overflow-hidden home-hero-section" style="height: calc(100svh - var(--site-header-height, 96px)); margin-top: var(--site-header-height, 96px);">
+    <section class="relative overflow-hidden home-hero-section bg-gray-900" style="height: 100svh; padding-top: var(--site-header-height, 96px); box-sizing: border-box;">
         <div class="carousel-container relative w-full h-full overflow-hidden bg-gray-900">
             <!-- Carousel Slides -->
             <div class="carousel-slides relative h-full">
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80" 
+                            <img src="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80"
+                                srcset="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=640&q=80 640w,
+                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1024&q=80 1024w,
+                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80 1600w,
+                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80 2200w"
+                                sizes="100vw"
                                 alt="{{ __('messages.hero_slide1_alt') }}" 
                              class="w-full h-full object-cover object-center"
                                 loading="eager"
@@ -27,12 +32,12 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
+                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
                                     <span class="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold text-blue-200 mb-4 md:mb-6 border border-white/20 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
                                         {{ $heroBadge }}
                                     </span>
-                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
+                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
                                         {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
                                         <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
                                     </h1>
@@ -58,7 +63,12 @@
                 <!-- Slide 2 - Aluminum Doors -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=2200&q=80" 
+                            <img src="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1600&q=80"
+                                srcset="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=640&q=80 640w,
+                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1024&q=80 1024w,
+                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1600&q=80 1600w,
+                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=2200&q=80 2200w"
+                                sizes="100vw"
                                 alt="{{ __('messages.hero_slide2_alt') }}" 
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
@@ -66,12 +76,12 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
+                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
                                     <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 md:mb-8 border border-orange-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                         {{ __('messages.hero_slide2_badge') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
                                         {{ __('messages.hero_slide2_title') }}
                                         <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hero_slide2_highlight') }}</span>
                                     </h2>
@@ -91,7 +101,12 @@
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=2200&q=80" 
+                            <img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1600&q=80"
+                                srcset="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=640&q=80 640w,
+                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1024&q=80 1024w,
+                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1600&q=80 1600w,
+                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=2200&q=80 2200w"
+                                sizes="100vw"
                                 alt="{{ __('messages.hero_slide3_alt') }}" 
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
@@ -99,12 +114,12 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
+                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
                                     <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-blue-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                         {{ __('messages.hero_slide3_badge') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
                                         {{ __('messages.hero_slide3_title') }}
                                         <span class="text-cyan-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hero_slide3_highlight') }}</span>
                                     </h2>
@@ -124,7 +139,12 @@
                 <!-- Slide 4 - Company Experience -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=2200&q=80" 
+                            <img src="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1600&q=80"
+                                srcset="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=640&q=80 640w,
+                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1024&q=80 1024w,
+                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1600&q=80 1600w,
+                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=2200&q=80 2200w"
+                                sizes="100vw"
                                 alt="{{ __('messages.hero_slide4_alt') }}" 
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
@@ -132,12 +152,12 @@
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
                             <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-16 pb-28 md:pt-24 md:pb-32 lg:pt-32 lg:pb-36">
+                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
                                     <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 md:mb-8 border border-green-300/30 shadow-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         {{ __('messages.hero_slide4_badge') }}
                                     </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl mt-12 md:mt-16 lg:mt-20">
+                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
                                         {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
                                         <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hundreds_projects_completed') }}</span>
                                     </h2>
@@ -164,7 +184,7 @@
             </button>
 
             <!-- Dots Indicators -->
-            <div class="absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
+            <div class="carousel-dots absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
                 <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
                 <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
                 <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
@@ -390,205 +410,160 @@
             </div>
         </div>
         
-        <!-- Full Width Horizontal Scrolling Service Cards -->
-        <div class="relative w-full">
-            <!-- Navigation Arrows -->
-            <button onclick="scrollServices('left')" class="services-prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200 lg:hidden" aria-label="Previous services">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button onclick="scrollServices('right')" class="services-next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white hover:bg-blue-50 text-blue-600 p-3 rounded-full transition-all duration-300 z-10 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200 lg:hidden" aria-label="Next services">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-            
-            <!-- Scroll Container - Full Width -->
-            <div id="servicesScroller" class="overflow-x-auto lg:overflow-visible overflow-y-visible scrollbar-hide pb-8 pt-4 w-full px-8 md:px-12 lg:px-8">
-                <div class="flex gap-6 min-w-max lg:min-w-0 py-4 px-6 md:px-8 lg:px-0 lg:flex-wrap lg:justify-center lg:gap-8">
-                    @forelse($services as $service)
+        <!-- Service Cards Grid -->
+        @php
+            $serviceAccent = [
+                'rose' => '#e11d48', 'orange' => '#ea580c', 'blue' => '#2563eb',
+                'violet' => '#7c3aed', 'emerald' => '#059669', 'amber' => '#d97706',
+                'yellow' => '#ca8a04', 'teal' => '#0d9488', 'indigo' => '#4f46e5',
+            ];
+        @endphp
+        <div class="container mx-auto px-6 md:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                @forelse($services as $service)
                     @php
                         $cardColor = $service->getDisplayColor();
+                        $cardHex = $serviceAccent[$cardColor] ?? '#2563eb';
                         $cardIcon = $service->getDisplayIcon();
+                        $cardImage = $service->getFeaturedImage();
                         $cardSummary = trim(strip_tags($service->getTranslatedShortDescription()));
                     @endphp
                     <a href="{{ route('services') }}#{{ $service->slug }}"
                        aria-label="{{ __('messages.view_details') }} - {{ $service->getTranslatedTitle() }}"
-                       class="service-item group relative flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer min-w-[75vw] w-[75vw] sm:min-w-[250px] sm:w-[250px] md:min-w-[280px] md:w-[280px] lg:min-w-[220px] lg:w-[220px] border-2 border-transparent hover:border-{{ $cardColor }}-300">
-                        <div class="w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-5 rounded-xl bg-gradient-to-br from-{{ $cardColor }}-400 to-{{ $cardColor }}-600 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg">
-                            @if($service->svg_icon)
-                                {!! $service->svg_icon !!}
-                            @elseif($cardIcon)
-                                <i data-lucide="{{ $cardIcon }}" class="w-8 h-8 text-white"></i>
+                       style="--accent: {{ $cardHex }};"
+                       class="service-card group relative flex flex-col overflow-hidden bg-white rounded-2xl shadow-lg ring-1 ring-gray-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 scroll-fade">
+                        <!-- Media -->
+                        <div class="relative h-52 md:h-56 overflow-hidden bg-gray-100">
+                            @if($cardImage)
+                                <img src="{{ $cardImage }}"
+                                     alt="{{ $service->getTranslatedTitle() }}"
+                                     loading="lazy" decoding="async"
+                                     class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                <div class="w-full h-full" style="background: linear-gradient(135deg, {{ $cardHex }}26, {{ $cardHex }}80);"></div>
                             @endif
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"></div>
+                            <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" style="background: var(--accent);"></span>
+                            <div class="absolute bottom-3 start-3 w-12 h-12 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:-translate-y-0.5" style="color: var(--accent);">
+                                @if($service->svg_icon)
+                                    {!! $service->svg_icon !!}
+                                @elseif($cardIcon)
+                                    <i data-lucide="{{ $cardIcon }}" class="w-6 h-6"></i>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                @endif
+                            </div>
                         </div>
-
-                        <h3 class="text-base md:text-lg font-bold text-gray-800 text-center transition-colors group-hover:text-{{ $cardColor }}-600 px-2 leading-snug">
-                            {{ $service->getTranslatedTitle() }}
-                        </h3>
-
-                        @if($cardSummary !== '')
-                            <p class="mt-3 text-sm text-gray-500 text-center leading-relaxed">
-                                {{ \Illuminate\Support\Str::limit($cardSummary, 96) }}
-                            </p>
-                        @endif
-
-                        <span class="mt-4 inline-flex items-center text-sm font-semibold text-{{ $cardColor }}-600">
-                            {{ __('messages.view_details') }}
-                            <i data-lucide="arrow-right" class="w-4 h-4 ms-1 transition-transform group-hover:translate-x-1"></i>
-                        </span>
+                        <!-- Body -->
+                        <div class="flex flex-1 flex-col p-5 md:p-6">
+                            <h3 class="service-card-title text-lg font-bold text-gray-900 leading-snug transition-colors duration-300">
+                                {{ $service->getTranslatedTitle() }}
+                            </h3>
+                            @if($cardSummary !== '')
+                                <p class="mt-2 text-sm text-gray-500 leading-relaxed line-clamp-2">
+                                    {{ \Illuminate\Support\Str::limit($cardSummary, 110) }}
+                                </p>
+                            @endif
+                            <span class="mt-4 inline-flex items-center text-sm font-semibold" style="color: var(--accent);">
+                                {{ __('messages.view_details') }}
+                                <i data-lucide="arrow-right" class="w-4 h-4 ms-1 transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                        </div>
                     </a>
-                    @empty
-                    <p class="text-gray-500 text-center w-full">{{ __('messages.services_page_intro') }}</p>
-                    @endforelse
-                </div>
+                @empty
+                    <p class="text-gray-500 text-center col-span-full">{{ __('messages.services_page_intro') }}</p>
+                @endforelse
             </div>
         </div>
 
-        <!-- View All Button - Inside Container -->
+        <!-- View All Button -->
         <div class="container mx-auto px-6 md:px-8 text-center mt-12">
-                <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group">
-                    {{ __('messages.view_all_services') }}
-                    <i data-lucide="arrow-right" class="w-5 h-5 ms-2 group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
-            
+            <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group">
+                {{ __('messages.view_all_services') }}
+                <i data-lucide="arrow-right" class="w-5 h-5 ms-2 group-hover:translate-x-1 transition-transform"></i>
+            </a>
         </div>
     </section>
 
     <style>
-        /* Hide scrollbar but keep functionality */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
+        /* Reveal the per-service accent on the title when the card is hovered */
+        .service-card:hover .service-card-title {
+            color: var(--accent);
         }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+    </style>
 
-        /* Service item animation improvements */
-        .service-item {
-            flex-shrink: 0;
-        }
+    <!-- TOP Produits Aluminium Section -->
+    <section class="py-14 md:py-20 lg:py-24 bg-gray-50 overflow-hidden">
+        <div class="container mx-auto px-6 md:px-8 mb-8 md:mb-12">
+            <div class="text-center scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    {{ __('messages.top_products_badge') }}
+                </span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.top_products_title') }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">{{ __('messages.top_products_subtitle') }}</p>
+            </div>
+        </div>
 
-        .service-item:hover {
-            z-index: 20;
-        }
+        <!-- Product Carousel -->
+        <div class="relative w-full">
+            <button onclick="scrollProducts('left')" class="products-prev absolute start-2 md:start-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full transition-all duration-300 z-20 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button onclick="scrollProducts('right')" class="products-next absolute end-2 md:end-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full transition-all duration-300 z-20 shadow-lg hover:shadow-xl hover:scale-110 border border-gray-200" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
 
-        /* Smooth scroll behavior */
-        #servicesScroller {
+            <div id="productsScroller" class="flex gap-5 md:gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-6 md:px-16 lg:px-20 pb-4 pt-2">
+                @foreach($services as $service)
+                @php
+                    $productImage = $service->getFeaturedImage();
+                    $productIcon = $service->getDisplayIcon();
+                    $productSummary = trim(strip_tags($service->getTranslatedShortDescription()));
+                @endphp
+                <a href="{{ route('services') }}#{{ $service->slug }}"
+                   aria-label="{{ __('messages.view_details') }} - {{ $service->getTranslatedTitle() }}"
+                   class="product-card group relative flex-shrink-0 snap-start w-[80vw] sm:w-[330px] md:w-[360px] h-[400px] md:h-[440px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
+                    <img src="{{ $productImage ?? asset('images/placeholder.jpg') }}"
+                         alt="{{ $service->getTranslatedTitle() }}"
+                         loading="lazy" decoding="async"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
+                    <span class="absolute top-4 start-4 inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/15 backdrop-blur-md border border-white/25 text-white shadow-lg">
+                        <i data-lucide="{{ $productIcon }}" class="w-5 h-5"></i>
+                    </span>
+                    <div class="absolute inset-x-0 bottom-0 p-5 md:p-6 text-white">
+                        <h3 class="font-display text-xl md:text-2xl font-bold mb-2 drop-shadow-lg">{{ $service->getTranslatedTitle() }}</h3>
+                        @if($productSummary !== '')
+                        <p class="text-sm text-gray-200 leading-relaxed mb-3">{{ \Illuminate\Support\Str::limit($productSummary, 88) }}</p>
+                        @endif
+                        <span class="inline-flex items-center text-sm font-semibold text-orange-300">
+                            {{ __('messages.view_details') }}
+                            <i data-lucide="arrow-right" class="w-4 h-4 ms-1 rtl:rotate-180 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <style>
+        #productsScroller {
             scroll-behavior: smooth;
-            overflow-y: visible !important;
-        }
-
-        /* Prevent parent from clipping transformed children */
-        #servicesScroller > div {
-            transform-style: preserve-3d;
-        }
-
-        @media (min-width: 1024px) {
-            .service-item {
-                flex-shrink: 1;
-            }
         }
     </style>
 
     <script>
-        function scrollServices(direction) {
-            const scroller = document.getElementById('servicesScroller');
-            const scrollAmount = 250;
-            if (direction === 'left') {
-                scroller.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+        function scrollProducts(direction) {
+            const scroller = document.getElementById('productsScroller');
+            if (!scroller) return;
+            const amount = Math.max(300, Math.round(scroller.clientWidth * 0.85));
+            const rtl = document.documentElement.dir === 'rtl';
+            const delta = (direction === 'left' ? -amount : amount) * (rtl ? -1 : 1);
+            scroller.scrollBy({ left: delta, behavior: 'smooth' });
         }
     </script>
-
-    <!-- Our Partners / Suppliers Section -->
-    <section class="py-12 md:py-16 lg:py-20 bg-gray-50 overflow-hidden">
-        <div class="container mx-auto px-6 md:px-8 mb-8 md:mb-10">
-            <div class="text-center scroll-fade">
-                <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    {{ __('messages.our_partners') }}
-                </span>
-                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.trusted_suppliers') }}</h2>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.partners_description') }}</p>
-            </div>
-        </div>
-        
-        <!-- Infinite Scrolling Partners -->
-        <div class="partners-slider relative">
-            <div class="partners-track flex items-center gap-12 md:gap-16">
-                @php
-                    $partners = [
-                        ['name' => 'TPR Aluminium', 'logo' => 'https://www.tpr-alu.com/images/logo.png'],
-                        ['name' => 'Master Hardware', 'logo' => 'https://masterhardware.com.tr/wp-content/uploads/2023/03/master-logo.png'],
-                        ['name' => 'Ragni', 'logo' => 'https://www.ragni.com/wp-content/uploads/2020/09/logo-ragni.svg'],
-                        ['name' => 'Palma Profile', 'logo' => 'https://palmaprofil.com/wp-content/uploads/2021/08/palma-profil-logo.png'],
-                        ['name' => 'Alluco Confort', 'logo' => 'https://www.allucoconfort.com/images/logo.png'],
-                        ['name' => 'Qalex', 'logo' => 'https://qalex.tn/wp-content/uploads/2023/01/qalex-logo.png'],
-                        ['name' => 'Somfy', 'logo' => 'https://www.somfy.com/common/img/library/logo/logo-somfy.svg'],
-                        ['name' => 'Panda Motors', 'logo' => 'https://pandamotors.com/wp-content/uploads/2022/01/panda-motors-logo.png'],
-                        ['name' => 'Lavaal International', 'logo' => 'https://lavaal.com/wp-content/uploads/2023/logo-lavaal.png'],
-                    ];
-                @endphp
-                
-                <!-- First set of logos -->
-                @foreach($partners as $partner)
-                <div class="partner-item flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 md:p-8 min-w-[160px] md:min-w-[200px] h-[120px] md:h-[140px] group">
-                    <div class="h-12 md:h-16 flex items-center justify-center mb-2 grayscale group-hover:grayscale-0 transition-all duration-300">
-                        <span class="text-lg md:text-xl font-bold text-gray-700 group-hover:text-blue-600 transition-colors text-center leading-tight">{{ $partner['name'] }}</span>
-                    </div>
-                </div>
-                @endforeach
-                
-                <!-- Duplicate set for seamless loop -->
-                @foreach($partners as $partner)
-                <div class="partner-item flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 md:p-8 min-w-[160px] md:min-w-[200px] h-[120px] md:h-[140px] group">
-                    <div class="h-12 md:h-16 flex items-center justify-center mb-2 grayscale group-hover:grayscale-0 transition-all duration-300">
-                        <span class="text-lg md:text-xl font-bold text-gray-700 group-hover:text-blue-600 transition-colors text-center leading-tight">{{ $partner['name'] }}</span>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <style>
-        .partners-slider {
-            width: 100%;
-            overflow: hidden;
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-        }
-        
-        .partners-track {
-            animation: scrollPartners 40s linear infinite;
-            width: max-content;
-        }
-        
-        .partners-track:hover {
-            animation-play-state: paused;
-        }
-        
-        @keyframes scrollPartners {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-        
-        .partner-item {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .partner-item:hover {
-            transform: scale(1.05);
-        }
-    </style>
 
     <!-- Why Choose Us Section - COMMENTED OUT -->
     {{--
