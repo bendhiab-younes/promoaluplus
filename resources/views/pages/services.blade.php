@@ -144,22 +144,8 @@
                                    alt="{{ $service->getTranslatedTitle() }}" 
                                    loading="lazy"
                                    decoding="async"
-                                   class="rounded-2xl shadow-2xl w-full h-[400px] object-cover transition-all duration-500">
+                                   class="rounded-2xl shadow-2xl w-full h-[240px] sm:h-[320px] md:h-[360px] lg:h-[400px] object-cover transition-all duration-500">
                         </div>
-                        <!-- Thumbnail Navigation -->
-                        @if(count($gallery) > 1)
-                        <div class="flex gap-2 justify-center">
-                            @foreach($gallery as $thumbIndex => $thumb)
-                            <button type="button" onclick="event.stopPropagation(); changeServiceImage('{{ $service->slug }}', {{ $thumbIndex }}, '{{ $thumb }}')" 
-                                    id="thumb-{{ $service->slug }}-{{ $thumbIndex }}"
-                                    aria-label="{{ __('messages.view_gallery') }} {{ $service->getTranslatedTitle() }} - {{ $thumbIndex + 1 }}"
-                                    aria-pressed="{{ $thumbIndex === 0 ? 'true' : 'false' }}"
-                                    class="w-16 h-16 rounded-xl overflow-hidden border-3 {{ $thumbIndex === 0 ? 'border-blue-500 ring-2 ring-blue-500/30' : 'border-gray-200 hover:border-blue-300' }} shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                                <img src="{{ $thumb }}" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover">
-                            </button>
-                            @endforeach
-                        </div>
-                        @endif
                     </div>
                 </div>
                 <div class="{{ $index % 2 == 1 ? 'order-1 md:order-2' : '' }}">
@@ -200,14 +186,16 @@
                     <!-- Expandable Details -->
                     @if($hasDetailsPanel)
                     <details class="service-details mb-8 bg-white/80 border border-gray-200 rounded-2xl shadow-sm">
-                        <summary class="service-details-summary px-5 py-4 cursor-pointer flex items-center justify-between gap-3">
-                            <span class="font-semibold text-gray-900">
+                        <summary class="service-details-summary px-5 py-4 cursor-pointer flex items-center justify-between gap-3 rounded-2xl transition-colors duration-200 hover:bg-gray-50/80">
+                            <span class="details-label font-semibold text-gray-900 transition-colors duration-200">
                                 {{ __('messages.view_details') }}
                             </span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="details-chevron w-5 h-5 text-gray-500 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            <span class="details-chevron flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </span>
                         </summary>
 
-                        <div class="px-5 pb-5 pt-2 space-y-6">
+                        <div class="service-details-content px-5 pb-5 pt-2 space-y-6">
                             @if($descriptionHtml !== '')
                             <div class="prose prose-gray max-w-none text-gray-700">
                                 {!! $descriptionHtml !!}
@@ -322,57 +310,146 @@
         {!! json_encode($servicesSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
     </script>
 
-    <script>
-        // Function to change the main image in a service card when clicking thumbnails
-        function changeServiceImage(serviceId, index, imageSrc) {
-            // Update main image
-            const mainImage = document.getElementById(`main-image-${serviceId}`);
-            if (mainImage) {
-                mainImage.style.opacity = '0';
-                setTimeout(() => {
-                    mainImage.src = imageSrc;
-                    mainImage.style.opacity = '1';
-                }, 150);
-            }
-
-            // Update thumbnail active states - find all thumbnails for this service
-            const thumbs = document.querySelectorAll(`[id^="thumb-${serviceId}-"]`);
-            thumbs.forEach((thumb, thumbIndex) => {
-                const isActive = thumbIndex === index;
-                thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-
-                if (thumbIndex === index) {
-                    thumb.classList.remove('border-gray-200', 'hover:border-blue-300');
-                    thumb.classList.add('border-blue-500', 'ring-2', 'ring-blue-500/30');
-                } else {
-                    thumb.classList.remove('border-blue-500', 'ring-2', 'ring-blue-500/30');
-                    thumb.classList.add('border-gray-200', 'hover:border-blue-300');
-                }
-            });
-        }
-    </script>
-
     <style>
-        /* Smooth image transitions for service cards */
-        [id^="main-image-"] {
-            transition: opacity 0.15s ease-in-out;
-        }
-
-        /* Thumbnail border styling */
-        .border-3 {
-            border-width: 3px;
+        .service-details {
+            overflow: hidden;
         }
 
         .service-details summary {
             list-style: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .service-details summary::-webkit-details-marker {
             display: none;
         }
 
+        /* Chevron rotates + fills with brand colour once expanded */
         .service-details[open] .details-chevron {
             transform: rotate(180deg);
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .service-details[open] .details-label,
+        .service-details summary:hover .details-label {
+            color: #2563eb;
+        }
+
+        /* Content fades/slides in; JS animates the panel height for the smooth reveal */
+        .service-details-content {
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .service-details[open] .service-details-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .service-details-content {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .details-chevron,
+            .details-label {
+                transition: none;
+            }
         }
     </style>
+
+    <script>
+        (() => {
+            const panels = document.querySelectorAll('details.service-details');
+            if (!panels.length) {
+                return;
+            }
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const duration = 320;
+
+            panels.forEach((details) => {
+                const summary = details.querySelector('summary');
+                const content = details.querySelector('.service-details-content');
+
+                if (!summary || !content) {
+                    return;
+                }
+
+                let animation = null;
+                let isClosing = false;
+                let isExpanding = false;
+
+                const onFinish = (open) => {
+                    details.open = open;
+                    animation = null;
+                    isClosing = false;
+                    isExpanding = false;
+                    details.style.height = '';
+                    details.style.overflow = '';
+                };
+
+                const expand = () => {
+                    isExpanding = true;
+                    const startHeight = `${details.offsetHeight}px`;
+                    const endHeight = `${summary.offsetHeight + content.offsetHeight}px`;
+
+                    if (animation) {
+                        animation.cancel();
+                    }
+
+                    animation = details.animate(
+                        { height: [startHeight, endHeight] },
+                        { duration, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+                    );
+                    animation.onfinish = () => onFinish(true);
+                    animation.oncancel = () => { isExpanding = false; };
+                };
+
+                const open = () => {
+                    details.style.height = `${details.offsetHeight}px`;
+                    details.open = true;
+                    window.requestAnimationFrame(expand);
+                };
+
+                const shrink = () => {
+                    isClosing = true;
+                    const startHeight = `${details.offsetHeight}px`;
+                    const endHeight = `${summary.offsetHeight}px`;
+
+                    if (animation) {
+                        animation.cancel();
+                    }
+
+                    animation = details.animate(
+                        { height: [startHeight, endHeight] },
+                        { duration, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+                    );
+                    animation.onfinish = () => onFinish(false);
+                    animation.oncancel = () => { isClosing = false; };
+                };
+
+                summary.addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    if (reduceMotion.matches) {
+                        details.open = !details.open;
+                        return;
+                    }
+
+                    details.style.overflow = 'hidden';
+
+                    if (isClosing || !details.open) {
+                        open();
+                    } else if (isExpanding || details.open) {
+                        shrink();
+                    }
+                });
+            });
+        })();
+    </script>
 @endsection
