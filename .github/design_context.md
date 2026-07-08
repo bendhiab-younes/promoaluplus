@@ -21,11 +21,22 @@ Emotional goals:
 
 ### Aesthetic Direction
 Use light mode as default and only mode for now.
-Keep and refine the current visual direction already established in the project:
-- Blue and orange core palette (trust + action).
-- Serif display accents for headlines and modern sans-serif for body text.
+Keep and refine the current visual direction already established in the project.
+
+Color palette (CSS variables in `resources/views/layouts/app.blade.php`):
+- Blue (trust) — primary `#1e3a8a`, secondary `#3b82f6`, light `#60a5fa`
+- Orange (action/CTA) — primary `#f97316`, dark `#ea580c`
+- Gold accent — `#d4af37` (premium cue)
+- Hero uses a dark-blue gradient (`#0f172a → #1e3a8a → #3b82f6`)
+
+Typography:
+- Display/headlines — `Playfair Display` (serif), via `.font-display`
+- Body/UI — `Manrope` (sans-serif), the default family
+- Arabic — `Noto Sans Arabic` (Tajawal/Cairo/Amiri fallbacks), via `.font-arabic`
+
+Other:
 - Clean, modern layouts with subtle premium cues (gradients, soft shadows, glass effects where useful).
-- Multilingual readiness, including Arabic support and RTL-safe spacing/alignment.
+- Multilingual readiness with full Arabic RTL support (`dir` flips on `<html>` for `ar`); keep spacing/alignment RTL-safe.
 - Motion should be meaningful and restrained; prioritize clarity and usability over animation density.
 
 No external reference sites are defined yet.
