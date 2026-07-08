@@ -1,7 +1,7 @@
 <!-- Chatbot Widget -->
 <div id="chatbot-widget" class="fixed bottom-6 {{ app()->getLocale() === 'ar' ? 'left-6' : 'right-6' }} z-[60] font-sans" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <!-- Chat Window -->
-    <div id="chatbot-window" class="hidden mb-4 w-[360px] max-w-[calc(100vw-3rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+    <div id="chatbot-window" class="hidden mb-4 w-[360px] max-w-[calc(100vw-3rem)] max-h-[calc(100svh-6rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col">
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -26,7 +26,7 @@
         </div>
 
         <!-- Messages Container -->
-        <div id="chatbot-messages" class="h-[350px] overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <div id="chatbot-messages" class="flex-1 min-h-[200px] overflow-y-auto p-4 space-y-4 bg-gray-50">
             <!-- Messages will be inserted here -->
         </div>
 

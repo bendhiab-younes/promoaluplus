@@ -81,14 +81,16 @@
 
         /* Elegant glass effect - Always blue */
         .glass-effect {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.45) 0%, rgba(30, 58, 138, 0.45) 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .navbar-scrolled {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(30, 58, 138, 0.82) 100%) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
@@ -154,6 +156,28 @@
             color: var(--primary-blue);
             border-color: white;
             transform: translateY(-3px);
+        }
+
+        .btn-primary:active,
+        .btn-secondary:active,
+        .portfolio-filter:active {
+            filter: brightness(0.95);
+        }
+
+        .btn-primary:focus-visible,
+        .btn-secondary:focus-visible,
+        .nav-link:focus-visible,
+        .mobile-menu a:focus-visible,
+        .portfolio-filter:focus-visible,
+        #mobile-menu-btn:focus-visible,
+        #close-menu-btn:focus-visible,
+        #language-switcher-btn:focus-visible,
+        .back-to-top:focus-visible,
+        .whatsapp-float:focus-visible,
+        #chatbot-toggle:focus-visible,
+        .quick-reply-btn:focus-visible {
+            outline: 3px solid rgba(249, 115, 22, 0.75);
+            outline-offset: 3px;
         }
 
         /* Elegant cards */
@@ -293,8 +317,12 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding: calc(4rem + env(safe-area-inset-top)) 1.5rem calc(2rem + env(safe-area-inset-bottom));
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -465,6 +493,74 @@
 
         /* Mobile responsiveness improvements */
         @media (max-width: 768px) {
+            .home-hero-section {
+                height: auto !important;
+                min-height: 100svh;
+                padding-top: calc(var(--site-header-height, 96px) + 0.75rem) !important;
+                padding-bottom: 1.5rem !important;
+                overflow-x: hidden;
+                overflow-y: visible;
+            }
+
+            .home-hero-section .carousel-container {
+                height: auto;
+                min-height: calc(100svh - var(--site-header-height, 96px));
+                overflow: visible;
+            }
+
+            .home-hero-section .carousel-slides {
+                height: auto;
+            }
+
+            .home-hero-section .carousel-slide {
+                position: relative;
+                inset: auto;
+                height: auto;
+                min-height: calc(100svh - var(--site-header-height, 96px));
+            }
+
+            .home-hero-section .carousel-slide:not(.active) {
+                display: none;
+            }
+
+            .home-hero-section .carousel-slide > .relative {
+                min-height: inherit;
+            }
+
+            .home-hero-section .carousel-slide img {
+                min-height: inherit;
+                object-position: 50% 20%;
+            }
+
+            .home-hero-section .slide-content {
+                padding-top: 0.75rem !important;
+                padding-bottom: 2rem !important;
+            }
+
+            .home-hero-section .slide-content h1,
+            .home-hero-section .slide-content h2 {
+                margin-top: 0.5rem !important;
+            }
+
+            .home-hero-section .slide-content p {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .home-hero-section .carousel-prev,
+            .home-hero-section .carousel-next {
+                display: none;
+            }
+
+            .home-hero-section .carousel-dots {
+                bottom: 0.75rem;
+            }
+
+            .glass-effect,
+            .btn-secondary {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
             .hero-gradient {
                 min-height: auto;
                 padding-top: 5rem;
@@ -509,6 +605,65 @@
             .container {
                 padding-left: 1rem;
                 padding-right: 1rem;
+            }
+        }
+
+        /*
+         * Desktop hero: the slide content is vertically centered in the area below the
+         * fixed header. On short viewports (e.g. 1366x768 laptops) the full-size type is
+         * taller than that area, so centering pushes the badge up under the translucent
+         * header and the buttons down off the bottom. Compress type + spacing by viewport
+         * height so the content always fits with breathing room on both ends.
+         */
+        @media (min-width: 769px) and (max-height: 860px) {
+            .home-hero-section .slide-content {
+                padding-top: 0.5rem;
+                padding-bottom: 3.5rem;
+            }
+
+            .home-hero-section .slide-content > span {
+                margin-bottom: 0.85rem;
+            }
+
+            .home-hero-section .slide-content h1,
+            .home-hero-section .slide-content h2 {
+                font-size: 3.25rem;
+                line-height: 1.12;
+                margin-bottom: 1rem;
+            }
+
+            .home-hero-section .slide-content h1 span,
+            .home-hero-section .slide-content h2 span {
+                margin-top: 0.4rem;
+            }
+
+            .home-hero-section .slide-content p {
+                font-size: 1.1rem;
+                line-height: 1.5;
+                margin-bottom: 1.25rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+
+        @media (min-width: 769px) and (max-height: 700px) {
+            .home-hero-section .slide-content {
+                padding-top: 0.25rem;
+                padding-bottom: 3rem;
+            }
+
+            .home-hero-section .slide-content h1,
+            .home-hero-section .slide-content h2 {
+                font-size: 2.5rem;
+                margin-bottom: 0.85rem;
+            }
+
+            .home-hero-section .slide-content p {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                -webkit-line-clamp: 2;
             }
         }
 
@@ -572,10 +727,16 @@
             <a href="{{ route('portfolio') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_portfolio') }}</a>
             <a href="{{ route('about') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_about') }}</a>
             <a href="{{ route('contact') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_contact') }}</a>
-            <div class="flex items-center space-x-4 pt-4 border-t border-white/20">
-                <a href="/locale/fr" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'fr' ? 'text-orange-400' : '' }}">🇫🇷 FR</a>
-                <a href="/locale/ar" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'ar' ? 'text-orange-400' : '' }}">🇹🇳 AR</a>
-                <a href="/locale/en" class="text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'en' ? 'text-orange-400' : '' }}">🇬🇧 EN</a>
+            <div class="flex items-center space-x-6 pt-4 border-t border-white/20">
+                <a href="/locale/fr" class="flex items-center gap-2 text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'fr' ? 'text-orange-400' : '' }}">
+                    <x-locale-flag code="fr" class="h-4 w-auto rounded-[2px] ring-1 ring-white/20" /> FR
+                </a>
+                <a href="/locale/ar" class="flex items-center gap-2 text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'ar' ? 'text-orange-400' : '' }}">
+                    <x-locale-flag code="ar" class="h-4 w-auto rounded-[2px] ring-1 ring-white/20" /> AR
+                </a>
+                <a href="/locale/en" class="flex items-center gap-2 text-white text-lg hover:text-orange-400 transition-colors {{ app()->getLocale() === 'en' ? 'text-orange-400' : '' }}">
+                    <x-locale-flag code="en" class="h-4 w-auto rounded-[2px] ring-1 ring-white/20" /> EN
+                </a>
             </div>
         </nav>
     </div>
@@ -584,8 +745,9 @@
     <header class="fixed w-full top-0 z-50 glass-effect">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="PromoAlu+" class="h-16 w-auto">
+                <a href="{{ route('home') }}" class="flex items-center gap-3">
+                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="PromoAlu+" class="h-16 md:h-20 w-auto">
+                    <span class="font-display text-xl md:text-2xl font-bold text-white leading-none">PromoAlu+</span>
                 </a>
                 
                 <div class="hidden md:flex space-x-8">
@@ -597,15 +759,32 @@
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <div class="relative hidden md:block">
-                        <select id="language-selector" aria-label="Language selector" onchange="window.location.href='/locale/' + this.value" class="bg-white/10 text-white border border-white/30 rounded-lg px-3 py-2 cursor-pointer transition-colors duration-300 hover:bg-white/20 appearance-none pr-8">
-                            <option value="fr" {{ app()->getLocale() === 'fr' ? 'selected' : '' }} class="text-gray-800">🇫🇷 Français</option>
-                            <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }} class="text-gray-800">🇹🇳 العربية</option>
-                            <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }} class="text-gray-800">🇬🇧 English</option>
-                        </select>
-                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
+                    @php
+                        $localeOptions = ['fr' => 'Français', 'ar' => 'العربية', 'en' => 'English'];
+                        $currentLocale = app()->getLocale();
+                    @endphp
+                    <div id="language-switcher" class="relative hidden md:block">
+                        <button type="button" id="language-switcher-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language" class="flex items-center gap-2 bg-white/10 text-white border border-white/30 rounded-lg ps-2 pe-3 py-2 cursor-pointer transition-colors duration-300 hover:bg-white/20">
+                            <x-locale-flag :code="$currentLocale" class="h-4 w-auto rounded-[2px] ring-1 ring-white/20" />
+                            <span class="text-sm font-semibold uppercase tracking-wide">{{ $currentLocale }}</span>
+                            <svg id="language-switcher-chevron" class="w-4 h-4 text-white transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <ul id="language-switcher-menu" role="listbox" class="hidden absolute end-0 mt-2 w-44 bg-white rounded-lg shadow-xl ring-1 ring-black/5 overflow-hidden z-50 py-1">
+                            @foreach($localeOptions as $code => $label)
+                                <li>
+                                    <a href="/locale/{{ $code }}" role="option" aria-selected="{{ $currentLocale === $code ? 'true' : 'false' }}"
+                                       class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors {{ $currentLocale === $code ? 'bg-gray-50 font-semibold' : '' }}">
+                                        <x-locale-flag :code="$code" class="h-4 w-auto rounded-[2px] ring-1 ring-black/10" />
+                                        <span>{{ $label }}</span>
+                                        @if($currentLocale === $code)
+                                            <i data-lucide="check" class="w-4 h-4 ms-auto text-blue-600"></i>
+                                        @endif
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                     <a href="{{ route('contact') }}" class="hidden md:block bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
                         {{ __('messages.free_quote') }}
@@ -757,6 +936,39 @@
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
                         setMobileMenuState(false);
+                    }
+                });
+            }
+
+            // Language Switcher Dropdown
+            const langSwitcher = document.getElementById('language-switcher');
+            const langBtn = document.getElementById('language-switcher-btn');
+            const langMenu = document.getElementById('language-switcher-menu');
+            const langChevron = document.getElementById('language-switcher-chevron');
+
+            if (langSwitcher && langBtn && langMenu) {
+                const setLangMenu = (isOpen) => {
+                    langMenu.classList.toggle('hidden', !isOpen);
+                    langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    if (langChevron) {
+                        langChevron.classList.toggle('rotate-180', isOpen);
+                    }
+                };
+
+                langBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    setLangMenu(langMenu.classList.contains('hidden'));
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!langSwitcher.contains(e.target)) {
+                        setLangMenu(false);
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        setLangMenu(false);
                     }
                 });
             }
