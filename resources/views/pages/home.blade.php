@@ -7,7 +7,10 @@
         $heroBadge = 'PromoAlu+';
     }
 @endphp
-@section('title', __('messages.nav_home'))
+@section('title', __('messages.seo_title_home'))
+@section('meta_description', __('messages.seo_desc_home'))
+@section('og_title', __('messages.seo_title_home'))
+@section('og_description', __('messages.seo_desc_home'))
 
 @section('content')
     <!-- Hero Carousel Section -->
@@ -177,10 +180,10 @@
 
             <!-- Navigation Arrows -->
             <button onclick="prevSlide()" class="carousel-prev absolute left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Previous slide">
-                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6"></i>
+                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
             </button>
             <button onclick="nextSlide()" class="carousel-next absolute right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Next slide">
-                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6"></i>
+                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
             </button>
 
             <!-- Dots Indicators -->
@@ -400,7 +403,7 @@
         <div class="container mx-auto px-6 md:px-8">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block me-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     {{ __('messages.nav_services') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">{{ __('messages.our_services') }}</h2>
@@ -497,7 +500,7 @@
         <div class="container mx-auto px-6 md:px-8 mb-8 md:mb-12">
             <div class="text-center scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block me-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     {{ __('messages.top_products_badge') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.top_products_title') }}</h2>
@@ -575,7 +578,7 @@
         <div class="container mx-auto px-6 md:px-8 relative z-10">
             <div class="text-center mb-10 md:mb-14 scroll-fade">
                 <span class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block me-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     {{ __('messages.why_choose_us') }}
                 </span>
                 <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.advantages_that_matter') }}</h2>
@@ -629,7 +632,7 @@
         <div class="container mx-auto px-6 md:px-8 text-center relative z-10">
             <div class="max-w-3xl mx-auto scroll-fade py-4">
                 <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm text-blue-200 rounded-full text-sm font-semibold mb-4 md:mb-6 border border-white/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block mr-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block me-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                     {{ __('messages.start_your_project') }}
                 </span>
                 <h2 class="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight px-4">
