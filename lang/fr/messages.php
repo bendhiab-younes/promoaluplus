@@ -370,4 +370,22 @@ return [
 
     // Misc
     'modern_aluminum_windows' => 'Fenêtres aluminium modernes',
+
+    // Accessibility labels
+    'back_to_top' => 'Retour en haut',
+    'whatsapp_contact' => 'Contacter sur WhatsApp',
+    'testimonials_badge' => 'Témoignages',
+    'testimonials_subtitle' => 'Ce que nos clients disent de leur expérience avec PromoAlu+.',
+
+    // SEO — page titles & meta descriptions
+    'seo_title_home' => 'Menuiserie Aluminium en Tunisie — Fenêtres, Portes & Garde-corps',
+    'seo_desc_home' => 'PromoAlu+ conçoit et installe fenêtres, portes, garde-corps, pergolas et volets en aluminium sur mesure en Tunisie. Qualité, transparence et ponctualité. Devis gratuit.',
+    'seo_title_services' => 'Nos Services de Menuiserie Aluminium — PromoAlu+ Tunisie',
+    'seo_desc_services' => 'Découvrez nos services de menuiserie aluminium en Tunisie : fenêtres, portes, volets roulants, garde-corps, pergolas, moustiquaires et aménagement d\'espaces sur mesure.',
+    'seo_title_portfolio' => 'Nos Réalisations en Aluminium — Projets & Portfolio | PromoAlu+',
+    'seo_desc_portfolio' => 'Parcourez nos réalisations en menuiserie aluminium en Tunisie : fenêtres, portes, façades et garde-corps posés pour des clients résidentiels et professionnels.',
+    'seo_title_about' => 'À Propos de PromoAlu+ — Expert Menuiserie Aluminium en Tunisie',
+    'seo_desc_about' => 'PromoAlu+, votre spécialiste de la menuiserie aluminium en Tunisie : plus de 15 ans d\'expertise, qualité premium, transparence et respect des délais.',
+    'seo_title_contact' => 'Contact & Devis Gratuit — Menuiserie Aluminium | PromoAlu+',
+    'seo_desc_contact' => 'Contactez PromoAlu+ pour un devis gratuit de menuiserie aluminium en Tunisie. Fenêtres, portes, garde-corps et plus. Réponse rapide par téléphone ou WhatsApp.',
 ];

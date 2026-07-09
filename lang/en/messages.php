@@ -370,4 +370,22 @@ return [
 
     // Misc
     'modern_aluminum_windows' => 'Modern aluminum windows',
+
+    // Accessibility labels
+    'back_to_top' => 'Back to top',
+    'whatsapp_contact' => 'Contact on WhatsApp',
+    'testimonials_badge' => 'Testimonials',
+    'testimonials_subtitle' => 'What our clients say about their experience with PromoAlu+.',
+
+    // SEO — page titles & meta descriptions
+    'seo_title_home' => 'Aluminum Joinery in Tunisia — Windows, Doors & Railings',
+    'seo_desc_home' => 'PromoAlu+ designs and installs custom aluminum windows, doors, railings, pergolas and shutters in Tunisia. Quality, transparency and punctuality. Free quote.',
+    'seo_title_services' => 'Our Aluminum Joinery Services — PromoAlu+ Tunisia',
+    'seo_desc_services' => 'Explore our aluminum joinery services in Tunisia: windows, doors, rolling shutters, railings, pergolas, mosquito nets and bespoke space design.',
+    'seo_title_portfolio' => 'Our Aluminum Projects — Portfolio | PromoAlu+',
+    'seo_desc_portfolio' => 'Browse our aluminum joinery projects in Tunisia: windows, doors, facades and railings delivered for residential and commercial clients.',
+    'seo_title_about' => 'About PromoAlu+ — Aluminum Joinery Expert in Tunisia',
+    'seo_desc_about' => 'PromoAlu+, your aluminum joinery specialist in Tunisia: over 15 years of expertise, premium quality, transparency and on-time delivery.',
+    'seo_title_contact' => 'Contact & Free Quote — Aluminum Joinery | PromoAlu+',
+    'seo_desc_contact' => 'Contact PromoAlu+ for a free aluminum joinery quote in Tunisia. Windows, doors, railings and more. Fast reply by phone or WhatsApp.',
 ];
