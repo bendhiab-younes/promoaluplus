@@ -5,7 +5,52 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/*
+ * Service cards build gradient classes dynamically from
+ * Service::DEFAULT_COLOR_BY_SLUG (services.blade.php), so the scanner
+ * can't see them — generate them explicitly.
+ */
+@source inline('{from,to}-{rose,orange,blue,violet,emerald,amber,yellow,teal,indigo}-{400,600}');
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/*
+ * Tailwind v3 compatibility — the markup was written against the v3 CDN.
+ * v4 changed these preflight defaults; restore the v3 behavior so
+ * existing templates render identically.
+ */
+@layer base {
+    /* v3: borders defaulted to gray-200; v4 defaults to currentColor */
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+
+    /* v3: buttons showed a pointer cursor; v4 uses the browser default */
+    button:not(:disabled),
+    [role='button']:not(:disabled) {
+        cursor: pointer;
+    }
+
+    /* v3: placeholders were gray-400; v4 uses the text color at 50% opacity */
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--color-gray-400);
+    }
+}
+
+/* Used by the home-page product scroller */
+@utility scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

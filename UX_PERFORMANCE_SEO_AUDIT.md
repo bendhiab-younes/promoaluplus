@@ -1,6 +1,6 @@
 # PromoAlu+ — UI/UX, Performance & SEO Audit
 
-**Date:** 2026-07-08 · **Implementation status updated:** 2026-07-09
+**Date:** 2026-07-08 · **Implementation status updated:** 2026-07-15 (Vite/Tailwind migration completed)
 **Scope:** `resources/views/layouts/app.blade.php` and all public pages (`home`, `services`, `portfolio`, `about`, `contact`), plus supporting config (`vite.config.js`, `.env`, `public/robots.txt`, controllers).
 
 This report is organized by domain, each ranked most-severe first. Every finding below was verified against the actual source (file + line), not inferred. A prioritized action plan closes the report.
@@ -39,15 +39,15 @@ This report is organized by domain, each ranked most-severe first. Every finding
 
 | Status | # | Finding | Location | Severity |
 |:---:|---|---------|----------|----------|
-| ⏳ | 1 | Tailwind is loaded via the browser-JIT `cdn.tailwindcss.com` script (render-blocking, unminified, unpurged, "not for production"). **(Deferred — see §5: this is a Tailwind v3→v4 migration.)** | `layouts/app.blade.php:18` | High |
-| ⏳ | 2 | A full Vite + `@tailwindcss/vite` pipeline is configured but never included via `@vite([...])`, and `public/build` doesn't exist. **(Deferred — bundled with #1.)** | `vite.config.js`, `resources/css/app.css`, `public/build` (missing) | High |
+| ✅ | 1 | Tailwind is loaded via the browser-JIT `cdn.tailwindcss.com` script (render-blocking, unminified, unpurged, "not for production"). **(Done 2026-07-15: CDN removed; Tailwind v4.3 compiled via Vite — 126 KB CSS / 19.7 KB gzipped vs the ~380 KB CDN script. v3-compat preflight layer added (border color, button cursor, placeholder color); dynamic `from-/to-{color}` gradients safelisted via `@source inline`; latent `scrollbar-hide` class now actually defined.)** | `layouts/app.blade.php:18` | High |
+| ✅ | 2 | A full Vite + `@tailwindcss/vite` pipeline is configured but never included via `@vite([...])`, and `public/build` doesn't exist. **(Done — layout now loads `@vite('resources/css/app.css')`; `npm install` + `npm run build` executed; all 5 pages verified serving the compiled asset.)** | `vite.config.js`, `resources/css/app.css`, `public/build` (missing) | High |
 | ⏳ | 3 | All content imagery is hotlinked from `images.unsplash.com` with no local fallback. **(Deferred — needs real company photos; content decision.)** | `home.blade.php`, `portfolio.blade.php`, `about.blade.php`, `app/Models/Service.php:128` | High |
 | ⏳ | 4 | Service and portfolio images have no `srcset`/`sizes`. **(Deferred — tied to self-hosting imagery, #3.)** | `services.blade.php`, `portfolio.blade.php` | Medium |
 | ⏳ | 5 | `.env` routes cache, sessions, and the mail queue through the same SQLite file (single-writer contention). **(Deferred — deployment/environment config.)** | `.env` | Medium |
-| ⏳ | 6 | The ~685-line inline `<style>` block is duplicated into every page response. **(Deferred — resolved by the Vite migration in #1/#2.)** | `layouts/app.blade.php:29-714` | Medium |
+| 🟡 | 6 | The ~685-line inline `<style>` block is duplicated into every page response. **(Partially resolved — Tailwind itself is now a cached static asset; the custom inline block remains in the layout and could be moved into `app.css` as a follow-up.)** | `layouts/app.blade.php:29-714` | Medium |
 | ✅ | 7 | `.navbar-scrolled` still applied `backdrop-filter: blur(20px)` on mobile (the mobile override forgot it). **(Added `.navbar-scrolled` to the mobile `backdrop-filter: none` override.)** | `layouts/app.blade.php:90,558-562` | Medium |
 | ✅ | 8 | Two separate unthrottled `scroll` handlers (navbar + back-to-top). **(Merged into one passive, `requestAnimationFrame`-throttled handler.)** | `layouts/app.blade.php:979-990, 995-1002` | Low-Medium |
-| 🟡 | 9 | The page depends on 5 third-party origins at load time. **(Reduced risk by pinning Lucide; fully cutting origins still requires self-hosting Tailwind/Lucide — bundled with #1/#2.)** | `layouts/app.blade.php` | Medium |
+| 🟡 | 9 | The page depends on 5 third-party origins at load time. **(Down to 4 — Tailwind CDN removed 2026-07-15. Remaining: unpkg (Lucide, pinned+SRI), Google Fonts ×2, Unsplash images.)** | `layouts/app.blade.php` | Medium |
 | ✅ | 10 | Lucide loaded from `unpkg.com/lucide@latest` — unpinned, no SRI. **(Pinned to `0.544.0` (min build) with an `integrity` SRI hash + `crossorigin` + `defer`.)** | `layouts/app.blade.php:21` | Medium |
 | ⏳ | 11 | No query-result caching in `PageController`. **(Deferred — Low; harmless at current catalog size.)** | `app/Http/Controllers/PageController.php` | Low |
 | ⏳ | 12 | No `<link rel="preload">` for the hero's LCP image. **(Deferred — Low.)** | `home.blade.php:14-31` | Low |
@@ -91,7 +91,7 @@ For a local aluminum-joinery business whose stated audience is Tunisians, Tunisi
 - [x] 6. Extend the mobile `backdrop-filter: none` override to `.navbar-scrolled`.
 
 **Medium effort, high impact:**
-- [ ] 7. Wire up the Vite pipeline / remove the Tailwind CDN. **⏳ Deferred — v3→v4 migration, see §5.**
+- [x] 7. Wire up the Vite pipeline / remove the Tailwind CDN. **✅ Done 2026-07-15 — see Perf #1/#2.**
 - [x] 8. `LocalBusiness` JSON-LD in the layout.
 - [x] 9. `FAQPage` JSON-LD on the Contact page.
 - [ ] 10. Consolidate the 4 duplicated CTA button blocks into a shared partial. **⏳ Not done (RTL bug within them was fixed).**
@@ -107,7 +107,7 @@ For a local aluminum-joinery business whose stated audience is Tunisians, Tunisi
 
 ## 5. Deferred items (rationale)
 
-1. **Vite / Tailwind build swap (Perf #1, #2, #6, #9)** — the CDN is Tailwind **v3** while the repo's pipeline is Tailwind **v4**, and `node_modules` isn't installed. Switching is a v3→v4 migration (breaking changes to default border/ring/shadow/color scales) that requires `npm install && npm run build` plus visual QA on every page and breakpoint. High regression risk; not safe to do blind. **This remains the single highest-impact performance item.**
+1. ~~**Vite / Tailwind build swap (Perf #1, #2, #6, #9)**~~ — **Completed 2026-07-15.** Tailwind v4.3 now compiled via Vite (19.7 KB gzipped CSS); v3-compat preflight layer added; dynamic gradient classes safelisted; all 5 pages + RTL verified against the built asset. Note: **deploys must now run `npm run build`** (`public/build` is gitignored).
 2. **Path-based locales + `hreflang` (SEO #2)** — the highest-leverage SEO fix, but invasive: it rewrites routing and every `route()` call and needs a URL-structure/redirect decision. Warrants its own focused effort.
 3. **Self-hosting imagery (Perf #3, #4; SEO #10)** — needs real photographs of the company's actual work (a content decision) plus bulk asset handling; stock Unsplash photos carry little SEO value even if self-hosted.
 4. **`.env` cache/session/queue off SQLite (Perf #5, #11)** — environment/deployment configuration, not application code.

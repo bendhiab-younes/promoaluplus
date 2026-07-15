@@ -26,8 +26,8 @@
     <meta name="twitter:description" content="@yield('og_description', __('messages.site_description'))">
     <meta name="twitter:image" content="@yield('og_image', asset('images/promo-alu-plus-logo.png'))">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (compiled via Vite) -->
+    @vite('resources/css/app.css')
 
     <!-- Lucide Icons -->
     <script defer src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.min.js" integrity="sha384-hK2uiaqTSh/v1VqRxmuMQL4xmt5n0DdyBCOItx2fAs7Wv+WC8Tu0yDW1j12JooyM" crossorigin="anonymous"></script>
@@ -714,7 +714,7 @@
         <nav class="flex flex-col space-y-6 mt-12">
             <a href="{{ route('home') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_home') }}</a>
             <a href="{{ route('services') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_services') }}</a>
-            <a href="{{ route('portfolio') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_portfolio') }}</a>
+            {{-- <a href="{{ route('portfolio') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_portfolio') }}</a> --}}
             <a href="{{ route('about') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_about') }}</a>
             <a href="{{ route('contact') }}" class="text-white text-2xl font-semibold hover:text-orange-400 transition-colors">{{ __('messages.nav_contact') }}</a>
             <div class="flex items-center space-x-6 pt-4 border-t border-white/20">
@@ -743,7 +743,7 @@
                 <div class="hidden md:flex space-x-8">
                     <a href="{{ route('home') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('home') ? 'text-blue-300' : '' }}">{{ __('messages.nav_home') }}</a>
                     <a href="{{ route('services') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('services') ? 'text-blue-300' : '' }}">{{ __('messages.nav_services') }}</a>
-                    <a href="{{ route('portfolio') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('portfolio') ? 'text-blue-300' : '' }}">{{ __('messages.nav_portfolio') }}</a>
+                    {{-- <a href="{{ route('portfolio') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('portfolio') ? 'text-blue-300' : '' }}">{{ __('messages.nav_portfolio') }}</a> --}}
                     <a href="{{ route('about') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('about') ? 'text-blue-300' : '' }}">{{ __('messages.nav_about') }}</a>
                     <a href="{{ route('contact') }}" class="nav-link text-white hover:text-blue-300 transition-colors font-medium duration-300 {{ request()->routeIs('contact') ? 'text-blue-300' : '' }}">{{ __('messages.nav_contact') }}</a>
                 </div>

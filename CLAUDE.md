@@ -12,7 +12,9 @@ Laravel 12 + Filament 3 site for **Promo Alu Plus**, an aluminum joinery company
 composer run dev        # Run server + queue + pail logs + vite concurrently (primary dev loop)
 php artisan serve       # App only — http://127.0.0.1:8000, admin at /admin
 npm run dev             # Vite dev server (needed for asset changes to reflect)
-npm run build           # Production asset build
+npm run build           # Production asset build — required once per checkout: the layout
+                        # loads CSS via @vite, so pages 500 (missing manifest) until a
+                        # build exists or the Vite dev server is running
 
 php artisan test --compact                                   # Full suite
 php artisan test --compact tests/Feature/ExampleTest.php      # Single file
