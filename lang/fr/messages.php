@@ -388,4 +388,8 @@ return [
     'seo_desc_about' => 'PromoAlu+, votre spécialiste de la menuiserie aluminium en Tunisie : plus de 15 ans d\'expertise, qualité premium, transparence et respect des délais.',
     'seo_title_contact' => 'Contact & Devis Gratuit — Menuiserie Aluminium | PromoAlu+',
     'seo_desc_contact' => 'Contactez PromoAlu+ pour un devis gratuit de menuiserie aluminium en Tunisie. Fenêtres, portes, garde-corps et plus. Réponse rapide par téléphone ou WhatsApp.',
+
+    // Accessibility / SEO alt texts
+    'logo_alt' => 'PromoAlu+ — Menuiserie aluminium et inox en Tunisie',
+    'alt_realisation' => 'réalisation menuiserie aluminium PromoAlu+',
 ];

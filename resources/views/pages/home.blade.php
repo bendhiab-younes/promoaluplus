@@ -12,6 +12,17 @@
 @section('og_title', __('messages.seo_title_home'))
 @section('og_description', __('messages.seo_desc_home'))
 
+@push('styles')
+    {{-- Preload the first hero slide (LCP element) so the browser fetches it before layout --}}
+    <link rel="preload" as="image" fetchpriority="high"
+          href="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80"
+          imagesrcset="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=640&q=80 640w,
+                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1024&q=80 1024w,
+                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80 1600w,
+                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80 2200w"
+          imagesizes="100vw">
+@endpush
+
 @section('content')
     <!-- Hero Carousel Section -->
     <section class="relative overflow-hidden home-hero-section bg-gray-900" style="height: 100svh; padding-top: var(--site-header-height, 96px); box-sizing: border-box;">
@@ -495,7 +506,7 @@
         }
     </style>
 
-    <!-- TOP Produits Aluminium Section -->
+    {{-- TOP Produits Aluminium Section — hidden 2026-07-15, replaced by "They Trusted Us" testimonials below. Kept for possible future reuse.
     <section class="py-14 md:py-20 lg:py-24 bg-gray-50 overflow-hidden">
         <div class="container mx-auto px-6 md:px-8 mb-8 md:mb-12">
             <div class="text-center scroll-fade">
@@ -567,6 +578,102 @@
             scroller.scrollBy({ left: delta, behavior: 'smooth' });
         }
     </script>
+    --}}
+
+    <!-- Testimonials ("They Trusted Us") — moved here from portfolio page 2026-07-15 -->
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-10 md:mb-14 scroll-fade">
+                <span class="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block me-1 -mt-0.5" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    {{ __('messages.testimonials_badge') }}
+                </span>
+                <h2 class="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">{{ __('messages.client_testimonials') }}</h2>
+                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">{{ __('messages.testimonials_subtitle') }}</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                @forelse($testimonials as $testimonial)
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        @for($i = 0; $i < $testimonial->rating; $i++)
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        @endfor
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"{{ $testimonial->getTranslatedContent() }}"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center me-4">
+                            <span class="text-blue-600 font-bold">{{ substr($testimonial->client_name, 0, 1) }}</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">{{ $testimonial->client_name }}</h4>
+                            <p class="text-sm text-gray-500">{{ $testimonial->client_location }}</p>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <!-- Default testimonials -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_1') }}"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center me-4">
+                            <span class="text-blue-600 font-bold">M</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Mohamed B.</h4>
+                            <p class="text-sm text-gray-500">Paris, France</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_2') }}"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center me-4">
+                            <span class="text-green-600 font-bold">S</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Sonia K.</h4>
+                            <p class="text-sm text-gray-500">Montréal, Canada</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_3') }}"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center me-4">
+                            <span class="text-orange-600 font-bold">A</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Ahmed T.</h4>
+                            <p class="text-sm text-gray-500">Berlin, Allemagne</p>
+                        </div>
+                    </div>
+                </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
 
     <!-- Why Choose Us Section - COMMENTED OUT -->
     {{--
@@ -641,16 +748,11 @@
                 <p class="text-base md:text-lg lg:text-xl text-blue-200 mb-6 md:mb-8 leading-relaxed px-4 max-w-2xl mx-auto">
                     {{ SiteSetting::getTranslated('cta_description', __('messages.cta_description')) }}
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
-                    <a href="{{ route('contact') }}" class="group bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 inline-flex items-center justify-center shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 hover:-translate-y-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2 group-hover:scale-110 transition-transform flex-shrink-0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                        {{ __('messages.request_quote') }}
-                    </a>
-                    <a href="{{ route('portfolio') }}" class="group bg-white/10 backdrop-blur-sm hover:bg-white text-white hover:text-blue-900 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 inline-flex items-center justify-center border-2 border-white/30 hover:border-white hover:-translate-y-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2 group-hover:scale-110 transition-transform flex-shrink-0"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                        {{ __('messages.view_our_work') }}
-                    </a>
-                </div>
+                <x-cta-buttons class="px-4"
+                    :primary-href="route('contact')"
+                    :primary-label="__('messages.request_quote')"
+                    :secondary-href="route('portfolio')"
+                    :secondary-label="__('messages.view_our_work')" />
             </div>
         </div>
     </section>

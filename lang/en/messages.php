@@ -388,4 +388,8 @@ return [
     'seo_desc_about' => 'PromoAlu+, your aluminum joinery specialist in Tunisia: over 15 years of expertise, premium quality, transparency and on-time delivery.',
     'seo_title_contact' => 'Contact & Free Quote — Aluminum Joinery | PromoAlu+',
     'seo_desc_contact' => 'Contact PromoAlu+ for a free aluminum joinery quote in Tunisia. Windows, doors, railings and more. Fast reply by phone or WhatsApp.',
+
+    // Accessibility / SEO alt texts
+    'logo_alt' => 'PromoAlu+ — Aluminum and stainless steel joinery in Tunisia',
+    'alt_realisation' => 'PromoAlu+ aluminum joinery project',
 ];
