@@ -6,10 +6,10 @@ use App\Filament\Resources\QuoteResource\Pages;
 use App\Models\Quote;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 
 class QuoteResource extends Resource
@@ -17,11 +17,11 @@ class QuoteResource extends Resource
     protected static ?string $model = Quote::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    
+
     protected static ?string $navigationGroup = 'Demandes';
-    
+
     protected static ?string $modelLabel = 'Demande de devis';
-    
+
     protected static ?string $pluralModelLabel = 'Demandes de devis';
 
     protected static ?int $navigationSort = 1;
@@ -64,7 +64,7 @@ class QuoteResource extends Resource
                                 Forms\Components\TextInput::make('city')
                                     ->label('Ville'),
                             ])->columns(2),
-                            
+
                         Forms\Components\Section::make('Détails du projet')
                             ->schema([
                                 Forms\Components\Select::make('project_type')
@@ -117,7 +117,8 @@ class QuoteResource extends Resource
                                             ->content(function ($get) {
                                                 $qty = floatval($get('quantity') ?? 0);
                                                 $price = floatval($get('unit_price') ?? 0);
-                                                return number_format($qty * $price, 2) . ' TND';
+
+                                                return number_format($qty * $price, 2).' TND';
                                             }),
                                     ])
                                     ->columns(7)
@@ -126,7 +127,7 @@ class QuoteResource extends Resource
                                     ->reorderable()
                                     ->collapsible(),
                             ])
-                                    ->collapsed(fn ($record) => $record && ! $record->items()->exists()),
+                            ->collapsed(fn ($record) => $record && ! $record->items()->exists()),
                     ])
                     ->columnSpan(['lg' => 2]),
 
@@ -168,13 +169,13 @@ class QuoteResource extends Resource
                                     ->default(19),
                                 Forms\Components\Placeholder::make('calculated_subtotal')
                                     ->label('Sous-total HT')
-                                    ->content(fn ($record) => $record ? number_format($record->subtotal ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->subtotal ?? 0, 2).' TND' : '0.00 TND'),
                                 Forms\Components\Placeholder::make('calculated_tax')
                                     ->label('TVA')
-                                    ->content(fn ($record) => $record ? number_format($record->tax_amount ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->tax_amount ?? 0, 2).' TND' : '0.00 TND'),
                                 Forms\Components\Placeholder::make('calculated_total')
                                     ->label('Total TTC')
-                                    ->content(fn ($record) => $record ? number_format($record->total ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->total ?? 0, 2).' TND' : '0.00 TND'),
                             ]),
 
                         Forms\Components\Section::make('Notes')
@@ -221,7 +222,7 @@ class QuoteResource extends Resource
                     ->label('Client')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn (Quote $record): string => trim(implode(' ', array_filter([$record->first_name, $record->name])))),
+                    ->formatStateUsing(fn (Quote $record): string => $record->full_name),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Téléphone')
                     ->searchable()

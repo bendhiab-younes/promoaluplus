@@ -67,14 +67,14 @@ class Quote extends Model
         $year = date('Y');
         $prefix = sprintf('DEV-%s-', $year);
         $lastQuoteNumber = static::query()
-            ->where('quote_number', 'like', $prefix . '%')
+            ->where('quote_number', 'like', $prefix.'%')
             ->orderByDesc('quote_number')
             ->value('quote_number');
 
         $sequence = $lastQuoteNumber
             ? (int) substr($lastQuoteNumber, -4) + 1
             : 1;
-        
+
         return sprintf('DEV-%s-%04d', $year, $sequence);
     }
 
@@ -101,7 +101,7 @@ class Quote extends Model
 
     public function markAsQuoted(): void
     {
-        if (!$this->quote_number) {
+        if (! $this->quote_number) {
             $this->quote_number = static::generateQuoteNumber();
         }
         $this->status = 'quoted';
@@ -123,9 +123,16 @@ class Quote extends Model
         $this->update(['status' => 'completed']);
     }
 
+    public function getFullNameAttribute(): string
+    {
+        $fullName = trim(implode(' ', array_filter([$this->first_name, $this->name])));
+
+        return $fullName !== '' ? $fullName : $this->name;
+    }
+
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'new' => '🆕 Nouveau',
             'contacted' => '📞 Contacté',
             'quoted' => '📋 Devis envoyé',
@@ -138,12 +145,10 @@ class Quote extends Model
 
     public function createInvoice(): Invoice
     {
-        $clientName = trim(implode(' ', array_filter([$this->first_name, $this->name])));
-
         $invoice = Invoice::create([
             'invoice_number' => Invoice::generateInvoiceNumber(),
             'quote_id' => $this->id,
-            'client_name' => $clientName !== '' ? $clientName : $this->name,
+            'client_name' => $this->full_name,
             'client_email' => $this->email,
             'client_phone' => $this->phone,
             'issue_date' => now(),
@@ -173,7 +178,7 @@ class Quote extends Model
 
     public static function projectTypeOptions(?string $locale = null): array
     {
-        return CanonicalServiceCatalog::translatedOptions($locale);
+        return CanonicalServiceCatalog::quoteOptions($locale);
     }
 
     public static function projectTypeLabel(string $projectType, ?string $locale = null): string

@@ -156,29 +156,37 @@
                         <h3 class="text-xl md:text-2xl font-bold text-gray-900">{{ __('messages.our_values') }}</h3>
                     </div>
                     <div class="max-w-5xl mx-auto">
-                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                        <div class="flex flex-wrap justify-center gap-6 md:gap-8">
                             @php
-                                $valueIcons = ['shield-check', 'users', 'leaf', 'lightbulb', 'award', 'clock'];
+                                // Icon/color order follows the seeded values: trust, quality,
+                                // sustainability, innovation, integrity (spares cycle after).
+                                $valueIcons = ['handshake', 'shield-check', 'leaf', 'lightbulb', 'scale', 'clock'];
                                 $valueStyles = [
                                     ['bg' => 'bg-blue-100', 'text' => 'text-blue-600'],
-                                    ['bg' => 'bg-green-100', 'text' => 'text-green-600'],
-                                    ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-600'],
                                     ['bg' => 'bg-orange-100', 'text' => 'text-orange-600'],
+                                    ['bg' => 'bg-green-100', 'text' => 'text-green-600'],
+                                    ['bg' => 'bg-amber-100', 'text' => 'text-amber-600'],
+                                    ['bg' => 'bg-slate-100', 'text' => 'text-slate-600'],
                                     ['bg' => 'bg-purple-100', 'text' => 'text-purple-600'],
-                                    ['bg' => 'bg-red-100', 'text' => 'text-red-600'],
                                 ];
                             @endphp
                             @foreach($aboutValues as $index => $value)
-                            <div class="text-center">
                                 @php
                                     $icon = $valueIcons[$index % count($valueIcons)];
                                     $style = $valueStyles[$index % count($valueStyles)];
+                                    [$valueTitle, $valueDesc] = array_pad(explode(':', $value, 2), 2, null);
+                                    $valueTitle = trim($valueTitle);
+                                    $valueDesc = is_string($valueDesc) ? trim($valueDesc) : null;
                                 @endphp
-                                <div class="w-12 h-12 {{ $style['bg'] }} rounded-xl flex items-center justify-center mx-auto mb-3">
-                                    <i data-lucide="{{ $icon }}" class="w-6 h-6 {{ $style['text'] }}"></i>
+                                <div class="text-center w-full sm:w-64 md:w-72">
+                                    <div class="w-12 h-12 {{ $style['bg'] }} rounded-xl flex items-center justify-center mx-auto mb-3">
+                                        <i data-lucide="{{ $icon }}" class="w-6 h-6 {{ $style['text'] }}"></i>
+                                    </div>
+                                    <h4 class="text-gray-900 font-semibold text-sm md:text-base mb-1.5">{{ $valueTitle }}</h4>
+                                    @if($valueDesc)
+                                        <p class="text-gray-600 text-sm leading-relaxed">{{ $valueDesc }}</p>
+                                    @endif
                                 </div>
-                                <p class="text-gray-600 text-xs md:text-sm leading-relaxed">{{ $value }}</p>
-                            </div>
                             @endforeach
                         </div>
                     </div>

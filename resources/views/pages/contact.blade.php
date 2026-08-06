@@ -15,7 +15,7 @@
     };
     $contactEmail = SiteSetting::get('contact_email', 'promoaluplus@gmail.com');
     $contactAddress = SiteSetting::get('contact_address', __('messages.full_address'));
-    $projectTypeOptions = CanonicalServiceCatalog::translatedOptions();
+    $projectTypeOptions = CanonicalServiceCatalog::quoteOptions();
 @endphp
 
 @section('title', __('messages.seo_title_contact'))

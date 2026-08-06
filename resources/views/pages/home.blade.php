@@ -14,13 +14,7 @@
 
 @push('styles')
     {{-- Preload the first hero slide (LCP element) so the browser fetches it before layout --}}
-    <link rel="preload" as="image" fetchpriority="high"
-          href="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80"
-          imagesrcset="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=640&q=80 640w,
-                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1024&q=80 1024w,
-                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80 1600w,
-                       https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80 2200w"
-          imagesizes="100vw">
+    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/villa-2.jpeg') }}">
 @endpush
 
 @section('content')
@@ -32,14 +26,9 @@
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80"
-                                srcset="https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=640&q=80 640w,
-                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1024&q=80 1024w,
-                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=1600&q=80 1600w,
-                                        https://images.unsplash.com/photo-1764966714116-f6524fe6ff65?auto=format&fit=crop&w=2200&q=80 2200w"
-                                sizes="100vw"
-                                alt="{{ __('messages.hero_slide1_alt') }}" 
-                             class="w-full h-full object-cover object-center"
+                            <img src="{{ asset('images/hero/villa-2.jpeg') }}"
+                                alt="{{ __('messages.hero_slide1_alt') }}"
+                             class="w-full h-full object-cover object-center -scale-x-100"
                                 loading="eager"
                                 fetchpriority="high"
                                 decoding="async">
@@ -77,13 +66,8 @@
                 <!-- Slide 2 - Aluminum Doors -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1600&q=80"
-                                srcset="https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=640&q=80 640w,
-                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1024&q=80 1024w,
-                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=1600&q=80 1600w,
-                                        https://images.unsplash.com/photo-1706164971309-fb4785fe6ceb?auto=format&fit=crop&w=2200&q=80 2200w"
-                                sizes="100vw"
-                                alt="{{ __('messages.hero_slide2_alt') }}" 
+                            <img src="{{ asset('images/hero/villa-1.jpeg') }}"
+                                alt="{{ __('messages.hero_slide2_alt') }}"
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
@@ -115,13 +99,8 @@
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1600&q=80"
-                                srcset="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=640&q=80 640w,
-                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1024&q=80 1024w,
-                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=1600&q=80 1600w,
-                                        https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?auto=format&fit=crop&w=2200&q=80 2200w"
-                                sizes="100vw"
-                                alt="{{ __('messages.hero_slide3_alt') }}" 
+                            <img src="{{ asset('images/hero/immeuble-1.jpeg') }}"
+                                alt="{{ __('messages.hero_slide3_alt') }}"
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
@@ -153,13 +132,8 @@
                 <!-- Slide 4 - Company Experience -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1600&q=80"
-                                srcset="https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=640&q=80 640w,
-                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1024&q=80 1024w,
-                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=1600&q=80 1600w,
-                                        https://images.unsplash.com/photo-1516880967556-b295d8e7b611?auto=format&fit=crop&w=2200&q=80 2200w"
-                                sizes="100vw"
-                                alt="{{ __('messages.hero_slide4_alt') }}" 
+                            <img src="{{ asset('images/hero/immeuble-2.jpeg') }}"
+                                alt="{{ __('messages.hero_slide4_alt') }}"
                              class="w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">

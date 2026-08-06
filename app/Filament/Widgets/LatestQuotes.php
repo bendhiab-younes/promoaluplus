@@ -11,7 +11,7 @@ class LatestQuotes extends BaseWidget
 {
     protected static ?int $sort = 2;
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     protected static ?string $heading = 'Dernières demandes de devis';
 
@@ -20,13 +20,14 @@ class LatestQuotes extends BaseWidget
         return $table
             ->query(
                 Quote::query()
-                    ->select(['id', 'name', 'phone', 'project_type', 'status', 'created_at'])
+                    ->select(['id', 'first_name', 'name', 'phone', 'project_type', 'status', 'created_at'])
                     ->latest()
                     ->limit(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Client')
+                    ->formatStateUsing(fn (Quote $record): string => $record->full_name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Téléphone'),

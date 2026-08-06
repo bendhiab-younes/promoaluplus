@@ -3,27 +3,24 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ServiceResource\Pages;
-use App\Filament\Resources\ServiceResource\RelationManagers;
 use App\Models\Service;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\Tabs;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
-    
+
     protected static ?string $navigationGroup = 'Contenu';
-    
+
     protected static ?string $modelLabel = 'Service';
-    
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -53,14 +50,13 @@ class ServiceResource extends Resource
                                             ->options([
                                                 'blue' => '🔵 Bleu',
                                                 'orange' => '🟠 Orange',
-                                                'green' => '🟢 Vert',
-                                                'purple' => '🟣 Violet',
                                                 'rose' => '🌸 Rose',
+                                                'violet' => '🟣 Violet',
+                                                'emerald' => '🟢 Émeraude',
                                                 'amber' => '🟡 Ambre',
                                                 'yellow' => '💛 Jaune',
                                                 'teal' => '🩵 Turquoise',
                                                 'indigo' => '💜 Indigo',
-                                                'red' => '🔴 Rouge',
                                             ])
                                             ->default('blue')
                                             ->required()
@@ -76,7 +72,7 @@ class ServiceResource extends Resource
                                             ->default(0)
                                             ->columnSpan(1),
                                     ])->columns(4),
-                                    
+
                                 Forms\Components\Section::make('Icône SVG personnalisée')
                                     ->description('SVG complet pour les icônes complexes (optionnel)')
                                     ->collapsed()
@@ -87,7 +83,7 @@ class ServiceResource extends Resource
                                             ->rows(4)
                                             ->helperText('Collez le code SVG complet ici pour des icônes personnalisées'),
                                     ]),
-                                    
+
                                 Forms\Components\Section::make('Statut')
                                     ->schema([
                                         Forms\Components\Toggle::make('is_active')
@@ -97,7 +93,7 @@ class ServiceResource extends Resource
                                             ->inline(false),
                                     ]),
                             ]),
-                            
+
                         // Content Tab - Multilingual
                         Tabs\Tab::make('Contenu')
                             ->icon('heroicon-o-document-text')
@@ -120,7 +116,7 @@ class ServiceResource extends Resource
                                                     ->extraInputAttributes(['dir' => 'rtl']),
                                             ]),
                                     ]),
-                                    
+
                                 Forms\Components\Section::make('Description courte')
                                     ->description('Résumé affiché dans les aperçus')
                                     ->schema([
@@ -150,7 +146,7 @@ class ServiceResource extends Resource
                                                     ]),
                                             ]),
                                     ]),
-                                    
+
                                 Forms\Components\Section::make('Description complète')
                                     ->description('Description détaillée du service')
                                     ->schema([
@@ -208,7 +204,7 @@ class ServiceResource extends Resource
                                             ]),
                                     ]),
                             ]),
-                            
+
                         // Features Tab
                         Tabs\Tab::make('Caractéristiques')
                             ->icon('heroicon-o-check-badge')
@@ -243,7 +239,7 @@ class ServiceResource extends Resource
                                             ->grid(1),
                                     ]),
                             ]),
-                            
+
                         // Media Tab
                         Tabs\Tab::make('Médias')
                             ->icon('heroicon-o-photo')
@@ -257,7 +253,7 @@ class ServiceResource extends Resource
                                             ->placeholder('https://example.com/image.jpg')
                                             ->helperText('Entrez une URL d\'image ou utilisez la galerie ci-dessous'),
                                     ]),
-                                    
+
                                 Forms\Components\Section::make('Galerie d\'images')
                                     ->description('URLs des images pour le carrousel (une par ligne)')
                                     ->schema([
@@ -275,7 +271,7 @@ class ServiceResource extends Resource
                                             ->grid(2),
                                     ]),
                             ]),
-                            
+
                         // Technical Tab
                         Tabs\Tab::make('Technique')
                             ->icon('heroicon-o-clipboard-document-list')
@@ -308,7 +304,7 @@ class ServiceResource extends Resource
                                             ->addActionLabel('Ajouter un matériau')
                                             ->defaultItems(0),
                                     ]),
-                                    
+
                                 Forms\Components\Section::make('Spécifications techniques')
                                     ->description('Caractéristiques techniques (épaisseur, dimensions, etc.)')
                                     ->schema([
@@ -327,9 +323,8 @@ class ServiceResource extends Resource
                                                     ->columnSpan(1),
                                             ])
                                             ->columns(2)
-                                            ->itemLabel(fn (array $state): ?string => 
-                                                isset($state['label'], $state['value']) 
-                                                    ? "{$state['label']}: {$state['value']}" 
+                                            ->itemLabel(fn (array $state): ?string => isset($state['label'], $state['value'])
+                                                    ? "{$state['label']}: {$state['value']}"
                                                     : null
                                             )
                                             ->reorderable()
@@ -368,14 +363,13 @@ class ServiceResource extends Resource
                     ->color(fn (string $state): string => match ($state) {
                         'blue' => 'info',
                         'orange' => 'warning',
-                        'green' => 'success',
-                        'purple' => 'gray',
                         'rose' => 'danger',
+                        'violet' => 'gray',
+                        'emerald' => 'success',
                         'amber' => 'warning',
                         'yellow' => 'warning',
                         'teal' => 'info',
                         'indigo' => 'gray',
-                        'red' => 'danger',
                         default => 'gray',
                     }),
                 Tables\Columns\IconColumn::make('is_active')

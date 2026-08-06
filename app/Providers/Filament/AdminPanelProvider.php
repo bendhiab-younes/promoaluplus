@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->font('Inter')
             ->navigationGroups([
                 'Demandes',
+                'Finances',
                 'Contenu',
                 'Paramètres',
             ])

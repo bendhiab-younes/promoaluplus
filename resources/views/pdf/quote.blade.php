@@ -215,7 +215,7 @@
 
     <div class="client-section">
         <h3>Client</h3>
-        <p class="name">{{ $quote->name }}</p>
+        <p class="name">{{ $quote->full_name }}</p>
         <p>📧 {{ $quote->email }}</p>
         <p>📞 {{ $quote->phone }}</p>
         @if($quote->city || $quote->country)
@@ -293,7 +293,7 @@
         </div>
         <div class="signature-box">
             <p>Bon pour accord (signature client)</p>
-            <div class="line">{{ $quote->name }}</div>
+            <div class="line">{{ $quote->full_name }}</div>
         </div>
     </div>
 

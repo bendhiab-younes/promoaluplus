@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\QuoteRequestNotification;
+use App\Mail\QuoteRequestReceived;
 use App\Models\Quote;
 use App\Support\CanonicalServiceCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\QuoteRequestReceived;
-use App\Mail\QuoteRequestNotification;
 
 class QuoteController extends Controller
 {
@@ -20,7 +20,7 @@ class QuoteController extends Controller
             'phone' => 'required|string|max:50',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
-            'project_type' => CanonicalServiceCatalog::validationRule(),
+            'project_type' => CanonicalServiceCatalog::quoteValidationRule(),
             'description' => 'required|string|max:2000',
             'timeline' => 'nullable|string|max:100',
         ]);
@@ -33,7 +33,7 @@ class QuoteController extends Controller
             Mail::to(config('mail.admin_email', 'admin@aluminiumcraft.tn'))->queue(new QuoteRequestNotification($quote));
         } catch (\Exception $e) {
             // Log error but don't fail the request
-            \Log::error('Failed to send quote emails: ' . $e->getMessage());
+            \Log::error('Failed to send quote emails: '.$e->getMessage());
         }
 
         if ($request->wantsJson()) {
