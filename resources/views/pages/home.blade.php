@@ -14,7 +14,7 @@
 
 @push('styles')
     {{-- Preload the first hero slide (LCP element) so the browser fetches it before layout --}}
-    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/villa-2.jpeg') }}">
+    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/slide-1.jpeg') }}">
 @endpush
 
 @section('content')
@@ -26,9 +26,9 @@
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/villa-2.jpeg') }}"
+                            <img src="{{ asset('images/hero/slide-1.jpeg') }}"
                                 alt="{{ __('messages.hero_slide1_alt') }}"
-                             class="w-full h-full object-cover object-center -scale-x-100"
+                                class="absolute inset-0 w-full h-full object-cover object-center"
                                 loading="eager"
                                 fetchpriority="high"
                                 decoding="async">
@@ -66,9 +66,9 @@
                 <!-- Slide 2 - Aluminum Doors -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/villa-1.jpeg') }}"
+                            <img src="{{ asset('images/hero/slide-2.jpeg') }}"
                                 alt="{{ __('messages.hero_slide2_alt') }}"
-                             class="w-full h-full object-cover object-center"
+                                class="absolute inset-0 w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
@@ -99,9 +99,9 @@
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/immeuble-1.jpeg') }}"
+                            <img src="{{ asset('images/hero/slide-3.jpeg') }}"
                                 alt="{{ __('messages.hero_slide3_alt') }}"
-                             class="w-full h-full object-cover object-center"
+                                class="absolute inset-0 w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
@@ -132,9 +132,9 @@
                 <!-- Slide 4 - Company Experience -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/immeuble-2.jpeg') }}"
+                            <img src="{{ asset('images/hero/slide-4.jpeg') }}"
                                 alt="{{ __('messages.hero_slide4_alt') }}"
-                             class="w-full h-full object-cover object-center"
+                                class="absolute inset-0 w-full h-full object-cover object-center"
                                 loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>

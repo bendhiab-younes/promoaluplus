@@ -5,6 +5,26 @@
 @section('og_title', __('messages.seo_title_services'))
 @section('og_description', __('messages.seo_desc_services'))
 
+@push('styles')
+    <style>
+        .service-thumb {
+            border-color: transparent;
+            opacity: .72;
+            transition: opacity .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+        }
+        .service-thumb:hover { opacity: 1; transform: translateY(-2px); }
+        .service-thumb.is-active {
+            border-color: #f97316;
+            opacity: 1;
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, .35);
+        }
+        .service-thumbs { scrollbar-width: thin; scrollbar-color: rgba(15, 23, 42, .3) transparent; }
+        .service-thumbs::-webkit-scrollbar { height: 6px; }
+        .service-thumbs::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, .22); border-radius: 9999px; }
+        .service-thumbs::-webkit-scrollbar-track { background: transparent; }
+    </style>
+@endpush
+
 @php
     $servicesSchemaItems = [];
 
@@ -139,16 +159,74 @@
             <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
                 <div class="{{ $index % 2 == 1 ? 'order-2 md:order-1' : '' }}">
                     <!-- Interactive Gallery -->
-                    <div class="space-y-3">
-                        <!-- Main Image -->
-                        <div class="relative group">
-                               <img id="main-image-{{ $service->slug }}" 
-                                   src="{{ $gallery[0] ?? asset('images/placeholder.jpg') }}" 
-                                   alt="{{ $service->getTranslatedTitle() }}" 
-                                   loading="lazy"
-                                   decoding="async"
-                                   class="rounded-2xl shadow-2xl w-full h-[240px] sm:h-[320px] md:h-[360px] lg:h-[400px] object-cover transition-all duration-500">
+                    @php
+                        $galleryItems = collect($gallery)
+                            ->filter(fn ($img) => is_string($img) && trim($img) !== '')
+                            ->map(function ($img) {
+                                $isLocal = str_starts_with($img, '/images/services/');
+                                return [
+                                    'full' => $img,
+                                    'thumb' => $isLocal ? preg_replace('/(\.jpe?g)$/i', '-thumb$1', $img) : $img,
+                                ];
+                            })
+                            ->values();
+                        $mainImage = $galleryItems->first()['full'] ?? asset('images/promo-alu-plus-logo.png');
+                    @endphp
+                    <div class="service-gallery space-y-3" tabindex="-1">
+                        <!-- Main image: blurred backdrop fills the frame, foreground shows the whole photo uncropped -->
+                        <div class="gallery-stage group relative overflow-hidden rounded-2xl shadow-2xl bg-gray-900 h-[300px] sm:h-[380px] md:h-[430px] lg:h-[470px] focus:outline-none">
+                            <img data-role="bg" id="main-bg-{{ $service->slug }}"
+                                 src="{{ $mainImage }}"
+                                 alt=""
+                                 aria-hidden="true"
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40">
+                            <div class="absolute inset-0 bg-black/25"></div>
+                            <img data-role="main" id="main-image-{{ $service->slug }}"
+                                 src="{{ $mainImage }}"
+                                 alt="{{ $service->getTranslatedTitle() }}"
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="relative z-10 w-full h-full object-contain transition-opacity duration-300 ease-out">
+
+                            @if($galleryItems->count() > 1)
+                            <!-- Prev / next -->
+                            <button type="button" data-nav="prev"
+                                    class="gallery-nav absolute start-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full bg-black/35 hover:bg-black/60 text-white backdrop-blur-sm border border-white/20 shadow-lg transition md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                                    aria-label="Previous image">
+                                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
+                            </button>
+                            <button type="button" data-nav="next"
+                                    class="gallery-nav absolute end-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full bg-black/35 hover:bg-black/60 text-white backdrop-blur-sm border border-white/20 shadow-lg transition md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                                    aria-label="Next image">
+                                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
+                            </button>
+                            <!-- Counter -->
+                            <div class="gallery-counter absolute bottom-3 end-3 z-20 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-medium tabular-nums border border-white/15 select-none">
+                                <span data-role="current">1</span> / {{ $galleryItems->count() }}
+                            </div>
+                            @endif
                         </div>
+
+                        @if($galleryItems->count() > 1)
+                        <!-- Thumbnails (click to change the main image) -->
+                        <div class="service-thumbs flex gap-2 overflow-x-auto pb-2">
+                            @foreach($galleryItems as $i => $item)
+                            <button type="button"
+                                    class="service-thumb flex-shrink-0 w-16 h-16 md:w-[72px] md:h-[72px] rounded-lg overflow-hidden border-2 {{ $i === 0 ? 'is-active' : '' }}"
+                                    data-full="{{ $item['full'] }}"
+                                    data-index="{{ $i }}"
+                                    aria-label="{{ $service->getTranslatedTitle() }} — {{ $i + 1 }}">
+                                <img src="{{ $item['thumb'] }}"
+                                     alt=""
+                                     loading="lazy"
+                                     decoding="async"
+                                     class="w-full h-full object-cover">
+                            </button>
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="{{ $index % 2 == 1 ? 'order-1 md:order-2' : '' }}">
@@ -447,6 +525,103 @@
                         shrink();
                     }
                 });
+            });
+        })();
+
+        // Service gallery: navigate a service's photos via thumbnails, arrows, keyboard and swipe
+        (() => {
+            document.querySelectorAll('.service-gallery').forEach((gallery) => {
+                const mainImg = gallery.querySelector('[data-role="main"]');
+                const bgImg = gallery.querySelector('[data-role="bg"]');
+                const counter = gallery.querySelector('[data-role="current"]');
+                const stage = gallery.querySelector('.gallery-stage');
+                const thumbs = Array.from(gallery.querySelectorAll('.service-thumb'));
+
+                if (!mainImg || thumbs.length === 0) {
+                    return;
+                }
+
+                const sources = thumbs.map((thumb) => thumb.dataset.full);
+                let index = 0;
+
+                const applyActiveThumb = () => {
+                    thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+                    thumbs[index].scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+                };
+
+                const goTo = (target) => {
+                    const count = sources.length;
+                    const next = ((target % count) + count) % count; // wrap around
+
+                    if (next === index) {
+                        return;
+                    }
+
+                    index = next;
+
+                    // Preload, then cross-fade so there is no flash of an empty frame
+                    const swap = () => {
+                        mainImg.src = sources[index];
+                        if (bgImg) {
+                            bgImg.src = sources[index];
+                        }
+                        requestAnimationFrame(() => { mainImg.style.opacity = '1'; });
+                    };
+
+                    mainImg.style.opacity = '0';
+                    const preloader = new Image();
+                    preloader.onload = swap;
+                    preloader.onerror = swap;
+                    preloader.src = sources[index];
+
+                    applyActiveThumb();
+
+                    if (counter) {
+                        counter.textContent = String(index + 1);
+                    }
+                };
+
+                thumbs.forEach((thumb, i) => thumb.addEventListener('click', () => goTo(i)));
+                gallery.querySelectorAll('[data-nav="prev"]').forEach((btn) => btn.addEventListener('click', () => goTo(index - 1)));
+                gallery.querySelectorAll('[data-nav="next"]').forEach((btn) => btn.addEventListener('click', () => goTo(index + 1)));
+
+                // Keyboard: left/right when focus is anywhere inside the gallery
+                gallery.addEventListener('keydown', (event) => {
+                    if (event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        goTo(index - 1);
+                    } else if (event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        goTo(index + 1);
+                    }
+                });
+
+                // Touch swipe on the main image
+                if (stage) {
+                    let startX = 0;
+                    let startY = 0;
+                    let tracking = false;
+
+                    stage.addEventListener('touchstart', (event) => {
+                        startX = event.touches[0].clientX;
+                        startY = event.touches[0].clientY;
+                        tracking = true;
+                    }, { passive: true });
+
+                    stage.addEventListener('touchend', (event) => {
+                        if (!tracking) {
+                            return;
+                        }
+                        tracking = false;
+
+                        const deltaX = event.changedTouches[0].clientX - startX;
+                        const deltaY = event.changedTouches[0].clientY - startY;
+
+                        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                            goTo(deltaX < 0 ? index + 1 : index - 1);
+                        }
+                    }, { passive: true });
+                }
             });
         })();
     </script>
