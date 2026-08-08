@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuoteResource\Pages;
 use App\Models\Quote;
+use App\Support\CanonicalServiceCatalog;
+use App\Support\DevisPricing;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -36,9 +38,60 @@ class QuoteResource extends Resource
         return 'danger';
     }
 
+    /**
+     * Recompute a line's prices from the devis rate table. Only prices backed
+     * by a rate are touched, so a hand-typed one-off price survives an edit to
+     * the dimensions next to it.
+     */
+    protected static function recalculateLine(Forms\Get $get, Forms\Set $set): void
+    {
+        $rates = $get('../../rates');
+        $height = $get('height');
+        $width = $get('width');
+
+        $unitPrice = DevisPricing::unitPrice($rates, $get('rate_label'), $height, $width);
+
+        if ($unitPrice !== null) {
+            $set('unit_price', $unitPrice);
+        }
+
+        if (filled($get('shutter_rate_label'))) {
+            $set('shutter_price', DevisPricing::unitPrice($rates, $get('shutter_rate_label'), $height, $width) ?? 0);
+        }
+    }
+
+    /**
+     * Totals straight from the form state, so the sidebar tracks what the
+     * admin is typing instead of the last saved figures.
+     *
+     * @return array{subtotal: float, discount: float, tax: float, total: float}
+     */
+    protected static function totalsFromState(Forms\Get $get): array
+    {
+        $subtotal = collect($get('items') ?? [])
+            ->sum(fn ($item): float => DevisPricing::lineTotal(
+                $item['unit_price'] ?? 0,
+                $item['shutter_price'] ?? 0,
+                $item['quantity'] ?? 0,
+            ));
+
+        $discount = (float) ($get('discount') ?? 0);
+        $taxRate = $get('show_tax') ? (float) ($get('tax_rate') ?? 19) : 0.0;
+        $tax = ($subtotal - $discount) * ($taxRate / 100);
+
+        return [
+            'subtotal' => round($subtotal, 2),
+            'discount' => round($discount, 2),
+            'tax' => round($tax, 2),
+            'total' => round($subtotal - $discount + $tax, 2),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         $projectTypeOptions = Quote::projectTypeOptions('fr');
+        $rateOptions = fn (Forms\Get $get): array => DevisPricing::rateOptions($get('../../rates'));
+        $recalculate = fn (Forms\Get $get, Forms\Set $set) => static::recalculateLine($get, $set);
 
         return $form
             ->schema([
@@ -52,17 +105,23 @@ class QuoteResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nom de famille')
                                     ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->required(),
                                 Forms\Components\TextInput::make('phone')
                                     ->label('Téléphone')
                                     ->tel()
                                     ->required(),
-                                Forms\Components\TextInput::make('country')
-                                    ->label('Pays'),
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Email')
+                                    ->email()
+                                    ->placeholder('Facultatif'),
+                                Forms\Components\TextInput::make('client_address')
+                                    ->label('Adresse')
+                                    ->placeholder('Sousse-Khzema')
+                                    ->helperText('Imprimée sous le nom du client sur le devis')
+                                    ->columnSpanFull(),
                                 Forms\Components\TextInput::make('city')
                                     ->label('Ville'),
+                                Forms\Components\TextInput::make('country')
+                                    ->label('Pays'),
                             ])->columns(2),
 
                         Forms\Components\Section::make('Détails du projet')
@@ -70,64 +129,163 @@ class QuoteResource extends Resource
                                 Forms\Components\Select::make('project_type')
                                     ->label('Type de projet')
                                     ->options($projectTypeOptions)
-                                    ->required(),
+                                    ->required()
+                                    ->default(CanonicalServiceCatalog::OTHER_SLUG),
                                 Forms\Components\TextInput::make('budget_range')
                                     ->label('Budget client'),
                                 Forms\Components\TextInput::make('timeline')
                                     ->label('Délai souhaité'),
                                 Forms\Components\Textarea::make('description')
                                     ->label('Description du projet')
-                                    ->required()
-                                    ->rows(4)
+                                    ->rows(3)
                                     ->columnSpanFull(),
                             ])->columns(3),
 
+                        Forms\Components\Section::make('Tarifs (prix au m²)')
+                            ->description('Les prix des lignes sont calculés à partir de ces tarifs. Ce tableau est imprimé sous le devis.')
+                            ->icon('heroicon-o-calculator')
+                            ->schema([
+                                Forms\Components\Repeater::make('rates')
+                                    ->hiddenLabel()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('label')
+                                            ->label('Tarif')
+                                            ->placeholder('Aluminium')
+                                            ->required()
+                                            ->live(onBlur: true)
+                                            ->columnSpan(3),
+                                        Forms\Components\TextInput::make('price')
+                                            ->label('Prix / m²')
+                                            ->numeric()
+                                            ->required()
+                                            ->default(0)
+                                            ->suffix('dt')
+                                            ->live(onBlur: true)
+                                            ->columnSpan(2),
+                                        Forms\Components\TextInput::make('supplement')
+                                            ->label('Supplément fixe')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->suffix('dt')
+                                            ->helperText('Facturé une fois par unité (ex. moteur)')
+                                            ->live(onBlur: true)
+                                            ->columnSpan(2),
+                                        Forms\Components\TextInput::make('supplement_label')
+                                            ->label('Libellé du supplément')
+                                            ->placeholder('Prix Moteur')
+                                            ->columnSpan(3),
+                                    ])
+                                    ->columns(10)
+                                    ->default(DevisPricing::DEFAULT_RATES)
+                                    ->addActionLabel('Ajouter un tarif')
+                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
+                                    ->live(),
+                            ])
+                            ->collapsible(),
+
                         Forms\Components\Section::make('Lignes du devis')
-                            ->description('Ajoutez les articles et prestations')
+                            ->description('Saisissez les dimensions et choisissez un tarif — le prix se calcule tout seul.')
+                            ->icon('heroicon-o-table-cells')
                             ->schema([
                                 Forms\Components\Repeater::make('items')
+                                    ->hiddenLabel()
                                     ->relationship()
                                     ->schema([
                                         Forms\Components\TextInput::make('description')
-                                            ->label('Description')
+                                            ->label('Désignation')
+                                            ->placeholder('Fenêtre à la française 2 ventaux')
                                             ->required()
-                                            ->columnSpan(3),
-                                        Forms\Components\Select::make('unit')
-                                            ->label('Unité')
-                                            ->options([
-                                                'unité' => 'Unité',
-                                                'm²' => 'm²',
-                                                'ml' => 'ml',
-                                                'forfait' => 'Forfait',
-                                            ])
-                                            ->default('unité'),
+                                            ->columnSpan(4),
+                                        Forms\Components\TextInput::make('height')
+                                            ->label('H (m)')
+                                            ->numeric()
+                                            ->step(0.01)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated($recalculate)
+                                            ->columnSpan(2),
+                                        Forms\Components\TextInput::make('width')
+                                            ->label('L (m)')
+                                            ->numeric()
+                                            ->step(0.01)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated($recalculate)
+                                            ->columnSpan(2),
                                         Forms\Components\TextInput::make('quantity')
                                             ->label('Qté')
                                             ->numeric()
                                             ->default(1)
                                             ->minValue(0.01)
-                                            ->live(onBlur: true),
+                                            ->required()
+                                            ->live(onBlur: true)
+                                            ->columnSpan(1),
+                                        Forms\Components\Select::make('rate_label')
+                                            ->label('Tarif')
+                                            ->options($rateOptions)
+                                            ->placeholder('Prix libre')
+                                            ->live()
+                                            ->afterStateUpdated($recalculate)
+                                            ->columnSpan(3),
+
                                         Forms\Components\TextInput::make('unit_price')
                                             ->label('Prix unitaire')
                                             ->numeric()
-                                            ->prefix('TND')
-                                            ->live(onBlur: true),
+                                            ->default(0)
+                                            ->suffix('dt')
+                                            ->live(onBlur: true)
+                                            ->helperText('Modifiable — le ↻ rétablit le calcul')
+                                            ->suffixAction(
+                                                Forms\Components\Actions\Action::make('recalculate_unit_price')
+                                                    ->icon('heroicon-m-arrow-path')
+                                                    ->tooltip('Recalculer depuis le tarif')
+                                                    ->action($recalculate)
+                                            )
+                                            ->columnSpan(3),
+                                        Forms\Components\Select::make('shutter_rate_label')
+                                            ->label('Tarif volet')
+                                            ->options($rateOptions)
+                                            ->placeholder('Sans volet')
+                                            ->live()
+                                            ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
+                                                $set('shutter_price', blank($state)
+                                                    ? 0
+                                                    : (DevisPricing::unitPrice($get('../../rates'), $state, $get('height'), $get('width')) ?? 0));
+                                            })
+                                            ->columnSpan(3),
+                                        Forms\Components\TextInput::make('shutter_price')
+                                            ->label('Prix volet')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->suffix('dt')
+                                            ->live(onBlur: true)
+                                            ->columnSpan(3),
                                         Forms\Components\Placeholder::make('line_total')
-                                            ->label('Total')
-                                            ->content(function ($get) {
-                                                $qty = floatval($get('quantity') ?? 0);
-                                                $price = floatval($get('unit_price') ?? 0);
-
-                                                return number_format($qty * $price, 2).' TND';
-                                            }),
+                                            ->label('Total ligne')
+                                            ->content(fn (Forms\Get $get): string => DevisPricing::format(
+                                                DevisPricing::lineTotal($get('unit_price'), $get('shutter_price'), $get('quantity'))
+                                            ).' dt')
+                                            ->columnSpan(3),
                                     ])
-                                    ->columns(7)
+                                    ->columns(12)
                                     ->defaultItems(0)
                                     ->addActionLabel('Ajouter une ligne')
                                     ->reorderable()
-                                    ->collapsible(),
+                                    ->orderColumn('order')
+                                    ->collapsible()
+                                    ->itemLabel(fn (array $state): ?string => $state['description'] ?? null),
                             ])
                             ->collapsed(fn ($record) => $record && ! $record->items()->exists()),
+
+                        Forms\Components\Section::make('Information sur produit')
+                            ->description('Bloc imprimé en bas du devis — une puce par ligne.')
+                            ->icon('heroicon-o-information-circle')
+                            ->collapsed()
+                            ->schema([
+                                Forms\Components\Textarea::make('product_notes')
+                                    ->hiddenLabel()
+                                    ->rows(5)
+                                    ->default(self::defaultProductNotes())
+                                    ->placeholder(self::defaultProductNotes()),
+                            ]),
                     ])
                     ->columnSpan(['lg' => 2]),
 
@@ -138,7 +296,8 @@ class QuoteResource extends Resource
                                 Forms\Components\TextInput::make('quote_number')
                                     ->label('N° Devis')
                                     ->disabled()
-                                    ->dehydrated(),
+                                    ->dehydrated()
+                                    ->placeholder('Attribué à l\'envoi'),
                                 Forms\Components\Select::make('status')
                                     ->label('Statut')
                                     ->options([
@@ -151,8 +310,14 @@ class QuoteResource extends Resource
                                     ])
                                     ->required()
                                     ->default('new'),
+                                Forms\Components\DatePicker::make('devis_date')
+                                    ->label('Date du devis')
+                                    ->displayFormat('d/m/Y')
+                                    ->default(now())
+                                    ->helperText('Date imprimée sur le document'),
                                 Forms\Components\DatePicker::make('valid_until')
-                                    ->label('Validité jusqu\'au'),
+                                    ->label('Validité jusqu\'au')
+                                    ->displayFormat('d/m/Y'),
                             ]),
 
                         Forms\Components\Section::make('Totaux')
@@ -160,22 +325,34 @@ class QuoteResource extends Resource
                                 Forms\Components\TextInput::make('discount')
                                     ->label('Remise')
                                     ->numeric()
-                                    ->prefix('TND')
-                                    ->default(0),
+                                    ->suffix('dt')
+                                    ->default(0)
+                                    ->live(onBlur: true),
+                                Forms\Components\Toggle::make('show_tax')
+                                    ->label('Appliquer la TVA')
+                                    ->helperText('Désactivé : devis HTVA, comme les devis papier.')
+                                    ->default(false)
+                                    ->live(),
                                 Forms\Components\TextInput::make('tax_rate')
-                                    ->label('TVA')
+                                    ->label('Taux de TVA')
                                     ->numeric()
                                     ->suffix('%')
-                                    ->default(19),
+                                    ->default(19)
+                                    ->live(onBlur: true)
+                                    ->visible(fn (Forms\Get $get): bool => (bool) $get('show_tax')),
                                 Forms\Components\Placeholder::make('calculated_subtotal')
-                                    ->label('Sous-total HT')
-                                    ->content(fn ($record) => $record ? number_format($record->subtotal ?? 0, 2).' TND' : '0.00 TND'),
+                                    ->label('Total')
+                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['subtotal']).' dt'),
+                                Forms\Components\Placeholder::make('calculated_discount')
+                                    ->label('Remise')
+                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['discount']).' dt'),
                                 Forms\Components\Placeholder::make('calculated_tax')
                                     ->label('TVA')
-                                    ->content(fn ($record) => $record ? number_format($record->tax_amount ?? 0, 2).' TND' : '0.00 TND'),
+                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['tax']).' dt')
+                                    ->visible(fn (Forms\Get $get): bool => (bool) $get('show_tax')),
                                 Forms\Components\Placeholder::make('calculated_total')
-                                    ->label('Total TTC')
-                                    ->content(fn ($record) => $record ? number_format($record->total ?? 0, 2).' TND' : '0.00 TND'),
+                                    ->label('Net à payer')
+                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['total']).' dt'),
                             ]),
 
                         Forms\Components\Section::make('Notes')
@@ -189,6 +366,20 @@ class QuoteResource extends Resource
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(3);
+    }
+
+    /**
+     * The product blurb the workshop prints on its joinery devis.
+     */
+    protected static function defaultProductNotes(): string
+    {
+        return implode("\n", [
+            'Aluminium 1 choix TPR OU ALLUCO OU PALMA avec accessoires made in italy',
+            'Double vitrage 1.8mm stop sol marron clair',
+            'Lame FLORA 5.5cm blanc',
+            '5ans garentie pour les moteurs',
+            'Y compris fourniture et pose',
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -335,10 +526,17 @@ class QuoteResource extends Resource
                             Notification::make()->warning()->title('Devis refusé')->send();
                         }),
                     Tables\Actions\Action::make('download_pdf')
-                        ->label('Télécharger PDF')
-                        ->icon('heroicon-o-arrow-down-tray')
+                        ->label('Devis PDF')
+                        ->icon('heroicon-o-document-arrow-down')
                         ->color('info')
                         ->url(fn (Quote $record) => route('quote.pdf', $record))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Quote $record) => $record->items_count > 0),
+                    Tables\Actions\Action::make('download_excel')
+                        ->label('Devis Excel')
+                        ->icon('heroicon-o-table-cells')
+                        ->color('success')
+                        ->url(fn (Quote $record) => route('quote.excel', $record))
                         ->openUrlInNewTab()
                         ->visible(fn (Quote $record) => $record->items_count > 0),
                     Tables\Actions\Action::make('create_invoice')

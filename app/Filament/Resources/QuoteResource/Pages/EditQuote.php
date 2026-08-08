@@ -25,13 +25,21 @@ class EditQuote extends EditRecord
     {
         return [
             Actions\Action::make('download_pdf')
-                ->label('Télécharger PDF')
-                ->icon('heroicon-o-arrow-down-tray')
+                ->label('Devis PDF')
+                ->icon('heroicon-o-document-arrow-down')
                 ->color('info')
                 ->url(fn () => route('quote.pdf', $this->record))
                 ->openUrlInNewTab()
                 ->disabled(fn () => ! $this->hasQuoteItems())
                 ->tooltip(fn () => ! $this->hasQuoteItems() ? 'Ajoutez des lignes au devis d\'abord' : 'Télécharger le devis en PDF'),
+            Actions\Action::make('download_excel')
+                ->label('Devis Excel')
+                ->icon('heroicon-o-table-cells')
+                ->color('success')
+                ->url(fn () => route('quote.excel', $this->record))
+                ->openUrlInNewTab()
+                ->disabled(fn () => ! $this->hasQuoteItems())
+                ->tooltip(fn () => ! $this->hasQuoteItems() ? 'Ajoutez des lignes au devis d\'abord' : 'Télécharger le devis en Excel (formules incluses)'),
             Actions\DeleteAction::make(),
         ];
     }

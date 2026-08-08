@@ -1,304 +1,223 @@
+@php
+    use App\Support\DevisPricing;
+
+    $company = $document->company();
+    $client = $document->client();
+    $hasShutters = $document->hasShutters();
+    $rows = $document->rows();
+    $legend = $document->legend();
+    $totals = $document->totals();
+    $notes = $document->notes();
+    $logo = $document->logoPath();
+@endphp
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devis {{ $quote->quote_number ?? 'N/A' }}</title>
+    <title>Devis {{ $document->reference() ?? 'Promo Alu Plus' }}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        @page { margin: 18mm 14mm; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #333;
-            background: #fff;
-            padding: 40px;
+            /* Helvetica is a PDF core font: French accents and "²" all live in
+               cp1252, so nothing needs embedding and a devis stays ~70 KB
+               instead of ~900 KB once DejaVu is bundled in. */
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            color: #1a1a1a;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #1e3a8a;
-            padding-bottom: 20px;
+
+        /* ---- Header : logo on the left, party boxes and title on the right ---- */
+        .masthead { width: 100%; margin-bottom: 14px; }
+        .masthead td { vertical-align: top; }
+        .masthead .logo-cell { width: 33%; }
+        .masthead .logo-cell img { width: 165px; }
+
+        .party-box {
+            border: 1px solid #7f7f9c;
+            padding: 4px 7px;
+            margin-bottom: -1px; /* the two boxes share an edge, as on the paper devis */
         }
-        .company-info h1 {
-            font-size: 28px;
-            color: #1e3a8a;
-            margin-bottom: 5px;
-        }
-        .company-info p {
-            color: #666;
-            font-size: 13px;
-        }
-        .document-info {
-            text-align: right;
-        }
-        .document-info h2 {
-            font-size: 24px;
-            color: #1e3a8a;
-            margin-bottom: 10px;
-        }
-        .document-info p {
-            font-size: 13px;
-            color: #666;
-        }
-        .document-info .number {
-            font-size: 16px;
+        .party-box p { line-height: 1.45; }
+
+        .doc-title {
+            text-align: center;
+            color: #c00000;
+            font-size: 17px;
             font-weight: bold;
-            color: #333;
-        }
-        .client-section {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        .client-section h3 {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 10px;
             letter-spacing: 1px;
+            margin-top: 14px;
         }
-        .client-section .name {
-            font-size: 18px;
+        .doc-meta { text-align: center; margin-top: 6px; font-size: 11px; }
+        .doc-ref { text-align: center; margin-top: 2px; font-size: 9px; color: #555; }
+
+        /* ---- Line items ---- */
+        table.items { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        table.items th, table.items td { border: 1px solid #7f7f9c; padding: 4px 6px; }
+        table.items th {
+            color: #c0504d;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .client-section p {
-            color: #666;
-            font-size: 13px;
-        }
-        .project-info {
-            background: #eff6ff;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border-left: 4px solid #1e3a8a;
-        }
-        .project-info h3 {
-            font-size: 14px;
-            color: #1e3a8a;
-            margin-bottom: 5px;
-        }
-        .project-info p {
-            color: #333;
-            font-size: 13px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        th {
-            background: #1e3a8a;
-            color: white;
-            padding: 12px 15px;
-            text-align: left;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        th:first-child {
-            border-radius: 8px 0 0 0;
-        }
-        th:last-child {
-            border-radius: 0 8px 0 0;
-            text-align: right;
-        }
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        tr:nth-child(even) {
-            background: #f9fafb;
-        }
-        .text-right {
-            text-align: right;
-        }
-        .text-center {
             text-align: center;
+            font-size: 10px;
+            background: #f2f0f7;
         }
-        .totals {
-            width: 300px;
-            margin-left: auto;
-            margin-bottom: 40px;
-        }
-        .totals table {
-            margin-bottom: 0;
-        }
-        .totals td {
-            padding: 8px 15px;
-            border: none;
-        }
-        .totals tr:last-child {
-            background: #1e3a8a;
-            color: white;
+        table.items td.designation { text-align: left; }
+        table.items td { text-align: center; }
+        table.items td.amount { text-align: right; }
+        .empty-row td { height: 16px; }
+
+        /* ---- Legend (left) and totals (right) ---- */
+        table.summary { width: 100%; margin-top: 10px; border-collapse: collapse; }
+        table.summary > tr > td, table.summary td.pane { vertical-align: top; border: none; padding: 0; }
+        .pane-left { width: 55%; padding-right: 10px !important; }
+
+        table.boxed { border-collapse: collapse; }
+        table.boxed td { border: 1px solid #7f7f9c; padding: 3px 7px; }
+        table.legend { width: 100%; }
+        table.legend td.value { text-align: right; white-space: nowrap; }
+        table.totals { width: 100%; }
+        table.totals td.label { font-weight: normal; }
+        table.totals td.value { text-align: right; white-space: nowrap; }
+        table.totals tr.net td { font-weight: bold; }
+
+        /* ---- Product information ---- */
+        .product-info { margin-top: 16px; }
+        .product-info h2 {
+            color: #c0504d;
+            font-size: 11px;
             font-weight: bold;
-            font-size: 16px;
+            margin-bottom: 3px;
         }
-        .totals tr:last-child td {
-            padding: 12px 15px;
-            border-radius: 0 0 8px 8px;
-        }
-        .validity {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        .validity p {
-            color: #92400e;
-            font-size: 13px;
-        }
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-        }
-        .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 60px;
-        }
-        .signature-box {
-            width: 45%;
-            text-align: center;
-        }
-        .signature-box p {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 60px;
-        }
-        .signature-box .line {
-            border-top: 1px solid #333;
-            padding-top: 10px;
-            font-size: 12px;
-        }
-        @media print {
-            body {
-                padding: 20px;
-            }
-            .no-print {
-                display: none;
-            }
-        }
+        .product-info p { line-height: 1.5; }
+
+        .currency-note { margin-top: 10px; font-size: 8px; color: #666; }
+        .validity { margin-top: 8px; font-size: 9px; color: #7a4b00; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="company-info">
-            <h1>{{ $company['name'] }}</h1>
-            <p>{{ $company['address'] }}</p>
-            <p>📞 {{ $company['phone'] }}</p>
-            <p>✉️ {{ $company['email'] }}</p>
-        </div>
-        <div class="document-info">
-            <h2>DEVIS</h2>
-            <p class="number">{{ $quote->quote_number ?? 'BROUILLON' }}</p>
-            <p>Date: {{ $quote->created_at->format('d/m/Y') }}</p>
-            @if($quote->valid_until)
-            <p>Validité: {{ $quote->valid_until->format('d/m/Y') }}</p>
-            @endif
-        </div>
-    </div>
+    <table class="masthead">
+        <tr>
+            <td class="logo-cell">
+                @if($logo)
+                    <img src="{{ $logo }}" alt="{{ $company['name'] }}">
+                @else
+                    <strong style="font-size: 15px;">{{ $company['name'] }}</strong>
+                @endif
+            </td>
+            <td>
+                <div class="party-box">
+                    <p>Ste: {{ $company['name'] }}</p>
+                    <p>adresse: {{ $company['address'] }}</p>
+                    @if($company['tax_id'])
+                        <p>MF: {{ $company['tax_id'] }}</p>
+                    @endif
+                    <p>Tel : {{ $company['phone'] }}</p>
+                </div>
+                <div class="party-box">
+                    <p>Clien : {{ $client['name'] }}</p>
+                    <p>adresse: {{ $client['address'] ?? '—' }}</p>
+                    @if($client['phone'])
+                        <p>Tel : {{ $client['phone'] }}</p>
+                    @endif
+                </div>
 
-    <div class="client-section">
-        <h3>Client</h3>
-        <p class="name">{{ $quote->full_name }}</p>
-        <p>📧 {{ $quote->email }}</p>
-        <p>📞 {{ $quote->phone }}</p>
-        @if($quote->city || $quote->country)
-        <p>📍 {{ $quote->city }}{{ $quote->city && $quote->country ? ', ' : '' }}{{ $quote->country }}</p>
-        @endif
-    </div>
+                <div class="doc-title">DEVIS</div>
+                <div class="doc-meta">DATE: {{ $document->date() }}</div>
+                @if($document->reference())
+                    <div class="doc-ref">N° {{ $document->reference() }}</div>
+                @endif
+            </td>
+        </tr>
+    </table>
 
-    @if($quote->description)
-    <div class="project-info">
-        <h3>Description du projet</h3>
-        <p>{{ $quote->description }}</p>
-    </div>
-    @endif
-
-    <table>
+    <table class="items">
         <thead>
             <tr>
-                <th style="width: 50%;">Description</th>
-                <th class="text-center">Unité</th>
-                <th class="text-center">Quantité</th>
-                <th class="text-right">Prix unit.</th>
-                <th class="text-right">Total</th>
+                @foreach($document->columns() as $index => $column)
+                    <th @class(['designation' => $index === 0]) @if($index === 0) style="width: 34%; text-align: left;" @endif>{{ $column }}</th>
+                @endforeach
             </tr>
         </thead>
         <tbody>
-            @forelse($quote->items as $item)
-            <tr>
-                <td>{{ $item->description }}</td>
-                <td class="text-center">{{ $item->unit }}</td>
-                <td class="text-center">{{ number_format($item->quantity, 2) }}</td>
-                <td class="text-right">{{ number_format($item->unit_price, 2) }} TND</td>
-                <td class="text-right">{{ number_format($item->total, 2) }} TND</td>
-            </tr>
+            @forelse($rows as $row)
+                <tr>
+                    <td class="designation">{{ $row['designation'] }}</td>
+                    @if($hasShutters)
+                        <td>{{ DevisPricing::formatDimension($row['height']) }}</td>
+                        <td>{{ DevisPricing::formatDimension($row['width']) }}</td>
+                        <td>{{ rtrim(rtrim(number_format($row['quantity'], 2, '.', ''), '0'), '.') }}</td>
+                        <td class="amount">{{ $row['shutter_price'] > 0 ? DevisPricing::format($row['shutter_price']) : '' }}</td>
+                        <td class="amount">{{ DevisPricing::format($row['unit_price']) }}</td>
+                    @else
+                        <td>{{ DevisPricing::formatDimension($row['width']) }}</td>
+                        <td>{{ DevisPricing::formatDimension($row['height']) }}</td>
+                        <td>{{ rtrim(rtrim(number_format($row['quantity'], 2, '.', ''), '0'), '.') }}</td>
+                        <td class="amount">{{ DevisPricing::format($row['unit_price']) }}</td>
+                    @endif
+                    <td class="amount">{{ DevisPricing::format($row['total']) }}</td>
+                </tr>
             @empty
-            <tr>
-                <td colspan="5" class="text-center" style="color: #999; padding: 30px;">Aucun article</td>
-            </tr>
+                <tr class="empty-row">
+                    <td colspan="{{ count($document->columns()) }}" style="text-align: center; color: #999;">Aucune ligne</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
 
-    <div class="totals">
-        <table>
-            <tr>
-                <td>Sous-total HT</td>
-                <td class="text-right">{{ number_format($quote->subtotal ?? 0, 2) }} TND</td>
-            </tr>
-            @if($quote->discount > 0)
-            <tr>
-                <td>Remise</td>
-                <td class="text-right">-{{ number_format($quote->discount, 2) }} TND</td>
-            </tr>
-            @endif
-            <tr>
-                <td>TVA ({{ $quote->tax_rate ?? 19 }}%)</td>
-                <td class="text-right">{{ number_format($quote->tax_amount ?? 0, 2) }} TND</td>
-            </tr>
-            <tr>
-                <td>Total TTC</td>
-                <td class="text-right">{{ number_format($quote->total ?? 0, 2) }} TND</td>
-            </tr>
-        </table>
-    </div>
+    <table class="summary">
+        <tr>
+            <td class="pane pane-left">
+                @if($legend !== [])
+                    <table class="boxed legend">
+                        @foreach($legend as $line)
+                            <tr>
+                                <td>{{ $line['label'] }}</td>
+                                <td class="value">{{ rtrim(rtrim(DevisPricing::format($line['price']), '0'), '.') }} dt</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                @endif
+            </td>
+            <td class="pane">
+                <table class="boxed totals">
+                    <tr>
+                        <td class="label">Total</td>
+                        <td class="value">{{ DevisPricing::format($totals['subtotal']) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Remise</td>
+                        <td class="value">{{ DevisPricing::format($totals['discount']) }}</td>
+                    </tr>
+                    @if($totals['show_tax'])
+                        <tr>
+                            <td class="label">TVA ({{ rtrim(rtrim(number_format($totals['tax_rate'], 2, '.', ''), '0'), '.') }}%)</td>
+                            <td class="value">{{ DevisPricing::format($totals['tax']) }}</td>
+                        </tr>
+                    @endif
+                    <tr class="net">
+                        <td class="label">Net a payer</td>
+                        <td class="value">{{ DevisPricing::format($totals['total']) }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
-    @if($quote->valid_until)
-    <div class="validity">
-        <p>⚠️ Ce devis est valable jusqu'au <strong>{{ $quote->valid_until->format('d/m/Y') }}</strong>. Passé ce délai, les prix peuvent être révisés.</p>
-    </div>
+    @if($notes !== [])
+        <div class="product-info">
+            <h2>Information sur produit</h2>
+            @foreach($notes as $note)
+                <p>* {{ $note }}</p>
+            @endforeach
+        </div>
     @endif
 
-    <div class="signature-section">
-        <div class="signature-box">
-            <p>Pour l'entreprise</p>
-            <div class="line">{{ $company['name'] }}</div>
-        </div>
-        <div class="signature-box">
-            <p>Bon pour accord (signature client)</p>
-            <div class="line">{{ $quote->full_name }}</div>
-        </div>
-    </div>
+    @if($quote->valid_until)
+        <p class="validity">Ce devis est valable jusqu'au {{ $quote->valid_until->format('d/m/Y') }}.</p>
+    @endif
 
-    <div class="footer">
-        <p>{{ $company['name'] }} - {{ $company['address'] }} - {{ $company['phone'] }} - {{ $company['email'] }}</p>
-    </div>
+    <p class="currency-note">Montants exprimés en dinars tunisiens (TND){{ $totals['show_tax'] ? '' : ' — hors TVA' }}.</p>
 </body>
 </html>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\CanonicalServiceCatalog;
+use App\Support\DevisPricing;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,6 +17,7 @@ class Quote extends Model
         'phone',
         'country',
         'city',
+        'client_address',
         'project_type',
         'description',
         'budget_range',
@@ -25,8 +27,12 @@ class Quote extends Model
         'admin_notes',
         'quote_number',
         'valid_until',
+        'devis_date',
+        'rates',
+        'product_notes',
         'subtotal',
         'tax_rate',
+        'show_tax',
         'tax_amount',
         'discount',
         'total',
@@ -34,9 +40,12 @@ class Quote extends Model
 
     protected $casts = [
         'attachments' => 'array',
+        'rates' => 'array',
         'valid_until' => 'date',
+        'devis_date' => 'date',
         'subtotal' => 'decimal:2',
         'tax_rate' => 'decimal:2',
+        'show_tax' => 'boolean',
         'tax_amount' => 'decimal:2',
         'discount' => 'decimal:2',
         'total' => 'decimal:2',
@@ -82,7 +91,10 @@ class Quote extends Model
     {
         $subtotal = (float) $this->items()->sum('total');
         $discount = (float) ($this->discount ?? 0);
-        $taxRate = (float) ($this->tax_rate ?? 19);
+
+        // Devis are quoted HTVA by default — the paper ones go straight from
+        // Total to Remise to "Net a payer". TVA is opted into per devis.
+        $taxRate = $this->show_tax ? (float) ($this->tax_rate ?? 19) : 0.0;
 
         $taxAmount = ($subtotal - $discount) * ($taxRate / 100);
         $total = $subtotal - $discount + $taxAmount;
@@ -92,6 +104,62 @@ class Quote extends Model
             'tax_amount' => round($taxAmount, 2),
             'total' => round($total, 2),
         ])->save();
+    }
+
+    /**
+     * The devis rates, normalized. Falls back to the workshop's usual joinery
+     * rates so an older quote still prints a coherent legend.
+     *
+     * @return array<int, array{label: string, price: float, supplement: float, supplement_label: ?string}>
+     */
+    public function devisRates(): array
+    {
+        $rates = DevisPricing::normalizeRates($this->rates);
+
+        return $rates !== [] ? $rates : DevisPricing::normalizeRates(DevisPricing::DEFAULT_RATES);
+    }
+
+    /**
+     * Whether any line carries a shutter price. Drives the column layout of
+     * both documents: with shutters the table splits into P.VOLET / P.ALU.
+     */
+    public function hasShutterPricing(): bool
+    {
+        return $this->items->contains(fn (QuoteItem $item): bool => $item->hasShutter());
+    }
+
+    /**
+     * @return array<int, array{label: string, price: float}>
+     */
+    public function rateLegend(): array
+    {
+        return DevisPricing::legendLines($this->devisRates());
+    }
+
+    /**
+     * The "Information sur produit" block, one bullet per non-empty line.
+     *
+     * @return array<int, string>
+     */
+    public function productNoteLines(): array
+    {
+        return collect(preg_split('/\r\n|\r|\n/', (string) $this->product_notes))
+            ->map(fn (string $line): string => trim(ltrim($line, "*\t ")))
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    public function documentDate(): \Illuminate\Support\Carbon
+    {
+        return $this->devis_date ?? $this->created_at ?? now();
+    }
+
+    public function documentFilename(string $extension): string
+    {
+        $reference = $this->quote_number ?: 'BROUILLON-'.$this->id;
+
+        return 'Devis-'.$reference.'.'.$extension;
     }
 
     public function markAsContacted(): void
@@ -151,23 +219,27 @@ class Quote extends Model
             'client_name' => $this->full_name,
             'client_email' => $this->email,
             'client_phone' => $this->phone,
+            'client_address' => $this->client_address,
             'issue_date' => now(),
             'due_date' => now()->addDays(30),
             'subtotal' => $this->subtotal,
-            'tax_rate' => $this->tax_rate ?? 19,
+            // Mirror the devis: invoicing a quote issued without TVA must not
+            // silently add 19% to what the client accepted.
+            'tax_rate' => $this->show_tax ? ($this->tax_rate ?? 19) : 0,
             'tax_amount' => $this->tax_amount,
             'discount' => $this->discount ?? 0,
             'total' => $this->total,
             'status' => 'draft',
         ]);
 
-        // Copy quote items to invoice items
+        // Copy quote items to invoice items. An invoice line carries a single
+        // price, so a shutter is folded into the unit price it was quoted with.
         foreach ($this->items as $item) {
             $invoice->items()->create([
                 'description' => $item->description,
                 'unit' => $item->unit,
                 'quantity' => $item->quantity,
-                'unit_price' => $item->unit_price,
+                'unit_price' => round((float) $item->unit_price + (float) $item->shutter_price, 2),
                 'total' => $item->total,
                 'order' => $item->order,
             ]);

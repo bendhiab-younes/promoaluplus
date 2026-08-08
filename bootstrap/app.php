@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
+
+        // Authentication lives in the Filament panel — there is no "login"
+        // route, so auth-gated routes (devis/facture downloads) must send
+        // guests to the admin login instead of blowing up resolving one.
+        $middleware->redirectGuestsTo(fn () => route('filament.admin.auth.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

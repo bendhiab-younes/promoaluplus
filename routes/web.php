@@ -47,8 +47,9 @@ Route::prefix('chatbot')->name('chatbot.')->group(function () {
     Route::get('/faqs', [ChatbotController::class, 'getFaqs'])->name('faqs');
 });
 
-// PDF generation (admin only)
+// Document generation (admin only)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/quote/{quote}/pdf', [\App\Http\Controllers\PdfController::class, 'quote'])->name('quote.pdf');
+    Route::get('/quote/{quote}/pdf', [\App\Http\Controllers\QuoteDocumentController::class, 'pdf'])->name('quote.pdf');
+    Route::get('/quote/{quote}/excel', [\App\Http\Controllers\QuoteDocumentController::class, 'excel'])->name('quote.excel');
     Route::get('/invoice/{invoice}/pdf', [\App\Http\Controllers\PdfController::class, 'invoice'])->name('invoice.pdf');
 });
