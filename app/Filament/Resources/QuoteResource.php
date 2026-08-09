@@ -8,11 +8,15 @@ use App\Support\CanonicalServiceCatalog;
 use App\Support\DevisPricing;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class QuoteResource extends Resource
 {
@@ -22,11 +26,27 @@ class QuoteResource extends Resource
 
     protected static ?string $navigationGroup = 'Demandes';
 
-    protected static ?string $modelLabel = 'Demande de devis';
+    protected static ?string $modelLabel = 'Devis';
 
-    protected static ?string $pluralModelLabel = 'Demandes de devis';
+    protected static ?string $pluralModelLabel = 'Devis';
 
     protected static ?int $navigationSort = 1;
+
+    /**
+     * The devis pipeline, in order. Every status label, colour and icon in the
+     * admin comes from here so the table, the form and the view page cannot
+     * describe the same devis differently.
+     *
+     * @var array<string, array{label: string, color: string, icon: string}>
+     */
+    public const STATUSES = [
+        'new' => ['label' => 'Nouvelle demande', 'color' => 'danger', 'icon' => 'heroicon-m-inbox-arrow-down'],
+        'contacted' => ['label' => 'Client contacté', 'color' => 'warning', 'icon' => 'heroicon-m-phone'],
+        'quoted' => ['label' => 'Devis envoyé', 'color' => 'info', 'icon' => 'heroicon-m-paper-airplane'],
+        'accepted' => ['label' => 'Accepté', 'color' => 'success', 'icon' => 'heroicon-m-check-circle'],
+        'rejected' => ['label' => 'Refusé', 'color' => 'gray', 'icon' => 'heroicon-m-x-circle'],
+        'completed' => ['label' => 'Facturé', 'color' => 'success', 'icon' => 'heroicon-m-banknotes'],
+    ];
 
     public static function getNavigationBadge(): ?string
     {
@@ -36,6 +56,29 @@ class QuoteResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function statusOptions(): array
+    {
+        return array_map(fn (array $status): string => $status['label'], static::STATUSES);
+    }
+
+    public static function statusLabel(?string $status): string
+    {
+        return static::STATUSES[$status]['label'] ?? (string) $status;
+    }
+
+    public static function statusColor(?string $status): string
+    {
+        return static::STATUSES[$status]['color'] ?? 'gray';
+    }
+
+    public static function statusIcon(?string $status): ?string
+    {
+        return static::STATUSES[$status]['icon'] ?? null;
     }
 
     /**
@@ -87,6 +130,84 @@ class QuoteResource extends Resource
         ];
     }
 
+    /**
+     * Quantities are typed as "2", not "2.00" — trim the decimals the cast adds
+     * so the recap lines read the way the admin wrote them.
+     */
+    protected static function formatQuantity(mixed $quantity): string
+    {
+        return rtrim(rtrim(number_format((float) $quantity, 2, '.', ''), '0'), '.') ?: '0';
+    }
+
+    /**
+     * The one-line recap on a collapsed devis line: what it is, how big, how
+     * many, and what it costs — so a folded devis stays readable.
+     *
+     * @param  array<string, mixed>  $state
+     */
+    protected static function lineItemLabel(array $state): ?string
+    {
+        $description = trim((string) ($state['description'] ?? ''));
+
+        if ($description === '') {
+            return null;
+        }
+
+        $parts = [];
+        $height = DevisPricing::formatDimension($state['height'] ?? null);
+        $width = DevisPricing::formatDimension($state['width'] ?? null);
+
+        if ($height !== '' && $width !== '') {
+            $parts[] = $height.' × '.$width.' m';
+        }
+
+        $parts[] = '× '.static::formatQuantity($state['quantity'] ?? 0);
+        $parts[] = DevisPricing::format(DevisPricing::lineTotal(
+            $state['unit_price'] ?? 0,
+            $state['shutter_price'] ?? 0,
+            $state['quantity'] ?? 0,
+        )).' dt';
+
+        return $description.'   —   '.implode('  •  ', $parts);
+    }
+
+    /**
+     * Re-price every line that references a rate. Needed because editing a rate
+     * does not reach back into the lines already entered with it.
+     */
+    protected static function recalculateAllLines(Forms\Get $get, Forms\Set $set): void
+    {
+        $rates = $get('rates');
+        $items = $get('items') ?? [];
+        $touched = 0;
+
+        foreach ($items as $key => $item) {
+            $unitPrice = DevisPricing::unitPrice($rates, $item['rate_label'] ?? null, $item['height'] ?? null, $item['width'] ?? null);
+
+            if ($unitPrice !== null) {
+                $items[$key]['unit_price'] = $unitPrice;
+                $touched++;
+            }
+
+            if (filled($item['shutter_rate_label'] ?? null)) {
+                $items[$key]['shutter_price'] = DevisPricing::unitPrice(
+                    $rates,
+                    $item['shutter_rate_label'],
+                    $item['height'] ?? null,
+                    $item['width'] ?? null,
+                ) ?? 0;
+            }
+        }
+
+        $set('items', $items);
+
+        Notification::make()
+            ->success()
+            ->title($touched > 0 ? "{$touched} ligne(s) recalculée(s)" : 'Aucune ligne à recalculer')
+            ->body($touched > 0 ? 'Pensez à enregistrer le devis.' : 'Aucune ligne n\'utilise un tarif du tableau.')
+            ->send();
+    }
+
     public static function form(Form $form): Form
     {
         $projectTypeOptions = Quote::projectTypeOptions('fr');
@@ -97,7 +218,9 @@ class QuoteResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Informations client')
+                        Forms\Components\Section::make('1. Client')
+                            ->description('À qui s\'adresse le devis. Le nom et l\'adresse sont imprimés en tête du document.')
+                            ->icon('heroicon-o-user')
                             ->schema([
                                 Forms\Components\TextInput::make('first_name')
                                     ->label('Prénom')
@@ -112,11 +235,10 @@ class QuoteResource extends Resource
                                 Forms\Components\TextInput::make('email')
                                     ->label('Email')
                                     ->email()
-                                    ->placeholder('Facultatif'),
+                                    ->placeholder('Adresse email du client (facultatif)'),
                                 Forms\Components\TextInput::make('client_address')
                                     ->label('Adresse')
-                                    ->placeholder('Sousse-Khzema')
-                                    ->helperText('Imprimée sous le nom du client sur le devis')
+                                    ->placeholder('Adresse imprimée sous le nom du client')
                                     ->columnSpanFull(),
                                 Forms\Components\TextInput::make('city')
                                     ->label('Ville'),
@@ -124,33 +246,35 @@ class QuoteResource extends Resource
                                     ->label('Pays'),
                             ])->columns(2),
 
-                        Forms\Components\Section::make('Détails du projet')
+                        Forms\Components\Section::make('2. Projet')
+                            ->description('Le contexte de la demande — rien de tout ceci n\'apparaît sur le devis imprimé.')
+                            ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
                                 Forms\Components\Select::make('project_type')
                                     ->label('Type de projet')
                                     ->options($projectTypeOptions)
                                     ->required()
                                     ->default(CanonicalServiceCatalog::OTHER_SLUG),
-                                Forms\Components\TextInput::make('budget_range')
-                                    ->label('Budget client'),
                                 Forms\Components\TextInput::make('timeline')
-                                    ->label('Délai souhaité'),
+                                    ->label('Délai souhaité')
+                                    ->placeholder('Délai annoncé par le client'),
                                 Forms\Components\Textarea::make('description')
                                     ->label('Description du projet')
                                     ->rows(3)
+                                    ->placeholder('Ce que le client demande, dans ses mots.')
                                     ->columnSpanFull(),
-                            ])->columns(3),
+                            ])->columns(2),
 
-                        Forms\Components\Section::make('Tarifs (prix au m²)')
-                            ->description('Les prix des lignes sont calculés à partir de ces tarifs. Ce tableau est imprimé sous le devis.')
+                        Forms\Components\Section::make('3. Tarifs au m²')
+                            ->description('Le barème de ce devis. Chaque ligne de la section 4 s\'y réfère pour calculer son prix, et ce tableau est réimprimé sous le devis.')
                             ->icon('heroicon-o-calculator')
                             ->schema([
                                 Forms\Components\Repeater::make('rates')
                                     ->hiddenLabel()
                                     ->schema([
                                         Forms\Components\TextInput::make('label')
-                                            ->label('Tarif')
-                                            ->placeholder('Aluminium')
+                                            ->label('Nom du tarif')
+                                            ->placeholder('Matériau ou prestation facturé au m²')
                                             ->required()
                                             ->live(onBlur: true)
                                             ->columnSpan(3),
@@ -172,20 +296,34 @@ class QuoteResource extends Resource
                                             ->columnSpan(2),
                                         Forms\Components\TextInput::make('supplement_label')
                                             ->label('Libellé du supplément')
-                                            ->placeholder('Prix Moteur')
+                                            ->placeholder('Intitulé imprimé pour ce supplément')
                                             ->columnSpan(3),
                                     ])
                                     ->columns(10)
                                     ->default(DevisPricing::DEFAULT_RATES)
                                     ->addActionLabel('Ajouter un tarif')
-                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
+                                    ->itemLabel(fn (array $state): ?string => filled($state['label'] ?? null)
+                                        ? $state['label'].'  —  '.DevisPricing::format($state['price'] ?? 0).' dt/m²'
+                                        : null)
                                     ->live(),
                             ])
                             ->collapsible(),
 
-                        Forms\Components\Section::make('Lignes du devis')
-                            ->description('Saisissez les dimensions et choisissez un tarif — le prix se calcule tout seul.')
+                        Forms\Components\Section::make('4. Lignes du devis')
+                            ->key('devis_lines')
+                            ->description('Saisissez les dimensions et choisissez un tarif — le prix se calcule tout seul. Utilisez ⧉ pour dupliquer une menuiserie identique.')
                             ->icon('heroicon-o-table-cells')
+                            ->headerActions([
+                                Forms\Components\Actions\Action::make('recalculate_all_lines')
+                                    ->label('Recalculer les prix')
+                                    ->icon('heroicon-m-arrow-path')
+                                    ->color('gray')
+                                    ->requiresConfirmation()
+                                    ->modalHeading('Recalculer toutes les lignes')
+                                    ->modalDescription('Les prix seront recalculés à partir des tarifs et des dimensions. Les prix saisis à la main (lignes sans tarif) ne sont pas touchés.')
+                                    ->modalSubmitActionLabel('Recalculer')
+                                    ->action(fn (Forms\Get $get, Forms\Set $set) => static::recalculateAllLines($get, $set)),
+                            ])
                             ->schema([
                                 Forms\Components\Repeater::make('items')
                                     ->hiddenLabel()
@@ -193,53 +331,56 @@ class QuoteResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('description')
                                             ->label('Désignation')
-                                            ->placeholder('Fenêtre à la française 2 ventaux')
+                                            ->placeholder('Désignation telle qu\'elle apparaîtra sur le devis')
                                             ->required()
-                                            ->columnSpan(4),
+                                            ->columnSpanFull(),
+
                                         Forms\Components\TextInput::make('height')
-                                            ->label('H (m)')
+                                            ->label('Hauteur')
                                             ->numeric()
                                             ->step(0.01)
+                                            ->suffix('m')
                                             ->live(onBlur: true)
                                             ->afterStateUpdated($recalculate)
                                             ->columnSpan(2),
                                         Forms\Components\TextInput::make('width')
-                                            ->label('L (m)')
+                                            ->label('Largeur')
                                             ->numeric()
                                             ->step(0.01)
+                                            ->suffix('m')
                                             ->live(onBlur: true)
                                             ->afterStateUpdated($recalculate)
                                             ->columnSpan(2),
                                         Forms\Components\TextInput::make('quantity')
-                                            ->label('Qté')
+                                            ->label('Quantité')
                                             ->numeric()
                                             ->default(1)
                                             ->minValue(0.01)
                                             ->required()
                                             ->live(onBlur: true)
-                                            ->columnSpan(1),
+                                            ->columnSpan(2),
                                         Forms\Components\Select::make('rate_label')
-                                            ->label('Tarif')
+                                            ->label('Tarif menuiserie')
                                             ->options($rateOptions)
-                                            ->placeholder('Prix libre')
+                                            ->placeholder('Prix libre (saisi à la main)')
                                             ->live()
                                             ->afterStateUpdated($recalculate)
-                                            ->columnSpan(3),
+                                            ->columnSpan(6),
 
                                         Forms\Components\TextInput::make('unit_price')
-                                            ->label('Prix unitaire')
+                                            ->label('Prix menuiserie / unité')
                                             ->numeric()
                                             ->default(0)
                                             ->suffix('dt')
                                             ->live(onBlur: true)
-                                            ->helperText('Modifiable — le ↻ rétablit le calcul')
-                                            ->suffixAction(
+                                            ->hintAction(
                                                 Forms\Components\Actions\Action::make('recalculate_unit_price')
+                                                    ->label('Recalculer')
                                                     ->icon('heroicon-m-arrow-path')
-                                                    ->tooltip('Recalculer depuis le tarif')
+                                                    ->tooltip('Recalculer depuis le tarif et les dimensions')
                                                     ->action($recalculate)
                                             )
-                                            ->columnSpan(3),
+                                            ->columnSpan(4),
                                         Forms\Components\Select::make('shutter_rate_label')
                                             ->label('Tarif volet')
                                             ->options($rateOptions)
@@ -250,33 +391,38 @@ class QuoteResource extends Resource
                                                     ? 0
                                                     : (DevisPricing::unitPrice($get('../../rates'), $state, $get('height'), $get('width')) ?? 0));
                                             })
-                                            ->columnSpan(3),
+                                            ->columnSpan(4),
                                         Forms\Components\TextInput::make('shutter_price')
-                                            ->label('Prix volet')
+                                            ->label('Prix volet / unité')
                                             ->numeric()
                                             ->default(0)
                                             ->suffix('dt')
                                             ->live(onBlur: true)
-                                            ->columnSpan(3),
+                                            ->columnSpan(4),
+
                                         Forms\Components\Placeholder::make('line_total')
-                                            ->label('Total ligne')
-                                            ->content(fn (Forms\Get $get): string => DevisPricing::format(
-                                                DevisPricing::lineTotal($get('unit_price'), $get('shutter_price'), $get('quantity'))
-                                            ).' dt')
-                                            ->columnSpan(3),
+                                            ->label('Total de la ligne')
+                                            ->content(fn (Forms\Get $get): HtmlString => static::lineTotalDisplay($get))
+                                            ->columnSpanFull(),
                                     ])
                                     ->columns(12)
                                     ->defaultItems(0)
                                     ->addActionLabel('Ajouter une ligne')
                                     ->reorderable()
                                     ->orderColumn('order')
+                                    ->cloneable()
                                     ->collapsible()
-                                    ->itemLabel(fn (array $state): ?string => $state['description'] ?? null),
-                            ])
-                            ->collapsed(fn ($record) => $record && ! $record->items()->exists()),
+                                    ->itemLabel(fn (array $state): ?string => static::lineItemLabel($state)),
 
-                        Forms\Components\Section::make('Information sur produit')
-                            ->description('Bloc imprimé en bas du devis — une puce par ligne.')
+                                Forms\Components\Placeholder::make('lines_subtotal')
+                                    ->label('Total des lignes')
+                                    ->content(fn (Forms\Get $get): HtmlString => new HtmlString(
+                                        '<span class="text-xl font-bold">'.e(DevisPricing::format(static::totalsFromState($get)['subtotal'])).' dt</span>'
+                                    )),
+                            ]),
+
+                        Forms\Components\Section::make('5. Mentions imprimées')
+                            ->description('Le bloc « Information sur produit » repris en bas du devis — une puce par ligne.')
                             ->icon('heroicon-o-information-circle')
                             ->collapsed()
                             ->schema([
@@ -284,44 +430,31 @@ class QuoteResource extends Resource
                                     ->hiddenLabel()
                                     ->rows(5)
                                     ->default(self::defaultProductNotes())
-                                    ->placeholder(self::defaultProductNotes()),
+                                    ->placeholder('Une mention par ligne — chacune devient une puce sous le devis.'),
+                            ]),
+
+                        Forms\Components\Section::make('Notes internes')
+                            ->description('Visible uniquement dans l\'administration — jamais imprimé.')
+                            ->icon('heroicon-o-lock-closed')
+                            ->collapsed(fn (?Quote $record): bool => blank($record?->admin_notes))
+                            ->schema([
+                                Forms\Components\Textarea::make('admin_notes')
+                                    ->hiddenLabel()
+                                    ->rows(3)
+                                    ->placeholder('Remarques de suivi, jamais visibles par le client.'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()
+                    ->extraAttributes(['class' => 'top-6 lg:sticky'])
                     ->schema([
-                        Forms\Components\Section::make('Statut')
+                        Forms\Components\Section::make('Récapitulatif')
+                            ->icon('heroicon-o-banknotes')
                             ->schema([
-                                Forms\Components\TextInput::make('quote_number')
-                                    ->label('N° Devis')
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->placeholder('Attribué à l\'envoi'),
-                                Forms\Components\Select::make('status')
-                                    ->label('Statut')
-                                    ->options([
-                                        'new' => '🆕 Nouveau',
-                                        'contacted' => '📞 Contacté',
-                                        'quoted' => '📋 Devis envoyé',
-                                        'accepted' => '✅ Accepté',
-                                        'rejected' => '❌ Refusé',
-                                        'completed' => '🎉 Terminé',
-                                    ])
-                                    ->required()
-                                    ->default('new'),
-                                Forms\Components\DatePicker::make('devis_date')
-                                    ->label('Date du devis')
-                                    ->displayFormat('d/m/Y')
-                                    ->default(now())
-                                    ->helperText('Date imprimée sur le document'),
-                                Forms\Components\DatePicker::make('valid_until')
-                                    ->label('Validité jusqu\'au')
-                                    ->displayFormat('d/m/Y'),
-                            ]),
-
-                        Forms\Components\Section::make('Totaux')
-                            ->schema([
+                                Forms\Components\Placeholder::make('calculated_subtotal')
+                                    ->label('Total des lignes')
+                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['subtotal']).' dt'),
                                 Forms\Components\TextInput::make('discount')
                                     ->label('Remise')
                                     ->numeric()
@@ -340,32 +473,91 @@ class QuoteResource extends Resource
                                     ->default(19)
                                     ->live(onBlur: true)
                                     ->visible(fn (Forms\Get $get): bool => (bool) $get('show_tax')),
-                                Forms\Components\Placeholder::make('calculated_subtotal')
-                                    ->label('Total')
-                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['subtotal']).' dt'),
-                                Forms\Components\Placeholder::make('calculated_discount')
-                                    ->label('Remise')
-                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['discount']).' dt'),
                                 Forms\Components\Placeholder::make('calculated_tax')
-                                    ->label('TVA')
+                                    ->label('Montant TVA')
                                     ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['tax']).' dt')
                                     ->visible(fn (Forms\Get $get): bool => (bool) $get('show_tax')),
                                 Forms\Components\Placeholder::make('calculated_total')
                                     ->label('Net à payer')
-                                    ->content(fn (Forms\Get $get): string => DevisPricing::format(static::totalsFromState($get)['total']).' dt'),
+                                    ->content(fn (Forms\Get $get): HtmlString => new HtmlString(
+                                        '<span class="text-2xl font-bold text-primary-600 dark:text-primary-400">'
+                                        .e(DevisPricing::format(static::totalsFromState($get)['total'])).' dt</span>'
+                                    )),
                             ]),
 
-                        Forms\Components\Section::make('Notes')
+                        Forms\Components\Section::make('Suivi')
+                            ->icon('heroicon-o-flag')
                             ->schema([
-                                Forms\Components\Textarea::make('admin_notes')
-                                    ->label('Notes internes')
-                                    ->rows(3)
-                                    ->placeholder('Notes visibles uniquement par l\'admin...'),
+                                Forms\Components\Select::make('status')
+                                    ->label('Étape')
+                                    ->options(static::statusOptions())
+                                    ->selectablePlaceholder(false)
+                                    ->required()
+                                    ->default('new')
+                                    ->live()
+                                    ->helperText(fn (Forms\Get $get): string => static::statusHint($get('status'))),
+                                Forms\Components\TextInput::make('quote_number')
+                                    ->label('N° du devis')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->placeholder('Attribué automatiquement à l\'envoi')
+                                    ->helperText('Attribué la première fois que le devis est marqué comme envoyé.'),
+                                Forms\Components\DatePicker::make('devis_date')
+                                    ->label('Date du devis')
+                                    ->displayFormat('d/m/Y')
+                                    ->default(now())
+                                    ->helperText('Date imprimée sur le document.'),
+                                Forms\Components\DatePicker::make('valid_until')
+                                    ->label('Valable jusqu\'au')
+                                    ->displayFormat('d/m/Y')
+                                    ->default(now()->addDays(30)),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(3);
+    }
+
+    /**
+     * The line's total, with the arithmetic that produced it spelled out — the
+     * admin can check a price without redoing the multiplication.
+     */
+    protected static function lineTotalDisplay(Forms\Get $get): HtmlString
+    {
+        $area = DevisPricing::area($get('height'), $get('width'));
+        $unitPrice = (float) $get('unit_price') + (float) $get('shutter_price');
+        $quantity = (float) ($get('quantity') ?? 0);
+        $total = DevisPricing::lineTotal($get('unit_price'), $get('shutter_price'), $quantity);
+
+        $breakdown = [];
+
+        if ($area > 0) {
+            $breakdown[] = DevisPricing::formatDimension($get('height')).' × '.DevisPricing::formatDimension($get('width'))
+                .' = '.number_format($area, 3, '.', '').' m²';
+        }
+
+        $breakdown[] = DevisPricing::format($unitPrice).' dt × '.static::formatQuantity($quantity);
+
+        return new HtmlString(
+            '<span class="text-xl font-bold text-primary-600 dark:text-primary-400">'.e(DevisPricing::format($total)).' dt</span>'
+            .' <span class="text-sm text-gray-500">'.e(implode('   •   ', $breakdown)).'</span>'
+        );
+    }
+
+    /**
+     * What the admin should do next, given where the devis sits in the pipeline.
+     */
+    public static function statusHint(?string $status): string
+    {
+        return match ($status) {
+            'new' => 'Demande reçue — appelez le client, puis chiffrez le devis.',
+            'contacted' => 'Client joint — ajoutez les lignes puis envoyez le devis.',
+            'quoted' => 'Devis envoyé — en attente de la réponse du client.',
+            'accepted' => 'Accepté — vous pouvez créer la facture.',
+            'rejected' => 'Refusé — conservé pour l\'historique.',
+            'completed' => 'Facturé — dossier clos.',
+            default => '',
+        };
     }
 
     /**
@@ -380,6 +572,165 @@ class QuoteResource extends Resource
             '5ans garentie pour les moteurs',
             'Y compris fourniture et pose',
         ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Group::make()
+                    ->schema([
+                        Infolists\Components\Section::make('Client')
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('full_name')
+                                    ->label('Nom')
+                                    ->weight(FontWeight::Bold),
+                                Infolists\Components\TextEntry::make('phone')
+                                    ->label('Téléphone')
+                                    ->icon('heroicon-m-phone')
+                                    ->copyable(),
+                                Infolists\Components\TextEntry::make('email')
+                                    ->label('Email')
+                                    ->icon('heroicon-m-envelope')
+                                    ->copyable()
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('client_address')
+                                    ->label('Adresse')
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('city')
+                                    ->label('Ville')
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('country')
+                                    ->label('Pays')
+                                    ->placeholder('—'),
+                            ])->columns(3),
+
+                        Infolists\Components\Section::make('Projet')
+                            ->icon('heroicon-o-clipboard-document-list')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('project_type')
+                                    ->label('Type')
+                                    ->badge()
+                                    ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr')),
+                                Infolists\Components\TextEntry::make('timeline')
+                                    ->label('Délai souhaité')
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('description')
+                                    ->label('Description')
+                                    ->placeholder('Aucune description')
+                                    ->columnSpanFull(),
+                            ])->columns(2),
+
+                        Infolists\Components\Section::make('Lignes du devis')
+                            ->icon('heroicon-o-table-cells')
+                            ->schema([
+                                Infolists\Components\RepeatableEntry::make('items')
+                                    ->hiddenLabel()
+                                    ->placeholder('Aucune ligne — le devis n\'est pas encore chiffré.')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('description')
+                                            ->hiddenLabel()
+                                            ->weight(FontWeight::SemiBold)
+                                            ->columnSpanFull(),
+                                        Infolists\Components\TextEntry::make('dimensions')
+                                            ->label('Dimensions')
+                                            ->state(fn ($record): string => DevisPricing::formatDimension($record->height) !== ''
+                                                ? DevisPricing::formatDimension($record->height).' × '.DevisPricing::formatDimension($record->width).' m'
+                                                : '—')
+                                            ->columnSpan(2),
+                                        Infolists\Components\TextEntry::make('quantity')
+                                            ->label('Quantité')
+                                            ->formatStateUsing(fn ($state): string => static::formatQuantity($state)),
+                                        Infolists\Components\TextEntry::make('unit_price')
+                                            ->label('P.U. menuiserie')
+                                            ->formatStateUsing(fn ($state): string => DevisPricing::format($state).' dt'),
+                                        Infolists\Components\TextEntry::make('shutter_price')
+                                            ->label('P.U. volet')
+                                            ->formatStateUsing(fn ($state): string => (float) $state > 0 ? DevisPricing::format($state).' dt' : '—'),
+                                        Infolists\Components\TextEntry::make('total')
+                                            ->label('Total')
+                                            ->weight(FontWeight::Bold)
+                                            ->formatStateUsing(fn ($state): string => DevisPricing::format($state).' dt'),
+                                    ])
+                                    ->columns(6),
+                            ]),
+
+                        Infolists\Components\Section::make('Tarifs appliqués')
+                            ->icon('heroicon-o-calculator')
+                            ->collapsed()
+                            ->schema([
+                                Infolists\Components\TextEntry::make('rate_legend')
+                                    ->hiddenLabel()
+                                    ->listWithLineBreaks()
+                                    ->state(fn (Quote $record): array => collect($record->rateLegend())
+                                        ->map(fn (array $line): string => $line['label'].' : '.DevisPricing::format($line['price']).' dt')
+                                        ->all()),
+                            ]),
+
+                        Infolists\Components\Section::make('Notes internes')
+                            ->icon('heroicon-o-lock-closed')
+                            ->visible(fn (Quote $record): bool => filled($record->admin_notes))
+                            ->schema([
+                                Infolists\Components\TextEntry::make('admin_notes')
+                                    ->hiddenLabel(),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Infolists\Components\Group::make()
+                    ->extraAttributes(['class' => 'top-6 lg:sticky'])
+                    ->schema([
+                        Infolists\Components\Section::make('Récapitulatif')
+                            ->icon('heroicon-o-banknotes')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('subtotal')
+                                    ->label('Total des lignes')
+                                    ->formatStateUsing(fn ($state): string => DevisPricing::format($state).' dt'),
+                                Infolists\Components\TextEntry::make('discount')
+                                    ->label('Remise')
+                                    ->formatStateUsing(fn ($state): string => DevisPricing::format($state).' dt'),
+                                Infolists\Components\TextEntry::make('tax_amount')
+                                    ->label(fn (Quote $record): string => 'TVA '.static::formatQuantity($record->tax_rate).' %')
+                                    ->visible(fn (Quote $record): bool => (bool) $record->show_tax)
+                                    ->formatStateUsing(fn ($state): string => DevisPricing::format($state).' dt'),
+                                Infolists\Components\TextEntry::make('total')
+                                    ->label('Net à payer')
+                                    ->formatStateUsing(fn ($state): HtmlString => new HtmlString(
+                                        '<span class="text-2xl font-bold text-primary-600 dark:text-primary-400">'
+                                        .e(DevisPricing::format($state)).' dt</span>'
+                                    )),
+                            ]),
+
+                        Infolists\Components\Section::make('Suivi')
+                            ->icon('heroicon-o-flag')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Étape')
+                                    ->badge()
+                                    ->icon(fn (?string $state): ?string => static::statusIcon($state))
+                                    ->color(fn (?string $state): string => static::statusColor($state))
+                                    ->formatStateUsing(fn (?string $state): string => static::statusLabel($state))
+                                    ->helperText(fn (?string $state): string => static::statusHint($state)),
+                                Infolists\Components\TextEntry::make('quote_number')
+                                    ->label('N° du devis')
+                                    ->placeholder('Pas encore envoyé'),
+                                Infolists\Components\TextEntry::make('devis_date')
+                                    ->label('Date du devis')
+                                    ->date('d/m/Y')
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('valid_until')
+                                    ->label('Valable jusqu\'au')
+                                    ->date('d/m/Y')
+                                    ->placeholder('—'),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Demande reçue le')
+                                    ->dateTime('d/m/Y à H:i'),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -404,20 +755,20 @@ class QuoteResource extends Resource
                     ->withExists('invoice')
             )
             ->columns([
-                Tables\Columns\TextColumn::make('quote_number')
-                    ->label('N° Devis')
-                    ->searchable()
-                    ->sortable()
-                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Client')
-                    ->searchable()
+                    ->searchable(['name', 'first_name', 'quote_number'])
                     ->sortable()
-                    ->formatStateUsing(fn (Quote $record): string => $record->full_name),
+                    ->weight(FontWeight::SemiBold)
+                    ->formatStateUsing(fn (Quote $record): string => $record->full_name)
+                    ->description(fn (Quote $record): string => $record->quote_number ?: 'Brouillon'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Téléphone')
                     ->searchable()
-                    ->copyable(),
+                    ->copyable()
+                    ->copyMessage('Numéro copié')
+                    ->icon('heroicon-m-phone')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('project_type')
                     ->label('Type')
                     ->badge()
@@ -428,142 +779,158 @@ class QuoteResource extends Resource
                         'kitchen' => 'success',
                         'pergola' => 'primary',
                         default => 'gray',
-                    }),
+                    })
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('items_count')
+                    ->label('Lignes')
+                    ->alignCenter()
+                    ->badge()
+                    ->color(fn (int $state): string => $state > 0 ? 'gray' : 'warning')
+                    ->formatStateUsing(fn (int $state): string => $state > 0 ? (string) $state : 'à chiffrer'),
                 Tables\Columns\TextColumn::make('total')
-                    ->label('Total')
+                    ->label('Net à payer')
                     ->money('TND')
                     ->sortable()
+                    ->alignEnd()
+                    ->weight(FontWeight::SemiBold)
                     ->placeholder('—'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Statut')
+                    ->label('Étape')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'new' => 'Nouveau',
-                        'contacted' => 'Contacté',
-                        'quoted' => 'Devis envoyé',
-                        'accepted' => 'Accepté',
-                        'rejected' => 'Refusé',
-                        'completed' => 'Terminé',
-                        default => $state,
-                    })
-                    ->color(fn (string $state): string => match ($state) {
-                        'new' => 'danger',
-                        'contacted' => 'warning',
-                        'quoted' => 'info',
-                        'accepted' => 'success',
-                        'rejected' => 'gray',
-                        'completed' => 'success',
-                        default => 'gray',
-                    }),
+                    ->icon(fn (string $state): ?string => static::statusIcon($state))
+                    ->formatStateUsing(fn (string $state): string => static::statusLabel($state))
+                    ->color(fn (string $state): string => static::statusColor($state)),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date')
+                    ->label('Reçue le')
                     ->dateTime('d/m/Y')
+                    ->description(fn (Quote $record): string => $record->created_at?->diffForHumans() ?? '')
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->label('Statut')
-                    ->options([
-                        'new' => 'Nouveau',
-                        'contacted' => 'Contacté',
-                        'quoted' => 'Devis envoyé',
-                        'accepted' => 'Accepté',
-                        'rejected' => 'Refusé',
-                        'completed' => 'Terminé',
-                    ]),
                 Tables\Filters\SelectFilter::make('project_type')
                     ->label('Type de projet')
                     ->options($projectTypeOptions),
+                Tables\Filters\TernaryFilter::make('items_count')
+                    ->label('Chiffrage')
+                    ->placeholder('Tous')
+                    ->trueLabel('Devis chiffrés')
+                    ->falseLabel('Restant à chiffrer')
+                    ->queries(
+                        true: fn (Builder $query): Builder => $query->has('items'),
+                        false: fn (Builder $query): Builder => $query->doesntHave('items'),
+                        blank: fn (Builder $query): Builder => $query,
+                    ),
             ])
             ->actions([
+                // One visible "next step" per row, so the pipeline is legible
+                // from the list without opening the ⋮ menu.
+                Tables\Actions\Action::make('mark_contacted')
+                    ->label('Marquer contacté')
+                    ->icon('heroicon-m-phone')
+                    ->color('warning')
+                    ->iconButton()
+                    ->tooltip('Marquer comme contacté')
+                    ->visible(fn (Quote $record): bool => $record->status === 'new')
+                    ->action(function (Quote $record): void {
+                        $record->markAsContacted();
+                        Notification::make()->success()->title('Client marqué comme contacté')->send();
+                    }),
+                Tables\Actions\Action::make('build_quote')
+                    ->label('Chiffrer')
+                    ->icon('heroicon-m-calculator')
+                    ->color('primary')
+                    ->button()
+                    ->visible(fn (Quote $record): bool => in_array($record->status, ['new', 'contacted'], true) && $record->items_count === 0)
+                    ->url(fn (Quote $record): string => static::getUrl('edit', ['record' => $record])),
+                Tables\Actions\Action::make('send_quote')
+                    ->label('Envoyer')
+                    ->icon('heroicon-m-paper-airplane')
+                    ->color('primary')
+                    ->button()
+                    ->visible(fn (Quote $record): bool => in_array($record->status, ['new', 'contacted'], true) && $record->items_count > 0)
+                    ->requiresConfirmation()
+                    ->modalHeading('Marquer le devis comme envoyé')
+                    ->modalDescription('Un numéro de devis sera attribué s\'il n\'en a pas encore. Pensez à envoyer le PDF au client.')
+                    ->modalSubmitActionLabel('Marquer comme envoyé')
+                    ->action(function (Quote $record): void {
+                        $record->markAsQuoted();
+                        Notification::make()
+                            ->success()
+                            ->title('Devis envoyé')
+                            ->body("Numéro attribué : {$record->quote_number}")
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('mark_accepted')
+                    ->label('Accepté')
+                    ->icon('heroicon-m-check-circle')
+                    ->color('success')
+                    ->button()
+                    ->visible(fn (Quote $record): bool => $record->status === 'quoted')
+                    ->requiresConfirmation()
+                    ->modalHeading('Le client a accepté le devis')
+                    ->action(function (Quote $record): void {
+                        $record->markAsAccepted();
+                        Notification::make()->success()->title('Devis accepté !')->send();
+                    }),
+                Tables\Actions\Action::make('create_invoice')
+                    ->label('Facturer')
+                    ->icon('heroicon-m-banknotes')
+                    ->color('success')
+                    ->button()
+                    ->visible(fn (Quote $record): bool => $record->status === 'accepted' && ! $record->invoice_exists)
+                    ->requiresConfirmation()
+                    ->modalHeading('Créer une facture')
+                    ->modalDescription('Une facture reprenant les lignes et les totaux de ce devis sera créée.')
+                    ->action(function (Quote $record): void {
+                        $invoice = $record->createInvoice();
+                        $record->markAsCompleted();
+                        Notification::make()
+                            ->success()
+                            ->title('Facture créée')
+                            ->body("Facture {$invoice->invoice_number} créée avec succès")
+                            ->send();
+                    }),
+
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\Action::make('mark_contacted')
-                        ->label('Marquer contacté')
-                        ->icon('heroicon-o-phone')
-                        ->color('warning')
-                        ->visible(fn (Quote $record) => $record->status === 'new')
-                        ->action(fn (Quote $record) => $record->markAsContacted())
-                        ->after(fn () => Notification::make()->success()->title('Statut mis à jour')->send()),
-                    Tables\Actions\Action::make('generate_quote')
-                        ->label('Générer devis')
-                        ->icon('heroicon-o-document-text')
+                    Tables\Actions\ViewAction::make()->label('Voir le détail'),
+                    Tables\Actions\EditAction::make()->label('Modifier'),
+                    Tables\Actions\Action::make('download_pdf')
+                        ->label('Télécharger le PDF')
+                        ->icon('heroicon-o-document-arrow-down')
                         ->color('info')
-                        ->visible(fn (Quote $record) => in_array($record->status, ['new', 'contacted']))
-                        ->url(fn (Quote $record) => static::getUrl('edit', ['record' => $record])),
-                    Tables\Actions\Action::make('send_quote')
-                        ->label('Envoyer devis')
-                        ->icon('heroicon-o-paper-airplane')
-                        ->color('primary')
-                        ->visible(fn (Quote $record) => $record->status === 'contacted' && $record->items_count > 0)
-                        ->requiresConfirmation()
-                        ->modalHeading('Envoyer le devis')
-                        ->modalDescription('Le devis sera marqué comme envoyé. Voulez-vous continuer?')
-                        ->action(function (Quote $record) {
-                            $record->markAsQuoted();
-                            Notification::make()->success()->title('Devis envoyé')->send();
-                        }),
-                    Tables\Actions\Action::make('mark_accepted')
-                        ->label('Marquer accepté')
-                        ->icon('heroicon-o-check-circle')
+                        ->url(fn (Quote $record): string => route('quote.pdf', $record))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Quote $record): bool => $record->items_count > 0),
+                    Tables\Actions\Action::make('download_excel')
+                        ->label('Télécharger l\'Excel')
+                        ->icon('heroicon-o-table-cells')
                         ->color('success')
-                        ->visible(fn (Quote $record) => $record->status === 'quoted')
-                        ->requiresConfirmation()
-                        ->action(function (Quote $record) {
-                            $record->markAsAccepted();
-                            Notification::make()->success()->title('Devis accepté!')->send();
-                        }),
+                        ->url(fn (Quote $record): string => route('quote.excel', $record))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Quote $record): bool => $record->items_count > 0),
                     Tables\Actions\Action::make('mark_rejected')
                         ->label('Marquer refusé')
                         ->icon('heroicon-o-x-circle')
                         ->color('danger')
-                        ->visible(fn (Quote $record) => $record->status === 'quoted')
+                        ->visible(fn (Quote $record): bool => in_array($record->status, ['quoted', 'contacted'], true))
                         ->requiresConfirmation()
-                        ->action(function (Quote $record) {
+                        ->action(function (Quote $record): void {
                             $record->markAsRejected();
                             Notification::make()->warning()->title('Devis refusé')->send();
                         }),
-                    Tables\Actions\Action::make('download_pdf')
-                        ->label('Devis PDF')
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->color('info')
-                        ->url(fn (Quote $record) => route('quote.pdf', $record))
-                        ->openUrlInNewTab()
-                        ->visible(fn (Quote $record) => $record->items_count > 0),
-                    Tables\Actions\Action::make('download_excel')
-                        ->label('Devis Excel')
-                        ->icon('heroicon-o-table-cells')
-                        ->color('success')
-                        ->url(fn (Quote $record) => route('quote.excel', $record))
-                        ->openUrlInNewTab()
-                        ->visible(fn (Quote $record) => $record->items_count > 0),
-                    Tables\Actions\Action::make('create_invoice')
-                        ->label('Créer facture')
-                        ->icon('heroicon-o-banknotes')
-                        ->color('success')
-                        ->visible(fn (Quote $record) => $record->status === 'accepted' && ! $record->invoice_exists)
-                        ->requiresConfirmation()
-                        ->modalHeading('Créer une facture')
-                        ->modalDescription('Une facture sera créée à partir de ce devis.')
-                        ->action(function (Quote $record) {
-                            $invoice = $record->createInvoice();
-                            $record->markAsCompleted();
-                            Notification::make()
-                                ->success()
-                                ->title('Facture créée')
-                                ->body("Facture {$invoice->invoice_number} créée avec succès")
-                                ->send();
-                        }),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
+                    Tables\Actions\DeleteAction::make()->label('Supprimer'),
+                ])
+                    ->tooltip('Plus d\'actions'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Aucun devis')
+            ->emptyStateDescription('Les demandes envoyées depuis le site apparaissent ici. Vous pouvez aussi créer un devis à la main.')
+            ->emptyStateIcon('heroicon-o-document-text');
     }
 
     public static function getRelations(): array
@@ -576,6 +943,7 @@ class QuoteResource extends Resource
         return [
             'index' => Pages\ListQuotes::route('/'),
             'create' => Pages\CreateQuote::route('/create'),
+            'view' => Pages\ViewQuote::route('/{record}'),
             'edit' => Pages\EditQuote::route('/{record}/edit'),
         ];
     }

@@ -20,7 +20,6 @@ class Quote extends Model
         'client_address',
         'project_type',
         'description',
-        'budget_range',
         'timeline',
         'attachments',
         'status',

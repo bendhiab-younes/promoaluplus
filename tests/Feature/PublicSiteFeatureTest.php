@@ -1,0 +1,525 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Mail\QuoteRequestNotification;
+use App\Mail\QuoteRequestReceived;
+use App\Models\ChatbotFlow;
+use App\Models\Faq;
+use App\Models\Invoice;
+use App\Models\Project;
+use App\Models\Quote;
+use App\Models\Service;
+use App\Models\SiteSetting;
+use App\Models\Testimonial;
+use App\Models\User;
+use App\Support\CanonicalServiceCatalog;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
+
+/**
+ * End-to-end coverage of every public-facing feature: the five marketing
+ * pages in all three locales, the locale switcher, SEO endpoints, the quote
+ * form, the chatbot endpoints, and the auth gate on document downloads.
+ *
+ * Findings referenced as "see report §X" are documented in
+ * docs/site-feature-and-coherence-report.md.
+ */
+class PublicSiteFeatureTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private const LOCALES = ['fr', 'en', 'ar'];
+
+    private const PAGE_ROUTES = ['home', 'services', 'portfolio', 'about', 'contact'];
+
+    private function seedContent(): void
+    {
+        Service::create([
+            'slug' => 'windows',
+            'title' => ['fr' => 'Fenêtres', 'en' => 'Windows', 'ar' => 'نوافذ'],
+            'short_description' => ['fr' => 'Court FR.', 'en' => 'Short EN.', 'ar' => 'قصير.'],
+            'description' => ['fr' => 'Long FR.', 'en' => 'Long EN.', 'ar' => 'طويل.'],
+            'features' => [['fr' => 'Double vitrage', 'en' => 'Double glazing', 'ar' => 'زجاج مزدوج']],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Project::create([
+            'title' => ['fr' => 'Villa Test', 'en' => 'Test Villa', 'ar' => 'فيلا'],
+            'description' => ['fr' => 'Desc FR', 'en' => 'Desc EN', 'ar' => 'وصف'],
+            'category' => 'windows',
+            'location' => 'Sousse',
+            'is_featured' => true,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Testimonial::create([
+            'client_name' => 'Client Test',
+            'client_location' => 'Sousse, Tunisie',
+            'content' => ['fr' => 'Avis FR', 'en' => 'Review EN', 'ar' => 'رأي'],
+            'rating' => 5,
+            'project_type' => 'windows',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Faq::create([
+            'question' => ['fr' => 'Question FR ?', 'en' => 'Question EN?', 'ar' => 'سؤال؟'],
+            'answer' => ['fr' => 'Réponse FR', 'en' => 'Answer EN', 'ar' => 'جواب'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+    }
+
+    private function validQuotePayload(array $overrides = []): array
+    {
+        return array_merge([
+            'first_name' => 'Younes',
+            'name' => 'Ben Dhiab',
+            'email' => 'client@example.test',
+            'phone' => '+21620000000',
+            'country' => 'Tunisie',
+            'city' => 'Sousse',
+            'project_type' => 'windows',
+            'description' => 'Deux fenêtres coulissantes pour un salon.',
+            'timeline' => '1-3 mois',
+        ], $overrides);
+    }
+
+    // ---------------------------------------------------------------- pages
+
+    public function test_every_public_page_renders_in_every_locale(): void
+    {
+        $this->seedContent();
+
+        foreach (self::LOCALES as $locale) {
+            foreach (self::PAGE_ROUTES as $page) {
+                $this->withSession(['locale' => $locale])
+                    ->get(route($page))
+                    ->assertOk();
+            }
+        }
+    }
+
+    public function test_public_pages_render_with_a_completely_empty_database(): void
+    {
+        foreach (self::PAGE_ROUTES as $page) {
+            $this->get(route($page))->assertOk();
+        }
+    }
+
+    public function test_arabic_locale_switches_the_document_to_rtl(): void
+    {
+        $this->withSession(['locale' => 'ar'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('dir="rtl"', false);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('dir="ltr"', false);
+    }
+
+    public function test_home_page_shows_database_content_when_present(): void
+    {
+        $this->seedContent();
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('Fenêtres', false)
+            ->assertSee('Client Test');
+    }
+
+    public function test_portfolio_filters_projects_by_category(): void
+    {
+        $this->seedContent();
+
+        Project::create([
+            'title' => ['fr' => 'Cuisine Test', 'en' => 'Cuisine Test', 'ar' => 'مطبخ'],
+            'description' => ['fr' => 'Desc', 'en' => 'Desc', 'ar' => 'وصف'],
+            'category' => 'kitchen',
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('portfolio', ['category' => 'kitchen']))
+            ->assertOk()
+            ->assertSee('Cuisine Test')
+            ->assertDontSee('Villa Test');
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('portfolio'))
+            ->assertOk()
+            ->assertSee('Villa Test')
+            ->assertSee('Cuisine Test');
+    }
+
+    public function test_contact_page_lists_active_faqs_only(): void
+    {
+        Faq::create([
+            'question' => ['fr' => 'Question visible ?'],
+            'answer' => ['fr' => 'Réponse visible'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+        Faq::create([
+            'question' => ['fr' => 'Question cachee ?'],
+            'answer' => ['fr' => 'Reponse cachee'],
+            'is_active' => false,
+            'sort_order' => 3,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('contact'))
+            ->assertOk()
+            ->assertSee('Question visible ?', false)
+            ->assertDontSee('Question cachee ?', false);
+    }
+
+    public function test_contact_page_renders_site_settings_contact_details(): void
+    {
+        SiteSetting::set('contact_phone', '+21671000111');
+        SiteSetting::set('contact_email', 'contact@promoaluplus.test');
+
+        $this->get(route('contact'))
+            ->assertOk()
+            ->assertSee('contact@promoaluplus.test');
+    }
+
+    // --------------------------------------------------------------- locale
+
+    public function test_locale_switcher_persists_a_supported_locale(): void
+    {
+        $this->from(route('home'))
+            ->get(route('locale.set', 'ar'))
+            ->assertRedirect(route('home'))
+            ->assertSessionHas('locale', 'ar');
+    }
+
+    public function test_locale_switcher_ignores_an_unsupported_locale(): void
+    {
+        $this->from(route('home'))
+            ->withSession(['locale' => 'fr'])
+            ->get(route('locale.set', 'de'))
+            ->assertRedirect(route('home'))
+            ->assertSessionHas('locale', 'fr');
+    }
+
+    // ------------------------------------------------------------------ seo
+
+    public function test_sitemap_lists_every_public_page_as_valid_xml(): void
+    {
+        $response = $this->get('/sitemap.xml')->assertOk();
+        $response->assertHeader('Content-Type', 'application/xml');
+
+        $xml = simplexml_load_string($response->getContent());
+        $this->assertNotFalse($xml, 'sitemap.xml is not well-formed XML.');
+        $this->assertCount(count(self::PAGE_ROUTES), $xml->url);
+
+        foreach (self::PAGE_ROUTES as $page) {
+            $response->assertSee(route($page), false);
+        }
+    }
+
+    public function test_robots_txt_points_at_the_sitemap(): void
+    {
+        $this->get('/robots.txt')
+            ->assertOk()
+            ->assertSee('User-agent: *')
+            ->assertSee(route('sitemap'), false);
+    }
+
+    // ---------------------------------------------------------------- quote
+
+    public function test_quote_submission_persists_the_request_and_queues_both_mails(): void
+    {
+        Mail::fake();
+
+        $this->from(route('contact'))
+            ->post(route('quote.store'), $this->validQuotePayload())
+            ->assertRedirect(route('contact'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('quotes', [
+            'email' => 'client@example.test',
+            'project_type' => 'windows',
+            'city' => 'Sousse',
+        ]);
+
+        Mail::assertQueued(QuoteRequestReceived::class);
+        Mail::assertQueued(QuoteRequestNotification::class);
+    }
+
+    public function test_quote_submission_answers_json_when_asked(): void
+    {
+        Mail::fake();
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload())
+            ->assertOk()
+            ->assertJson(['success' => true]);
+    }
+
+    public function test_quote_submission_requires_the_mandatory_fields(): void
+    {
+        Mail::fake();
+
+        $this->from(route('contact'))
+            ->post(route('quote.store'), [])
+            ->assertSessionHasErrors(['first_name', 'name', 'email', 'phone', 'project_type', 'description']);
+
+        $this->assertDatabaseCount('quotes', 0);
+    }
+
+    public function test_quote_accepts_every_canonical_service_plus_other(): void
+    {
+        Mail::fake();
+
+        $accepted = [...CanonicalServiceCatalog::slugs(), CanonicalServiceCatalog::OTHER_SLUG];
+
+        foreach ($accepted as $slug) {
+            $this->postJson(route('quote.store'), $this->validQuotePayload(['project_type' => $slug]))
+                ->assertOk();
+        }
+
+        $this->assertDatabaseCount('quotes', count($accepted));
+    }
+
+    public function test_quote_rejects_a_project_type_outside_the_catalog(): void
+    {
+        Mail::fake();
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload(['project_type' => 'facades']))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('project_type');
+    }
+
+    public function test_quote_rejects_a_malformed_email(): void
+    {
+        Mail::fake();
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload(['email' => 'not-an-email']))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
+
+    public function test_quote_submission_survives_a_mail_transport_failure(): void
+    {
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('SMTP down'));
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload())
+            ->assertOk()
+            ->assertJson(['success' => true]);
+
+        $this->assertDatabaseCount('quotes', 1);
+    }
+
+    // -------------------------------------------------------------- chatbot
+
+    public function test_chatbot_welcome_falls_back_when_no_flow_is_configured(): void
+    {
+        $this->getJson(route('chatbot.welcome'))
+            ->assertOk()
+            ->assertJsonStructure(['success', 'message', 'quick_replies']);
+    }
+
+    public function test_chatbot_welcome_uses_the_configured_welcome_flow(): void
+    {
+        ChatbotFlow::create([
+            'trigger' => 'welcome',
+            'message' => ['fr' => 'Bonjour depuis la base', 'en' => 'Hello from the database', 'ar' => 'مرحبا'],
+            'quick_replies' => [
+                ['text' => ['fr' => 'Devis', 'en' => 'Quote', 'ar' => 'عرض'], 'action' => 'flow:quote'],
+            ],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->getJson(route('chatbot.welcome'))
+            ->assertOk()
+            ->assertJsonPath('message', 'Bonjour depuis la base');
+    }
+
+    public function test_chatbot_returns_active_faqs_as_quick_replies(): void
+    {
+        Faq::create([
+            'question' => ['fr' => 'Delais ?', 'en' => 'Lead time?', 'ar' => 'المدة؟'],
+            'answer' => ['fr' => 'Deux semaines', 'en' => 'Two weeks', 'ar' => 'أسبوعان'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $response = $this->withSession(['locale' => 'en'])
+            ->getJson(route('chatbot.faqs'))
+            ->assertOk();
+
+        $texts = array_column($response->json('quick_replies'), 'text');
+        $this->assertContains('Lead time?', $texts);
+    }
+
+    public function test_chatbot_answers_an_faq_selected_by_id(): void
+    {
+        $faq = Faq::create([
+            'question' => ['fr' => 'Garantie ?', 'en' => 'Warranty?', 'ar' => 'الضمان؟'],
+            'answer' => ['fr' => 'Dix ans', 'en' => 'Ten years', 'ar' => 'عشر سنوات'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->withSession(['locale' => 'en'])
+            ->postJson(route('chatbot.message'), ['action' => 'faq:'.$faq->id])
+            ->assertOk()
+            ->assertJsonPath('message', 'Ten years');
+    }
+
+    public function test_chatbot_matches_a_flow_by_keyword(): void
+    {
+        ChatbotFlow::create([
+            'trigger' => 'quote',
+            'trigger_type' => 'keyword',
+            'keywords' => ['devis', 'prix'],
+            'message' => ['fr' => 'Voici comment obtenir un devis', 'en' => 'Here is how to get a quote', 'ar' => 'كيفية'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->postJson(route('chatbot.message'), ['message' => 'je veux un devis'])
+            ->assertOk()
+            ->assertJsonPath('message', 'Voici comment obtenir un devis');
+    }
+
+    public function test_chatbot_falls_back_on_an_unknown_message(): void
+    {
+        $this->withSession(['locale' => 'en'])
+            ->postJson(route('chatbot.message'), ['message' => 'zzzzz unmatchable zzzzz'])
+            ->assertOk()
+            ->assertJsonPath('success', true)
+            ->assertJsonStructure(['message', 'quick_replies']);
+    }
+
+    // ------------------------------------------------------------ documents
+
+    public function test_document_routes_are_closed_to_guests(): void
+    {
+        $quote = Quote::create($this->validQuotePayload(['status' => 'quoted']));
+        $invoice = Invoice::create([
+            'quote_id' => $quote->id,
+            'invoice_number' => 'FAC-2026-0001',
+            'client_name' => 'Ben Dhiab',
+            'client_email' => 'client@example.test',
+            'issue_date' => '2026-08-09',
+            'total' => 1000,
+        ]);
+
+        $this->get(route('quote.pdf', $quote))->assertRedirect();
+        $this->get(route('quote.excel', $quote))->assertRedirect();
+        $this->get(route('invoice.pdf', $invoice))->assertRedirect();
+    }
+
+    public function test_authenticated_admin_can_download_quote_documents(): void
+    {
+        $quote = Quote::create($this->validQuotePayload(['status' => 'quoted', 'quote_number' => 'DEV-2026-0001']));
+        $quote->items()->create([
+            'description' => 'Fenêtre coulissante',
+            'height' => 1.2, 'width' => 1.0, 'quantity' => 2,
+            'unit_price' => 500, 'order' => 0,
+        ]);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('quote.pdf', $quote))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/pdf');
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('quote.excel', $quote))
+            ->assertOk();
+    }
+
+    public function test_authenticated_admin_can_download_an_invoice_pdf(): void
+    {
+        $quote = Quote::create($this->validQuotePayload(['status' => 'accepted']));
+        $invoice = Invoice::create([
+            'quote_id' => $quote->id,
+            'invoice_number' => 'FAC-2026-0002',
+            'client_name' => 'Ben Dhiab',
+            'client_email' => 'client@example.test',
+            'issue_date' => '2026-08-09',
+            'total' => 1200,
+        ]);
+        $invoice->items()->create([
+            'description' => 'Fenêtre coulissante',
+            'quantity' => 2,
+            'unit_price' => 600,
+            'total' => 1200,
+        ]);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('invoice.pdf', $invoice))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/pdf');
+    }
+
+    // -------------------------------------------------------- admin surface
+
+    public function test_admin_panel_redirects_guests_to_the_login_screen(): void
+    {
+        $this->get('/admin')->assertRedirect();
+        $this->get('/admin/login')->assertOk();
+    }
+
+    public function test_admin_panel_denies_authenticated_users_outside_a_local_environment(): void
+    {
+        // Filament's Authenticate middleware aborts 403 unless the user
+        // implements FilamentUser or app.env === 'local'. App\Models\User does
+        // neither, so the whole panel is unreachable in staging/production.
+        // See report §F-01 — this test documents the defect, it does not bless it.
+        $this->actingAs(User::factory()->create());
+
+        $this->assertNotSame('local', config('app.env'));
+        $this->get('/admin/quotes')->assertForbidden();
+
+        config(['app.env' => 'local']);
+        $this->get('/admin/quotes')->assertOk();
+    }
+
+    public function test_every_filament_resource_index_renders(): void
+    {
+        config(['app.env' => 'local']);
+        $this->actingAs(User::factory()->create());
+
+        // categories / project-types are deliberately absent: their resource
+        // classes are empty files and register no routes — see report §F-05.
+        $slugs = [
+            'quotes', 'invoices', 'services', 'projects', 'testimonials',
+            'faqs', 'chatbot-flows',
+        ];
+
+        foreach ($slugs as $slug) {
+            $this->get("/admin/{$slug}")->assertOk();
+        }
+
+        $this->get('/admin')->assertOk();
+        $this->get('/admin/site-settings')->assertOk();
+    }
+
+    public function test_category_and_project_type_resources_register_no_admin_routes(): void
+    {
+        // Documents the current dead-code state (report §F-05). When those
+        // resources are either implemented or deleted, this test should change.
+        $this->assertNull(
+            app('router')->getRoutes()->getByName('filament.admin.resources.categories.index'),
+            'CategoryResource now registers routes — update report §F-05.'
+        );
+        $this->assertNull(
+            app('router')->getRoutes()->getByName('filament.admin.resources.project-types.index'),
+            'ProjectTypeResource now registers routes — update report §F-05.'
+        );
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\QuoteResource;
 use App\Models\Quote;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -34,49 +35,14 @@ class LatestQuotes extends BaseWidget
                 Tables\Columns\TextColumn::make('project_type')
                     ->label('Type')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'windows' => 'Fenêtres',
-                        'doors' => 'Portes',
-                        'curtains' => 'Rideaux',
-                        'railings' => 'Garde-corps',
-                        'pergola' => 'Pergola',
-                        'kitchen' => 'Cuisine',
-                        'shelter' => 'Abri',
-                        'shutters' => 'Volets',
-                        default => $state,
-                    })
-                    ->color(fn (string $state): string => match ($state) {
-                        'windows' => 'info',
-                        'doors' => 'warning',
-                        'curtains' => 'gray',
-                        'railings' => 'success',
-                        'pergola' => 'success',
-                        'kitchen' => 'warning',
-                        'shelter' => 'info',
-                        'shutters' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->color('gray')
+                    ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr')),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Statut')
+                    ->label('Étape')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'new' => 'Nouveau',
-                        'contacted' => 'Contacté',
-                        'quoted' => 'Devis envoyé',
-                        'accepted' => 'Accepté',
-                        'rejected' => 'Refusé',
-                        'completed' => 'Terminé',
-                        default => $state,
-                    })
-                    ->color(fn (string $state): string => match ($state) {
-                        'new' => 'danger',
-                        'contacted' => 'warning',
-                        'quoted' => 'info',
-                        'accepted' => 'success',
-                        'rejected' => 'gray',
-                        'completed' => 'success',
-                        default => 'gray',
-                    }),
+                    ->icon(fn (string $state): ?string => QuoteResource::statusIcon($state))
+                    ->formatStateUsing(fn (string $state): string => QuoteResource::statusLabel($state))
+                    ->color(fn (string $state): string => QuoteResource::statusColor($state)),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date')
                     ->dateTime('d/m/Y H:i')
@@ -85,7 +51,7 @@ class LatestQuotes extends BaseWidget
             ->actions([
                 Tables\Actions\Action::make('view')
                     ->label('Voir')
-                    ->url(fn (Quote $record): string => route('filament.admin.resources.quotes.edit', $record))
+                    ->url(fn (Quote $record): string => QuoteResource::getUrl('view', ['record' => $record]))
                     ->icon('heroicon-m-eye'),
             ])
             ->paginated(false);
