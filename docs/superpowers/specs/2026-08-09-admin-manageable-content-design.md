@@ -108,6 +108,55 @@ One-time, idempotent, non-destructive:
 Originals under `public/images/` are left in place. Because `MediaPath` handles all
 three shapes, the public site renders correctly before, during, and after the import.
 
+### 1.4 The image-field pattern (applies to every resource)
+
+`MediaPath` solves *rendering*, but not the admin form *round-trip*. Filament's
+`FileUpload` hydrates its state from files on its configured disk; a value like
+`https://images.unsplash.com/...` or an un-imported `/images/services/...` matches
+nothing there, so the component renders empty and **dehydrates to `null` on save** —
+silently destroying the image when the admin edits an unrelated field.
+
+Every image field therefore uses a pair:
+
+- `FileUpload::make('image')` on the `uploads` disk — the primary control.
+- `TextInput::make('image_url')` labelled *URL externe*, optional. **No `->url()`** —
+  that modifier is the cause of the bug in 2.1 and must not be reintroduced anywhere.
+  Validate the format server-side instead.
+
+Resolution order at render time: use the uploaded file if present, else the external
+URL, else nothing. `MediaPath::url()` is unchanged; the models gain a small accessor
+that picks between the two columns.
+
+Consequences:
+
+- No stored value is ever unreachable from the form, so no edit can silently wipe an
+  image.
+- Pointing at a CDN-hosted image stays possible — the current data shows this is
+  already being done three times.
+- `media:import` becomes an optimisation (bring external images in-house for speed and
+  resilience) rather than a prerequisite. Anything it cannot fetch simply stays in the
+  *URL externe* field and keeps working.
+
+Migration: add a nullable `image_url` column to `services`, `projects`, `testimonials`
+and `hero_slides`. Backfill by moving any existing `http`-prefixed value out of `image`
+into `image_url`.
+
+**Multi-image `gallery` fields have no equivalent escape hatch.** A multiple
+`FileUpload` will drop any array entry it cannot find on its disk. Measured scope of
+the problem: 64 gallery entries across 9 services, of which exactly **3 are external** —
+one each in `kitchen`, `pergola` and `mosquito_nets`, and each is a single-item gallery
+duplicating that service's main image.
+
+So for galleries, `media:import` *is* a prerequisite, and a small one:
+
+1. Run `media:import` before switching the gallery field to `FileUpload`.
+2. Assert zero external gallery entries remain.
+3. For any the command could not fetch, the fallback is trivial — the entry duplicates
+   the main image, which is already protected by `image_url`, so it can be dropped.
+
+The implementation plan sequences these steps explicitly. Do not switch the gallery
+field while external entries remain.
+
 ---
 
 ## 2. Services
@@ -122,10 +171,29 @@ changed nothing but the drag order.
 Fix: replace both URL text inputs with `FileUpload`. The `type="url"` inputs cease to
 exist, so the failure mode is gone by construction rather than by validation tweak.
 
+### 2.1b Fix the second, independent blocker of the same class
+
+`features`, `materials` and `specs` are all `->collapsible()->collapsed()` repeaters
+containing `->required()` text inputs (`ServiceResource.php:220`, `:290`, `:315`, `:319`).
+A native `required` attribute on an input inside a collapsed — therefore hidden —
+container produces the browser's *other* classic unfocusable-form-control block: the
+submit is refused and nothing is highlighted, because the offending field is not
+visible.
+
+Existing rows all have `fr` populated, so this does not fire today. It fires the moment
+an admin adds an item, collapses it, and saves. Fix by dropping the HTML-level
+`required` in favour of server-side validation on those inputs, so the browser never
+blocks the submit and Filament reports the error against the right repeater item.
+
+The user's reported symptom — blocked after changing image order only — matches the
+`->url()` cause in 2.1 precisely. 2.1b is a latent bug of the same family, fixed in the
+same pass.
+
 ### 2.2 Form changes (`ServiceResource`, Médias tab)
 
 - `image` → `FileUpload` on the `uploads` disk, `directory('services')`, `->image()`,
-  `->imageEditor()`, `->imagePreviewHeight('150')`.
+  `->imageEditor()`, `->imagePreviewHeight('150')`, paired with the optional
+  `image_url` text input per §1.4.
 - `gallery` → `FileUpload::make('gallery')->multiple()->reorderable()
   ->panelLayout('grid')->appendFiles()->image()->imageEditor()`. Drag-to-reorder real
   thumbnails instead of a list of URL strings. Satisfies both "manage the images" and
@@ -146,9 +214,13 @@ browser, then leave it alone.
 ### 3.1 Visibility toggle
 
 New boolean setting `portfolio_enabled`, edited via a new **"Pages & visibilité"** tab
-on the Site Settings page. Shared to every view (e.g. `View::share('portfolioEnabled', …)`
-in `AppServiceProvider`), reading through `SiteSetting::get()` which is already
-cached forever and invalidated on save.
+on the Site Settings page, reading through `SiteSetting::get()` which is already cached
+forever and invalidated on save.
+
+Exposed to Blade via a **view composer scoped to `layouts.app`**, not
+`View::share` in `AppServiceProvider::boot()`. A bare `share` runs for console commands
+too, and on a cold cache during `migrate:fresh --seed` it would query `site_settings`
+before that table exists.
 
 Every surface, not just the two currently commented out:
 
@@ -259,8 +331,11 @@ visually identical to today's.
 
 ## 5. Testimonials
 
-- Seed the 3 real testimonials from `lang/*` `testimonial_1..3` into the empty
-  `testimonials` table, with client name, location, and rating.
+- Seed the 3 real testimonials into the empty `testimonials` table. The quote text
+  comes from `lang/{fr,en,ar}` `testimonial_1..3`; the **client names and locations are
+  hardcoded in the Blade markup, not in the lang files** — `Mohamed B.` / Paris, France,
+  `Sonia K.` / Montréal, Canada, `Ahmed T.` / Berlin, Allemagne (`home.blade.php:604-607`,
+  `:623-626`, `:642-645`). The seeder lifts them from there. Rating is 5 for all three.
 - Delete the hardcoded fallback block at `home.blade.php:589-636`; render `@forelse`
   over the DB collection with a translated empty state.
 - `TestimonialResource`: `client_photo` → `FileUpload` with preview on the uploads
@@ -286,6 +361,9 @@ PHPUnit feature tests (per repo convention — not Pest):
 3. **Service save-after-reorder-only** — regression test for the reported bug: load a
    service whose gallery holds legacy `/images/...` paths, submit with only the order
    changed, assert a successful save and the new order persisted.
+3b. **Service save with a collapsed repeater item** — regression test for 2.1b: add a
+   `features` item, leave it collapsed, save, and assert the server-side validation
+   error surfaces rather than the form silently refusing to submit.
 4. **`MediaPath` unit test** — all three input shapes plus null; `thumb()` with and
    without an on-disk `-thumb` sibling.
 5. **Hero slides render from the DB** — homepage shows N slides for N active records;
@@ -303,5 +381,5 @@ Run `vendor/bin/pint --dirty` before finalising.
 | `public/uploads` wiped by a deploy that replaces `public/` | Documented in README; directory is gitignored, not gitremoved |
 | External image URLs unreachable during `media:import` | Command leaves them untouched and reports them; `MediaPath` keeps passing them through |
 | Hero carousel JS breaks with a variable slide count | Explicitly tested at 1, 4, and 6 slides |
-| Admin opens a service whose image failed to import, saves, and wipes the value | `media:import` output names them; re-upload is the documented follow-up |
+| `FileUpload` silently wipes a value it cannot find on its disk | The `image` + `image_url` pair (§1.4) means no single-image value is ever unreachable from the form. For galleries, `media:import` runs first and the 3 known external entries are verified gone before the field is switched |
 | Two sources of truth for hero slide 1 | Site Settings hero tab removed in the same change |
