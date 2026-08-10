@@ -17,14 +17,23 @@
     <meta property="og:description" content="@yield('og_description', __('messages.site_description'))">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="@yield('og_image', asset('images/promo-alu-plus-logo.png'))">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo-512.png'))">
     <meta property="og:locale" content="{{ ['fr' => 'fr_FR', 'ar' => 'ar_TN', 'en' => 'en_US'][app()->getLocale()] ?? 'fr_FR' }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('og_title', 'PromoAlu+ - Menuiserie Aluminium & Inox')">
     <meta name="twitter:description" content="@yield('og_description', __('messages.site_description'))">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/promo-alu-plus-logo.png'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo-512.png'))">
+
+    {{--
+        Fonts are self-hosted (see @font-face in resources/css/app.css). Preloading
+        them here starts the fetch immediately instead of waiting for the stylesheet
+        to parse. crossorigin is required even same-origin: fonts always fetch in
+        CORS mode, and omitting it downloads the file twice.
+    --}}
+    <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/manrope-latin-var.woff2') }}" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/playfair-display-latin-700.woff2') }}" crossorigin>
 
     <!-- Tailwind CSS (compiled via Vite) -->
     @vite('resources/css/app.css')
@@ -32,14 +41,12 @@
     <!-- Lucide Icons -->
     <script defer src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.min.js" integrity="sha384-hK2uiaqTSh/v1VqRxmuMQL4xmt5n0DdyBCOItx2fAs7Wv+WC8Tu0yDW1j12JooyM" crossorigin="anonymous"></script>
 
-    <!-- Google Fonts -->
+    @if(app()->getLocale() === 'ar')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    @if(app()->getLocale() === 'ar')
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @endif
-    
+
 
     @stack('styles')
 </head>
@@ -74,7 +81,7 @@
         <nav class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center gap-3">
-                    <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="{{ __('messages.logo_alt') }}" class="h-16 md:h-20 w-auto">
+                    <img src="{{ asset('images/logo-160.webp') }}" alt="{{ __('messages.logo_alt') }}" width="160" height="160" class="h-16 md:h-20 w-auto">
                     <span class="font-display text-xl md:text-2xl font-bold text-white leading-none">PromoAlu+</span>
                 </a>
                 
@@ -149,8 +156,8 @@
             'name' => 'PromoAlu+',
             'description' => __('messages.site_description'),
             'url' => config('app.url') ?: url('/'),
-            'logo' => asset('images/promo-alu-plus-logo.png'),
-            'image' => asset('images/promo-alu-plus-logo.png'),
+            'logo' => asset('images/logo-512.png'),
+            'image' => asset('images/logo-512.png'),
             'telephone' => $footerPhone,
             'email' => $footerEmail,
             'address' => [
@@ -178,7 +185,7 @@
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
-                        <img src="{{ asset('images/promo-alu-plus-logo.png') }}" alt="{{ __('messages.logo_alt') }}" class="h-12 w-auto">
+                        <img src="{{ asset('images/logo-160.webp') }}" alt="{{ __('messages.logo_alt') }}" width="160" height="160" class="h-12 w-auto">
                         <span class="text-xl font-bold">PromoAlu+</span>
                     </div>
                     <p class="text-gray-400">

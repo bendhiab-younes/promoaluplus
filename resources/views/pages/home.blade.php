@@ -14,7 +14,7 @@
 
 @push('styles')
     {{-- Preload the first hero slide (LCP element) so the browser fetches it before layout --}}
-    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/slide-1.jpeg') }}">
+    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/slide-1.webp') }}">
 @endpush
 
 @section('content')
@@ -26,7 +26,7 @@
                 <!-- Slide 1 - Modern Aluminum Windows -->
                 <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/slide-1.jpeg') }}"
+                            <img src="{{ asset('images/hero/slide-1.webp') }}"
                                 alt="{{ __('messages.hero_slide1_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover object-center"
                                 loading="eager"
@@ -66,10 +66,9 @@
                 <!-- Slide 2 - Aluminum Doors -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/slide-2.jpeg') }}"
+                            <img data-src="{{ asset('images/hero/slide-2.webp') }}"
                                 alt="{{ __('messages.hero_slide2_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover object-center"
-                                loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
@@ -99,10 +98,9 @@
                 <!-- Slide 3 - Glass Facades & Curtain Walls -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/slide-3.jpeg') }}"
+                            <img data-src="{{ asset('images/hero/slide-3.webp') }}"
                                 alt="{{ __('messages.hero_slide3_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover object-center"
-                                loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
@@ -132,10 +130,9 @@
                 <!-- Slide 4 - Company Experience -->
                 <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
                     <div class="relative h-full">
-                            <img src="{{ asset('images/hero/slide-4.jpeg') }}"
+                            <img data-src="{{ asset('images/hero/slide-4.webp') }}"
                                 alt="{{ __('messages.hero_slide4_alt') }}"
                                 class="absolute inset-0 w-full h-full object-cover object-center"
-                                loading="lazy"
                                 decoding="async">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         <div class="absolute inset-0 flex items-center">
@@ -183,14 +180,28 @@
 
     <script>
         (() => {
+            const siteHeader = document.querySelector('header');
+            let headerSyncFrame = null;
+
             const syncHeroHeightToHeader = () => {
-                const header = document.querySelector('header');
-                const headerHeight = header ? header.offsetHeight : 96;
+                const headerHeight = siteHeader ? siteHeader.offsetHeight : 96;
                 document.documentElement.style.setProperty('--site-header-height', `${headerHeight}px`);
             };
 
+            // Batch the read/write into a single frame so resize can't thrash layout.
+            const scheduleHeroHeightSync = () => {
+                if (headerSyncFrame !== null) {
+                    return;
+                }
+
+                headerSyncFrame = window.requestAnimationFrame(() => {
+                    headerSyncFrame = null;
+                    syncHeroHeightToHeader();
+                });
+            };
+
             syncHeroHeightToHeader();
-            window.addEventListener('resize', syncHeroHeightToHeader);
+            window.addEventListener('resize', scheduleHeroHeightSync, { passive: true });
 
             const slides = Array.from(document.querySelectorAll('.carousel-slide'))
                 .sort((leftSlide, rightSlide) => {
@@ -205,6 +216,28 @@
             if (!slides.length || !dots.length || !carouselContainer) {
                 return;
             }
+
+            // Slides 2+ ship with data-src instead of src: stacking them all inside the
+            // viewport defeats loading="lazy", so the browser would fetch every hero image
+            // during the initial load. Swap in the real source only when a slide is about
+            // to be shown, keeping one slide ahead warm so the fade never lands on a blank.
+            const loadSlideImage = (index) => {
+                const slide = slides[index];
+
+                if (!slide) {
+                    return;
+                }
+
+                slide.querySelectorAll('img[data-src]').forEach((image) => {
+                    image.src = image.dataset.src;
+                    delete image.dataset.src;
+                });
+            };
+
+            const preloadAround = (index) => {
+                loadSlideImage(index);
+                loadSlideImage((index + 1) % slides.length);
+            };
 
             const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
             const autoplayDelay = 6000;
@@ -261,6 +294,7 @@
                     return;
                 }
 
+                preloadAround(nextIndex);
                 isTransitioning = true;
                 const previousIndex = currentSlide;
 
@@ -301,6 +335,16 @@
                 setSlideState(slide, index === 0);
             });
             updateDots(0);
+
+            // Warm the second slide once the page has settled, so the first autoplay fade
+            // has an image ready without competing with the LCP request.
+            const warmNextSlide = () => loadSlideImage(1);
+
+            if (document.readyState === 'complete') {
+                warmNextSlide();
+            } else {
+                window.addEventListener('load', warmNextSlide, { once: true });
+            }
 
             carouselContainer.addEventListener('mouseenter', () => {
                 isHovered = true;

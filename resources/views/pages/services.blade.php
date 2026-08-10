@@ -170,11 +170,12 @@
                                 ];
                             })
                             ->values();
-                        $mainImage = $galleryItems->first()['full'] ?? asset('images/promo-alu-plus-logo.png');
+                        $mainImage = $galleryItems->first()['full'] ?? null;
                     @endphp
                     <div class="service-gallery space-y-3" tabindex="-1">
                         <!-- Main image: blurred backdrop fills the frame, foreground shows the whole photo uncropped -->
                         <div class="gallery-stage group relative overflow-hidden rounded-2xl shadow-2xl bg-gray-900 h-[300px] sm:h-[380px] md:h-[430px] lg:h-[470px] focus:outline-none">
+                            @if($mainImage)
                             <img data-role="bg" id="main-bg-{{ $service->slug }}"
                                  src="{{ $mainImage }}"
                                  alt=""
@@ -189,6 +190,23 @@
                                  loading="lazy"
                                  decoding="async"
                                  class="relative z-10 w-full h-full object-contain transition-opacity duration-300 ease-out">
+                            @else
+                            {{--
+                                No photo for this service yet. Show the same gradient-and-icon
+                                treatment the service cards use rather than the company logo,
+                                which reads as a broken image at this size. The gallery JS bails
+                                out on its own when [data-role="main"] is absent.
+                            --}}
+                            <div class="absolute inset-0 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600"></div>
+                            <div class="relative z-10 flex h-full w-full items-center justify-center" aria-hidden="true">
+                                @if($service->svg_icon)
+                                    {!! $service->svg_icon !!}
+                                @elseif($serviceIcon)
+                                    <i data-lucide="{{ $serviceIcon }}" class="w-20 h-20 text-white/70"></i>
+                                @endif
+                            </div>
+                            <span class="sr-only">{{ $service->getTranslatedTitle() }}</span>
+                            @endif
 
                             @if($galleryItems->count() > 1)
                             <!-- Prev / next -->
