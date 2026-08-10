@@ -17,7 +17,11 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // SEO — sitemap & robots (served dynamically so URLs match the active domain)
 Route::get('/sitemap.xml', function () {
-    $pages = ['home', 'services', 'portfolio', 'about', 'contact'];
+    $pages = ['home', 'services', 'about', 'contact'];
+
+    if (\App\Providers\ViewServiceProvider::portfolioEnabled()) {
+        array_splice($pages, 2, 0, ['portfolio']);
+    }
 
     $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
     $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";

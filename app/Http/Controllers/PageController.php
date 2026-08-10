@@ -28,6 +28,8 @@ class PageController extends Controller
 
     public function portfolio(Request $request)
     {
+        abort_unless(\App\Providers\ViewServiceProvider::portfolioEnabled(), 404);
+
         $category = $request->get('category', 'all');
 
         $query = Project::active()->orderBy('sort_order');

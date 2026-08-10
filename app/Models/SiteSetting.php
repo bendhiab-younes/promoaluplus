@@ -18,6 +18,7 @@ class SiteSetting extends Model
     {
         return Cache::rememberForever("site_setting_{$key}", function () use ($key, $default) {
             $setting = static::where('key', $key)->first();
+
             return $setting ? $setting->value : $default;
         });
     }
@@ -44,15 +45,29 @@ class SiteSetting extends Model
     {
         $locale = app()->getLocale();
         $translatedKey = "{$key}_{$locale}";
-        
+
         $value = static::get($translatedKey);
-        
+
         // Fallback to French if translation not found
         if (empty($value) && $locale !== 'fr') {
             $value = static::get("{$key}_fr");
         }
-        
+
         return $value ?: $default;
+    }
+
+    /**
+     * Boolean settings are stored as the strings "1" / "0".
+     */
+    public static function enabled(string $key, bool $default = false): bool
+    {
+        $value = static::get($key);
+
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
     protected static function booted(): void
