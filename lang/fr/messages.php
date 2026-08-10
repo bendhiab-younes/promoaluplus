@@ -231,6 +231,7 @@ return [
     // Portfolio
     'our_projects' => 'Nos Réalisations',
     'portfolio_intro' => 'Découvrez nos projets réalisés à travers la Tunisie pour nos clients locaux ainsi que nos clients résidant à l\'étranger.',
+    'portfolio_empty' => 'Nos réalisations seront publiées ici prochainement. Contactez-nous pour découvrir nos projets en cours.',
     'all' => 'Tous',
     'client_testimonials' => 'Ils nous ont fait confiance',
     'testimonial_1' => 'Excellent travail! PromoAlu+ a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',

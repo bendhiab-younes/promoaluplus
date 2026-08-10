@@ -25,85 +25,53 @@
         <div class="container mx-auto px-6 md:px-8">
             <!-- Filter Buttons -->
             <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-14 scroll-fade">
-                <a href="{{ route('portfolio') }}" 
+                <a href="{{ route('portfolio') }}"
                    class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'all' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                     {{ __('messages.all') }}
                 </a>
-                <a href="{{ route('portfolio', ['category' => 'windows']) }}" 
-                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'windows' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                    {{ __('messages.windows') }}
-                </a>
-                <a href="{{ route('portfolio', ['category' => 'doors']) }}" 
-                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'doors' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                    {{ __('messages.doors') }}
-                </a>
-                <a href="{{ route('portfolio', ['category' => 'facades']) }}" 
-                   class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === 'facades' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                    {{ __('messages.facades') }}
-                </a>
+                @foreach($projectTypes as $projectType)
+                    <a href="{{ route('portfolio', ['category' => $projectType->slug]) }}"
+                       class="portfolio-filter px-5 md:px-6 py-2.5 rounded-full font-semibold transition-all duration-300 {{ $category === $projectType->slug ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                        {{ $projectType->getTranslatedName() }}
+                    </a>
+                @endforeach
             </div>
 
             <!-- Portfolio Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @forelse($projects as $project)
-                <div class="portfolio-item group relative overflow-hidden rounded-2xl shadow-lg scroll-fade">
-                    <img src="{{ $project->image ? asset('storage/' . $project->image) : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' }}" 
-                         alt="{{ $project->getTranslatedTitle() }} — {{ __('messages.' . $project->category) }}{{ $project->location ? ', ' . $project->location : '' }} — {{ __('messages.alt_realisation') }}"
-                         loading="lazy"
-                         decoding="async"
-                         class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <h3 class="text-xl font-bold mb-2">{{ $project->getTranslatedTitle() }}</h3>
-                            <p class="text-sm text-gray-200 mb-2">{{ $project->location }}</p>
-                            <span class="inline-block px-3 py-1 bg-blue-600 rounded-full text-xs">{{ __('messages.' . $project->category) }}</span>
+                    @php
+                        $projectImage = $project->imageSrc();
+                        $projectTypeName = $projectTypes->firstWhere('slug', $project->category)?->getTranslatedName() ?? $project->category;
+                    @endphp
+                    <div class="portfolio-item group relative overflow-hidden rounded-2xl shadow-lg scroll-fade">
+                        @if($projectImage)
+                            <img src="{{ $projectImage }}"
+                                 alt="{{ $project->getTranslatedTitle() }} — {{ $projectTypeName }}{{ $project->location ? ', '.$project->location : '' }} — {{ __('messages.alt_realisation') }}"
+                                 loading="lazy"
+                                 decoding="async"
+                                 class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110">
+                        @else
+                            <div class="w-full h-72 bg-gray-100 flex items-center justify-center">
+                                <i data-lucide="image" class="w-10 h-10 text-gray-400"></i>
+                            </div>
+                        @endif
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                <h3 class="text-xl font-bold mb-2">{{ $project->getTranslatedTitle() }}</h3>
+                                <p class="text-sm text-gray-200 mb-2">{{ $project->location }}</p>
+                                <span class="inline-block px-3 py-1 bg-blue-600 rounded-full text-xs">{{ $projectTypeName }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @empty
-                <!-- Default projects if none in database -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" 
-                         alt="Villa Moderne - La Marsa — {{ __('messages.alt_realisation') }}"
-                         loading="lazy"
-                         decoding="async"
-                         class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <h3 class="text-xl font-bold mb-2">Villa Moderne - La Marsa</h3>
-                            <p class="text-sm text-gray-200 mb-2">La Marsa, Tunis</p>
-                            <span class="inline-block px-3 py-1 bg-blue-600 rounded-full text-xs">{{ __('messages.windows') }}</span>
-                        </div>
+                    <div class="col-span-full py-16 text-center">
+                        <i data-lucide="image-off" class="w-12 h-12 mx-auto text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg max-w-xl mx-auto">{{ __('messages.portfolio_empty') }}</p>
+                        <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center mt-6">
+                            {{ __('messages.request_quote') }}
+                        </a>
                     </div>
-                </div>
-                <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" 
-                         alt="Résidence Carthage — {{ __('messages.alt_realisation') }}"
-                         loading="lazy"
-                         decoding="async"
-                         class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <h3 class="text-xl font-bold mb-2">Résidence Carthage</h3>
-                            <p class="text-sm text-gray-200 mb-2">Carthage, Tunis</p>
-                            <span class="inline-block px-3 py-1 bg-orange-600 rounded-full text-xs">{{ __('messages.doors') }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="portfolio-item group relative overflow-hidden rounded-xl shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" 
-                         alt="Immeuble Commercial — {{ __('messages.alt_realisation') }}"
-                         loading="lazy"
-                         decoding="async"
-                         class="w-full h-72 object-cover transition-transform duration-300 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <h3 class="text-xl font-bold mb-2">Immeuble Commercial</h3>
-                            <p class="text-sm text-gray-200 mb-2">Centre Urbain Nord</p>
-                            <span class="inline-block px-3 py-1 bg-green-600 rounded-full text-xs">{{ __('messages.facades') }}</span>
-                        </div>
-                    </div>
-                </div>
                 @endforelse
             </div>
         </div>

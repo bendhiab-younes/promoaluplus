@@ -231,6 +231,7 @@ return [
     // Portfolio
     'our_projects' => 'Our Projects',
     'portfolio_intro' => 'Discover our projects completed across Tunisia for our local clients as well as our clients residing abroad.',
+    'portfolio_empty' => 'Our projects will be published here soon. Get in touch to discover our current work.',
     'all' => 'All',
     'client_testimonials' => 'They Trusted Us',
     'testimonial_1' => 'Excellent work! Promo Alu Plus perfectly met my expectations for my windows and railings.',

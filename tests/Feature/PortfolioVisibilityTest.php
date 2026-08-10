@@ -64,4 +64,34 @@ class PortfolioVisibilityTest extends TestCase
             ->assertOk()
             ->assertSee(route('portfolio'), false);
     }
+
+    public function test_an_empty_portfolio_shows_an_empty_state_not_invented_projects(): void
+    {
+        $this->enablePortfolio(true);
+
+        $this->get(route('portfolio'))
+            ->assertOk()
+            ->assertDontSee('Villa Moderne')
+            ->assertDontSee('Résidence Carthage')
+            ->assertDontSee('Immeuble Commercial')
+            ->assertSee(__('messages.portfolio_empty'));
+    }
+
+    public function test_the_filter_bar_is_built_from_project_types(): void
+    {
+        $this->enablePortfolio(true);
+        $this->seed(\Database\Seeders\ProjectTypeSeeder::class);
+
+        \App\Models\ProjectType::create([
+            'name' => ['fr' => 'Pergolas', 'en' => 'Pergolas', 'ar' => 'برجولات'],
+            'slug' => 'pergola',
+            'order' => 4,
+            'is_active' => true,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('portfolio'))
+            ->assertOk()
+            ->assertSee('Pergolas');
+    }
 }

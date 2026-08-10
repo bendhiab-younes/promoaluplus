@@ -195,23 +195,13 @@ class SiteCoherenceTest extends TestCase
         );
     }
 
-    public function test_portfolio_filter_categories_are_canonical_service_slugs(): void
+    public function test_portfolio_filter_categories_come_from_the_database(): void
     {
-        $this->markTestSkipped(
-            "Known defect (report §F-06): portfolio.blade.php filters on 'windows', 'doors' "
-            ."and 'facades'. 'facades' is not in CanonicalServiceCatalog, and messages.facades "
-            .'renders as "Pergolas & Abris" — the label of a different service.'
-        );
-
-        preg_match_all(
-            "/route\('portfolio', \['category' => '([a-z_]+)'\]\)/",
+        $this->assertStringNotContainsString(
+            "route('portfolio', ['category' => '",
             File::get(resource_path('views/pages/portfolio.blade.php')),
-            $matches
+            'Portfolio categories must be driven by ProjectType records, not hardcoded in the view.'
         );
-
-        foreach (array_unique($matches[1]) as $category) {
-            $this->assertContains($category, CanonicalServiceCatalog::slugs(), "Portfolio filters on unknown category '{$category}'.");
-        }
     }
 
     // ------------------------------------------------------- content models

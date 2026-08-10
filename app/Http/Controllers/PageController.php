@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
@@ -39,9 +40,10 @@ class PageController extends Controller
         }
 
         $projects = $query->get();
+        $projectTypes = ProjectType::active()->ordered()->get();
         $testimonials = Testimonial::active()->orderBy('sort_order')->get();
 
-        return view('pages.portfolio', compact('projects', 'testimonials', 'category'));
+        return view('pages.portfolio', compact('projects', 'projectTypes', 'testimonials', 'category'));
     }
 
     public function about()

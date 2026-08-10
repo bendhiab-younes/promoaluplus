@@ -238,27 +238,21 @@ Marker tests: `PublicSiteFeatureTest::test_category_and_project_type_resources_r
 
 ---
 
-### F-06 — The portfolio filters on a category that means something else  ⚠️ Medium
+### F-06 — The portfolio filters on a category that means something else  ✅ Resolved
 
-**[VERIFIED]** — label values read from all three `lang/*/messages.php`
+**[RESOLVED]** — `resources/views/pages/portfolio.blade.php` no longer hardcodes `windows`,
+`doors`, `facades`. The filter bar (and the `messages.' . $category` label lookup that produced
+the "Pergolas & Abris" mislabel) is now built from `App\Models\ProjectType::active()->ordered()`,
+which `PageController::portfolio()` passes to the view as `$projectTypes`. `ProjectType` is a
+real translatable model (`getTranslatedName()`, `active()`/`ordered()` scopes), seeded via
+`ProjectTypeSeeder` with the same three starter types (`windows`, `doors`, `facades`) but now
+editable/extensible by an admin — adding a fourth `ProjectType` row automatically appears as a
+filter, and each project's image/label resolve through the matching `ProjectType` record instead
+of a `messages.*` key collision.
 
-`resources/views/pages/portfolio.blade.php:32-42` offers three filters: `windows`, `doors`,
-`facades`. Only the first two are canonical service slugs — `facades` is not in
-`CanonicalServiceCatalog::MESSAGE_KEYS_BY_SLUG`, so:
-
-- The quote form rejects `facades` as a `project_type` (verified:
-  `PublicSiteFeatureTest::test_quote_rejects_a_project_type_outside_the_catalog`), yet the
-  portfolio invites visitors to browse it.
-- `messages.facades` resolves to **"Pergolas & Abris"** (fr) / "Pergolas & Shelters" (en) /
-  "برجولات ومظلات" (ar) — the wording of a *different* service. The canonical `pergola` slug
-  separately resolves to "Pergola". Two keys, one concept, inconsistent labels.
-- The filter list omits 7 of the 9 canonical services entirely (kitchen, rolling_shutters,
-  railings, pergola, sun_breakers, mosquito_nets, space_design).
-
-**Fix:** drive the filter list from `CanonicalServiceCatalog::slugs()` instead of hardcoding
-three values, and retire the `facades` message key.
-
-Marker test: `SiteCoherenceTest::test_portfolio_filter_categories_are_canonical_service_slugs`.
+Marker test: `SiteCoherenceTest::test_portfolio_filter_categories_come_from_the_database` (asserts
+the view contains no hardcoded `route('portfolio', ['category' => '...'])` literal), plus
+`PortfolioVisibilityTest::test_the_filter_bar_is_built_from_project_types`.
 
 ---
 
@@ -536,7 +530,7 @@ holding:
 | 5 | **F-08 / F-09** seeder content outside the repo | Blocks reproducible setup and onboarding |
 | 6 | **4.4** `test@example.com` admin account | Must not reach production |
 | 7 | **F-04** FAQ override | Admin edits silently discarded |
-| 8 | **F-06 / F-07 / F-10** portfolio categories, 24h vs 48h, `APP_LOCALE` | Cheap, visible coherence wins |
+| 8 | **F-07 / F-10** 24h vs 48h, `APP_LOCALE` (F-06 portfolio categories resolved) | Cheap, visible coherence wins |
 | 9 | **F-05 / §5** dead code and duplicate docs | Housekeeping; no user impact |
 
 ---
