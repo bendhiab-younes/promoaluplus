@@ -39,6 +39,20 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
             ->schema([
                 Forms\Components\Tabs::make('Settings')
                     ->tabs([
+                        // === PAGES & VISIBILITÉ ===
+                        Forms\Components\Tabs\Tab::make('Pages & visibilité')
+                            ->icon('heroicon-o-eye')
+                            ->schema([
+                                Forms\Components\Section::make('Page Réalisations')
+                                    ->description('Affichez ou masquez la page Réalisations sur le site public. Lorsqu\'elle est masquée, la page renvoie une erreur 404 et tous les liens vers celle-ci disparaissent du menu, du pied de page et des boutons d\'appel à l\'action.')
+                                    ->schema([
+                                        Forms\Components\Toggle::make('portfolio_enabled')
+                                            ->label('Afficher la page Réalisations')
+                                            ->helperText('Ajoutez d\'abord vos projets dans Contenu → Projets, puis activez cette option.')
+                                            ->default(false),
+                                    ]),
+                            ]),
+
                         // === ENTREPRISE ===
                         Forms\Components\Tabs\Tab::make('Entreprise')
                             ->icon('heroicon-o-building-office')
@@ -323,9 +337,11 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
         $data = $this->form->getState();
 
         foreach ($data as $key => $value) {
-            if ($value !== null) {
-                SiteSetting::set($key, $value);
+            if ($value === null) {
+                continue;
             }
+
+            SiteSetting::set($key, is_bool($value) ? ($value ? '1' : '0') : $value);
         }
 
         Notification::make()
