@@ -103,9 +103,14 @@ class ServiceResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(3)
                                             ->schema([
+                                                // Server-side rule rather than ->required(): this tab is not
+                                                // the default active one, and Filament hides inactive tabs with
+                                                // display:none, where a native required attribute blocks submit
+                                                // without anything being focusable to report.
                                                 Forms\Components\TextInput::make('title.fr')
                                                     ->label('🇫🇷 Français')
-                                                    ->required()
+                                                    ->rules(['required', 'string'])
+                                                    ->markAsRequired()
                                                     ->maxLength(100),
                                                 Forms\Components\TextInput::make('title.en')
                                                     ->label('🇬🇧 English')
@@ -220,6 +225,7 @@ class ServiceResource extends Resource
                                                         Forms\Components\TextInput::make('fr')
                                                             ->label('🇫🇷 Français')
                                                             ->rules(['required', 'string'])
+                                                            ->markAsRequired()
                                                             ->placeholder('Ex: Installation rapide et professionnelle'),
                                                         Forms\Components\TextInput::make('en')
                                                             ->label('🇬🇧 English')
@@ -299,6 +305,7 @@ class ServiceResource extends Resource
                                                         Forms\Components\TextInput::make('fr')
                                                             ->label('🇫🇷 Français')
                                                             ->rules(['required', 'string'])
+                                                            ->markAsRequired()
                                                             ->placeholder('Ex: Profilés aluminium'),
                                                         Forms\Components\TextInput::make('en')
                                                             ->label('🇬🇧 English')
@@ -326,11 +333,13 @@ class ServiceResource extends Resource
                                                 Forms\Components\TextInput::make('label')
                                                     ->label('Nom')
                                                     ->rules(['required', 'string'])
+                                                    ->markAsRequired()
                                                     ->placeholder('Ex: Épaisseur')
                                                     ->columnSpan(1),
                                                 Forms\Components\TextInput::make('value')
                                                     ->label('Valeur')
                                                     ->rules(['required', 'string'])
+                                                    ->markAsRequired()
                                                     ->placeholder('Ex: 1.2 - 2.0 mm')
                                                     ->columnSpan(1),
                                             ])
