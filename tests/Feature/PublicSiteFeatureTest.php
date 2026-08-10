@@ -205,6 +205,22 @@ class PublicSiteFeatureTest extends TestCase
             ->assertSee('contact@promoaluplus.test');
     }
 
+    public function test_an_admin_edit_to_faq_two_is_shown_on_the_contact_page(): void
+    {
+        Faq::create([
+            'question' => ['fr' => 'Question modifiée par admin', 'en' => 'Edited', 'ar' => 'سؤال'],
+            'answer' => ['fr' => 'Réponse modifiée par admin', 'en' => 'Edited', 'ar' => 'جواب'],
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('contact'))
+            ->assertOk()
+            ->assertSee('Question modifiée par admin')
+            ->assertSee('Réponse modifiée par admin');
+    }
+
     // --------------------------------------------------------------- locale
 
     public function test_locale_switcher_persists_a_supported_locale(): void

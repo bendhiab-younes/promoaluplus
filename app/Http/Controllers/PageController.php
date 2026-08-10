@@ -53,23 +53,7 @@ class PageController extends Controller
 
     public function contact()
     {
-        $translator = app('translator');
-        $faqs = Faq::active()->ordered()->get()->map(function (Faq $faq) use ($translator) {
-            if ((int) $faq->sort_order === 2) {
-                $faq->question = [
-                    'fr' => $translator->get('messages.faq_q2', [], 'fr'),
-                    'en' => $translator->get('messages.faq_q2', [], 'en'),
-                    'ar' => $translator->get('messages.faq_q2', [], 'ar'),
-                ];
-                $faq->answer = [
-                    'fr' => $translator->get('messages.faq_a2', [], 'fr'),
-                    'en' => $translator->get('messages.faq_a2', [], 'en'),
-                    'ar' => $translator->get('messages.faq_a2', [], 'ar'),
-                ];
-            }
-
-            return $faq;
-        });
+        $faqs = Faq::active()->ordered()->get();
 
         return view('pages.contact', compact('faqs'));
     }

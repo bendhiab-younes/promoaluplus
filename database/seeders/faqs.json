@@ -13,6 +13,20 @@
       },
       "is_active": true,
       "sort_order": 1
+    },
+    {
+      "question": {
+        "fr": "Travaillez-vous avec les résidents à l'étranger ?",
+        "en": "Do you work with clients residing abroad?",
+        "ar": "هل تعملون مع العملاء المقيمين في الخارج؟"
+      },
+      "answer": {
+        "fr": "Oui ! Nous accompagnons nos clients résidant à l'étranger. Nous assurons un suivi à distance, des visioconférences ainsi qu'une communication en français et en anglais.",
+        "en": "Yes! We support our clients residing abroad. We provide remote follow-up, video calls, and communication in French and English.",
+        "ar": "نعم! نرافق عملاءنا المقيمين في الخارج. نوفر متابعة عن بُعد، واجتماعات فيديو، وتواصلاً بالفرنسية والإنجليزية."
+      },
+      "is_active": true,
+      "sort_order": 2
     }
   ]
 }
