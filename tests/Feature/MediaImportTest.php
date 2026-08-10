@@ -11,10 +11,23 @@ class MediaImportTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Slugs are namespaced so the command writes into throwaway directories.
+     * Deleting public/uploads/services wholesale would destroy real imported
+     * media, since these tests run against the live public/ tree rather than
+     * a faked disk (the command copies with File::copy, not Storage).
+     */
+    private const SLUG_PREFIX = 'mediaimporttest-';
+
     protected function tearDown(): void
     {
         File::deleteDirectory(public_path('images/mediaimporttest'));
-        File::deleteDirectory(public_path('uploads/services'));
+
+        foreach (File::directories(public_path('uploads/services')) as $directory) {
+            if (str_starts_with(basename($directory), self::SLUG_PREFIX)) {
+                File::deleteDirectory($directory);
+            }
+        }
 
         parent::tearDown();
     }
@@ -27,7 +40,7 @@ class MediaImportTest extends TestCase
         File::put($source.'/pic-thumb.jpeg', 'thumb-bytes');
 
         $service = Service::create([
-            'slug' => 'windows',
+            'slug' => self::SLUG_PREFIX.'windows',
             'title' => ['fr' => 'Fenêtres'],
             'short_description' => ['fr' => 'Courte'],
             'description' => ['fr' => 'Longue'],
@@ -40,10 +53,10 @@ class MediaImportTest extends TestCase
 
         $service->refresh();
 
-        $this->assertSame('services/windows/pic.jpeg', $service->image);
-        $this->assertSame(['services/windows/pic.jpeg'], $service->gallery);
-        $this->assertFileExists(public_path('uploads/services/windows/pic.jpeg'));
-        $this->assertFileExists(public_path('uploads/services/windows/pic-thumb.jpeg'));
+        $this->assertSame('services/'.self::SLUG_PREFIX.'windows/pic.jpeg', $service->image);
+        $this->assertSame(['services/'.self::SLUG_PREFIX.'windows/pic.jpeg'], $service->gallery);
+        $this->assertFileExists(public_path('uploads/services/'.self::SLUG_PREFIX.'windows/pic.jpeg'));
+        $this->assertFileExists(public_path('uploads/services/'.self::SLUG_PREFIX.'windows/pic-thumb.jpeg'));
     }
 
     public function test_it_is_idempotent(): void
@@ -53,7 +66,7 @@ class MediaImportTest extends TestCase
         File::put($source.'/pic.jpeg', 'image-bytes');
 
         $service = Service::create([
-            'slug' => 'doors',
+            'slug' => self::SLUG_PREFIX.'doors',
             'title' => ['fr' => 'Portes'],
             'short_description' => ['fr' => 'Courte'],
             'description' => ['fr' => 'Longue'],
@@ -64,13 +77,13 @@ class MediaImportTest extends TestCase
         $this->artisan('media:import')->assertExitCode(0);
         $this->artisan('media:import')->assertExitCode(0);
 
-        $this->assertSame('services/doors/pic.jpeg', $service->refresh()->image);
+        $this->assertSame('services/'.self::SLUG_PREFIX.'doors/pic.jpeg', $service->refresh()->image);
     }
 
     public function test_it_leaves_unreachable_values_untouched(): void
     {
         $service = Service::create([
-            'slug' => 'pergola',
+            'slug' => self::SLUG_PREFIX.'pergola',
             'title' => ['fr' => 'Pergola'],
             'short_description' => ['fr' => 'Courte'],
             'description' => ['fr' => 'Longue'],

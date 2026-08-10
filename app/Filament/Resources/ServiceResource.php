@@ -357,7 +357,9 @@ class ServiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
+                    ->label('')
+                    ->circular()
+                    ->size(50)
                     ->getStateUsing(fn (Service $record): ?string => $record->imageSrc()),
                 Tables\Columns\TextColumn::make('title.fr')
                     ->label('Service')

@@ -90,9 +90,14 @@ class MediaImportCommand extends Command
             return null;
         }
 
-        // Already on the uploads disk.
+        // Already recorded as disk-relative. Verify the bytes are actually
+        // there — a path that merely looks imported is not proof of an import,
+        // and reporting success for a missing file would let a Filament
+        // FileUpload silently drop the value on the next save.
         if (! MediaPath::isExternal($value) && ! Str::startsWith($value, '/')) {
-            return $value;
+            return MediaPath::exists($value)
+                ? $value
+                : $this->recoverMissing($value, $directory, $model);
         }
 
         if (MediaPath::isExternal($value)) {
@@ -102,6 +107,24 @@ class MediaImportCommand extends Command
         }
 
         return $this->importLocal($value, $directory, $model);
+    }
+
+    /**
+     * A disk-relative value whose file has gone missing. Look for the original
+     * under public/images by basename and copy it back; otherwise report it so
+     * the admin knows to re-upload rather than discovering an empty field.
+     */
+    private function recoverMissing(string $value, string $directory, Model $model): string
+    {
+        $basename = basename($value);
+
+        foreach (File::allFiles(public_path('images')) as $candidate) {
+            if ($candidate->getFilename() === $basename) {
+                return $this->importLocal('/images/'.$candidate->getRelativePathname(), $directory, $model);
+            }
+        }
+
+        return $this->recordFailure($value.' (fichier absent du disque)', $model);
     }
 
     private function importLocal(string $value, string $directory, Model $model): string
