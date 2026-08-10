@@ -32,7 +32,16 @@ class PublicSiteFeatureTest extends TestCase
 
     private const LOCALES = ['fr', 'en', 'ar'];
 
-    private const PAGE_ROUTES = ['home', 'services', 'portfolio', 'about', 'contact'];
+    /** Pages that are always public. */
+    private const PAGE_ROUTES = ['home', 'services', 'about', 'contact'];
+
+    /** Pages gated behind a SiteSetting toggle. */
+    private const TOGGLEABLE_PAGE_ROUTES = ['portfolio'];
+
+    private function enablePortfolio(): void
+    {
+        SiteSetting::set('portfolio_enabled', '1', 'boolean', 'pages');
+    }
 
     private function seedContent(): void
     {
@@ -94,9 +103,10 @@ class PublicSiteFeatureTest extends TestCase
     public function test_every_public_page_renders_in_every_locale(): void
     {
         $this->seedContent();
+        $this->enablePortfolio();
 
         foreach (self::LOCALES as $locale) {
-            foreach (self::PAGE_ROUTES as $page) {
+            foreach ([...self::PAGE_ROUTES, ...self::TOGGLEABLE_PAGE_ROUTES] as $page) {
                 $this->withSession(['locale' => $locale])
                     ->get(route($page))
                     ->assertOk();
@@ -106,7 +116,9 @@ class PublicSiteFeatureTest extends TestCase
 
     public function test_public_pages_render_with_a_completely_empty_database(): void
     {
-        foreach (self::PAGE_ROUTES as $page) {
+        $this->enablePortfolio();
+
+        foreach ([...self::PAGE_ROUTES, ...self::TOGGLEABLE_PAGE_ROUTES] as $page) {
             $this->get(route($page))->assertOk();
         }
     }
@@ -138,6 +150,7 @@ class PublicSiteFeatureTest extends TestCase
     public function test_portfolio_filters_projects_by_category(): void
     {
         $this->seedContent();
+        $this->enablePortfolio();
 
         Project::create([
             'title' => ['fr' => 'Cuisine Test', 'en' => 'Cuisine Test', 'ar' => 'مطبخ'],
@@ -215,16 +228,31 @@ class PublicSiteFeatureTest extends TestCase
 
     public function test_sitemap_lists_every_public_page_as_valid_xml(): void
     {
+        $this->enablePortfolio();
+
         $response = $this->get('/sitemap.xml')->assertOk();
         $response->assertHeader('Content-Type', 'application/xml');
 
         $xml = simplexml_load_string($response->getContent());
         $this->assertNotFalse($xml, 'sitemap.xml is not well-formed XML.');
-        $this->assertCount(count(self::PAGE_ROUTES), $xml->url);
 
-        foreach (self::PAGE_ROUTES as $page) {
+        $expected = [...self::PAGE_ROUTES, ...self::TOGGLEABLE_PAGE_ROUTES];
+        $this->assertCount(count($expected), $xml->url);
+
+        foreach ($expected as $page) {
             $response->assertSee(route($page), false);
         }
+    }
+
+    public function test_the_portfolio_page_is_absent_from_the_sitemap_by_default(): void
+    {
+        $response = $this->get('/sitemap.xml')->assertOk();
+
+        $xml = simplexml_load_string($response->getContent());
+        $this->assertNotFalse($xml, 'sitemap.xml is not well-formed XML.');
+        $this->assertCount(count(self::PAGE_ROUTES), $xml->url);
+
+        $response->assertDontSee(route('portfolio'), false);
     }
 
     public function test_robots_txt_points_at_the_sitemap(): void
