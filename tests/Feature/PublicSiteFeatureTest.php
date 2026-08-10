@@ -522,11 +522,12 @@ class PublicSiteFeatureTest extends TestCase
         config(['app.env' => 'local']);
         $this->actingAs(User::factory()->create());
 
-        // categories / project-types are deliberately absent: their resource
-        // classes are empty files and register no routes — see report §F-05.
+        // categories is deliberately absent: its resource class is an empty
+        // file and registers no routes — see report §F-05. project-types was
+        // the same until it was implemented (see ProjectTypeTest).
         $slugs = [
             'quotes', 'invoices', 'services', 'projects', 'testimonials',
-            'faqs', 'chatbot-flows',
+            'faqs', 'chatbot-flows', 'project-types',
         ];
 
         foreach ($slugs as $slug) {
@@ -537,17 +538,34 @@ class PublicSiteFeatureTest extends TestCase
         $this->get('/admin/site-settings')->assertOk();
     }
 
-    public function test_category_and_project_type_resources_register_no_admin_routes(): void
+    public function test_category_resource_registers_no_admin_routes(): void
     {
-        // Documents the current dead-code state (report §F-05). When those
-        // resources are either implemented or deleted, this test should change.
+        // Documents the current dead-code state (report §F-05). CategoryResource
+        // is still an empty stub — out of scope for the ProjectType work. When it
+        // is either implemented or deleted, this test should change.
         $this->assertNull(
             app('router')->getRoutes()->getByName('filament.admin.resources.categories.index'),
             'CategoryResource now registers routes — update report §F-05.'
         );
-        $this->assertNull(
-            app('router')->getRoutes()->getByName('filament.admin.resources.project-types.index'),
-            'ProjectTypeResource now registers routes — update report §F-05.'
+    }
+
+    public function test_project_type_resource_registers_admin_routes(): void
+    {
+        // ProjectTypeResource was implemented (see ProjectTypeTest) — its
+        // routes now register, unlike the still-stubbed CategoryResource above.
+        $this->assertNotNull(
+            app('router')->getRoutes()->getByName('filament.admin.resources.project-types.index')
         );
+    }
+
+    public function test_the_project_type_create_form_renders(): void
+    {
+        // The index-render check above only exercises table(). Hitting the
+        // create page mounts form() too, covering the name.fr dot-binding,
+        // markAsRequired(), alphaDash(), and extraInputAttributes() calls.
+        config(['app.env' => 'local']);
+        $this->actingAs(User::factory()->create());
+
+        $this->get('/admin/project-types/create')->assertOk();
     }
 }
