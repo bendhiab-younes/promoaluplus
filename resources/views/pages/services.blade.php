@@ -138,7 +138,6 @@
 
     @foreach($services as $index => $service)
     @php
-        $gallery = $service->getGalleryImages();
         $serviceColor = $service->getDisplayColor();
         $serviceIcon = $service->getDisplayIcon();
         $features = array_values(array_filter($service->getTranslatedFeatures(), static fn ($feature) => is_string($feature) && trim($feature) !== ''));
@@ -160,16 +159,24 @@
                 <div class="{{ $index % 2 == 1 ? 'order-2 md:order-1' : '' }}">
                     <!-- Interactive Gallery -->
                     @php
-                        $galleryItems = collect($gallery)
+                        // Resolve the raw stored values, not $service->getGalleryImages():
+                        // that accessor already applies MediaPath::url(), which turns an
+                        // uploads-disk path into an absolute URL and would make thumb()
+                        // treat it as external, silently losing the "-thumb" sibling.
+                        $galleryItems = collect($service->gallery ?? [])
                             ->filter(fn ($img) => is_string($img) && trim($img) !== '')
-                            ->map(function ($img) {
-                                $isLocal = str_starts_with($img, '/images/services/');
-                                return [
-                                    'full' => $img,
-                                    'thumb' => $isLocal ? preg_replace('/(\.jpe?g)$/i', '-thumb$1', $img) : $img,
-                                ];
-                            })
+                            ->map(fn ($img) => [
+                                'full' => \App\Support\MediaPath::url($img),
+                                'thumb' => \App\Support\MediaPath::thumb($img),
+                            ])
                             ->values();
+
+                        if ($galleryItems->isEmpty() && ($main = $service->imageSrc()) !== null) {
+                            $galleryItems = collect([['full' => $main, 'thumb' => $main]]);
+                        }
+
+                        // Stays null on purpose when the service has no photo at all —
+                        // the @else branch below renders the gradient-and-icon placeholder.
                         $mainImage = $galleryItems->first()['full'] ?? null;
                     @endphp
                     <div class="service-gallery space-y-3" tabindex="-1">
