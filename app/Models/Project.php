@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasImageSource;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use HasImageSource;
+
     protected $fillable = [
         'title',
         'description',
         'category',
         'location',
         'image',
+        'image_url',
         'gallery',
         'is_featured',
         'is_active',
@@ -29,12 +33,14 @@ class Project extends Model
     public function getTranslatedTitle(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->title[$locale] ?? $this->title['fr'] ?? '';
     }
 
     public function getTranslatedDescription(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->description[$locale] ?? $this->description['fr'] ?? '';
     }
 

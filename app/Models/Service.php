@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasImageSource;
+use App\Support\MediaPath;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    use HasImageSource;
+
     public const DEFAULT_ICON_BY_SLUG = [
         'kitchen' => 'chef-hat',
         'doors' => 'door-open',
@@ -39,6 +43,7 @@ class Service extends Model
         'svg_icon',
         'color',
         'image',
+        'image_url',
         'gallery',
         'features',
         'materials',
@@ -61,18 +66,21 @@ class Service extends Model
     public function getTranslatedTitle(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->title[$locale] ?? $this->title['fr'] ?? '';
     }
 
     public function getTranslatedShortDescription(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->short_description[$locale] ?? $this->short_description['fr'] ?? '';
     }
 
     public function getTranslatedDescription(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
+
         return $this->description[$locale] ?? $this->description['fr'] ?? '';
     }
 
@@ -83,11 +91,12 @@ class Service extends Model
     {
         $locale = $locale ?? app()->getLocale();
         $features = $this->features ?? [];
-        
+
         return array_map(function ($feature) use ($locale) {
             if (is_array($feature)) {
                 return $feature[$locale] ?? $feature['fr'] ?? '';
             }
+
             return $feature;
         }, $features);
     }
@@ -99,36 +108,40 @@ class Service extends Model
     {
         $locale = $locale ?? app()->getLocale();
         $materials = $this->materials ?? [];
-        
+
         return array_map(function ($material) use ($locale) {
             if (is_array($material)) {
                 return $material[$locale] ?? $material['fr'] ?? '';
             }
+
             return $material;
         }, $materials);
     }
 
     /**
-     * Get gallery images with fallback to main image
+     * Gallery image URLs, falling back to the main image when empty.
+     *
+     * @return array<int, string>
      */
     public function getGalleryImages(): array
     {
-        $gallery = $this->gallery ?? [];
-        
-        if (empty($gallery) && $this->image) {
-            return [$this->image];
+        $gallery = array_values(array_filter(
+            array_map(
+                static fn ($image) => is_string($image) ? MediaPath::url($image) : null,
+                $this->gallery ?? []
+            )
+        ));
+
+        if ($gallery === [] && ($main = $this->imageSrc()) !== null) {
+            return [$main];
         }
-        
+
         return $gallery;
     }
 
-    /**
-     * Get the main/featured image
-     */
     public function getFeaturedImage(): ?string
     {
-        $gallery = $this->getGalleryImages();
-        return $gallery[0] ?? $this->image ?? null;
+        return $this->getGalleryImages()[0] ?? $this->imageSrc();
     }
 
     public function getDisplayIcon(): string
