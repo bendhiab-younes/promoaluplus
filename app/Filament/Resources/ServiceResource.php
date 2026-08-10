@@ -245,30 +245,42 @@ class ServiceResource extends Resource
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 Forms\Components\Section::make('Image principale')
-                                    ->description('L\'image principale du service (URL ou upload)')
+                                    ->description('Image affichée sur la carte du service. Glissez un fichier ou utilisez le bouton.')
                                     ->schema([
-                                        Forms\Components\TextInput::make('image')
-                                            ->label('URL de l\'image')
-                                            ->url()
-                                            ->placeholder('https://example.com/image.jpg')
-                                            ->helperText('Entrez une URL d\'image ou utilisez la galerie ci-dessous'),
+                                        Forms\Components\FileUpload::make('image')
+                                            ->label('Fichier')
+                                            ->disk('uploads')
+                                            ->directory('services')
+                                            ->visibility('public')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imagePreviewHeight('150')
+                                            ->maxSize(5120)
+                                            ->helperText('JPG, PNG ou WebP — 5 Mo maximum.'),
+                                        Forms\Components\TextInput::make('image_url')
+                                            ->label('URL externe (optionnel)')
+                                            ->maxLength(2048)
+                                            ->rules(['nullable', 'string', 'max:2048'])
+                                            ->helperText('Utilisée uniquement si aucun fichier n\'est téléversé ci-dessus.'),
                                     ]),
 
                                 Forms\Components\Section::make('Galerie d\'images')
-                                    ->description('URLs des images pour le carrousel (une par ligne)')
+                                    ->description('Glissez-déposez les vignettes pour changer l\'ordre d\'affichage dans le carrousel.')
                                     ->schema([
-                                        Forms\Components\Repeater::make('gallery')
+                                        Forms\Components\FileUpload::make('gallery')
                                             ->label('')
-                                            ->simple(
-                                                Forms\Components\TextInput::make('url')
-                                                    ->label('URL de l\'image')
-                                                    ->url()
-                                                    ->placeholder('https://example.com/image.jpg'),
-                                            )
+                                            ->disk('uploads')
+                                            ->directory('services')
+                                            ->visibility('public')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->multiple()
                                             ->reorderable()
-                                            ->addActionLabel('Ajouter une image')
-                                            ->defaultItems(0)
-                                            ->grid(2),
+                                            ->appendFiles()
+                                            ->panelLayout('grid')
+                                            ->imagePreviewHeight('120')
+                                            ->maxSize(5120)
+                                            ->helperText('La première image est utilisée comme image mise en avant.'),
                                     ]),
                             ]),
 
@@ -345,9 +357,8 @@ class ServiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('')
-                    ->circular()
-                    ->size(50),
+                    ->label('Image')
+                    ->getStateUsing(fn (Service $record): ?string => $record->imageSrc()),
                 Tables\Columns\TextColumn::make('title.fr')
                     ->label('Service')
                     ->searchable()
