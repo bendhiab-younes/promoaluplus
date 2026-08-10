@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             ChatbotFlowSeeder::class,
             ProjectTypeSeeder::class,
+            HeroSlideSeeder::class,
         ]);
     }
 }
