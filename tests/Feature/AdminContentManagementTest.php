@@ -2,9 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\ProjectResource\Pages\CreateProject;
+use App\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Filament\Resources\ServiceResource\Pages\EditService;
+use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\Service;
 use App\Models\User;
+use Filament\Forms\Components\Select;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -114,5 +119,53 @@ class AdminContentManagementTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertSame('Installation rapide', $service->refresh()->features[0]['fr']);
+    }
+
+    public function test_a_project_external_image_url_survives_an_unrelated_edit(): void
+    {
+        ProjectType::create(['name' => ['fr' => 'Fenêtres'], 'slug' => 'windows', 'order' => 1, 'is_active' => true]);
+
+        $project = Project::create([
+            'title' => ['fr' => 'Villa Test', 'en' => 'Test Villa', 'ar' => 'فيلا'],
+            'description' => ['fr' => 'Desc'],
+            'category' => 'windows',
+            'image' => null,
+            'image_url' => 'https://images.unsplash.com/photo-9.jpg',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Livewire::test(EditProject::class, ['record' => $project->getKey()])
+            ->set('data.title.fr', 'Villa Modifiée')
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $project->refresh();
+
+        $this->assertSame('Villa Modifiée', $project->title['fr']);
+        $this->assertSame('https://images.unsplash.com/photo-9.jpg', $project->image_url);
+    }
+
+    /**
+     * The category Select must read its options from ProjectType records rather than a
+     * hardcoded list: active types (including one that isn't one of the original
+     * windows/doors/facades trio) appear, an inactive type does not, and a category with
+     * no backing record ("facades", here deliberately absent) never leaks in.
+     */
+    public function test_the_project_category_options_come_from_project_types(): void
+    {
+        ProjectType::create(['name' => ['fr' => 'Fenêtres'], 'slug' => 'windows', 'order' => 1, 'is_active' => true]);
+        ProjectType::create(['name' => ['fr' => 'Pergolas'], 'slug' => 'pergola', 'order' => 2, 'is_active' => true]);
+        ProjectType::create(['name' => ['fr' => 'Masqué'], 'slug' => 'hidden', 'order' => 3, 'is_active' => false]);
+
+        Livewire::test(CreateProject::class)
+            ->assertFormFieldExists('category', function (Select $field): bool {
+                $options = $field->getOptions();
+
+                return array_key_exists('windows', $options)
+                    && array_key_exists('pergola', $options)
+                    && ! array_key_exists('hidden', $options)
+                    && ! array_key_exists('facades', $options);
+            });
     }
 }

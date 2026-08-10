@@ -3,26 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    
+
     protected static ?string $navigationGroup = 'Contenu';
-    
+
     protected static ?string $modelLabel = 'Projet';
-    
+
     protected static ?string $pluralModelLabel = 'Projets';
 
     public static function form(Form $form): Form
@@ -39,7 +36,7 @@ class ProjectResource extends Resource
                         Forms\Components\TextInput::make('title.ar')
                             ->label('العنوان (عربي)'),
                     ])->columns(3),
-                    
+
                 Forms\Components\Section::make('Description (multilingue)')
                     ->schema([
                         Forms\Components\Textarea::make('description.fr')
@@ -49,17 +46,20 @@ class ProjectResource extends Resource
                         Forms\Components\Textarea::make('description.ar')
                             ->label('الوصف (عربي)'),
                     ])->columns(3),
-                    
+
                 Forms\Components\Section::make('Détails')
                     ->schema([
                         Forms\Components\Select::make('category')
                             ->label('Catégorie')
-                            ->options([
-                                'windows' => 'Fenêtres',
-                                'doors' => 'Portes',
-                                'facades' => 'Façades',
-                            ])
-                            ->required(),
+                            ->options(fn (): array => \App\Models\ProjectType::query()
+                                ->active()
+                                ->ordered()
+                                ->get()
+                                ->mapWithKeys(fn (\App\Models\ProjectType $type): array => [$type->slug => $type->getTranslatedName('fr')])
+                                ->all())
+                            ->required()
+                            ->native(false)
+                            ->helperText('Gérez la liste dans Contenu → Types de projet.'),
                         Forms\Components\TextInput::make('location')
                             ->label('Emplacement'),
                         Forms\Components\TextInput::make('sort_order')
@@ -67,20 +67,40 @@ class ProjectResource extends Resource
                             ->numeric()
                             ->default(0),
                     ])->columns(3),
-                    
+
                 Forms\Components\Section::make('Images')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->label('Image principale')
+                            ->disk('uploads')
+                            ->directory('projects')
+                            ->visibility('public')
                             ->image()
-                            ->directory('projects'),
+                            ->imageEditor()
+                            ->imagePreviewHeight('150')
+                            ->maxSize(5120),
+                        Forms\Components\TextInput::make('image_url')
+                            ->label('URL externe (optionnel)')
+                            ->maxLength(2048)
+                            ->rules(['nullable', 'string', 'max:2048'])
+                            ->helperText('Utilisée uniquement si aucun fichier n\'est téléversé.'),
                         Forms\Components\FileUpload::make('gallery')
                             ->label('Galerie')
+                            ->disk('uploads')
+                            ->directory('projects')
+                            ->visibility('public')
                             ->image()
+                            ->imageEditor()
                             ->multiple()
-                            ->directory('projects/gallery'),
+                            ->reorderable()
+                            ->appendFiles()
+                            ->panelLayout('grid')
+                            ->imagePreviewHeight('120')
+                            ->maxSize(5120)
+                            ->columnSpanFull()
+                            ->helperText('Glissez-déposez les vignettes pour changer leur ordre.'),
                     ])->columns(2),
-                    
+
                 Forms\Components\Section::make('Paramètres')
                     ->schema([
                         Forms\Components\Toggle::make('is_featured')
@@ -97,19 +117,20 @@ class ProjectResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image'),
+                    ->label('Image')
+                    ->getStateUsing(fn (Project $record): ?string => $record->imageSrc()),
                 Tables\Columns\TextColumn::make('title.fr')
                     ->label('Titre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Catégorie')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'windows' => 'info',
-                        'doors' => 'warning',
-                        'facades' => 'success',
-                        default => 'gray',
-                    }),
+                    ->formatStateUsing(fn (?string $state): string => \App\Models\ProjectType::query()
+                        ->where('slug', $state)
+                        ->first()?->getTranslatedName('fr') ?? (string) $state)
+                    ->color(fn (?string $state): string => \App\Models\ProjectType::query()
+                        ->where('slug', $state)
+                        ->first()?->color ?? 'gray'),
                 Tables\Columns\TextColumn::make('location')
                     ->label('Lieu')
                     ->searchable(),
@@ -126,11 +147,13 @@ class ProjectResource extends Resource
             ->defaultSort('sort_order')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
-                    ->options([
-                        'windows' => 'Fenêtres',
-                        'doors' => 'Portes',
-                        'facades' => 'Façades',
-                    ]),
+                    ->label('Catégorie')
+                    ->options(fn (): array => \App\Models\ProjectType::query()
+                        ->active()
+                        ->ordered()
+                        ->get()
+                        ->mapWithKeys(fn (\App\Models\ProjectType $type): array => [$type->slug => $type->getTranslatedName('fr')])
+                        ->all()),
                 Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('Mis en avant'),
                 Tables\Filters\TernaryFilter::make('is_active')
