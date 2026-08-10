@@ -219,7 +219,7 @@ class ServiceResource extends Resource
                                                     ->schema([
                                                         Forms\Components\TextInput::make('fr')
                                                             ->label('🇫🇷 Français')
-                                                            ->required()
+                                                            ->rules(['required', 'string'])
                                                             ->placeholder('Ex: Installation rapide et professionnelle'),
                                                         Forms\Components\TextInput::make('en')
                                                             ->label('🇬🇧 English')
@@ -298,7 +298,7 @@ class ServiceResource extends Resource
                                                     ->schema([
                                                         Forms\Components\TextInput::make('fr')
                                                             ->label('🇫🇷 Français')
-                                                            ->required()
+                                                            ->rules(['required', 'string'])
                                                             ->placeholder('Ex: Profilés aluminium'),
                                                         Forms\Components\TextInput::make('en')
                                                             ->label('🇬🇧 English')
@@ -325,12 +325,12 @@ class ServiceResource extends Resource
                                             ->schema([
                                                 Forms\Components\TextInput::make('label')
                                                     ->label('Nom')
-                                                    ->required()
+                                                    ->rules(['required', 'string'])
                                                     ->placeholder('Ex: Épaisseur')
                                                     ->columnSpan(1),
                                                 Forms\Components\TextInput::make('value')
                                                     ->label('Valeur')
-                                                    ->required()
+                                                    ->rules(['required', 'string'])
                                                     ->placeholder('Ex: 1.2 - 2.0 mm')
                                                     ->columnSpan(1),
                                             ])

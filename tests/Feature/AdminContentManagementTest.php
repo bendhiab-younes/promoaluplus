@@ -71,4 +71,48 @@ class AdminContentManagementTest extends TestCase
         $this->assertSame('Pergola Modifiée', $service->title['fr']);
         $this->assertSame('https://images.pexels.com/photos/7587884/x.jpeg', $service->image_url);
     }
+
+    /**
+     * Regression: ->required() inside a ->collapsed() repeater sets the native
+     * HTML required attribute on a hidden input, which makes the browser
+     * refuse to submit without reporting anything. Validation must be
+     * server-side so Filament can surface the error against the right item.
+     */
+    public function test_an_invalid_collapsed_repeater_item_reports_a_form_error(): void
+    {
+        $service = Service::create([
+            'slug' => 'railings',
+            'title' => ['fr' => 'Garde-corps', 'en' => 'Railings', 'ar' => 'درابزين'],
+            'short_description' => ['fr' => 'Courte'],
+            'description' => ['fr' => 'Longue'],
+            'features' => [],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Livewire::test(EditService::class, ['record' => $service->getKey()])
+            ->set('data.features', [['fr' => '', 'en' => '', 'ar' => '']])
+            ->call('save')
+            ->assertHasFormErrors();
+    }
+
+    public function test_a_valid_collapsed_repeater_item_saves(): void
+    {
+        $service = Service::create([
+            'slug' => 'kitchen',
+            'title' => ['fr' => 'Cuisine', 'en' => 'Kitchen', 'ar' => 'مطبخ'],
+            'short_description' => ['fr' => 'Courte'],
+            'description' => ['fr' => 'Longue'],
+            'features' => [],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Livewire::test(EditService::class, ['record' => $service->getKey()])
+            ->set('data.features', [['fr' => 'Installation rapide', 'en' => 'Fast install', 'ar' => 'تركيب سريع']])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame('Installation rapide', $service->refresh()->features[0]['fr']);
+    }
 }
