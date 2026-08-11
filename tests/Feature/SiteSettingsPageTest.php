@@ -120,4 +120,22 @@ class SiteSettingsPageTest extends TestCase
             ->assertOk()
             ->assertSee('https://cdn.example.test/atelier.jpg', escape: false);
     }
+
+    /**
+     * Locks in the removal of the write-only fields: every one of these saved
+     * successfully and changed nothing on the site. If someone re-adds one,
+     * this fails and they have to wire it up first.
+     */
+    public function test_the_write_only_fields_are_gone_from_the_form(): void
+    {
+        $page = Livewire::test(SiteSettings::class);
+
+        foreach ([
+            'hours_weekdays', 'hours_saturday', 'hours_sunday',
+            'stats_projects', 'stats_years', 'stats_satisfaction', 'stats_team',
+            'contact_phone_2', 'contact_map_url',
+        ] as $removed) {
+            $page->assertFormFieldDoesNotExist($removed);
+        }
+    }
 }

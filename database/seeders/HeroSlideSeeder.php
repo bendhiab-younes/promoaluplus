@@ -18,6 +18,9 @@ class HeroSlideSeeder extends Seeder
 {
     private const LOCALES = ['fr', 'en', 'ar'];
 
+    /** Seed-time default only — the admin edits slide 4's title directly. */
+    private const YEARS_OF_EXPERIENCE = '15';
+
     public function run(): void
     {
         foreach ($this->slides() as $slide) {
@@ -69,8 +72,6 @@ class HeroSlideSeeder extends Seeder
     /** @return array<int, array<string, mixed>> */
     private function slides(): array
     {
-        $years = SiteSetting::get('stats_years', '15');
-
         return [
             [
                 'sort_order' => 0,
@@ -119,10 +120,11 @@ class HeroSlideSeeder extends Seeder
             [
                 'sort_order' => 3,
                 'badge' => $this->lang('hero_slide4_badge'),
-                // The markup interpolated stats_years at render time. Storing the
-                // resolved string freezes it, which is the point: the admin now
-                // edits this title directly instead of via a numeric setting.
-                'title' => $this->map(fn (string $locale): string => $years.'+ '.$this->trans('years_experience', $locale)),
+                // The markup interpolated a stats_years setting at render time.
+                // Storing the resolved string freezes it, which is the point:
+                // the admin edits this title directly in Contenu → Slides
+                // d'accueil, so the numeric setting was removed entirely.
+                'title' => $this->map(fn (string $locale): string => self::YEARS_OF_EXPERIENCE.'+ '.$this->trans('years_experience', $locale)),
                 'highlight' => $this->lang('hundreds_projects_completed'),
                 'description' => $this->lang('hero_slide4_description'),
                 'alt_text' => $this->lang('hero_slide4_alt'),

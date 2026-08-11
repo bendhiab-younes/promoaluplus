@@ -77,30 +77,13 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                         // car HeroSlideSeeder les lit encore comme surcharges facultatives
                         // au moment du seed (à défaut, il retombe sur les fichiers lang).
 
-                        // === STATISTIQUES ===
-                        Forms\Components\Tabs\Tab::make('Statistiques')
-                            ->icon('heroicon-o-chart-bar')
-                            ->schema([
-                                Forms\Components\TextInput::make('stats_projects')
-                                    ->label('Nombre de projets')
-                                    ->numeric()
-                                    ->default(500)
-                                    ->suffix('+'),
-                                Forms\Components\TextInput::make('stats_years')
-                                    ->label('Années d\'expérience')
-                                    ->numeric()
-                                    ->default(15)
-                                    ->suffix('+'),
-                                Forms\Components\TextInput::make('stats_satisfaction')
-                                    ->label('Taux de satisfaction')
-                                    ->numeric()
-                                    ->default(98)
-                                    ->suffix('%'),
-                                Forms\Components\TextInput::make('stats_team')
-                                    ->label('Membres de l\'équipe')
-                                    ->numeric()
-                                    ->default(12),
-                            ]),
+                        // L'onglet « Statistiques » (stats_projects, stats_years,
+                        // stats_satisfaction, stats_team) a été retiré : le bloc de
+                        // compteurs qu'il alimentait n'existe plus sur la page
+                        // d'accueil, donc ces champs s'enregistraient sans jamais
+                        // rien changer. Le chiffre des années d'expérience se
+                        // modifie désormais directement dans le titre de la 4e
+                        // slide (Contenu → Slides d'accueil).
 
                         // === SECTION CTA ===
                         Forms\Components\Tabs\Tab::make('Section CTA')
@@ -211,9 +194,6 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                     ->tel()
                                     ->default('+21626192898')
                                     ->helperText('Affiché aussi dans le bloc "Prestataire" des devis PDF.'),
-                                Forms\Components\TextInput::make('contact_phone_2')
-                                    ->label('Téléphone secondaire')
-                                    ->tel(),
                                 Forms\Components\TextInput::make('contact_whatsapp')
                                     ->label('WhatsApp')
                                     ->tel()
@@ -228,26 +208,17 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                     ->label('Adresse')
                                     ->rows(2)
                                     ->helperText('Affichée aussi dans le bloc "Prestataire" des devis PDF.'),
-                                Forms\Components\TextInput::make('contact_map_url')
-                                    ->label('Lien Google Maps')
-                                    ->url()
-                                    ->helperText('URL d\'intégration Google Maps'),
+                                // Retirés : « Téléphone secondaire » (contact_phone_2)
+                                // et « Lien Google Maps » (contact_map_url). Aucun des
+                                // deux n'était lu nulle part — il n'y a pas de second
+                                // numéro affiché sur le site, ni de carte intégrée sur
+                                // la page Contact.
                             ]),
 
-                        // === HORAIRES ===
-                        Forms\Components\Tabs\Tab::make('Horaires')
-                            ->icon('heroicon-o-clock')
-                            ->schema([
-                                Forms\Components\TextInput::make('hours_weekdays')
-                                    ->label('Lundi - Vendredi')
-                                    ->default('8h00 - 18h00'),
-                                Forms\Components\TextInput::make('hours_saturday')
-                                    ->label('Samedi')
-                                    ->default('9h00 - 13h00'),
-                                Forms\Components\TextInput::make('hours_sunday')
-                                    ->label('Dimanche')
-                                    ->default('Fermé'),
-                            ]),
+                        // L'onglet « Horaires » (hours_weekdays, hours_saturday,
+                        // hours_sunday) a été retiré : le site n'affiche nulle part
+                        // un tableau d'horaires. La page Contact montre la mention
+                        // messages.working_hours, qui vient des fichiers de langue.
 
                         // === RÉSEAUX SOCIAUX ===
                         Forms\Components\Tabs\Tab::make('Réseaux sociaux')
