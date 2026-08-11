@@ -565,9 +565,13 @@
                     </div>
                     <p class="text-gray-600 mb-6 italic">"{{ $testimonial->getTranslatedContent() }}"</p>
                     <div class="flex items-center">
+                        @if($testimonial->photoSrc())
+                        <img src="{{ $testimonial->photoSrc() }}" alt="{{ $testimonial->client_name }}" loading="lazy" class="w-12 h-12 rounded-full object-cover me-4">
+                        @else
                         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center me-4">
-                            <span class="text-blue-600 font-bold">{{ substr($testimonial->client_name, 0, 1) }}</span>
+                            <span class="text-blue-600 font-bold">{{ mb_substr($testimonial->client_name, 0, 1) }}</span>
                         </div>
+                        @endif
                         <div>
                             <h4 class="font-bold text-gray-800">{{ $testimonial->client_name }}</h4>
                             <p class="text-sm text-gray-500">{{ $testimonial->client_location }}</p>
@@ -575,64 +579,13 @@
                     </div>
                 </div>
                 @empty
-                <!-- Default testimonials -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
+                    <div class="col-span-full py-16 text-center">
+                        <i data-lucide="message-square-off" class="w-12 h-12 mx-auto text-gray-300 mb-4"></i>
+                        <p class="text-gray-500 text-lg max-w-xl mx-auto">{{ __('messages.testimonials_empty') }}</p>
+                        <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center mt-6">
+                            {{ __('messages.request_quote') }}
+                        </a>
                     </div>
-                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_1') }}"</p>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center me-4">
-                            <span class="text-blue-600 font-bold">M</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Mohamed B.</h4>
-                            <p class="text-sm text-gray-500">Paris, France</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                    </div>
-                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_2') }}"</p>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center me-4">
-                            <span class="text-green-600 font-bold">S</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Sonia K.</h4>
-                            <p class="text-sm text-gray-500">Montréal, Canada</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-transparent hover:border-blue-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center mb-4">
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>
-                    </div>
-                    <p class="text-gray-600 mb-6 italic">"{{ __('messages.testimonial_3') }}"</p>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center me-4">
-                            <span class="text-orange-600 font-bold">A</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Ahmed T.</h4>
-                            <p class="text-sm text-gray-500">Berlin, Allemagne</p>
-                        </div>
-                    </div>
-                </div>
                 @endforelse
             </div>
         </div>

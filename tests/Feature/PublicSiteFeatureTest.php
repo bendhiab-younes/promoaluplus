@@ -584,4 +584,66 @@ class PublicSiteFeatureTest extends TestCase
 
         $this->get('/admin/project-types/create')->assertOk();
     }
+
+    public function test_the_homepage_shows_no_invented_testimonials_when_the_table_is_empty(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('Mohamed B.')
+            ->assertDontSee('Sonia K.')
+            ->assertDontSee('Ahmed T.');
+    }
+
+    public function test_the_homepage_shows_an_honest_empty_state_instead_of_fake_reviews(): void
+    {
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee(__('messages.testimonials_empty', [], 'fr'));
+    }
+
+    public function test_the_testimonial_seeder_populates_the_previously_hardcoded_reviews(): void
+    {
+        $this->seed(\Database\Seeders\TestimonialSeeder::class);
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('Mohamed B.')
+            ->assertSee('Sonia K.')
+            ->assertSee('Ahmed T.');
+    }
+
+    public function test_the_testimonial_create_form_renders(): void
+    {
+        // The admin-slug loop above only exercises table(); mounting the create
+        // page covers form(), including the client_photo FileUpload and the
+        // image_url TextInput (which must not be a type="url" input).
+        config(['app.env' => 'local']);
+        $this->actingAs(User::factory()->create());
+
+        $this->get('/admin/testimonials/create')->assertOk();
+    }
+
+    public function test_the_testimonial_edit_form_hydrates_a_root_relative_image_url(): void
+    {
+        // The create page has no record to hydrate. Mounting the edit page with
+        // a stored root-relative path is what proves image_url exists as a
+        // column and that its field is not a type="url" input, which would
+        // reject the value and block the whole form on save.
+        config(['app.env' => 'local']);
+        $this->actingAs(User::factory()->create());
+
+        $testimonial = Testimonial::create([
+            'client_name' => 'Client Test',
+            'client_location' => 'Tunis, Tunisie',
+            'content' => ['fr' => 'Avis.', 'en' => 'Review.', 'ar' => 'رأي.'],
+            'image_url' => '/images/logo-160.webp',
+            'rating' => 5,
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->get("/admin/testimonials/{$testimonial->id}/edit")->assertOk();
+    }
 }

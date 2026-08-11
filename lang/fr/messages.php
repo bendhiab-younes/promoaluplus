@@ -238,6 +238,7 @@ return [
     'testimonial_1' => 'Excellent travail! PromoAlu+ a parfaitement respecté mes attentes pour mes fenêtres et garde-corps.',
     'testimonial_2' => 'Qualité européenne à prix tunisien. Communication impeccable malgré le décalage horaire.',
     'testimonial_3' => 'Professionnels et à l\'écoute. Je recommande vivement pour tout projet de construction en Tunisie.',
+    'testimonials_empty' => 'Les témoignages de nos clients seront publiés ici prochainement. Contactez-nous pour échanger avec nos références.',
 
     // About
     'about_us' => 'À Propos de Nous',

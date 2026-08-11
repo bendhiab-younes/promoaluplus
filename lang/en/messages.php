@@ -238,6 +238,7 @@ return [
     'testimonial_1' => 'Excellent work! Promo Alu Plus perfectly met my expectations for my windows and railings.',
     'testimonial_2' => 'European quality at Tunisian prices. Impeccable communication despite the time difference.',
     'testimonial_3' => 'Professional and attentive. I highly recommend for any construction project in Tunisia.',
+    'testimonials_empty' => 'Our client testimonials will be published here soon. Get in touch to speak with our references.',
 
     // About
     'about_us' => 'About Us',

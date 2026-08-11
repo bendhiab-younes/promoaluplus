@@ -3,24 +3,21 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TestimonialResource\Pages;
-use App\Filament\Resources\TestimonialResource\RelationManagers;
 use App\Models\Testimonial;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TestimonialResource extends Resource
 {
     protected static ?string $model = Testimonial::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-    
+
     protected static ?string $navigationGroup = 'Contenu';
-    
+
     protected static ?string $modelLabel = 'Témoignage';
 
     public static function form(Form $form): Form
@@ -52,7 +49,29 @@ class TestimonialResource extends Resource
                             ])
                             ->default(5),
                     ])->columns(2),
-                    
+
+                Forms\Components\Section::make('Photo')
+                    ->schema([
+                        Forms\Components\FileUpload::make('client_photo')
+                            ->label('Photo du client')
+                            ->disk('uploads')
+                            ->directory('testimonials')
+                            ->visibility('public')
+                            ->image()
+                            ->imageEditor()
+                            ->avatar()
+                            ->imagePreviewHeight('120')
+                            ->maxSize(3072)
+                            ->helperText('Optionnel — sans photo, les initiales du client sont affichées.'),
+                        // Deliberately NOT ->url(): stored values may be
+                        // root-relative paths like /images/..., which a
+                        // type="url" input rejects and blocks the whole form on.
+                        Forms\Components\TextInput::make('image_url')
+                            ->label('URL externe (optionnel)')
+                            ->maxLength(2048)
+                            ->rules(['nullable', 'string', 'max:2048']),
+                    ])->columns(2),
+
                 Forms\Components\Section::make('Témoignage (multilingue)')
                     ->schema([
                         Forms\Components\Textarea::make('content.fr')
@@ -63,7 +82,7 @@ class TestimonialResource extends Resource
                         Forms\Components\Textarea::make('content.ar')
                             ->label('عربي'),
                     ])->columns(3),
-                    
+
                 Forms\Components\Section::make('Paramètres')
                     ->schema([
                         Forms\Components\Toggle::make('is_active')
@@ -81,6 +100,10 @@ class TestimonialResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('client_photo')
+                    ->label('Photo')
+                    ->circular()
+                    ->getStateUsing(fn (Testimonial $record): ?string => $record->photoSrc()),
                 Tables\Columns\TextColumn::make('client_name')
                     ->label('Client')
                     ->searchable(),
