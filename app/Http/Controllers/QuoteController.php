@@ -20,7 +20,8 @@ class QuoteController extends Controller
             'phone' => 'required|string|max:50',
             'country' => 'nullable|string|max:100',
             'city' => 'nullable|string|max:100',
-            'project_type' => CanonicalServiceCatalog::quoteValidationRule(),
+            'project_types' => 'required|array|min:1',
+            'project_types.*' => CanonicalServiceCatalog::quoteItemValidationRule(),
             'description' => 'required|string|max:2000',
             'timeline' => 'nullable|string|max:100',
         ]);
@@ -30,7 +31,7 @@ class QuoteController extends Controller
         // Send notification emails (queued)
         try {
             Mail::to($quote->email)->queue(new QuoteRequestReceived($quote));
-            Mail::to(config('mail.admin_email', 'admin@aluminiumcraft.tn'))->queue(new QuoteRequestNotification($quote));
+            Mail::to(config('mail.admin_email'))->queue(new QuoteRequestNotification($quote));
         } catch (\Exception $e) {
             // Log error but don't fail the request
             \Log::error('Failed to send quote emails: '.$e->getMessage());

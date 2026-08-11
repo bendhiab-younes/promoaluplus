@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\QuoteResource\Pages\CreateQuote;
 use App\Filament\Resources\QuoteResource\Pages\EditQuote;
 use App\Filament\Resources\QuoteResource\Pages\ListQuotes;
 use App\Filament\Resources\QuoteResource\Pages\ViewQuote;
@@ -34,7 +35,7 @@ class DevisAdminUiTest extends TestCase
             'first_name' => 'Aymen',
             'name' => 'Hssine',
             'phone' => '26 192 898',
-            'project_type' => 'other',
+            'project_types' => ['other'],
             'status' => $status,
             'rates' => DevisPricing::DEFAULT_RATES,
             'show_tax' => true,
@@ -126,7 +127,7 @@ class DevisAdminUiTest extends TestCase
             'first_name' => 'Sana',
             'name' => 'Ben Ali',
             'phone' => '20 000 000',
-            'project_type' => 'other',
+            'project_types' => ['other'],
             'status' => 'new',
         ]);
 
@@ -150,5 +151,61 @@ class DevisAdminUiTest extends TestCase
             // 1.41 × 1.20 × 700 — the line follows the new rate instead of
             // keeping the price it was entered with.
             ->assertFormSet(fn (array $state): bool => (float) array_values($state['items'])[0]['unit_price'] === 1184.40);
+    }
+
+    /**
+     * A client can ask for a devis covering several project types at once
+     * (e.g. doors + windows + a pergola) — the admin's "Type(s) de projet"
+     * field is a checkbox list, not a single select, and must persist every
+     * box the admin ticks.
+     */
+    public function test_creating_a_devis_persists_several_project_types(): void
+    {
+        Livewire::test(CreateQuote::class)
+            ->set('data.first_name', 'Aymen')
+            ->set('data.name', 'Hssine')
+            ->set('data.phone', '26 192 898')
+            ->set('data.project_types', ['doors', 'windows', 'pergola'])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $quote = Quote::firstOrFail();
+
+        $this->assertSame(['doors', 'windows', 'pergola'], $quote->project_types);
+    }
+
+    public function test_blanking_the_project_types_selection_reports_a_form_error(): void
+    {
+        Livewire::test(CreateQuote::class)
+            ->set('data.first_name', 'Aymen')
+            ->set('data.name', 'Hssine')
+            ->set('data.phone', '26 192 898')
+            ->set('data.project_types', [])
+            ->call('create')
+            ->assertHasFormErrors(['project_types']);
+
+        $this->assertSame(0, Quote::count());
+    }
+
+    /**
+     * The list filter must match a devis that asked for ANY of the selected
+     * types, not just an exact set — a request for [doors, windows] should
+     * still surface a devis whose types are [windows, pergola].
+     */
+    public function test_the_project_types_filter_matches_any_selected_type(): void
+    {
+        $windowsAndPergola = Quote::create([
+            'first_name' => 'A', 'name' => 'A', 'phone' => '1',
+            'project_types' => ['windows', 'pergola'], 'status' => 'new',
+        ]);
+        $kitchenOnly = Quote::create([
+            'first_name' => 'B', 'name' => 'B', 'phone' => '2',
+            'project_types' => ['kitchen'], 'status' => 'new',
+        ]);
+
+        Livewire::test(ListQuotes::class)
+            ->filterTable('project_types', ['doors', 'windows'])
+            ->assertCanSeeTableRecords([$windowsAndPergola])
+            ->assertCanNotSeeTableRecords([$kitchenOnly]);
     }
 }

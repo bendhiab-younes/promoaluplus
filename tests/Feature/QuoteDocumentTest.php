@@ -22,7 +22,7 @@ class QuoteDocumentTest extends TestCase
             'name' => 'Hssine',
             'phone' => '26 192 898',
             'client_address' => 'Sousse-Khzema',
-            'project_type' => 'other',
+            'project_types' => ['other'],
             'status' => 'quoted',
             'quote_number' => 'DEV-2026-0099',
             'devis_date' => '2026-07-12',

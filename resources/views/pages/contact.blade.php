@@ -192,34 +192,42 @@
                         </div>
 
                         <div class="rounded-2xl border border-orange-100/80 bg-white/90 p-4 md:p-6">
-                            <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                                <div>
-                                    <label for="quote-project-type" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></label>
-                                    <select id="quote-project-type" name="project_type" required
-                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
-                                        <option value="">{{ __('messages.select_type') }}</option>
-                                        @foreach($projectTypeOptions as $projectTypeValue => $projectTypeLabel)
-                                            <option value="{{ $projectTypeValue }}" {{ old('project_type') == $projectTypeValue ? 'selected' : '' }}>{{ $projectTypeLabel }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('project_type')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                            <div>
+                                <span class="block text-gray-700 font-semibold mb-1 text-sm">{{ __('messages.project_type') }} <span class="text-red-500">*</span></span>
+                                <p class="text-xs text-gray-500 mb-3">{{ __('messages.select_type') }}</p>
+                                @php $oldProjectTypes = old('project_types', []); @endphp
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label="{{ __('messages.project_type') }}">
+                                    @foreach($projectTypeOptions as $projectTypeValue => $projectTypeLabel)
+                                        <label class="relative flex items-center justify-center text-center px-3 py-3 rounded-xl border-2 border-gray-200 bg-white cursor-pointer select-none transition-all text-sm font-medium text-gray-700 hover:border-blue-300 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-700 has-[:checked]:ring-2 has-[:checked]:ring-blue-500/20">
+                                            <input type="checkbox" name="project_types[]" value="{{ $projectTypeValue }}" class="peer sr-only"
+                                                {{ in_array($projectTypeValue, $oldProjectTypes) ? 'checked' : '' }}>
+                                            <span class="hidden peer-checked:flex absolute -top-2 -right-2 w-5 h-5 items-center justify-center rounded-full bg-blue-600 text-white shadow ring-2 ring-white">
+                                                <i data-lucide="check" class="w-3 h-3" stroke-width="3"></i>
+                                            </span>
+                                            {{ $projectTypeLabel }}
+                                        </label>
+                                    @endforeach
                                 </div>
-                                <div>
-                                    <label for="quote-timeline" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
-                                    <select id="quote-timeline" name="timeline"
-                                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
-                                        <option value="">{{ __('messages.select_timeline') }}</option>
-                                        <option value="urgent" {{ old('timeline') == 'urgent' ? 'selected' : '' }}>{{ __('messages.urgent') }}</option>
-                                        <option value="1-3 months" {{ old('timeline') == '1-3 months' ? 'selected' : '' }}>1-3 {{ __('messages.months') }}</option>
-                                        <option value="3-6 months" {{ old('timeline') == '3-6 months' ? 'selected' : '' }}>3-6 {{ __('messages.months') }}</option>
-                                        <option value="6+ months" {{ old('timeline') == '6+ months' ? 'selected' : '' }}>6+ {{ __('messages.months') }}</option>
-                                    </select>
-                                    @error('timeline')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                @error('project_types')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                @error('project_types.*')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mt-4 md:mt-5">
+                                <label for="quote-timeline" class="block text-gray-700 font-semibold mb-2 text-sm">{{ __('messages.timeline') }}</label>
+                                <select id="quote-timeline" name="timeline"
+                                    class="w-full md:w-1/2 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all bg-white">
+                                    <option value="">{{ __('messages.select_timeline') }}</option>
+                                    <option value="urgent" {{ old('timeline') == 'urgent' ? 'selected' : '' }}>{{ __('messages.urgent') }}</option>
+                                    <option value="1-3 months" {{ old('timeline') == '1-3 months' ? 'selected' : '' }}>1-3 {{ __('messages.months') }}</option>
+                                    <option value="3-6 months" {{ old('timeline') == '3-6 months' ? 'selected' : '' }}>3-6 {{ __('messages.months') }}</option>
+                                    <option value="6+ months" {{ old('timeline') == '6+ months' ? 'selected' : '' }}>6+ {{ __('messages.months') }}</option>
+                                </select>
+                                @error('timeline')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 

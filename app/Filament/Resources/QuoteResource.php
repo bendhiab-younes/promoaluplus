@@ -250,11 +250,16 @@ class QuoteResource extends Resource
                             ->description('Le contexte de la demande — rien de tout ceci n\'apparaît sur le devis imprimé.')
                             ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
-                                Forms\Components\Select::make('project_type')
-                                    ->label('Type de projet')
+                                Forms\Components\CheckboxList::make('project_types')
+                                    ->label('Type(s) de projet')
+                                    ->helperText('Le client peut demander un devis pour plusieurs types à la fois — cochez tout ce qui s\'applique.')
                                     ->options($projectTypeOptions)
-                                    ->required()
-                                    ->default(CanonicalServiceCatalog::OTHER_SLUG),
+                                    ->columns(3)
+                                    ->bulkToggleable()
+                                    ->rules(['required', 'array', 'min:1'])
+                                    ->markAsRequired()
+                                    ->default([CanonicalServiceCatalog::OTHER_SLUG])
+                                    ->columnSpanFull(),
                                 Forms\Components\TextInput::make('timeline')
                                     ->label('Délai souhaité')
                                     ->placeholder('Délai annoncé par le client'),
@@ -609,8 +614,8 @@ class QuoteResource extends Resource
                         Infolists\Components\Section::make('Projet')
                             ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
-                                Infolists\Components\TextEntry::make('project_type')
-                                    ->label('Type')
+                                Infolists\Components\TextEntry::make('project_types')
+                                    ->label('Type(s)')
                                     ->badge()
                                     ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr')),
                                 Infolists\Components\TextEntry::make('timeline')
@@ -746,7 +751,7 @@ class QuoteResource extends Resource
                         'first_name',
                         'name',
                         'phone',
-                        'project_type',
+                        'project_types',
                         'total',
                         'status',
                         'created_at',
@@ -769,8 +774,8 @@ class QuoteResource extends Resource
                     ->copyMessage('Numéro copié')
                     ->icon('heroicon-m-phone')
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('project_type')
-                    ->label('Type')
+                Tables\Columns\TextColumn::make('project_types')
+                    ->label('Type(s)')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr'))
                     ->color(fn (string $state): string => match ($state) {
@@ -808,9 +813,24 @@ class QuoteResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('project_type')
+                Tables\Filters\SelectFilter::make('project_types')
                     ->label('Type de projet')
-                    ->options($projectTypeOptions),
+                    ->options($projectTypeOptions)
+                    ->multiple()
+                    ->query(function (Builder $query, array $data): Builder {
+                        $values = $data['values'] ?? [];
+
+                        if (empty($values)) {
+                            return $query;
+                        }
+
+                        // Match a devis that asked for ANY of the selected types.
+                        return $query->where(function (Builder $query) use ($values) {
+                            foreach ($values as $value) {
+                                $query->orWhereJsonContains('project_types', $value);
+                            }
+                        });
+                    }),
                 Tables\Filters\TernaryFilter::make('items_count')
                     ->label('Chiffrage')
                     ->placeholder('Tous')

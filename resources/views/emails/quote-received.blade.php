@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{ \App\Models\SiteSetting::get('company_name', 'AluminiumCraft Tunisie') }}</h1>
+            <h1>{{ \App\Models\SiteSetting::get('company_name', 'PromoAlu+') }}</h1>
             <p>Menuiserie Aluminium de Qualité Européenne</p>
         </div>
         
@@ -27,7 +27,7 @@
             
             <div class="info-box">
                 <h3 style="margin-top: 0;">Récapitulatif de votre demande :</h3>
-                <p><strong>Type de projet :</strong> {{ ucfirst($quote->project_type) }}</p>
+                <p><strong>Type(s) de projet :</strong> {{ $quote->projectTypesLabel('fr') }}</p>
                 @if($quote->city)
                 <p><strong>Ville du projet :</strong> {{ $quote->city }}</p>
                 @endif
@@ -47,12 +47,12 @@
             </ul>
             
             <p>Cordialement,<br>
-            <strong>L'équipe {{ \App\Models\SiteSetting::get('company_name','AluminiumCraft Tunisie') }}</strong></p>
+            <strong>L'équipe {{ \App\Models\SiteSetting::get('company_name','PromoAlu+') }}</strong></p>
         </div>
         
         <div class="footer">
-            <p>{{ \App\Models\SiteSetting::get('company_name','AluminiumCraft Tunisie') }} - {{ \App\Models\SiteSetting::get('contact_address','Zone Industrielle, Sousse') }}</p>
-            <p>© {{ date('Y') }} AluminiumCraft. Tous droits réservés.</p>
+            <p>{{ \App\Models\SiteSetting::get('company_name','PromoAlu+') }} - {{ \App\Models\SiteSetting::get('contact_address','Zone Industrielle, Sousse') }}</p>
+            <p>© {{ date('Y') }} PromoAlu+. Tous droits réservés.</p>
         </div>
     </div>
 </body>

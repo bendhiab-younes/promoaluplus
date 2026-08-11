@@ -14,7 +14,7 @@
         .urgent { background: #fef2f2; border: 1px solid #fecaca; padding: 10px; border-radius: 6px; color: #dc2626; }
         .description { background: white; padding: 15px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 20px; }
         h1 { margin: 0; font-size: 20px; }
-        .badge { display: inline-block; background: #f97316; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+        .badge { display: inline-block; background: #f97316; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin: 2px 4px 2px 0; }
     </style>
 </head>
 <body>
@@ -52,8 +52,12 @@
                 </tr>
                 @endif
                 <tr>
-                    <td>Type de projet</td>
-                    <td><span class="badge">{{ ucfirst($quote->project_type) }}</span></td>
+                    <td>Type(s) de projet</td>
+                    <td>
+                        @foreach($quote->project_types ?? [] as $type)
+                            <span class="badge">{{ \App\Models\Quote::projectTypeLabel($type, 'fr') }}</span>
+                        @endforeach
+                    </td>
                 </tr>
                 @if($quote->timeline)
                 <tr>

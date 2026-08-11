@@ -42,6 +42,15 @@ class CanonicalServiceCatalog
         return 'required|string|in:'.implode(',', [...self::slugs(), self::OTHER_SLUG]);
     }
 
+    /**
+     * Per-item rule for a multi-select project_types array — the "required"
+     * lives on the array itself (at least one type), not on each element.
+     */
+    public static function quoteItemValidationRule(): string
+    {
+        return 'string|in:'.implode(',', [...self::slugs(), self::OTHER_SLUG]);
+    }
+
     public static function translatedOptions(?string $locale = null): array
     {
         $options = [];

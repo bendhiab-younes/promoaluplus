@@ -40,7 +40,7 @@ class DevisBuilderTest extends TestCase
                 'first_name' => 'Aymen',
                 'name' => 'Hssine',
                 'phone' => '26 192 898',
-                'project_type' => 'other',
+                'project_types' => ['other'],
                 'items' => [
                     [
                         'description' => 'Fenêtre 2 ventaux et volet',
@@ -69,7 +69,7 @@ class DevisBuilderTest extends TestCase
                 'first_name' => 'Aymen',
                 'name' => 'Hssine',
                 'phone' => '26 192 898',
-                'project_type' => 'other',
+                'project_types' => ['other'],
                 'discount' => 618,
                 'show_tax' => false,
                 'items' => [
@@ -98,7 +98,7 @@ class DevisBuilderTest extends TestCase
     {
         $quote = Quote::create([
             'first_name' => 'Aymen', 'name' => 'Hssine', 'phone' => '26 192 898',
-            'project_type' => 'other', 'status' => 'quoted',
+            'project_types' => ['other'], 'status' => 'quoted',
             'rates' => DevisPricing::DEFAULT_RATES,
         ]);
         $quote->items()->create([
@@ -119,7 +119,7 @@ class DevisBuilderTest extends TestCase
     {
         $quote = Quote::create([
             'first_name' => 'Aymen', 'name' => 'Hssine', 'phone' => '26 192 898',
-            'project_type' => 'other', 'status' => 'quoted', 'show_tax' => true, 'tax_rate' => 19,
+            'project_types' => ['other'], 'status' => 'quoted', 'show_tax' => true, 'tax_rate' => 19,
             'rates' => DevisPricing::DEFAULT_RATES,
         ]);
         $quote->items()->create([
@@ -144,7 +144,7 @@ class DevisBuilderTest extends TestCase
                 'name' => 'Hssine',
                 'phone' => '26 192 898',
                 'client_address' => 'Sousse-Khzema',
-                'project_type' => 'other',
+                'project_types' => ['other'],
             ])
             ->call('create')
             ->assertHasNoFormErrors();

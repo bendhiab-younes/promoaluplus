@@ -24,7 +24,7 @@ class QuoteRequestNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Nouveau Devis] ' . $this->quote->name . ' - ' . $this->quote->project_type,
+            subject: '[Nouveau Devis] '.$this->quote->name.' - '.$this->quote->projectTypesLabel('fr'),
         );
     }
 

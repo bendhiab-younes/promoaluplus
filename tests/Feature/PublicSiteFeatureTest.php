@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\TestimonialResource\Pages\EditTestimonial;
 use App\Mail\QuoteRequestNotification;
 use App\Mail\QuoteRequestReceived;
 use App\Models\ChatbotFlow;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Support\CanonicalServiceCatalog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 /**
@@ -92,7 +94,7 @@ class PublicSiteFeatureTest extends TestCase
             'phone' => '+21620000000',
             'country' => 'Tunisie',
             'city' => 'Sousse',
-            'project_type' => 'windows',
+            'project_types' => ['windows'],
             'description' => 'Deux fenêtres coulissantes pour un salon.',
             'timeline' => '1-3 mois',
         ], $overrides);
@@ -145,6 +147,66 @@ class PublicSiteFeatureTest extends TestCase
             ->assertOk()
             ->assertSee('Fenêtres', false)
             ->assertSee('Client Test');
+    }
+
+    /**
+     * Walkthrough item: "edit a testimonial and confirm the homepage
+     * updates" — proves the admin edit path and the public read path share
+     * the same row, full stack.
+     */
+    public function test_an_admin_edit_to_a_testimonial_is_shown_on_the_homepage(): void
+    {
+        $testimonial = Testimonial::create([
+            'client_name' => 'Client Original',
+            'client_location' => 'Sousse, Tunisie',
+            'content' => ['fr' => 'Avis original'],
+            'rating' => 5,
+            'project_type' => 'windows',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(EditTestimonial::class, ['record' => $testimonial->getKey()])
+            ->set('data.client_name', 'Client Modifié')
+            ->set('data.content.fr', 'Avis modifié par admin')
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->withSession(['locale' => 'fr'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('Client Modifié')
+            ->assertSee('Avis modifié par admin')
+            ->assertDontSee('Client Original');
+    }
+
+    /**
+     * Regression: the services page built its gallery from the raw 'gallery'
+     * column only, so a thumbnail set independently of the gallery vanished
+     * entirely whenever the gallery was non-empty.
+     */
+    public function test_the_services_page_shows_both_the_thumbnail_and_the_gallery(): void
+    {
+        Service::create([
+            'slug' => 'windows',
+            'title' => ['fr' => 'Fenêtres', 'en' => 'Windows', 'ar' => 'نوافذ'],
+            'short_description' => ['fr' => 'Courte'],
+            'description' => ['fr' => 'Longue'],
+            'image' => 'services/windows/thumb.jpeg',
+            'gallery' => ['services/windows/g1.jpeg'],
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $html = $this->withSession(['locale' => 'fr'])
+            ->get(route('services'))
+            ->assertOk()
+            ->getContent();
+
+        $this->assertStringContainsString(asset('uploads/services/windows/thumb.jpeg'), $html);
+        $this->assertStringContainsString(asset('uploads/services/windows/g1.jpeg'), $html);
     }
 
     public function test_portfolio_filters_projects_by_category(): void
@@ -292,12 +354,30 @@ class PublicSiteFeatureTest extends TestCase
 
         $this->assertDatabaseHas('quotes', [
             'email' => 'client@example.test',
-            'project_type' => 'windows',
             'city' => 'Sousse',
         ]);
+        $this->assertSame(['windows'], Quote::where('email', 'client@example.test')->first()->project_types);
 
         Mail::assertQueued(QuoteRequestReceived::class);
         Mail::assertQueued(QuoteRequestNotification::class);
+    }
+
+    /**
+     * The whole point of this change: a client can ask for a devis covering
+     * several project types at once (doors + windows + pergola) in a single
+     * request instead of filing one per type.
+     */
+    public function test_quote_submission_accepts_several_project_types_at_once(): void
+    {
+        Mail::fake();
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload([
+            'project_types' => ['doors', 'windows', 'pergola'],
+        ]))->assertOk();
+
+        $quote = Quote::where('email', 'client@example.test')->firstOrFail();
+
+        $this->assertSame(['doors', 'windows', 'pergola'], $quote->project_types);
     }
 
     public function test_quote_submission_answers_json_when_asked(): void
@@ -315,7 +395,7 @@ class PublicSiteFeatureTest extends TestCase
 
         $this->from(route('contact'))
             ->post(route('quote.store'), [])
-            ->assertSessionHasErrors(['first_name', 'name', 'email', 'phone', 'project_type', 'description']);
+            ->assertSessionHasErrors(['first_name', 'name', 'email', 'phone', 'project_types', 'description']);
 
         $this->assertDatabaseCount('quotes', 0);
     }
@@ -327,20 +407,29 @@ class PublicSiteFeatureTest extends TestCase
         $accepted = [...CanonicalServiceCatalog::slugs(), CanonicalServiceCatalog::OTHER_SLUG];
 
         foreach ($accepted as $slug) {
-            $this->postJson(route('quote.store'), $this->validQuotePayload(['project_type' => $slug]))
+            $this->postJson(route('quote.store'), $this->validQuotePayload(['project_types' => [$slug]]))
                 ->assertOk();
         }
 
         $this->assertDatabaseCount('quotes', count($accepted));
     }
 
+    public function test_quote_rejects_an_empty_project_types_selection(): void
+    {
+        Mail::fake();
+
+        $this->postJson(route('quote.store'), $this->validQuotePayload(['project_types' => []]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('project_types');
+    }
+
     public function test_quote_rejects_a_project_type_outside_the_catalog(): void
     {
         Mail::fake();
 
-        $this->postJson(route('quote.store'), $this->validQuotePayload(['project_type' => 'facades']))
+        $this->postJson(route('quote.store'), $this->validQuotePayload(['project_types' => ['facades']]))
             ->assertStatus(422)
-            ->assertJsonValidationErrors('project_type');
+            ->assertJsonValidationErrors('project_types.0');
     }
 
     public function test_quote_rejects_a_malformed_email(): void
@@ -518,19 +607,21 @@ class PublicSiteFeatureTest extends TestCase
         $this->get('/admin/login')->assertOk();
     }
 
-    public function test_admin_panel_denies_authenticated_users_outside_a_local_environment(): void
+    public function test_admin_panel_is_reachable_outside_a_local_environment(): void
     {
-        // Filament's Authenticate middleware aborts 403 unless the user
-        // implements FilamentUser or app.env === 'local'. App\Models\User does
-        // neither, so the whole panel is unreachable in staging/production.
-        // See report §F-01 — this test documents the defect, it does not bless it.
+        // Report §F-01, fixed: Filament's Authenticate middleware aborts 403
+        // unless the user implements FilamentUser or app.env === 'local'.
+        // App\Models\User now implements it (see User::canAccessPanel()), so
+        // the panel no longer depends on app.env at all.
         $this->actingAs(User::factory()->create());
 
         $this->assertNotSame('local', config('app.env'));
-        $this->get('/admin/quotes')->assertForbidden();
-
-        config(['app.env' => 'local']);
         $this->get('/admin/quotes')->assertOk();
+    }
+
+    public function test_admin_panel_still_requires_authentication(): void
+    {
+        $this->get('/admin/quotes')->assertRedirect();
     }
 
     public function test_every_filament_resource_index_renders(): void

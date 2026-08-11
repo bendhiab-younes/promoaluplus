@@ -18,7 +18,7 @@ class Quote extends Model
         'country',
         'city',
         'client_address',
-        'project_type',
+        'project_types',
         'description',
         'timeline',
         'attachments',
@@ -39,6 +39,7 @@ class Quote extends Model
 
     protected $casts = [
         'attachments' => 'array',
+        'project_types' => 'array',
         'rates' => 'array',
         'valid_until' => 'date',
         'devis_date' => 'date',
@@ -255,5 +256,17 @@ class Quote extends Model
     public static function projectTypeLabel(string $projectType, ?string $locale = null): string
     {
         return CanonicalServiceCatalog::labelFor($projectType, $locale);
+    }
+
+    /**
+     * The comma-separated labels for every selected project type, e.g.
+     * "Portes, Fenêtres, Pergola" — used anywhere the full set needs to be
+     * printed as plain text (emails, PDFs) rather than as separate badges.
+     */
+    public function projectTypesLabel(?string $locale = null): string
+    {
+        return collect($this->project_types ?? [])
+            ->map(fn (string $type): string => self::projectTypeLabel($type, $locale))
+            ->implode(', ');
     }
 }

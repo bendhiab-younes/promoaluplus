@@ -27,7 +27,7 @@ class DevisPricingTest extends TestCase
             'name' => 'Hssine',
             'phone' => '26 192 898',
             'client_address' => 'Sousse-Khzema',
-            'project_type' => 'other',
+            'project_types' => ['other'],
             'status' => 'quoted',
             'rates' => self::JOINERY_RATES,
         ], $attributes));

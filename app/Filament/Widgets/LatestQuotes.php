@@ -21,7 +21,7 @@ class LatestQuotes extends BaseWidget
         return $table
             ->query(
                 Quote::query()
-                    ->select(['id', 'first_name', 'name', 'phone', 'project_type', 'status', 'created_at'])
+                    ->select(['id', 'first_name', 'name', 'phone', 'project_types', 'status', 'created_at'])
                     ->latest()
                     ->limit(5)
             )
@@ -32,8 +32,8 @@ class LatestQuotes extends BaseWidget
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Téléphone'),
-                Tables\Columns\TextColumn::make('project_type')
-                    ->label('Type')
+                Tables\Columns\TextColumn::make('project_types')
+                    ->label('Type(s)')
                     ->badge()
                     ->color('gray')
                     ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr')),
