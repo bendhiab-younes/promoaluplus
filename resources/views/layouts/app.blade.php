@@ -141,7 +141,10 @@
     @yield('content')
 
     @php
-        $footerServices = \App\Support\CanonicalServiceCatalog::translatedOptions();
+        // Straight from the DB so adding, renaming, reordering or deactivating a
+        // service in Contenu → Services is reflected here. The anchors match the
+        // `id="{{ $service->slug }}"` sections on the services page.
+        $footerServices = \App\Models\Service::active()->orderBy('sort_order')->get();
         $footerPhone = \App\Models\SiteSetting::get('contact_phone', '+21626192898');
         $footerWhatsApp = \App\Models\SiteSetting::get('contact_whatsapp', $footerPhone);
         $formatPhone = function($phone) {
@@ -213,8 +216,8 @@
                 <div>
                     <h3 class="text-lg font-bold mb-4">{{ __('messages.nav_services') }}</h3>
                     <ul class="space-y-2">
-                        @foreach($footerServices as $serviceSlug => $serviceLabel)
-                            <li><a href="{{ route('services') }}#{{ $serviceSlug }}" class="text-gray-400 hover:text-white transition-colors">{{ $serviceLabel }}</a></li>
+                        @foreach($footerServices as $footerService)
+                            <li><a href="{{ route('services') }}#{{ $footerService->slug }}" class="text-gray-400 hover:text-white transition-colors">{{ $footerService->getTranslatedTitle() }}</a></li>
                         @endforeach
                     </ul>
                 </div>

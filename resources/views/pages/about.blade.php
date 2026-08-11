@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @php
     use App\Models\SiteSetting;
+    use App\Support\MediaPath;
 
     $splitLines = static function (?string $text): array {
         if (! is_string($text) || trim($text) === '') {
@@ -22,23 +23,19 @@
         __('messages.story_p3'),
     ]));
 
-    $missionText = SiteSetting::getTranslated(
-        'about_history_mission',
-        SiteSetting::getTranslated('about_mission', __('messages.mission_desc'))
-    );
-    $visionText = SiteSetting::getTranslated(
-        'about_history_vision',
-        SiteSetting::getTranslated('about_vision', __('messages.vision_desc'))
-    );
-
-    $aboutValuesRaw = SiteSetting::getTranslated(
-        'about_history_values',
-        SiteSetting::getTranslated('about_values', __('messages.values_desc'))
-    );
+    $missionText = SiteSetting::getTranslated('about_mission', __('messages.mission_desc'));
+    $visionText = SiteSetting::getTranslated('about_vision', __('messages.vision_desc'));
+    $aboutValuesRaw = SiteSetting::getTranslated('about_values', __('messages.values_desc'));
     $aboutValues = $splitLines($aboutValuesRaw);
     if (empty($aboutValues)) {
         $aboutValues = [__('messages.values_desc')];
     }
+
+    // Uploaded photo wins, then an externally hosted one, then a real company
+    // photo shipped with the repo — never a stock image.
+    $storyImage = MediaPath::url(SiteSetting::get('about_story_image'))
+        ?? MediaPath::url(SiteSetting::get('about_story_image_url'))
+        ?? asset('images/hero/slide-1.webp');
 
     $expatTitle = SiteSetting::getTranslated('expat_service_title', __('messages.why_expats_choose_us'));
     $expatIntro = SiteSetting::getTranslated('expat_service_intro', __('messages.expats_intro'));
@@ -92,7 +89,7 @@
                     <div class="text-gray-600 text-base md:text-lg leading-relaxed whitespace-pre-line">{!! nl2br(e($aboutStory)) !!}</div>
                 </div>
                 <div class="scroll-fade stagger-1">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    <img src="{{ $storyImage }}"
                          alt="{{ __('messages.our_workshop') }}"
                          loading="lazy"
                          decoding="async"

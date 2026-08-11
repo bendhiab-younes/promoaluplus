@@ -7,10 +7,16 @@ use Illuminate\Database\Seeder;
 
 class SiteSettingsSeeder extends Seeder
 {
+    private const LOCALES = ['fr', 'en', 'ar'];
+
+    /**
+     * Every write here is first-write-wins: these keys are all editable in
+     * Paramètres du site, so a reseed must never silently revert an admin's
+     * edit back to the JSON source.
+     */
     public function run(): void
     {
         $settingsData = $this->readJson(database_path('seeders/site_settings.json'));
-        $missionData = $this->readJson(base_path('../content_docs/json/mission_valeurs.json'));
         $historyData = $this->readJson(base_path('../content_docs/json/notre_histoire.json'));
         $expatServiceData = $this->readJson(base_path('../content_docs/json/service_tunisiens_etranger.json'));
 
@@ -19,7 +25,7 @@ class SiteSettingsSeeder extends Seeder
                 continue;
             }
 
-            SiteSetting::updateOrCreate(
+            SiteSetting::firstOrCreate(
                 ['key' => $setting['key']],
                 [
                     'value' => $setting['value'] ?? null,
@@ -29,8 +35,7 @@ class SiteSettingsSeeder extends Seeder
             );
         }
 
-        $this->seedHistorySettings($historyData);
-        $this->seedMissionSettings($missionData);
+        $this->seedAboutSettings($historyData);
         $this->seedExpatServiceSettings($expatServiceData);
     }
 
@@ -45,121 +50,60 @@ class SiteSettingsSeeder extends Seeder
         return is_array($decoded) ? $decoded : [];
     }
 
-    private function seedHistorySettings(array $historyData): void
+    /**
+     * `notre_histoire.json` is the single source for the À propos block.
+     *
+     * It previously wrote a parallel `about_history_*` key set while
+     * `mission_valeurs.json` wrote `about_*`; the page read the former and
+     * the admin edited the latter, so admin edits had no effect. Both now
+     * collapse onto `about_*` — see the
+     * `consolidate_about_history_settings` migration.
+     */
+    private function seedAboutSettings(array $historyData): void
     {
-        foreach (['fr', 'en', 'ar'] as $locale) {
-            $story = $historyData[$locale]['story'] ?? null;
-            $mission = $historyData[$locale]['mission'] ?? null;
-            $vision = $historyData[$locale]['vision'] ?? null;
-            $values = $historyData[$locale]['valeurs'] ?? null;
+        foreach (self::LOCALES as $locale) {
+            $story = $this->joinLines($historyData[$locale]['story'] ?? null, "\n\n");
 
-            if (is_array($story)) {
-                $story = implode("\n\n", array_values(array_filter($story, static fn ($line) => is_string($line) && trim($line) !== '')));
-            }
-
-            if (is_array($values)) {
-                $values = implode("\n", array_values(array_filter($values, static fn ($value) => is_string($value) && trim($value) !== '')));
-            }
-
-            if (! is_string($story) || trim($story) === '') {
-                $story = null;
-            }
-
-            if (is_string($story)) {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_story_{$locale}"],
-                    ['value' => $story, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($mission) && trim($mission) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_history_mission_{$locale}"],
-                    ['value' => $mission, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($vision) && trim($vision) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_history_vision_{$locale}"],
-                    ['value' => $vision, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($values) && trim($values) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_history_values_{$locale}"],
-                    ['value' => $values, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-        }
-    }
-
-    private function seedMissionSettings(array $missionData): void
-    {
-        foreach (['fr', 'en', 'ar'] as $locale) {
-            $mission = $missionData[$locale]['mission'] ?? null;
-            $vision = $missionData[$locale]['vision'] ?? null;
-            $values = $missionData[$locale]['valeurs'] ?? null;
-
-            if (is_array($values)) {
-                $values = implode("\n", array_values(array_filter($values, static fn ($value) => is_string($value) && trim($value) !== '')));
-            }
-
-            if (is_string($mission) && trim($mission) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_mission_{$locale}"],
-                    ['value' => $mission, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($vision) && trim($vision) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_vision_{$locale}"],
-                    ['value' => $vision, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($values) && trim($values) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "about_values_{$locale}"],
-                    ['value' => $values, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
+            $this->put("about_story_{$locale}", $story);
+            $this->put("about_mission_{$locale}", $historyData[$locale]['mission'] ?? null);
+            $this->put("about_vision_{$locale}", $historyData[$locale]['vision'] ?? null);
+            $this->put("about_values_{$locale}", $this->joinLines($historyData[$locale]['valeurs'] ?? null));
         }
     }
 
     private function seedExpatServiceSettings(array $expatServiceData): void
     {
-        foreach (['fr', 'en', 'ar'] as $locale) {
-            $title = $expatServiceData[$locale]['title'] ?? null;
-            $intro = $expatServiceData[$locale]['intro'] ?? null;
-            $features = $expatServiceData[$locale]['features'] ?? null;
-
-            if (is_array($features)) {
-                $features = implode("\n", array_values(array_filter($features, static fn ($value) => is_string($value) && trim($value) !== '')));
-            }
-
-            if (is_string($title) && trim($title) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "expat_service_title_{$locale}"],
-                    ['value' => $title, 'type' => 'text', 'group' => 'about']
-                );
-            }
-
-            if (is_string($intro) && trim($intro) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "expat_service_intro_{$locale}"],
-                    ['value' => $intro, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
-
-            if (is_string($features) && trim($features) !== '') {
-                SiteSetting::updateOrCreate(
-                    ['key' => "expat_service_features_{$locale}"],
-                    ['value' => $features, 'type' => 'textarea', 'group' => 'about']
-                );
-            }
+        foreach (self::LOCALES as $locale) {
+            $this->put("expat_service_title_{$locale}", $expatServiceData[$locale]['title'] ?? null, 'text');
+            $this->put("expat_service_intro_{$locale}", $expatServiceData[$locale]['intro'] ?? null);
+            $this->put("expat_service_features_{$locale}", $this->joinLines($expatServiceData[$locale]['features'] ?? null));
         }
+    }
+
+    /**
+     * @param  array<int, mixed>|string|null  $value
+     */
+    private function joinLines(array|string|null $value, string $glue = "\n"): ?string
+    {
+        if (is_array($value)) {
+            $value = implode($glue, array_values(array_filter(
+                $value,
+                static fn ($line) => is_string($line) && trim($line) !== ''
+            )));
+        }
+
+        return is_string($value) && trim($value) !== '' ? $value : null;
+    }
+
+    private function put(string $key, ?string $value, string $type = 'textarea'): void
+    {
+        if ($value === null) {
+            return;
+        }
+
+        SiteSetting::firstOrCreate(
+            ['key' => $key],
+            ['value' => $value, 'type' => $type, 'group' => 'about']
+        );
     }
 }

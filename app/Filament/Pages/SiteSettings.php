@@ -64,6 +64,10 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                     ->label('Logo')
                                     ->image()
                                     ->directory('settings'),
+                                Forms\Components\TextInput::make('company_tax_id')
+                                    ->label('Matricule fiscal (MF)')
+                                    ->default('1901901B')
+                                    ->helperText('Affiché dans le bloc "Prestataire" en tête des devis PDF.'),
                             ]),
 
                         // Le hero de la page d'accueil n'est plus édité ici : il se gère
@@ -142,6 +146,23 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                             ->label('Arabe')
                                             ->rows(4),
                                     ])->columns(3),
+                                Forms\Components\Section::make('Photo de la section « Notre histoire »')
+                                    ->description('Photo affichée à côté du texte « Notre histoire » sur la page À propos.')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('about_story_image')
+                                            ->label('Photo')
+                                            ->disk('uploads')
+                                            ->directory('about')
+                                            ->visibility('public')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imagePreviewHeight('220')
+                                            ->maxSize(8192)
+                                            ->helperText('Glissez une photo ici pour remplacer celle affichée sur le site.'),
+                                        Forms\Components\TextInput::make('about_story_image_url')
+                                            ->label('… ou lien vers une image externe')
+                                            ->helperText('Utilisé uniquement si aucune photo n\'est envoyée ci-dessus.'),
+                                    ])->columns(2),
                                 Forms\Components\Section::make('Notre mission')
                                     ->schema([
                                         Forms\Components\Textarea::make('about_mission_fr')
@@ -154,7 +175,20 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                             ->label('Arabe')
                                             ->rows(3),
                                     ])->columns(3),
+                                Forms\Components\Section::make('Notre vision')
+                                    ->schema([
+                                        Forms\Components\Textarea::make('about_vision_fr')
+                                            ->label('Français')
+                                            ->rows(3),
+                                        Forms\Components\Textarea::make('about_vision_en')
+                                            ->label('Anglais')
+                                            ->rows(3),
+                                        Forms\Components\Textarea::make('about_vision_ar')
+                                            ->label('Arabe')
+                                            ->rows(3),
+                                    ])->columns(3),
                                 Forms\Components\Section::make('Nos valeurs')
+                                    ->description('Une valeur par ligne. Format « Titre : description » — le titre s\'affiche en gras sous une icône, la description en dessous.')
                                     ->schema([
                                         Forms\Components\Textarea::make('about_values_fr')
                                             ->label('Français')
@@ -175,7 +209,8 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                 Forms\Components\TextInput::make('contact_phone')
                                     ->label('Téléphone principal')
                                     ->tel()
-                                    ->default('+21626192898'),
+                                    ->default('+21626192898')
+                                    ->helperText('Affiché aussi dans le bloc "Prestataire" des devis PDF.'),
                                 Forms\Components\TextInput::make('contact_phone_2')
                                     ->label('Téléphone secondaire')
                                     ->tel(),
@@ -187,10 +222,12 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                 Forms\Components\TextInput::make('contact_email')
                                     ->label('Email')
                                     ->email()
-                                    ->default('promoaluplus@gmail.com'),
+                                    ->default('promoaluplus@gmail.com')
+                                    ->helperText('Affiché aussi dans le bloc "Prestataire" des devis PDF.'),
                                 Forms\Components\Textarea::make('contact_address')
                                     ->label('Adresse')
-                                    ->rows(2),
+                                    ->rows(2)
+                                    ->helperText('Affichée aussi dans le bloc "Prestataire" des devis PDF.'),
                                 Forms\Components\TextInput::make('contact_map_url')
                                     ->label('Lien Google Maps')
                                     ->url()
