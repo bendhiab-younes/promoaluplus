@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Internal address that receives a copy of every quote request submitted
+    | through the public site (see App\Http\Controllers\QuoteController).
+    |
+    */
+
+    'admin_email' => env('MAIL_ADMIN_ADDRESS', 'promoaluplus@gmail.com'),
+
 ];

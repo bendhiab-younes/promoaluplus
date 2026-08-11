@@ -24,7 +24,7 @@ class QuoteRequestReceived extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Votre demande de devis - AluminiumCraft Tunisie',
+            subject: 'Votre demande de devis - PromoAlu+',
         );
     }
 

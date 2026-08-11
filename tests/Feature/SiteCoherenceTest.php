@@ -304,14 +304,13 @@ class SiteCoherenceTest extends TestCase
 
     public function test_the_company_brand_name_is_consistent_across_every_fallback(): void
     {
-        $this->markTestSkipped(
-            'Known defect (report §F-03): the quote e-mail templates fall back to '
-            .'"AluminiumCraft Tunisie" while PdfController, the Filament panel and the '
-            .'public layout use "PromoAlu+".'
-        );
-
+        // Report §F-03, fixed: the quote e-mail templates used to fall back to
+        // "AluminiumCraft Tunisie" while PdfController, the Filament panel and
+        // the public layout used "PromoAlu+". All fallbacks now agree.
         $sources = [
             'resources/views/emails/quote-received.blade.php',
+            'app/Mail/QuoteRequestReceived.php',
+            'app/Http/Controllers/QuoteController.php',
             'app/Http/Controllers/PdfController.php',
             'app/Providers/Filament/AdminPanelProvider.php',
         ];
@@ -345,6 +344,17 @@ class SiteCoherenceTest extends TestCase
 
             $this->assertLessThanOrEqual(1, count(array_unique($delays)), "Conflicting response-time promises in {$locale}: ".json_encode($delays));
         }
+    }
+
+    public function test_the_admin_notification_address_is_configured(): void
+    {
+        // Report §F-03, fixed: mail.admin_email was previously undefined, so
+        // QuoteController's fallback ('admin@aluminiumcraft.tn' — a dead,
+        // retired-brand domain) always won and every internal lead notification
+        // went nowhere real.
+        $this->assertNotNull(config('mail.admin_email'));
+        $this->assertNotSame('', config('mail.admin_email'));
+        $this->assertStringNotContainsStringIgnoringCase('aluminiumcraft', config('mail.admin_email'));
     }
 
     // ------------------------------------------------------- seeder sources
