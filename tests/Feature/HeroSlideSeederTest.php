@@ -26,10 +26,46 @@ class HeroSlideSeederTest extends TestCase
         $this->assertSame(['quote', 'services', 'portfolio', 'contact'], $slides->pluck('cta_type')->all());
         $this->assertSame([true, false, false, false], $slides->pluck('show_whatsapp')->all());
 
-        // The uploads-disk column stays empty so a Filament FileUpload has
-        // nothing to fail to resolve — and so an admin upload later wins.
-        $this->assertSame([null, null, null, null], $slides->pluck('image')->all());
-        $this->assertSame('/images/hero/slide-1.webp', $slides->first()->imageSrc());
+        // The committed hero images are copied onto the uploads disk so the
+        // admin's FileUpload field has a real file to show and replace,
+        // instead of an empty dropzone with nothing to drag a new photo onto.
+        $this->assertSame(
+            ['hero/slide-1.webp', 'hero/slide-2.webp', 'hero/slide-3.webp', 'hero/slide-4.webp'],
+            $slides->pluck('image')->all()
+        );
+        $this->assertSame(asset('uploads/hero/slide-1.webp'), $slides->first()->imageSrc());
+    }
+
+    public function test_reseeding_backfills_the_uploaded_image_for_a_slide_seeded_before_this_existed(): void
+    {
+        // Simulates a row from before the seeder copied files onto the
+        // uploads disk: image_url set, image left null.
+        HeroSlide::create([
+            'sort_order' => 0,
+            'title' => ['fr' => 'Titre'],
+            'cta_type' => 'quote',
+            'image_url' => '/images/hero/slide-1.webp',
+            'is_active' => true,
+        ]);
+
+        $this->seed(HeroSlideSeeder::class);
+
+        $slide = HeroSlide::where('sort_order', 0)->firstOrFail();
+
+        $this->assertSame('hero/slide-1.webp', $slide->image);
+        $this->assertTrue(is_file(public_path('uploads/hero/slide-1.webp')));
+    }
+
+    public function test_the_backfill_never_overwrites_an_admin_uploaded_image(): void
+    {
+        $this->seed(HeroSlideSeeder::class);
+
+        $slide = HeroSlide::where('sort_order', 0)->firstOrFail();
+        $slide->update(['image' => 'hero/admin-chosen.jpg']);
+
+        $this->seed(HeroSlideSeeder::class);
+
+        $this->assertSame('hero/admin-chosen.jpg', $slide->refresh()->image);
     }
 
     public function test_it_carries_the_copy_across_all_three_locales(): void

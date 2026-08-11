@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class HeroSlideResource extends Resource
 {
@@ -64,13 +65,29 @@ class HeroSlideResource extends Resource
                             ->image()
                             ->imageEditor()
                             ->imageEditorAspectRatios(['16:9', '21:9', null])
-                            ->imagePreviewHeight('200')
+                            ->imagePreviewHeight('260')
                             ->maxSize(8192)
-                            ->helperText('Recadrez et pivotez avec l\'éditeur. Format paysage recommandé.'),
+                            ->helperText('C\'est l\'image affichée sur le site. Glissez une nouvelle photo ici pour la remplacer.'),
+                        // Rare fallback: a slide whose image only lives at an external
+                        // URL has nothing a FileUpload can preview or let an admin
+                        // replace by dragging. Show it read-only, and point at the
+                        // field above as the way to actually change it.
+                        Forms\Components\Placeholder::make('current_image')
+                            ->label('Image actuelle (lien externe)')
+                            ->content(function (?HeroSlide $record): HtmlString {
+                                $src = $record?->imageSrc();
+
+                                return new HtmlString(
+                                    '<img src="'.e($src).'" alt="" style="max-height:220px;max-width:100%;border-radius:0.5rem;object-fit:cover;">'
+                                );
+                            })
+                            ->helperText('Pour la remplacer, déposez un fichier dans le champ ci-dessus.')
+                            ->visible(fn (?HeroSlide $record): bool => $record !== null && blank($record->image) && filled($record->imageSrc())),
                         Forms\Components\TextInput::make('image_url')
                             ->label('URL externe (optionnel)')
                             ->maxLength(2048)
-                            ->rules(['nullable', 'string', 'max:2048']),
+                            ->rules(['nullable', 'string', 'max:2048'])
+                            ->helperText('Utilisée uniquement si aucun fichier n\'est déposé ci-dessus.'),
                         Forms\Components\Section::make('Cadrage')
                             ->description('Réglages non destructifs — modifiables à tout moment sans re-téléverser l\'image.')
                             ->schema([
@@ -84,29 +101,39 @@ class HeroSlideResource extends Resource
                                     ->rules(['required', 'in:cover,contain'])
                                     ->markAsRequired()
                                     ->inline(false),
-                                Forms\Components\TextInput::make('image_zoom')
+                                Forms\Components\ToggleButtons::make('image_zoom')
                                     ->label('Zoom')
-                                    ->numeric()
-                                    ->minValue(100)
-                                    ->maxValue(200)
-                                    ->step(5)
+                                    ->helperText('Comme un zoom appareil photo : rapproche l\'image.')
+                                    ->options([
+                                        100 => 'Normal',
+                                        125 => 'Un peu zoomée',
+                                        150 => 'Zoomée',
+                                        175 => 'Très zoomée',
+                                        200 => 'Maximum',
+                                    ])
                                     ->default(100)
-                                    ->suffix('%')
+                                    ->inline()
+                                    ->grouped()
                                     ->rules(['required', 'integer', 'min:100', 'max:200'])
                                     ->markAsRequired()
-                                    ->helperText('100 % = taille normale, 200 % = zoom maximal.'),
-                                Forms\Components\TextInput::make('focal_x')
-                                    ->label('Point focal horizontal')
-                                    ->numeric()->minValue(0)->maxValue(100)->default(50)->suffix('%')
+                                    ->columnSpanFull(),
+                                Forms\Components\ToggleButtons::make('focal_x')
+                                    ->label('Partie à garder visible — horizontal')
+                                    ->options([0 => 'Gauche', 50 => 'Centre', 100 => 'Droite'])
+                                    ->default(50)
+                                    ->inline()
+                                    ->grouped()
                                     ->rules(['required', 'integer', 'min:0', 'max:100'])
                                     ->markAsRequired()
-                                    ->helperText('0 % = gauche, 100 % = droite.'),
-                                Forms\Components\TextInput::make('focal_y')
-                                    ->label('Point focal vertical')
-                                    ->numeric()->minValue(0)->maxValue(100)->default(50)->suffix('%')
+                                    ->helperText('Quand l\'image est zoomée, quelle partie rester visible ?'),
+                                Forms\Components\ToggleButtons::make('focal_y')
+                                    ->label('Partie à garder visible — vertical')
+                                    ->options([0 => 'Haut', 50 => 'Centre', 100 => 'Bas'])
+                                    ->default(50)
+                                    ->inline()
+                                    ->grouped()
                                     ->rules(['required', 'integer', 'min:0', 'max:100'])
-                                    ->markAsRequired()
-                                    ->helperText('0 % = haut, 100 % = bas.'),
+                                    ->markAsRequired(),
                             ])->columns(2),
                         Forms\Components\Section::make('Texte alternatif (accessibilité et SEO)')->schema([
                             Forms\Components\TextInput::make('alt_text.fr')->label('🇫🇷 Français'),

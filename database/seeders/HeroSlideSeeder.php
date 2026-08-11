@@ -21,11 +21,49 @@ class HeroSlideSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->slides() as $slide) {
-            HeroSlide::firstOrCreate(
+            $record = HeroSlide::firstOrCreate(
                 ['sort_order' => $slide['sort_order']],
                 $slide
             );
+
+            $this->backfillUploadedImage($record, $slide['image_url'] ?? null);
         }
+    }
+
+    /**
+     * These slides were originally seeded with only a legacy image_url, so
+     * the admin's FileUpload field had nothing to show or let an admin
+     * replace — it only tracks the 'image' (uploads-disk) column. Copy the
+     * committed file onto that disk once so the slide becomes a normal,
+     * replaceable upload in the admin. Never touches a slide that already
+     * has its own uploaded image (an admin's replacement always wins), and
+     * is a no-op for anything that isn't this seeder's own legacy path.
+     */
+    private function backfillUploadedImage(HeroSlide $record, ?string $legacyPath): void
+    {
+        if (filled($record->image) || blank($legacyPath) || ! str_starts_with($legacyPath, '/images/hero/')) {
+            return;
+        }
+
+        $source = public_path(ltrim($legacyPath, '/'));
+
+        if (! is_file($source)) {
+            return;
+        }
+
+        $filename = basename($legacyPath);
+        $destinationRelative = 'hero/'.$filename;
+        $destination = public_path('uploads/'.$destinationRelative);
+
+        if (! is_dir(dirname($destination))) {
+            mkdir(dirname($destination), 0755, true);
+        }
+
+        if (! is_file($destination)) {
+            copy($source, $destination);
+        }
+
+        $record->update(['image' => $destinationRelative]);
     }
 
     /** @return array<int, array<string, mixed>> */

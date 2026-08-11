@@ -171,8 +171,17 @@
                             ])
                             ->values();
 
-                        if ($galleryItems->isEmpty() && ($main = $service->imageSrc()) !== null) {
-                            $galleryItems = collect([['full' => $main, 'thumb' => $main]]);
+                        // The thumbnail (main image) and the gallery are independent
+                        // fields in admin — always show the thumbnail first, deduped
+                        // against the gallery, instead of one silently hiding the other.
+                        $rawMain = filled($service->image) ? $service->image : $service->image_url;
+
+                        if (is_string($rawMain) && trim($rawMain) !== '') {
+                            $mainUrl = \App\Support\MediaPath::url($rawMain);
+                            $galleryItems = $galleryItems
+                                ->reject(fn ($item) => $item['full'] === $mainUrl)
+                                ->prepend(['full' => $mainUrl, 'thumb' => \App\Support\MediaPath::thumb($rawMain)])
+                                ->values();
                         }
 
                         // Stays null on purpose when the service has no photo at all —

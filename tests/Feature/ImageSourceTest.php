@@ -47,14 +47,19 @@ class ImageSourceTest extends TestCase
         $this->assertNull($this->service()->imageSrc());
     }
 
-    public function test_featured_image_prefers_the_first_gallery_entry(): void
+    /**
+     * The thumbnail (main image) and the gallery are independent admin
+     * fields, so the thumbnail must win as the featured image — an admin
+     * who sets both should not have the gallery silently override it.
+     */
+    public function test_featured_image_prefers_the_main_thumbnail_over_the_gallery(): void
     {
         $service = $this->service([
             'image' => 'services/windows/main.jpeg',
             'gallery' => ['services/windows/g1.jpeg', 'services/windows/g2.jpeg'],
         ]);
 
-        $this->assertSame(asset('uploads/services/windows/g1.jpeg'), $service->getFeaturedImage());
+        $this->assertSame(asset('uploads/services/windows/main.jpeg'), $service->getFeaturedImage());
     }
 
     public function test_gallery_images_are_returned_as_resolved_urls(): void
@@ -67,6 +72,39 @@ class ImageSourceTest extends TestCase
             asset('uploads/services/windows/g1.jpeg'),
             'https://cdn.test/x.jpg',
             '/images/services/legacy.jpeg',
+        ], $service->getGalleryImages());
+    }
+
+    /**
+     * Regression: a thumbnail set independently of the gallery used to
+     * disappear entirely whenever the gallery was non-empty. The thumbnail
+     * must lead the list, and must not be duplicated if it also happens to
+     * be present in the gallery array.
+     */
+    public function test_the_main_thumbnail_leads_the_gallery_when_both_are_set(): void
+    {
+        $service = $this->service([
+            'image' => 'services/windows/main.jpeg',
+            'gallery' => ['services/windows/g1.jpeg', 'services/windows/g2.jpeg'],
+        ]);
+
+        $this->assertSame([
+            asset('uploads/services/windows/main.jpeg'),
+            asset('uploads/services/windows/g1.jpeg'),
+            asset('uploads/services/windows/g2.jpeg'),
+        ], $service->getGalleryImages());
+    }
+
+    public function test_the_main_thumbnail_is_not_duplicated_when_it_is_also_in_the_gallery(): void
+    {
+        $service = $this->service([
+            'image' => 'services/windows/main.jpeg',
+            'gallery' => ['services/windows/main.jpeg', 'services/windows/g2.jpeg'],
+        ]);
+
+        $this->assertSame([
+            asset('uploads/services/windows/main.jpeg'),
+            asset('uploads/services/windows/g2.jpeg'),
         ], $service->getGalleryImages());
     }
 }

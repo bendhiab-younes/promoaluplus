@@ -145,4 +145,68 @@ class HeroSlideResourceTest extends TestCase
         $this->assertSame('Façades Modifiées', $slide->title['fr']);
         $this->assertSame('https://images.unsplash.com/photo-hero.jpg', $slide->image_url);
     }
+
+    /**
+     * Seeded and legacy slides carry their image via image_url, so the
+     * FileUpload dropzone (which only tracks the 'image' disk column) shows
+     * empty even though the slide has a live image. The edit form must show
+     * what's actually on the site right now, whichever column it came from.
+     */
+    public function test_the_current_image_placeholder_shows_the_external_url_when_no_file_is_uploaded(): void
+    {
+        $slide = HeroSlide::create([
+            'title' => ['fr' => 'Façades'],
+            'image' => null,
+            'image_url' => 'https://images.example.test/current-slide.jpg',
+            'cta_type' => 'contact',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Livewire::test(EditHeroSlide::class, ['record' => $slide->getKey()])
+            ->assertSee('https://images.example.test/current-slide.jpg', false);
+    }
+
+    public function test_the_current_image_placeholder_is_hidden_when_no_image_is_set(): void
+    {
+        $slide = HeroSlide::create([
+            'title' => ['fr' => 'Vide'],
+            'image' => null,
+            'image_url' => null,
+            'cta_type' => 'contact',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        // Nothing to preview or replace — the FileUpload's own empty
+        // dropzone already communicates that, so no extra placeholder.
+        Livewire::test(EditHeroSlide::class, ['record' => $slide->getKey()])
+            ->assertDontSee('Image actuelle');
+    }
+
+    /**
+     * Once a real file is uploaded, the FileUpload field itself shows the
+     * thumbnail and lets the admin replace it by dragging a new one in —
+     * the separate read-only placeholder would just be redundant clutter.
+     */
+    public function test_the_current_image_placeholder_is_hidden_once_a_file_is_uploaded(): void
+    {
+        $slide = HeroSlide::create([
+            'title' => ['fr' => 'Façades'],
+            'image' => 'hero/uploaded.jpg',
+            'image_url' => null,
+            'cta_type' => 'contact',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        Livewire::test(EditHeroSlide::class, ['record' => $slide->getKey()])
+            ->assertDontSee('Image actuelle');
+    }
+
+    public function test_the_current_image_placeholder_is_hidden_on_create(): void
+    {
+        Livewire::test(CreateHeroSlide::class)
+            ->assertDontSee('Image actuelle');
+    }
 }

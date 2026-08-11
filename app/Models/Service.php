@@ -119,7 +119,12 @@ class Service extends Model
     }
 
     /**
-     * Gallery image URLs, falling back to the main image when empty.
+     * Gallery image URLs, with the main image (thumbnail) always first.
+     *
+     * The main image and the gallery are stored in separate columns, so an
+     * admin who sets a thumbnail and gallery images independently expects
+     * both to show up together, thumbnail first — not one to silently hide
+     * the other.
      *
      * @return array<int, string>
      */
@@ -132,11 +137,13 @@ class Service extends Model
             )
         ));
 
-        if ($gallery === [] && ($main = $this->imageSrc()) !== null) {
-            return [$main];
+        $main = $this->imageSrc();
+
+        if ($main === null) {
+            return $gallery;
         }
 
-        return $gallery;
+        return array_values(array_unique([$main, ...$gallery]));
     }
 
     public function getFeaturedImage(): ?string

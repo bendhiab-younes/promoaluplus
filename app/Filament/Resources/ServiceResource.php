@@ -4,12 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
+use App\Support\MediaPath;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ServiceResource extends Resource
 {
@@ -251,7 +254,7 @@ class ServiceResource extends Resource
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 Forms\Components\Section::make('Image principale')
-                                    ->description('Image affichée sur la carte du service. Glissez un fichier ou utilisez le bouton.')
+                                    ->description('Image affichée sur la carte du service. Glissez un fichier, utilisez le bouton, ou choisissez une image déjà présente dans la galerie ci-dessous.')
                                     ->schema([
                                         Forms\Components\FileUpload::make('image')
                                             ->label('Fichier')
@@ -260,9 +263,40 @@ class ServiceResource extends Resource
                                             ->visibility('public')
                                             ->image()
                                             ->imageEditor()
-                                            ->imagePreviewHeight('150')
+                                            ->imagePreviewHeight('320')
                                             ->maxSize(5120)
                                             ->helperText('JPG, PNG ou WebP — 5 Mo maximum.'),
+                                        Forms\Components\Select::make('gallery_thumbnail_picker')
+                                            ->label('Ou choisir une image de la galerie')
+                                            ->native(false)
+                                            ->allowHtml()
+                                            ->searchable(false)
+                                            ->options(fn (Forms\Get $get): array => self::galleryThumbnailOptions($get('gallery')))
+                                            ->visible(fn (Forms\Get $get): bool => self::galleryThumbnailOptions($get('gallery')) !== [])
+                                            ->live()
+                                            ->dehydrated(false)
+                                            ->afterStateHydrated(function (Forms\Components\Select $component, Forms\Get $get): void {
+                                                // The 'image' FileUpload's own hydration has already wrapped its
+                                                // value into a [uuid => path] map by the time this runs (it's
+                                                // earlier in the schema), same shape 'gallery' will use too.
+                                                $image = $get('image');
+                                                $imagePath = is_array($image) ? Arr::first($image) : $image;
+                                                $gallery = $get('gallery') ?? [];
+
+                                                if (is_string($imagePath) && in_array($imagePath, $gallery, true)) {
+                                                    $component->state($imagePath);
+                                                }
+                                            })
+                                            ->afterStateUpdated(function (Forms\Set $set, ?string $state): void {
+                                                if (filled($state)) {
+                                                    // Match the [uuid => path] shape the 'image' FileUpload
+                                                    // expects for its own state — $set() writes data directly
+                                                    // and does not run FileUpload's own afterStateUpdated hook
+                                                    // that would normally wrap a plain string for us.
+                                                    $set('image', [(string) Str::uuid() => $state]);
+                                                }
+                                            })
+                                            ->helperText('Cliquez une image déjà téléversée dans la galerie pour en faire la vignette de la carte.'),
                                         Forms\Components\TextInput::make('image_url')
                                             ->label('URL externe (optionnel)')
                                             ->maxLength(2048)
@@ -284,9 +318,10 @@ class ServiceResource extends Resource
                                             ->reorderable()
                                             ->appendFiles()
                                             ->panelLayout('grid')
-                                            ->imagePreviewHeight('120')
+                                            ->imagePreviewHeight('220')
                                             ->maxSize(5120)
-                                            ->helperText('La première image est utilisée comme image mise en avant.'),
+                                            ->live()
+                                            ->helperText('La vignette de la carte se choisit dans la section "Image principale" ci-dessus — indépendamment de l\'ordre ici.'),
                                     ]),
                             ]),
 
@@ -359,6 +394,33 @@ class ServiceResource extends Resource
                     ->columnSpanFull()
                     ->persistTabInQueryString(),
             ]);
+    }
+
+    /**
+     * Thumbnail picker options built from the gallery's current state — a
+     * path (uploads-disk relative) per already-saved image, labelled with a
+     * small preview so the admin recognises the photo, not a filename. Skips
+     * anything that isn't a plain string: a file just dropped in this same
+     * edit session is still a TemporaryUploadedFile until the form saves and
+     * moves it to disk, so it can't be resolved to a preview URL yet.
+     *
+     * @return array<string, string>
+     */
+    private static function galleryThumbnailOptions(mixed $gallery): array
+    {
+        return collect(is_array($gallery) ? $gallery : [])
+            ->filter(fn ($path): bool => is_string($path) && trim($path) !== '')
+            // Gallery state is keyed by UUID (Filament's FileUpload internal
+            // tracking), not a sequential index — reindex before enumerating
+            // so "Image N" numbering (and mapWithKeys' int key) both work.
+            ->values()
+            ->mapWithKeys(fn (string $path, int $index): array => [
+                $path => '<div style="display:flex;align-items:center;gap:8px;">'
+                    .'<img src="'.e(MediaPath::thumb($path)).'" style="width:44px;height:33px;object-fit:cover;border-radius:4px;flex-shrink:0;">'
+                    .'<span>Image '.($index + 1).'</span>'
+                    .'</div>',
+            ])
+            ->all();
     }
 
     public static function table(Table $table): Table
