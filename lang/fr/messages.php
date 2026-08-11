@@ -34,6 +34,7 @@ return [
     'hero_slide4_badge' => 'Service Expatriés',
     'hero_slide4_description' => 'Suivi à distance par visio, photos et rapports réguliers pour piloter vos projets en Tunisie depuis l\'étranger.',
     'hero_slide4_alt' => 'Équipe de chantier en intervention extérieure',
+    'go_to_slide' => 'Aller à la diapositive :number',
 
     // Services
     'our_services' => 'Nos Services',

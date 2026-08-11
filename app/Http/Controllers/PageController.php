@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\HeroSlide;
 use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\Service;
@@ -13,11 +14,12 @@ class PageController extends Controller
 {
     public function home()
     {
+        $heroSlides = HeroSlide::active()->ordered()->get();
         $services = Service::active()->orderBy('sort_order')->get();
         $featuredProjects = Project::active()->featured()->orderBy('sort_order')->take(6)->get();
         $testimonials = Testimonial::active()->orderBy('sort_order')->take(3)->get();
 
-        return view('pages.home', compact('services', 'featuredProjects', 'testimonials'));
+        return view('pages.home', compact('heroSlides', 'services', 'featuredProjects', 'testimonials'));
     }
 
     public function services()

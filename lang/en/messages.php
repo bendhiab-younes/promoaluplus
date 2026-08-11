@@ -34,6 +34,7 @@ return [
     'hero_slide4_badge' => 'Service for Expats',
     'hero_slide4_description' => 'Remote follow-up with video calls, photo updates, and regular reports to manage your Tunisia project from abroad.',
     'hero_slide4_alt' => 'Construction team working on exterior installation',
+    'go_to_slide' => 'Go to slide :number',
 
     // Services
     'our_services' => 'Our Services',

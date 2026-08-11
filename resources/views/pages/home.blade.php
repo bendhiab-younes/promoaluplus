@@ -1,11 +1,6 @@
 @extends('layouts.app')
 @php
     use App\Models\SiteSetting;
-
-    $heroBadge = SiteSetting::getTranslated('hero_badge', __('messages.hero_values_badge'));
-    if (preg_match('/promo\s*alu\s*plus/i', $heroBadge)) {
-        $heroBadge = 'PromoAlu+';
-    }
 @endphp
 @section('title', __('messages.seo_title_home'))
 @section('meta_description', __('messages.seo_desc_home'))
@@ -14,169 +9,119 @@
 
 @push('styles')
     {{-- Preload the first hero slide (LCP element) so the browser fetches it before layout --}}
-    <link rel="preload" as="image" fetchpriority="high" href="{{ asset('images/hero/slide-1.webp') }}">
+    @if($heroSlides->isNotEmpty() && $heroSlides->first()->imageSrc())
+        <link rel="preload" as="image" fetchpriority="high" href="{{ $heroSlides->first()->imageSrc() }}">
+    @endif
 @endpush
 
 @section('content')
     <!-- Hero Carousel Section -->
+    @if($heroSlides->isNotEmpty())
     <section class="relative overflow-hidden home-hero-section bg-gray-900" style="height: 100svh; padding-top: var(--site-header-height, 96px); box-sizing: border-box;">
         <div class="carousel-container relative w-full h-full overflow-hidden bg-gray-900">
             <!-- Carousel Slides -->
+            @php
+                $heroAccents = [
+                    'orange' => ['badge' => 'bg-orange-500/20 text-orange-200 border-orange-300/30', 'highlight' => 'text-orange-300', 'shadow' => 'hover:shadow-orange-500/40'],
+                    'blue' => ['badge' => 'bg-blue-500/20 text-blue-200 border-blue-300/30', 'highlight' => 'text-blue-300', 'shadow' => 'hover:shadow-blue-500/40'],
+                    'cyan' => ['badge' => 'bg-blue-500/20 text-blue-200 border-blue-300/30', 'highlight' => 'text-cyan-200', 'shadow' => 'hover:shadow-blue-500/40'],
+                    'emerald' => ['badge' => 'bg-green-500/20 text-green-200 border-green-300/30', 'highlight' => 'text-emerald-200', 'shadow' => 'hover:shadow-green-500/40'],
+                ];
+            @endphp
             <div class="carousel-slides relative h-full">
-                <!-- Slide 1 - Modern Aluminum Windows -->
-                <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="0" data-order="0" style="opacity: 1; z-index: 10;">
-                    <div class="relative h-full">
-                            <img src="{{ asset('images/hero/slide-1.webp') }}"
-                                alt="{{ __('messages.hero_slide1_alt') }}"
-                                class="absolute inset-0 w-full h-full object-cover object-center"
-                                loading="eager"
-                                fetchpriority="high"
-                                decoding="async">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
-                                    <span class="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold text-blue-200 mb-4 md:mb-6 border border-white/20 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg>
-                                        {{ $heroBadge }}
-                                    </span>
-                                    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
-                                        {{ SiteSetting::getTranslated('hero_title', __('messages.hero_title')) }}
-                                        <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ SiteSetting::getTranslated('hero_subtitle', __('messages.hero_subtitle')) }}</span>
-                                    </h1>
-                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
-                                        {{ SiteSetting::getTranslated('hero_description', __('messages.hero_description')) }}
-                                    </p>
-                                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-30">
-                                        <a href="{{ route('contact') }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
-                                            <i data-lucide="phone" class="w-5 h-5 me-2 flex-shrink-0 group-hover:scale-110 transition-transform"></i>
-                                            {{ __('messages.request_quote') }}
-                                        </a>
-                                        <button onclick="openWhatsApp()" class="btn-secondary inline-flex items-center justify-center group shadow-xl">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2 group-hover:scale-110 transition-transform flex-shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                            WhatsApp
-                                        </button>
+                @foreach($heroSlides as $slide)
+                    @php
+                        $accent = $heroAccents[$slide->accent_color] ?? $heroAccents['orange'];
+                        $slideImage = $slide->imageSrc();
+                        $ctaUrl = $slide->ctaUrl();
+                        $ctaLabel = $slide->getTranslatedCtaLabel();
+                    @endphp
+                    <div class="carousel-slide {{ $loop->first ? 'active' : '' }} absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                         data-slide="{{ $loop->index }}"
+                         data-order="{{ $loop->index }}"
+                         style="opacity: {{ $loop->first ? '1' : '0' }}; z-index: {{ $loop->first ? '10' : '5' }};">
+                        <div class="relative h-full overflow-hidden">
+                            @if($slideImage)
+                                @if($slide->image_fit === 'contain')
+                                    {{-- Blurred backdrop fills the frame while the foreground shows the whole image.
+                                         Slides 2+ carry data-src, not src: they are all stacked inside the viewport,
+                                         so loading="lazy" would not stop the browser fetching every hero image up
+                                         front. The carousel script swaps data-src in just before a slide is shown. --}}
+                                    <img @if($loop->first) src="{{ $slideImage }}" loading="eager" @else data-src="{{ $slideImage }}" @endif
+                                         alt="" aria-hidden="true"
+                                         class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110"
+                                         decoding="async">
+                                @endif
+                                <img @if($loop->first) src="{{ $slideImage }}" loading="eager" fetchpriority="high" @else data-src="{{ $slideImage }}" @endif
+                                     alt="{{ $slide->getTranslatedAltText() }}"
+                                     class="absolute inset-0 w-full h-full {{ $slide->image_fit === 'contain' ? 'object-contain' : 'object-cover' }}"
+                                     style="{{ $slide->imageStyle() }}"
+                                     decoding="async">
+                            @endif
+                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="container mx-auto px-6 md:px-8 lg:px-12">
+                                    <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
+                                        @if($slide->getTranslatedBadge() !== '')
+                                            <span class="inline-flex items-center px-4 py-2 backdrop-blur-md rounded-full text-sm font-semibold mb-6 md:mb-8 border shadow-lg {{ $accent['badge'] }}">
+                                                <i data-lucide="{{ $slide->badge_icon ?: 'star' }}" class="w-4 h-4 me-2 flex-shrink-0"></i>
+                                                {{ $slide->getTranslatedBadge() }}
+                                            </span>
+                                        @endif
+                                        <{{ $loop->first ? 'h1' : 'h2' }} class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
+                                            {{ $slide->getTranslatedTitle() }}
+                                            @if($slide->getTranslatedHighlight() !== '')
+                                                <span class="{{ $accent['highlight'] }} block mt-3 md:mt-4 lg:mt-5">{{ $slide->getTranslatedHighlight() }}</span>
+                                            @endif
+                                        </{{ $loop->first ? 'h1' : 'h2' }}>
+                                        @if($slide->getTranslatedDescription() !== '')
+                                            <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+                                                {{ $slide->getTranslatedDescription() }}
+                                            </p>
+                                        @endif
+                                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-30">
+                                            @if($ctaUrl)
+                                                <a href="{{ $ctaUrl }}" class="btn-primary text-center inline-flex items-center justify-center group shadow-2xl {{ $accent['shadow'] }}">
+                                                    {{ $ctaLabel !== '' ? $ctaLabel : __('messages.learn_more') }}
+                                                    <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform rtl:rotate-180"></i>
+                                                </a>
+                                            @endif
+                                            @if($slide->show_whatsapp)
+                                                <button onclick="openWhatsApp()" class="btn-secondary inline-flex items-center justify-center group shadow-xl">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2 group-hover:scale-110 transition-transform flex-shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                                    WhatsApp
+                                                </button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Slide 2 - Aluminum Doors -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="1" data-order="1" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
-                            <img data-src="{{ asset('images/hero/slide-2.webp') }}"
-                                alt="{{ __('messages.hero_slide2_alt') }}"
-                                class="absolute inset-0 w-full h-full object-cover object-center"
-                                decoding="async">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
-                                    <span class="inline-flex items-center px-4 py-2 bg-orange-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-orange-200 mb-6 md:mb-8 border border-orange-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                        {{ __('messages.hero_slide2_badge') }}
-                                    </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
-                                        {{ __('messages.hero_slide2_title') }}
-                                        <span class="text-orange-300 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hero_slide2_highlight') }}</span>
-                                    </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
-                                        {{ __('messages.hero_slide2_description') }}
-                                    </p>
-                                    <a href="{{ route('services') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-orange-500/40">
-                                        {{ __('messages.learn_more') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3 - Glass Facades & Curtain Walls -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="2" data-order="2" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
-                            <img data-src="{{ asset('images/hero/slide-3.webp') }}"
-                                alt="{{ __('messages.hero_slide3_alt') }}"
-                                class="absolute inset-0 w-full h-full object-cover object-center"
-                                decoding="async">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
-                                    <span class="inline-flex items-center px-4 py-2 bg-blue-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-blue-200 mb-6 md:mb-8 border border-blue-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                                        {{ __('messages.hero_slide3_badge') }}
-                                    </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
-                                        {{ __('messages.hero_slide3_title') }}
-                                        <span class="text-cyan-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hero_slide3_highlight') }}</span>
-                                    </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
-                                        {{ __('messages.hero_slide3_description') }}
-                                    </p>
-                                    <a href="{{ route('portfolio') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-blue-500/40">
-                                        {{ __('messages.view_our_work') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 4 - Company Experience -->
-                <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out" data-slide="3" data-order="3" style="opacity: 0; z-index: 5;">
-                    <div class="relative h-full">
-                            <img data-src="{{ asset('images/hero/slide-4.webp') }}"
-                                alt="{{ __('messages.hero_slide4_alt') }}"
-                                class="absolute inset-0 w-full h-full object-cover object-center"
-                                decoding="async">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="container mx-auto px-6 md:px-8 lg:px-12">
-                                <div class="max-w-3xl text-white slide-content pt-6 pb-24 md:pt-8 md:pb-28 lg:pt-10 lg:pb-32">
-                                    <span class="inline-flex items-center px-4 py-2 bg-green-500/20 backdrop-blur-md rounded-full text-sm font-semibold text-green-200 mb-6 md:mb-8 border border-green-300/30 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 me-2 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        {{ __('messages.hero_slide4_badge') }}
-                                    </span>
-                                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 lg:mb-10 leading-[1.15] drop-shadow-2xl">
-                                        {{ SiteSetting::get('stats_years', '15') }}+ {{ __('messages.years_experience') }}
-                                        <span class="text-emerald-200 block mt-3 md:mt-4 lg:mt-5">{{ __('messages.hundreds_projects_completed') }}</span>
-                                    </h2>
-                                    <p class="text-base sm:text-lg md:text-xl mb-8 md:mb-10 lg:mb-12 text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
-                                        {{ __('messages.hero_slide4_description') }}
-                                    </p>
-                                    <a href="{{ route('contact') }}" class="btn-primary inline-flex items-center justify-center group shadow-2xl hover:shadow-green-500/40">
-                                        {{ __('messages.start_your_project') }}
-                                        <i data-lucide="arrow-right" class="w-5 h-5 ms-2 flex-shrink-0 group-hover:translate-x-1 transition-transform"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
-            <!-- Navigation Arrows -->
-            <button onclick="prevSlide()" class="carousel-prev absolute left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Previous slide">
-                <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
-            </button>
-            <button onclick="nextSlide()" class="carousel-next absolute right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Next slide">
-                <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
-            </button>
+            @if($heroSlides->count() > 1)
+                <!-- Navigation Arrows -->
+                <button onclick="prevSlide()" class="carousel-prev absolute left-4 md:left-8 lg:left-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Previous slide">
+                    <i data-lucide="chevron-left" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
+                </button>
+                <button onclick="nextSlide()" class="carousel-next absolute right-4 md:right-8 lg:right-12 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 md:p-4 rounded-full transition-all duration-300 z-20 group border border-white/20 shadow-lg hover:scale-105" aria-label="Next slide">
+                    <i data-lucide="chevron-right" class="w-5 h-5 md:w-6 md:h-6 rtl:rotate-180"></i>
+                </button>
 
-            <!-- Dots Indicators -->
-            <div class="carousel-dots absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
-                <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 1"></button>
-                <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 2"></button>
-                <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 3"></button>
-                <button onclick="goToSlide(3)" class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white/40 hover:bg-white/60 shadow-sm transition-all duration-300 hover:scale-110" aria-label="Go to slide 4"></button>
-            </div>
+                <!-- Dots Indicators -->
+                <div class="carousel-dots absolute bottom-5 md:bottom-7 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10 px-3 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-white/20">
+                    @foreach($heroSlides as $slide)
+                        <button onclick="goToSlide({{ $loop->index }})"
+                                class="carousel-dot w-2 h-2 md:w-2.5 md:h-2.5 rounded-full {{ $loop->first ? 'bg-white' : 'bg-white/40 hover:bg-white/60' }} shadow-sm transition-all duration-300 hover:scale-110"
+                                aria-label="{{ __('messages.go_to_slide', ['number' => $loop->iteration]) }}"></button>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
+    @endif
 
     <script>
         (() => {
