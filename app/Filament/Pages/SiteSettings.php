@@ -66,54 +66,12 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                     ->directory('settings'),
                             ]),
 
-                        // === PAGE D'ACCUEIL - HERO ===
-                        Forms\Components\Tabs\Tab::make('Accueil - Hero')
-                            ->icon('heroicon-o-home')
-                            ->schema([
-                                Forms\Components\Section::make('Badge qualité')
-                                    ->description('Le petit texte au-dessus du titre')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('hero_badge_fr')
-                                            ->label('Français')
-                                            ->placeholder('Qualité Premium Garantie'),
-                                        Forms\Components\TextInput::make('hero_badge_en')
-                                            ->label('Anglais'),
-                                        Forms\Components\TextInput::make('hero_badge_ar')
-                                            ->label('Arabe'),
-                                    ])->columns(3),
-                                Forms\Components\Section::make('Titre principal')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('hero_title_fr')
-                                            ->label('Français')
-                                            ->placeholder('Menuiserie Aluminium'),
-                                        Forms\Components\TextInput::make('hero_title_en')
-                                            ->label('Anglais'),
-                                        Forms\Components\TextInput::make('hero_title_ar')
-                                            ->label('Arabe'),
-                                    ])->columns(3),
-                                Forms\Components\Section::make('Sous-titre')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('hero_subtitle_fr')
-                                            ->label('Français')
-                                            ->placeholder('Sur Mesure'),
-                                        Forms\Components\TextInput::make('hero_subtitle_en')
-                                            ->label('Anglais'),
-                                        Forms\Components\TextInput::make('hero_subtitle_ar')
-                                            ->label('Arabe'),
-                                    ])->columns(3),
-                                Forms\Components\Section::make('Description')
-                                    ->schema([
-                                        Forms\Components\Textarea::make('hero_description_fr')
-                                            ->label('Français')
-                                            ->rows(2),
-                                        Forms\Components\Textarea::make('hero_description_en')
-                                            ->label('Anglais')
-                                            ->rows(2),
-                                        Forms\Components\Textarea::make('hero_description_ar')
-                                            ->label('Arabe')
-                                            ->rows(2),
-                                    ])->columns(3),
-                            ]),
+                        // Le hero de la page d'accueil n'est plus édité ici : il se gère
+                        // dans Contenu → Slides d'accueil (HeroSlideResource), qui alimente
+                        // directement le carrousel. Les lignes hero_badge_*, hero_title_*,
+                        // hero_subtitle_* et hero_description_* restent dans site_settings
+                        // car HeroSlideSeeder les lit encore comme surcharges facultatives
+                        // au moment du seed (à défaut, il retombe sur les fichiers lang).
 
                         // === STATISTIQUES ===
                         Forms\Components\Tabs\Tab::make('Statistiques')
