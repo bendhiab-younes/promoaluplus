@@ -34,7 +34,9 @@ class PortfolioVisibilityTest extends TestCase
         foreach (['home', 'services', 'about', 'contact'] as $page) {
             $this->get(route($page))
                 ->assertOk()
-                ->assertDontSee(route('portfolio'), false);
+                ->assertDontSee(route('portfolio'), false)
+                ->assertDontSee(__('messages.nav_portfolio'))
+                ->assertDontSee(__('messages.view_our_work'));
         }
     }
 
@@ -42,9 +44,36 @@ class PortfolioVisibilityTest extends TestCase
     {
         $this->enablePortfolio(true);
 
-        $this->get(route('home'))
-            ->assertOk()
-            ->assertSee(route('portfolio'), false);
+        $response = $this->get(route('home'))->assertOk();
+
+        // The desktop nav link, specifically — not just any occurrence of the URL.
+        $response->assertSee(
+            '<a href="'.route('portfolio').'" class="nav-link',
+            false
+        );
+
+        // The footer link, specifically.
+        $response->assertSee(
+            '<li><a href="'.route('portfolio').'" class="text-gray-400',
+            false
+        );
+    }
+
+    /**
+     * The CTA lives inside a `pages.*` view, which `@extends('layouts.app')`.
+     * Blade renders the child before the layout, so this only passes if the
+     * `portfolioEnabled` view composer is bound to those views too.
+     */
+    public function test_the_page_level_ctas_link_to_the_portfolio_when_enabled(): void
+    {
+        $this->enablePortfolio(true);
+
+        foreach (['home', 'services', 'about'] as $page) {
+            $this->get(route($page))
+                ->assertOk()
+                ->assertSee(__('messages.view_our_work'))
+                ->assertSee('href="'.route('portfolio').'"', false);
+        }
     }
 
     public function test_the_sitemap_omits_the_portfolio_when_disabled(): void

@@ -316,8 +316,9 @@
                 <x-cta-buttons
                     :primary-href="route('contact')"
                     :primary-label="__('messages.contact_us')"
-                    :secondary-href="route('portfolio')"
-                    :secondary-label="__('messages.view_our_work')" />
+                    :secondary-href="$portfolioEnabled ? route('portfolio') : route('services')"
+                    :secondary-label="$portfolioEnabled ? __('messages.view_our_work') : __('messages.view_all_services')"
+                    :secondary-icon="$portfolioEnabled ? 'eye' : 'services'" />
             </div>
         </div>
     </section>

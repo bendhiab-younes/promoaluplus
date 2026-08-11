@@ -401,8 +401,8 @@
                 <x-cta-buttons
                     :primary-href="route('contact')"
                     :primary-label="__('messages.request_quote')"
-                    :secondary-href="route('portfolio')"
-                    :secondary-label="__('messages.view_our_work')" />
+                    :secondary-href="$portfolioEnabled ? route('portfolio') : route('about')"
+                    :secondary-label="$portfolioEnabled ? __('messages.view_our_work') : __('messages.learn_more')" />
             </div>
         </div>
     </section>
