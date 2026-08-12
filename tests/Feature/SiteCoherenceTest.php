@@ -357,6 +357,37 @@ class SiteCoherenceTest extends TestCase
         $this->assertStringNotContainsStringIgnoringCase('aluminiumcraft', config('mail.admin_email'));
     }
 
+    // --------------------------------------------------- locale & timezone
+
+    /**
+     * SetLocale falls back to config('app.locale') for anyone who has not
+     * picked a language yet, so an English default renders English UI chrome
+     * over database content that falls back to French — a mixed-language
+     * homepage for a French-speaking Tunisian company.
+     */
+    public function test_the_shipped_environment_defaults_to_french(): void
+    {
+        $env = File::get(base_path('.env.example'));
+
+        $this->assertStringContainsString('APP_LOCALE=fr', $env);
+        $this->assertStringContainsString('APP_FALLBACK_LOCALE=fr', $env);
+    }
+
+    /**
+     * config/app.php used to hardcode UTC. Tunisia is UTC+1, so a devis
+     * created after 23:00 local was dated the previous day on its PDF.
+     */
+    public function test_the_timezone_is_configurable_and_defaults_to_tunis(): void
+    {
+        $this->assertStringContainsString(
+            "env('APP_TIMEZONE'",
+            File::get(config_path('app.php')),
+            'config/app.php hardcodes a timezone instead of reading APP_TIMEZONE.'
+        );
+
+        $this->assertStringContainsString('APP_TIMEZONE=Africa/Tunis', File::get(base_path('.env.example')));
+    }
+
     // ------------------------------------------------------- seeder sources
 
     /**
