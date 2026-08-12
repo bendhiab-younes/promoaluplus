@@ -1,6 +1,6 @@
 # Deploying Promo Alu Plus on an OVHcloud VPS
 
-Target: a live, HTTPS-served public site at `https://promoaluplus.tn` (or your domain) with a working `/admin` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
+Target: a live, HTTPS-served public site at `https://promoaluplus.com` (or your domain) with a working `/admin` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
 
 Written against the state of `main` at the time of writing: Laravel 12.44, PHP ^8.2, Filament 3, Vite/Tailwind 4.
 
@@ -94,7 +94,7 @@ There is nothing SQLite-specific in the code (the only raw SQL, in `StatsOvervie
 
 ### 1.5 Change the default admin password
 
-`database/seeders/DatabaseSeeder.php:20-23` creates `admin@promoaluplus.tn` / `admin123`. **Change it before the site is reachable from the internet** — see §7.1.
+`database/seeders/DatabaseSeeder.php:20-23` creates `admin@promoaluplus.com` / `admin123`. **Change it before the site is reachable from the internet** — see §7.1.
 
 ### 1.6 If you put Cloudflare in front
 
@@ -273,7 +273,7 @@ Production values:
 APP_NAME="PromoAlu+"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://promoaluplus.tn
+APP_URL=https://promoaluplus.com
 
 APP_LOCALE=fr
 APP_FALLBACK_LOCALE=fr
@@ -325,10 +325,10 @@ Ranked by effort:
 | Option | Cost | Trade-off |
 |---|---|---|
 | **Gmail SMTP + App Password** (shown above) | free, ~500/day | Sender shows as `promoaluplus@gmail.com`, not your domain — Gmail rewrites `MAIL_FROM_ADDRESS` to the authenticated account. Needs 2FA enabled to generate the App Password |
-| **OVH email hosting** | often bundled with the domain | Mail from `contact@promoaluplus.tn`, SPF/DKIM pre-wired |
+| **OVH email hosting** | often bundled with the domain | Mail from `contact@promoaluplus.com`, SPF/DKIM pre-wired |
 | **Brevo free tier** | free, 300/day | Mail from your domain; requires adding DNS records |
 
-Start with Gmail. Move to a domain sender when the domain exists and you care that customers see `@promoaluplus.tn`.
+Start with Gmail. Move to a domain sender when the domain exists and you care that customers see `@promoaluplus.com`.
 
 ### 5.3 Install and build
 
@@ -377,7 +377,14 @@ php artisan filament:assets
 
 ### 6.1 DNS first
 
-At your registrar, point an **A record** for `promoaluplus.tn` and `www` at the VPS IPv4. Wait for propagation (`dig +short promoaluplus.tn`) before requesting a certificate — certbot fails otherwise.
+> **Domain: `.com`, decided.** `.tn` goes through ATI-accredited registrars and
+> generally wants company documents (registre de commerce / patente), which can
+> take days. `.com` registers in minutes and unblocks HTTPS immediately. You can
+> add the `.tn` later and point it at the same VPS — nothing in this guide has to
+> change except adding it to the `certbot -d` list and to `server_name`.
+
+
+At your registrar, point an **A record** for `promoaluplus.com` and `www` at the VPS IPv4. Wait for propagation (`dig +short promoaluplus.com`) before requesting a certificate — certbot fails otherwise.
 
 ### 6.2 Server block
 
@@ -386,7 +393,7 @@ At your registrar, point an **A record** for `promoaluplus.tn` and `www` at the 
 ```nginx
 server {
     listen 80;
-    server_name promoaluplus.tn www.promoaluplus.tn;
+    server_name promoaluplus.com www.promoaluplus.com;
     root /var/www/promoalu/public;
 
     index index.php;
@@ -433,7 +440,7 @@ nginx -t && systemctl reload nginx
 
 ```bash
 apt install -y certbot python3-certbot-nginx
-certbot --nginx -d promoaluplus.tn -d www.promoaluplus.tn
+certbot --nginx -d promoaluplus.com -d www.promoaluplus.com
 ```
 
 Certbot rewrites the server block for TLS and installs a renewal timer. Confirm with `systemctl list-timers | grep certbot`.
@@ -478,7 +485,7 @@ php artisan tinker
 ```
 
 ```php
-$u = App\Models\User::where('email', 'admin@promoaluplus.tn')->first();
+$u = App\Models\User::where('email', 'admin@promoaluplus.com')->first();
 $u->update(['password' => bcrypt('<a long unique password>')]);
 ```
 
@@ -490,7 +497,7 @@ Do this **before** announcing the URL. `admin123` is in the seeder and therefore
 
 Work through this in a browser, not just curl:
 
-- [ ] `https://promoaluplus.tn` loads over HTTPS with a valid padlock
+- [ ] `https://promoaluplus.com` loads over HTTPS with a valid padlock
 - [ ] The page is in **French** on first visit (not English — see §1.2)
 - [ ] The homepage hero carousel shows images and rotates
 - [ ] The language switcher works for FR / EN / AR, and Arabic renders right-to-left
@@ -501,7 +508,7 @@ Work through this in a browser, not just curl:
 - [ ] `/admin` → log in → change a service title → confirm it changes on the public page
 - [ ] `/admin` → Contenu → Slides d'accueil → **upload an image** → confirm it appears on the homepage (this is the `public/uploads` permission test)
 - [ ] `/admin` → Devis → open one → download the PDF and the Excel export (this is the `gd` / `zip` test)
-- [ ] `https://promoaluplus.tn/.env` returns 404, not a file
+- [ ] `https://promoaluplus.com/.env` returns 404, not a file
 
 ---
 
@@ -601,9 +608,17 @@ tail -f /var/log/nginx/error.log
 
 | # | Change | Status |
 |---|---|---|
-| 1 | Move `content_docs/json/*` into the repo, fix 4 seeder paths | **not done** |
-| 2 | `APP_LOCALE=fr` / `APP_FALLBACK_LOCALE=fr` | env only |
-| 3 | `config/app.php:68` → `env('APP_TIMEZONE', 'UTC')`, set `Africa/Tunis` | **not done** |
-| 4 | MySQL block in `.env` / `.env.example` | **not done** |
+| 1 | Move `content_docs/json/*` into the repo, fix 4 seeder paths | ✅ **done** — now `database/seeders/content/`; verified by a fresh `migrate:fresh --seed` |
+| 2 | `APP_LOCALE=fr` / `APP_FALLBACK_LOCALE=fr` | ✅ **done** — defaults in `.env.example`; still set them in the production `.env` |
+| 3 | `config/app.php` → `env('APP_TIMEZONE', 'UTC')`, set `Africa/Tunis` | ✅ **done** |
+| 4 | MySQL block in `.env` / `.env.example` | ⚠️ config **done** (commented block + warning in `.env.example`); **the suite has not been run against a real MySQL server** — see note below |
 | 5 | Change the seeded admin password | post-deploy (§7.1) |
 | 6 | `trustProxies` if you add Cloudflare | only if needed |
+
+> **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
+> (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
+> MySQL in Laravel 11+, and JSON columns are supported on both. That is a
+> reading of the code, not a test result. The 199-test suite still runs on
+> SQLite. Before launch, run it once against a real MySQL database — most
+> cheaply on the VPS itself after §4.2, with
+> `DB_CONNECTION=mysql php artisan test`.
