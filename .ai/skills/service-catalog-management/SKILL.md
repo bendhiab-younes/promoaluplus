@@ -9,7 +9,7 @@ user-invocable: true
 Use this skill when editing the project’s service content, galleries, or seeders.
 
 ## When to use this skill
-- Updating `content_docs/json/services.json`
+- Updating `database/seeders/content/services.json`
 - Updating `service_images.json`
 - Editing `database/seeders/ServiceSeeder.php`
 - Adding or syncing new services, translations, or galleries

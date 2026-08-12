@@ -1,0 +1,29 @@
+{
+  "fr": {
+    "title": "Service penséespécifiquement pour les résidents à l'étranger",
+    "intro": "Nous comprenons les défis uniques auxquels font face les Tunisiens vivant à l'étranger lorsqu'ils construisent ou rénovent des espaces résidentiels ou professionnels en Tunisie. C'est pourquoi nous avons développé un service spécialement adapté à leurs besoins : communication à distance, suivi photo et vidéo, et respect scrupuleux des délais.",
+    "features": [
+      "Equipe multilingue : communication en anglais, en français et en arabe.",
+      "Suivi à distance et communication facilitée : suivi par visio, photos et rapports réguliers.",
+      "Standards internationaux : matériaux certifiés conformes aux normes de qualité en vigueur et aux normes ISO."
+    ]
+  },
+  "en": {
+    "title": "Service designed specifically for residents abroad",
+    "intro": "We understand the unique challenges faced by Tunisians living abroad when they build or renovate residential or professional spaces in Tunisia. That is why we developed a service tailored to their needs: remote communication, photo and video follow-up, and strict deadline compliance.",
+    "features": [
+      "Multilingual team: communication in English, French, and Arabic.",
+      "Remote follow-up and easy communication: video calls, photos, and regular progress reports.",
+      "International standards: certified materials compliant with current quality standards and ISO standards."
+    ]
+  },
+  "ar": {
+    "title": "خدمة مصممة خصيصاً للمقيمين في الخارج",
+    "intro": "نحن نتفهم التحديات الفريدة التي يواجهها التونسيون المقيمون في الخارج عند بناء أو تجديد مساحات سكنية أو مهنية في تونس. لهذا السبب، قمنا بتطوير خدمة مصممة خصيصاً لتلبية احتياجاتهم: تواصل عن بعد، ومتابعة بالصور والفيديو، والالتزام الصارم بالمواعيد النهائية.",
+    "features": [
+      "فريق متعدد اللغات: تواصل بالإنجليزية والفرنسية والعربية.",
+      "متابعة عن بعد وتواصل سهل: متابعة عبر مكالمات الفيديو والصور والتقارير الدورية.",
+      "معايير دولية: مواد معتمدة مطابقة لمعايير الجودة المعمول بها ومعايير ISO."
+    ]
+  }
+}

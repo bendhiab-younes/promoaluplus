@@ -17,8 +17,8 @@ class SiteSettingsSeeder extends Seeder
     public function run(): void
     {
         $settingsData = $this->readJson(database_path('seeders/site_settings.json'));
-        $historyData = $this->readJson(base_path('../content_docs/json/notre_histoire.json'));
-        $expatServiceData = $this->readJson(base_path('../content_docs/json/service_tunisiens_etranger.json'));
+        $historyData = $this->readJson(database_path('seeders/content/notre_histoire.json'));
+        $expatServiceData = $this->readJson(database_path('seeders/content/service_tunisiens_etranger.json'));
 
         foreach (($settingsData['settings'] ?? []) as $setting) {
             if (! is_array($setting) || empty($setting['key'])) {

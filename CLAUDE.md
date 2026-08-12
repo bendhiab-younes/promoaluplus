@@ -40,7 +40,9 @@ Admin login (from seeders): `admin@aluminiumcraft.tn` / `password`.
 
 **Canonical service list is authoritative.** `App\Support\CanonicalServiceCatalog` defines the 9 service slugs and their ordering, shared across homepage, footer, contact, and quote validation (`CanonicalServiceCatalog::validationRule()`). `Service` model holds `DEFAULT_ICON_BY_SLUG` / `DEFAULT_COLOR_BY_SLUG` keyed by the same slugs. Adding/renaming a service means updating the catalog, the model defaults, the seeder, and `lang/*` message keys together.
 
-**Content seeding pipeline:** JSON sources live in `database/seeders/` (`services.json`, `faqs.json`, `site_settings.json`); seeders read them into the DB. Edit the JSON source first, then reseed. See the `service-catalog-management` skill (`.ai/skills/`) for the full workflow.
+**Content seeding pipeline:** JSON sources live in `database/seeders/content/` (`services.json`, `questions_frequentes.json`, `notre_histoire.json`, `service_tunisiens_etranger.json`) plus `database/seeders/site_settings.json`. Seeders read them into the DB. Edit the JSON source first, then reseed. See the `service-catalog-management` skill (`.ai/skills/`) for the full workflow.
+
+Every seeder uses `firstOrCreate`, so **reseeding never overwrites content an admin has edited** — the JSON is a first-install default, not a source of truth that gets re-applied. `SiteCoherenceTest` asserts that all seeder JSON lives inside the repository and is actually read by a seeder; these files previously sat outside the repo, which made a fresh clone seed silently to zero services.
 
 **Quotes → Invoices workflow:** `Quote`/`QuoteItem` capture requests with a status lifecycle; accepted quotes convert to `Invoice`/`InvoiceItem` (auto-numbered `FAC-YYYY-XXXX`). Both render to PDF via DomPDF through `PdfController`. Managed entirely in Filament (`QuoteResource`, `InvoiceResource`).
 

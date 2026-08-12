@@ -359,15 +359,16 @@ class SiteCoherenceTest extends TestCase
 
     // ------------------------------------------------------- seeder sources
 
+    /**
+     * Report §F-08, fixed: these seeders used to read
+     * base_path('../content_docs/json/...'), outside the repository, and
+     * readJson() returns [] for a missing file — so a fresh clone seeded
+     * silently to zero services with no error. The content now ships in
+     * database/seeders/content/.
+     */
     public function test_content_seeders_read_from_a_path_inside_the_repository(): void
     {
-        $this->markTestSkipped(
-            'Known defect (report §F-08): ServiceSeeder and FaqSeeder read '
-            ."base_path('../content_docs/json/...'), a directory outside the repository, "
-            .'so `php artisan migrate --seed` silently produces zero services on a fresh clone.'
-        );
-
-        foreach (['ServiceSeeder', 'FaqSeeder'] as $seeder) {
+        foreach (['ServiceSeeder', 'FaqSeeder', 'SiteSettingsSeeder'] as $seeder) {
             $this->assertStringNotContainsString(
                 '../content_docs',
                 File::get(database_path("seeders/{$seeder}.php")),
@@ -376,21 +377,27 @@ class SiteCoherenceTest extends TestCase
         }
     }
 
-    public function test_seeder_json_files_shipped_in_the_repository_are_actually_used(): void
+    /**
+     * Report §F-09, fixed: database/seeders/services.json and faqs.json were
+     * committed but read by nothing, shadowing the files that were actually
+     * seeded — editing them looked like it worked and changed nothing. They
+     * are deleted; every JSON now shipped under database/seeders/ is live.
+     */
+    public function test_every_seeder_json_shipped_in_the_repository_is_actually_used(): void
     {
-        $this->markTestSkipped(
-            'Known defect (report §F-09): database/seeders/services.json, faqs.json and '
-            .'site_settings.json are committed but no seeder reads them; CLAUDE.md documents '
-            .'them as the content source.'
-        );
-
         $seeders = collect(File::files(database_path('seeders')))
             ->filter(fn ($f) => str_ends_with($f->getFilename(), '.php'))
             ->map(fn ($f) => $f->getContents())
             ->implode("\n");
 
-        foreach (['services.json', 'faqs.json', 'site_settings.json'] as $json) {
-            $this->assertStringContainsString($json, $seeders, "database/seeders/{$json} is never read by a seeder.");
+        $shipped = collect(File::allFiles(database_path('seeders')))
+            ->filter(fn ($f) => str_ends_with($f->getFilename(), '.json'))
+            ->map(fn ($f) => $f->getFilename());
+
+        $this->assertNotEmpty($shipped, 'No seeder JSON found — the content sources have moved.');
+
+        foreach ($shipped as $json) {
+            $this->assertStringContainsString($json, $seeders, "database/seeders/**/{$json} is never read by a seeder.");
         }
     }
 

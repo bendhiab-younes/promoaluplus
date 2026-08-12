@@ -1,0 +1,393 @@
+{
+  "fr": {
+    "cuisines": {
+      "title": "Cuisines",
+      "description": "La cuisine en aluminium s’impose aujourd’hui comme la solution idéale pour les foyers tunisiens à la recherche de modernité, de robustesse et de praticité. Résistante à l’humidité, aux chocs et aux variations climatiques, elle garantit une durabilité exceptionnelle tout en offrant un design élégant et contemporain. Facile à entretenir et disponible dans une large gamme de finitions, la cuisine en aluminium s’intègre parfaitement à tous les styles d’intérieur. C’est un investissement sûr qui allie confort, esthétique et performance pour transformer votre espace de vie en un lieu convivial et raffiné.",
+      "features": [
+        "Robustesse et longévité",
+        "Design moderne",
+        "Entretien facile",
+        "Personnalisation et Adaptabilité",
+        "Confort et sérénité"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80"
+      ]
+    },
+    "portes": {
+      "title": "Portes",
+      "description": "Portes d'entrée, coulissantes et baies vitrées sécurisées. Nos portes d’entrée et autres en aluminium incarnent robustesse, sécurité, et élégance tout en offrant une personnalisation flexible. Grâce à une large gamme de variantes fonctionnelles, parfaitement compatibles avec nos systèmes de fenêtres et de portes-fenêtres, vous bénéficiez d’une liberté de conception illimitée pour donner vie à vos projets de construction ou de rénovation.",
+      "features": [
+        "Puissance, solidité et Sécurité renforcée",
+        "Étanchéité parfaite et efficacité énergétique",
+        "Style et élégance",
+        "Design libre et sur mesure"
+      ],
+      "images": [
+        "/images/services/doors/doors-01.jpeg",
+        "/images/services/doors/doors-02.jpeg",
+        "/images/services/doors/doors-03.jpeg",
+        "/images/services/doors/doors-04.jpeg",
+        "/images/services/doors/doors-05.jpeg",
+        "/images/services/doors/doors-06.jpeg"
+      ]
+    },
+    "fenetres": {
+      "title": "Fenêtres et portes-fenêtres",
+      "description": "Optez pour l’excellence : les fenêtres et portes-fenêtres en aluminium sont le choix incontournable pour donner vie à votre projet. Modernes, fiables et élégantes, elles conjuguent confort, sécurité et performance énergétique. Avec une large gamme de profilés – des modèles à haute efficacité énergétique aux versions renforcées contre l’effraction – vous composez la solution sur mesure qui correspond à vos besoins. Associez le design qui vous inspire au type d’ouverture idéal et profitez d’une menuiserie qui allie style et durabilité.",
+      "features": [
+        "Sécurité et durabilité",
+        "Performance et efficacité énergétique",
+        "Design libre et esthétique"
+      ],
+      "images": [
+        "/images/services/windows/windows-01.jpeg",
+        "/images/services/windows/windows-02.jpeg",
+        "/images/services/windows/windows-03.jpeg",
+        "/images/services/windows/windows-04.jpeg",
+        "/images/services/windows/windows-05.jpeg",
+        "/images/services/windows/windows-06.jpeg",
+        "/images/services/windows/windows-07.jpeg",
+        "/images/services/windows/windows-08.jpeg",
+        "/images/services/windows/windows-09.jpeg",
+        "/images/services/windows/windows-10.jpeg",
+        "/images/services/windows/windows-11.jpeg",
+        "/images/services/windows/windows-12.jpeg",
+        "/images/services/windows/windows-13.jpeg",
+        "/images/services/windows/windows-14.jpeg",
+        "/images/services/windows/windows-15.jpeg",
+        "/images/services/windows/windows-16.jpeg",
+        "/images/services/windows/windows-17.jpeg",
+        "/images/services/windows/windows-18.jpeg",
+        "/images/services/windows/windows-19.jpeg",
+        "/images/services/windows/windows-20.jpeg",
+        "/images/services/windows/windows-21.jpeg",
+        "/images/services/windows/windows-22.jpeg",
+        "/images/services/windows/windows-23.jpeg",
+        "/images/services/windows/windows-24.jpeg",
+        "/images/services/windows/windows-25.jpeg"
+      ]
+    },
+    "rolling_shutters": {
+      "title": "Volets roulants",
+      "description": "Les volets roulants sont bien plus qu’un simple accessoire : ils constituent un atout majeur pour la sécurité et le confort de votre maison. Véritables boucliers, ils vous protègent des intrusions, des variations de température et des intempéries, tout en valorisant l’esthétique de votre façade. En choisissant les volets roulants manuels ou motorisés, vous investissez dans une solution qui allie protection, confort et design. Résultat : une maison plus sûre, plus agréable à vivre et une tranquillité d’esprit au quotidien.",
+      "features": [
+        "Sécurité renforcée",
+        "Isolation et confort thermique",
+        "Protection contre les intempéries",
+        "Esthétique valorisée",
+        "Tranquillité d’esprit"
+      ],
+      "images": [
+        "/images/services/rolling-shutters/rolling-shutters-01.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-02.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-03.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-04.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-05.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-06.jpeg",
+        "/images/services/rolling-shutters/rolling-shutters-07.jpeg"
+      ]
+    },
+    "railings": {
+      "title": "Garde-Corps",
+      "description": "Nos garde-corps en aluminium et en verre incarnent la combinaison parfaite de robustesse, d’élégance et de Sécurité optimale. Que ce soit pour sécuriser une terrasse, un balcon, un escalier ou une mezzanine, nos systèmes allient design moderne et fiabilité, tout en respectant les normes de sécurité les plus exigeantes. Leur intégration harmonieuse à vos espaces intérieurs comme extérieurs apporte une touche esthétique unique et valorise votre projet.",
+      "features": [
+        "Robustesse : des garde-corps en aluminium et en verre conçus pour durer",
+        "Élégance moderne : un design raffiné qui valorise vos espaces intérieurs et extérieurs",
+        "Sécurité optimale : conformité aux normes de sécurité les plus strictes",
+        "Polyvalence d’usage : adaptés aux terrasses, balcons, escaliers et mezzanines",
+        "Intégration harmonieuse : une esthétique qui s’accorde parfaitement à votre environnement"
+      ],
+      "images": [
+        "/images/services/railings/railings-01.jpeg",
+        "/images/services/railings/railings-02.jpeg",
+        "/images/services/railings/railings-03.jpeg",
+        "/images/services/railings/railings-04.jpeg",
+        "/images/services/railings/railings-05.jpeg",
+        "/images/services/railings/railings-06.jpeg",
+        "/images/services/railings/railings-07.jpeg",
+        "/images/services/railings/railings-08.jpeg",
+        "/images/services/railings/railings-09.jpeg",
+        "/images/services/railings/railings-10.jpeg",
+        "/images/services/railings/railings-11.jpeg",
+        "/images/services/railings/railings-12.jpeg",
+        "/images/services/railings/railings-13.jpeg",
+        "/images/services/railings/railings-14.jpeg",
+        "/images/services/railings/railings-15.jpeg",
+        "/images/services/railings/railings-16.jpeg",
+        "/images/services/railings/railings-17.jpeg",
+        "/images/services/railings/railings-18.jpeg",
+        "/images/services/railings/railings-19.jpeg",
+        "/images/services/railings/railings-20.jpeg",
+        "/images/services/railings/railings-21.jpeg"
+      ]
+    },
+    "pergola": {
+      "title": "Pergola",
+      "description": "Pergolas bioclimatiques et traditionnels sur mesure pour vos espaces extérieurs. Offrez à vos extérieurs la perfection avec nos pergolas en aluminium : robustes, durables et prêtes à affronter toutes les saisons. Véritable alliée de vos aménagements, elles délimitent vos espaces avec élégance et apportent confort et modernité. À la différence du bois, souvent choisi pour les pergolas, l’aluminium offre une solution sans contraintes : aucun entretien régulier nécessaire et une durabilité exceptionnelle dans le temps. Avec leur esthétique épurée et leur capacité à s’intégrer harmonieusement dans tout environnement, nos pergolas deviennent une extension naturelle de votre maison. Leur design raffiné crée une continuité parfaite entre intérieur et extérieur, pour un cadre de vie unique et valorisé. La pergola aluminium, c’est la tranquillité d’esprit alliée à la performance.",
+      "features": [
+        "Robustesse et durabilité",
+        "Résistance aux intempéries",
+        "Esthétique épurée",
+        "Sans contraintes d’entretien",
+        "Alliée de vos aménagements",
+        "Tranquillité d’esprit"
+      ],
+      "images": [
+        "https://images.pexels.com/photos/7587884/pexels-photo-7587884.jpeg?auto=compress&cs=tinysrgb&w=1200"
+      ]
+    },
+    "sun_breakers": {
+      "title": "Brises Soleil",
+      "description": "Brises soleil architecturaux pour contrôle solaire et design. Le brise soleil en aluminium est la solution idéale pour conjuguer confort thermique, design moderne et durabilité dans vos projets. Conçu pour résister aux fortes chaleurs estivales et aux variations climatiques, il réduit efficacement l’impact du rayonnement solaire tout en apportant une touche architecturale élégante à vos façades. Léger, robuste et sans entretien, il s’intègre parfaitement aux constructions contemporaines comme aux rénovations, offrant une maîtrise optimale de la lumière et une économie d’énergie significative.",
+      "features": [
+        "Confort thermique",
+        "Robustesse et durabilité",
+        "Design moderne",
+        "Sans entretien",
+        "Intégration harmonieuse dans le cadre environnant",
+        "Économie d’énergie",
+        "Performance et esthétique"
+      ],
+      "images": [
+        "/images/services/sun-breakers/sun-breakers-01.jpeg"
+      ]
+    },
+    "mosquito_nets": {
+      "title": "Moustiquaires",
+      "description": "Moustiquaires sur mesure pour fenêtres et portes. Les moustiquaires en aluminium représentent une solution pratique et élégante pour protéger votre maison des insectes tout en préservant la circulation de l’air et la luminosité naturelle. Robustes, durables et discrètes, elles s’adaptent parfaitement aux fenêtres, portes et baies vitrées. Grâce à leur design discret et moderne, elles améliorent le confort de votre intérieur sans compromettre l’esthétique de votre façade. Investir dans une moustiquaire en aluminium, c’est choisir la tranquillité, la fraîcheur et la sérénité au quotidien.",
+      "features": [
+        "Protection efficace",
+        "Robustesse et durabilité",
+        "Confort optimal",
+        "Design discret",
+        "Tranquillité d’esprit"
+      ],
+      "images": [
+        "https://www.windowo.com/data/thumb_cache/_data_prod_img_zanzariera-magnetica-fissa-in-alluminio-sagittario-effezeta_jpg_r_1000_1000.jpg"
+      ]
+    },
+    "space_design": {
+      "title": "Séparations et cloisons",
+      "description": "Agencement et design d'espaces intérieurs et extérieurs sur mesure. Les séparations et cloisons en aluminium et en verre sur mesure sont la solution idéale pour créer ou agencer des espaces intérieurs et extérieurs modernes, lumineux et fonctionnels. Alliant la robustesse de l’aluminium à l’élégance du verre, elles permettent de structurer vos intérieurs tout en préservant la transparence et la fluidité. Sans entretien, elles s’adaptent aussi bien aux maisons qu’aux bureaux ou commerces, offrant une esthétique contemporaine et une durabilité exceptionnelle. Investir dans une cloison aluminium-verre, c’est choisir la modernité, la luminosité et le confort au quotidien.",
+      "features": [
+        "Robustesse et fiabilité",
+        "Élégance du verre",
+        "Luminosité préservée",
+        "Polyvalence d’usage",
+        "Sans entretien",
+        "Design contemporain",
+        "Confort et harmonie"
+      ],
+      "images": [
+        "/images/services/space-design/space-design-01.jpeg"
+      ]
+    }
+  },
+  "en": {
+    "cuisines": {
+      "title": "Kitchens",
+      "description": "Aluminum kitchens are now an ideal solution for Tunisian households seeking modernity, robustness, and practicality. Resistant to humidity, impact, and climate variations, they deliver exceptional durability while offering an elegant, contemporary look. Easy to maintain and available in a wide range of finishes, aluminum kitchens fit seamlessly into every interior style. They are a reliable investment that combines comfort, aesthetics, and performance to turn your living space into a welcoming and refined place.",
+      "features": [
+        "Robustness and longevity",
+        "Modern design",
+        "Easy maintenance",
+        "Customization and adaptability",
+        "Comfort and serenity"
+      ]
+    },
+    "portes": {
+      "title": "Doors",
+      "description": "Entrance doors, sliding doors, and secure glazed openings. Our aluminum doors embody robustness, security, and elegance while offering flexible customization. Thanks to a wide range of functional variants, fully compatible with our window and patio door systems, you benefit from unlimited design freedom to bring your construction or renovation projects to life.",
+      "features": [
+        "Strength, solidity, and enhanced security",
+        "Perfect sealing and energy efficiency",
+        "Style and elegance",
+        "Free and custom design"
+      ]
+    },
+    "fenetres": {
+      "title": "Windows and patio doors",
+      "description": "Choose excellence: aluminum windows and patio doors are the essential choice for bringing your project to life. Modern, reliable, and elegant, they combine comfort, safety, and energy performance. With a wide range of profiles, from high-efficiency models to reinforced anti-burglary versions, you can create a tailored solution that matches your needs. Pair the design that inspires you with the ideal opening style and enjoy joinery that combines style and durability.",
+      "features": [
+        "Security and durability",
+        "Performance and energy efficiency",
+        "Free and aesthetic design"
+      ]
+    },
+    "rolling_shutters": {
+      "title": "Rolling Shutters",
+      "description": "Rolling shutters are much more than a simple accessory: they are a major asset for your home's security and comfort. Real protective shields, they guard you against intrusions, temperature changes, and bad weather while enhancing the appearance of your facade. By choosing manual or motorized rolling shutters, you invest in a solution that combines protection, comfort, and design. The result is a safer, more pleasant home and daily peace of mind.",
+      "features": [
+        "Enhanced security",
+        "Insulation and thermal comfort",
+        "Weather protection",
+        "Enhanced aesthetics",
+        "Peace of mind"
+      ]
+    },
+    "railings": {
+      "title": "Railings",
+      "description": "Our aluminum and glass railings combine the perfect balance of robustness, elegance, and optimal safety. Whether for a terrace, balcony, staircase, or mezzanine, our systems combine modern design and reliability while meeting the most demanding safety standards. Their seamless integration into indoor and outdoor spaces adds a unique aesthetic touch and enhances your project.",
+      "features": [
+        "Durability: aluminum and glass railings designed to last",
+        "Modern elegance: refined design that enhances indoor and outdoor spaces",
+        "Optimal safety: compliance with the strictest safety standards",
+        "Versatile usage: suited for terraces, balconies, staircases, and mezzanines",
+        "Harmonious integration: an aesthetic that fits your environment perfectly"
+      ]
+    },
+    "pergola": {
+      "title": "Pergola",
+      "description": "Custom bioclimatic and traditional pergolas for your outdoor spaces. Give your exterior spaces the perfect finishing touch with our aluminum pergolas: robust, durable, and ready to face every season. A true ally for your layouts, they define your spaces with elegance while bringing comfort and modernity. Unlike wood, which is often chosen for pergolas, aluminum offers a constraint-free solution with no regular maintenance required and exceptional long-term durability. With their clean aesthetic and ability to blend harmoniously into any environment, our pergolas become a natural extension of your home. Their refined design creates a seamless continuity between indoors and outdoors for a unique and enhanced living space. Aluminum pergola means peace of mind combined with performance.",
+      "features": [
+        "Robustness and durability",
+        "Weather resistance",
+        "Clean aesthetic",
+        "No maintenance constraints",
+        "An ally for your layouts",
+        "Peace of mind"
+      ]
+    },
+    "sun_breakers": {
+      "title": "Sun Breakers",
+      "description": "Architectural sun breakers for solar control and design. Aluminum sun breakers are the ideal solution for combining thermal comfort, modern design, and durability in your projects. Designed to withstand intense summer heat and climate variations, they effectively reduce solar radiation while adding an elegant architectural touch to facades. Lightweight, robust, and maintenance-free, they fit perfectly into both contemporary builds and renovations, offering optimal light control and meaningful energy savings.",
+      "features": [
+        "Thermal comfort",
+        "Robustness and durability",
+        "Modern design",
+        "Maintenance-free",
+        "Harmonious integration into the surrounding setting",
+        "Energy savings",
+        "Performance and aesthetics"
+      ]
+    },
+    "mosquito_nets": {
+      "title": "Mosquito Nets",
+      "description": "Custom mosquito nets for windows and doors. Aluminum mosquito nets are a practical and elegant solution for protecting your home from insects while preserving airflow and natural light. Robust, durable, and discreet, they adapt perfectly to windows, doors, and sliding doors. Their discreet, modern design improves indoor comfort without compromising your facade's appearance. Investing in an aluminum mosquito net means choosing everyday tranquility, freshness, and serenity.",
+      "features": [
+        "Effective protection",
+        "Robustness and durability",
+        "Optimal comfort",
+        "Discreet design",
+        "Peace of mind"
+      ]
+    },
+    "space_design": {
+      "title": "Partitions and Dividers",
+      "description": "Custom interior and exterior space planning. Made-to-measure aluminum and glass partitions and dividers are the ideal solution for creating or arranging modern, bright, and functional indoor and outdoor spaces. Combining the robustness of aluminum with the elegance of glass, they let you structure interiors while preserving transparency and flow. Maintenance-free, they suit homes, offices, and retail spaces alike, offering contemporary aesthetics and exceptional durability. Investing in an aluminum-glass partition means choosing modernity, brightness, and everyday comfort.",
+      "features": [
+        "Robustness and reliability",
+        "Glass elegance",
+        "Preserved brightness",
+        "Versatile use",
+        "Maintenance-free",
+        "Contemporary design",
+        "Comfort and harmony"
+      ]
+    }
+  },
+  "ar": {
+    "cuisines": {
+      "title": "المطابخ",
+      "description": "أصبحت المطابخ المصنوعة من الألومنيوم اليوم الحل المثالي للأسر التونسية التي تبحث عن الحداثة والمتانة والعملية. فهي مقاومة للرطوبة والصدمات والتغيرات المناخية، وتضمن عمرا افتراضيا استثنائيا مع مظهر أنيق وعصري. كما أنها سهلة الصيانة ومتوفرة في مجموعة واسعة من التشطيبات، ما يجعلها تنسجم بسهولة مع مختلف أنماط الديكور الداخلي. إنها استثمار آمن يجمع بين الراحة والجمال والأداء لتحويل مساحة المعيشة إلى مكان دافئ وراقي.",
+      "features": [
+        "المتانة وطول العمر",
+        "تصميم عصري",
+        "سهولة الصيانة",
+        "التخصيص والمرونة",
+        "الراحة والطمأنينة"
+      ]
+    },
+    "portes": {
+      "title": "الأبواب",
+      "description": "أبواب الدخول والأبواب المنزلقة والواجهات الزجاجية الآمنة. تجسد أبوابنا المصنوعة من الألومنيوم المتانة والأمان والأناقة، مع توفير تخصيص مرن. وبفضل مجموعة واسعة من الخيارات الوظيفية المتوافقة تماما مع أنظمة النوافذ والأبواب الفرنسية، تحصل على حرية تصميم غير محدودة لتحويل مشاريع البناء أو الترميم إلى واقع.",
+      "features": [
+        "القوة والصلابة والأمان المعزز",
+        "إغلاق مثالي وكفاءة في استخدام الطاقة",
+        "الأناقة والأسلوب",
+        "تصميم حر ومخصص"
+      ]
+    },
+    "fenetres": {
+      "title": "النوافذ والأبواب الفرنسية",
+      "description": "اختر التميز: النوافذ والأبواب الفرنسية المصنوعة من الألومنيوم هي الخيار الأساسي لإحياء مشروعك. فهي عصرية وموثوقة وأنيقة، وتجمع بين الراحة والأمان والأداء الحراري. ومع مجموعة واسعة من المقاطع، من النماذج عالية الكفاءة الطاقية إلى النسخ المعززة ضد الاقتحام، يمكنك تشكيل حل مفصل يناسب احتياجاتك. اجمع بين التصميم الذي يلهمك ونوع الفتح المثالي واستمتع بنوافذ وأبواب تجمع بين الأناقة والمتانة.",
+      "features": [
+        "الأمان والمتانة",
+        "الأداء والكفاءة الطاقية",
+        "تصميم حر وجمالي"
+      ]
+    },
+    "rolling_shutters": {
+      "title": "الستائر الدوارة",
+      "description": "الستائر الدوارة ليست مجرد إضافة بسيطة، بل هي عنصر مهم لتعزيز أمان وراحة منزلك. فهي بمثابة درع حقيقي يحميك من محاولات التسلل وتقلبات الحرارة والعوامل الجوية، مع إبراز جمالية الواجهة. باختيارك ستائر دوارة يدوية أو آلية، فإنك تستثمر في حل يجمع بين الحماية والراحة والتصميم. والنتيجة: منزل أكثر أمانا وراحة وطمأنينة يومية.",
+      "features": [
+        "أمان معزز",
+        "عزل وراحة حرارية",
+        "حماية من العوامل الجوية",
+        "مظهر جمالي أفضل",
+        "راحة بال يومية"
+      ]
+    },
+    "railings": {
+      "title": "حواجز الحماية",
+      "description": "تجسد حواجز الحماية المصنوعة من الألومنيوم والزجاج المزيج المثالي بين المتانة والأناقة والأمان الأمثل. سواء لتأمين تراس أو شرفة أو درج أو طابق نصفي، تجمع أنظمتنا بين التصميم العصري والاعتمادية العالية مع احترام أكثر معايير السلامة صرامة. كما أن اندماجها المتناسق في المساحات الداخلية والخارجية يضيف لمسة جمالية فريدة ويعزز قيمة مشروعك.",
+      "features": [
+        "المتانة: حواجز ألومنيوم وزجاج مصممة لتدوم",
+        "أناقة عصرية: تصميم راق يبرز جمال المساحات الداخلية والخارجية",
+        "أمان مثالي: مطابقة لأكثر معايير السلامة صرامة",
+        "استخدامات متعددة: مناسبة للتراسات والشرفات والسلالم والطوابق النصفية",
+        "اندماج متناسق: جمالية تنسجم تماما مع محيطك"
+      ]
+    },
+    "pergola": {
+      "title": "برجولا",
+      "description": "برجولات حيوية وتقليدية مصممة حسب الطلب لمساحاتك الخارجية. امنح مساحاتك الخارجية الكمال مع برجولات الألومنيوم لدينا: متينة وقوية وجاهزة لمواجهة كل الفصول. فهي حليف حقيقي في تهيئة فضاءاتك، إذ تحدد المساحات بأناقة وتضيف الراحة والحداثة. وعلى عكس الخشب الذي يُختار كثيرا للبرجولات، يقدم الألومنيوم حلا بلا قيود، فلا يحتاج إلى صيانة دورية ويتمتع بمتانة استثنائية على المدى الطويل. وبفضل مظهره النقي وقدرته على الاندماج بانسجام في أي بيئة، تتحول برجولاتنا إلى امتداد طبيعي لمنزلك. تصميمها الراقي يخلق استمرارية مثالية بين الداخل والخارج، ليمنحك إطار عيش فريدا وأكثر قيمة. برجولة الألومنيوم هي راحة بال مقترنة بالأداء.",
+      "features": [
+        "متانة وقوة",
+        "مقاومة للعوامل الجوية",
+        "تصميم أنيق",
+        "دون متطلبات صيانة",
+        "حليف لتنظيم المساحات",
+        "راحة وطمأنينة"
+      ]
+    },
+    "sun_breakers": {
+      "title": "كاسرات الشمس",
+      "description": "كاسرات شمس معمارية للتحكم الشمسي والتصميم. تعد كاسرات الشمس المصنوعة من الألومنيوم الحل المثالي للجمع بين الراحة الحرارية والتصميم العصري والمتانة في مشاريعك. فهي مصممة لمقاومة الحرارة الشديدة في الصيف والتغيرات المناخية، وتقلل بفعالية من أثر الإشعاع الشمسي مع إضافة لمسة معمارية أنيقة للواجهات. كما أنها خفيفة وقوية ولا تحتاج إلى صيانة، وتنسجم تماما مع الإنشاءات المعاصرة ومع أعمال الترميم، مع توفير تحكم مثالي في الضوء وتوفير مهم في الطاقة.",
+      "features": [
+        "راحة حرارية",
+        "متانة عالية",
+        "تصميم عصري",
+        "بدون صيانة",
+        "اندماج متناغم مع المحيط",
+        "توفير في الطاقة",
+        "أداء وجمال"
+      ]
+    },
+    "mosquito_nets": {
+      "title": "الناموسيات",
+      "description": "ناموسيات مخصصة للنوافذ والأبواب. تمثل ناموسيات الألومنيوم حلا عمليا وأنيقا لحماية منزلك من الحشرات مع الحفاظ على تدفق الهواء والضوء الطبيعي. فهي متينة ومستدامة وغير لافتة للنظر، وتتكيف تماما مع النوافذ والأبواب والواجهات الزجاجية. كما أن تصميمها العصري والدقيق يعزز راحة الداخل دون التأثير على جمالية الواجهة. الاستثمار في ناموسية من الألومنيوم يعني اختيار الطمأنينة والانتعاش والسكينة يوميا.",
+      "features": [
+        "حماية فعالة",
+        "متانة عالية",
+        "راحة مثالية",
+        "تصميم غير لافت وعصري",
+        "طمأنينة يومية"
+      ]
+    },
+    "space_design": {
+      "title": "الفواصل والقواطع",
+      "description": "تصميم وتنظيم المساحات الداخلية والخارجية حسب الطلب. الفواصل والقواطع المصنوعة من الألومنيوم والزجاج حسب المقاس هي الحل المثالي لإنشاء أو تنظيم مساحات داخلية وخارجية حديثة ومضيئة وعملية. فهي تجمع بين صلابة الألومنيوم وأناقة الزجاج، ما يسمح بتقسيم المساحات مع الحفاظ على الشفافية والانسيابية. وهي لا تحتاج إلى صيانة، وتناسب المنازل والمكاتب والمتاجر، وتوفر جمالية معاصرة ومتانة استثنائية. الاستثمار في قاطع من الألومنيوم والزجاج هو اختيار للحداثة والإضاءة والراحة اليومية.",
+      "features": [
+        "صلابة وموثوقية",
+        "أناقة الزجاج",
+        "الحفاظ على الإضاءة",
+        "تعدد الاستخدام",
+        "بدون صيانة",
+        "تصميم معاصر",
+        "راحة وانسجام"
+      ]
+    }
+  }
+}

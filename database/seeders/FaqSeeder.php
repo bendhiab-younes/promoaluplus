@@ -13,7 +13,7 @@ class FaqSeeder extends Seeder
     public function run(): void
     {
         // Load FAQs from the new JSON file
-        $jsonFile = base_path('../content_docs/json/questions_frequentes.json');
+        $jsonFile = database_path('seeders/content/questions_frequentes.json');
         $data = json_decode(file_get_contents($jsonFile), true);
 
         if (! is_array($data) || ! isset($data['fr']) || ! is_array($data['fr'])) {

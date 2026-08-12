@@ -12,7 +12,7 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $content = $this->readJson(base_path('../content_docs/json/services.json'));
+        $content = $this->readJson(database_path('seeders/content/services.json'));
 
         $sortOrder = 1;
 
