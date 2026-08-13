@@ -79,7 +79,14 @@ class HeroSlideSeederTest extends TestCase
         $this->assertSame('أمان معزز', $second->getTranslatedTitle('ar'));
     }
 
-    public function test_the_first_slide_prefers_the_editable_hero_site_settings(): void
+    /**
+     * The hero_* site settings are no longer editable anywhere — that tab was
+     * removed once Contenu → Slides d'accueil became the place to edit a
+     * slide. They survive only as seed-time overrides so an existing install
+     * that had customised them does not get reset to the lang-file copy on
+     * the first run of this seeder.
+     */
+    public function test_the_first_slide_seeds_from_legacy_hero_site_settings(): void
     {
         SiteSetting::set('hero_title_fr', 'Titre choisi par l\'admin');
 
