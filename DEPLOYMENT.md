@@ -742,9 +742,10 @@ git subtree push --prefix=alu-workshop-laravel \
     https://github.com/bendhiab-younes/promoaluplus.git main
 ```
 
-That re-derives the split each time (slow, but correct). Use `subtree push`
-directly — re-running `subtree split -b laravel-only` onto the existing branch
-name errors out.
+That re-derives the split each time (slow — it walks every commit — but correct,
+and it fast-forwards the deploy repo cleanly; this is how the §2 doc update was
+published). Use `subtree push` directly; you do not need a `laravel-only`
+branch, and keeping a stale one around only invites pushing it by mistake.
 
 Either way, **keep the monorepo until the first deploy is verified end to end.**
 It is the only rollback.
