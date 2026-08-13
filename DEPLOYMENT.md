@@ -2,7 +2,12 @@
 
 Target: a live, HTTPS-served public site at `https://promoaluplus.com` (or your domain) with a working `/admin` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
 
-Written against the state of `main` at the time of writing: Laravel 12.44, PHP ^8.2, Filament 3, Vite/Tailwind 4.
+Written against the state of `main` at the time of writing: Laravel 12.60+, Filament 3.3.54, Vite/Tailwind 4.
+
+> **PHP 8.4 is required, not 8.3.** The locked dependencies (`symfony/string`,
+> `symfony/translation`, `symfony/clock`) declare `php >=8.4`, so
+> `composer install` fails outright on 8.3. `composer.json` pins
+> `config.platform.php` to 8.4.0 so this cannot drift silently again.
 
 ---
 
@@ -170,7 +175,7 @@ timedatectl set-timezone Africa/Tunis
 
 ## 4. Install the stack
 
-### 4.1 PHP 8.3 + extensions
+### 4.1 PHP 8.4 + extensions
 
 Debian 12 (via Sury):
 
@@ -182,12 +187,12 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sou
 apt update
 ```
 
-Ubuntu 24.04 ships PHP 8.3 directly — skip the repo step.
+Ubuntu 24.04 ships 8.3, not 8.4, so the Sury/ondrej repo is required there too.
 
 ```bash
-apt install -y php8.3-fpm php8.3-cli php8.3-mysql php8.3-mbstring \
-               php8.3-xml php8.3-curl php8.3-zip php8.3-gd \
-               php8.3-intl php8.3-bcmath
+apt install -y php8.4-fpm php8.4-cli php8.4-mysql php8.4-mbstring \
+               php8.4-xml php8.4-curl php8.4-zip php8.4-gd \
+               php8.4-intl php8.4-bcmath
 ```
 
 **Every one of those extensions is actually used:**
@@ -201,7 +206,7 @@ apt install -y php8.3-fpm php8.3-cli php8.3-mysql php8.3-mbstring \
 | `mysql` | the database |
 | `bcmath` | monetary arithmetic on quote and invoice totals |
 
-Tune `/etc/php/8.3/fpm/php.ini`:
+Tune `/etc/php/8.4/fpm/php.ini`:
 
 ```ini
 memory_limit = 256M
@@ -212,7 +217,7 @@ post_max_size = 12M
 `upload_max_filesize` matters: hero slides accept up to **8 MB** (`HeroSlideResource`, `maxSize(8192)`) and service images 5 MB. The PHP default of 2 M would reject them with a confusing error.
 
 ```bash
-systemctl restart php8.3-fpm
+systemctl restart php8.4-fpm
 ```
 
 ### 4.2 MySQL
@@ -419,7 +424,7 @@ server {
     }
 
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
     }
@@ -474,7 +479,7 @@ Group=www-data
 Restart=always
 RestartSec=5
 WorkingDirectory=/var/www/promoalu
-ExecStart=/usr/bin/php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+ExecStart=/usr/bin/php8.4 artisan queue:work --sleep=3 --tries=3 --max-time=3600
 
 [Install]
 WantedBy=multi-user.target
@@ -602,7 +607,7 @@ crontab -e
 | **Upload rejected around 2 MB** | `upload_max_filesize` / `post_max_size` in php.ini, or nginx `client_max_body_size` |
 | **Arabic renders as `????`** | The database is not `utf8mb4` |
 | **`database is locked`** | You are still on SQLite — see §1.4 |
-| **500 only on the devis PDF/Excel** | `php8.3-gd` or `php8.3-zip` is missing |
+| **500 only on the devis PDF/Excel** | `php8.4-gd` or `php8.4-zip` is missing |
 
 Logs, in the order worth checking:
 
@@ -625,6 +630,7 @@ tail -f /var/log/nginx/error.log
 | 5 | Change the seeded admin password | post-deploy (§7.1) |
 | 6 | `trustProxies` if you add Cloudflare | only if needed |
 | 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
+| 8 | Reproducible builds: PHP/Node pinned, dependency advisories cleared | ✅ **done** — see §13 |
 
 > **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
 > (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
@@ -676,3 +682,50 @@ validation allowlist.
 > safe **only** because the panel offers no registration and nothing outside the
 > seeders creates a `User`. If you ever enable self-registration, this becomes a
 > privilege-escalation bug — gate it first.
+
+---
+
+## 13. Keeping deploys reproducible
+
+**You never push to the VPS.** You push to GitHub; the VPS pulls. Nothing beyond
+standard SSH access is needed — there is no "git access" option to buy from OVH.
+
+```
+your machine  --git push-->  GitHub  <--git pull--  VPS (deploy.sh)
+```
+
+Set up once: generate a key on the VPS (`ssh-keygen -t ed25519`) and add the
+public half to the repo's **Settings → Deploy keys** as read-only. That is what
+lets a private repo be pulled without a password.
+
+### What makes the build come out the same every time
+
+- **Lockfiles are committed** — `composer.lock` and `package-lock.json`. The
+  deploy uses `composer install` and `npm ci`, both of which install exactly the
+  locked versions. Never `composer update` on the server.
+- **PHP is pinned** — `composer.json` sets `config.platform.php` to `8.4.0`, so
+  dependency resolution targets the server's PHP no matter which version you
+  happen to run locally. This was not theoretical: the lock already contained
+  Symfony 8 components requiring PHP 8.4 while this guide still said 8.3, which
+  would have failed `composer install` on the first deploy.
+- **Node is pinned** — `.nvmrc` (22) and `engines.node` in `package.json`. Run
+  `nvm use` on the VPS before `npm ci` if you have nvm installed.
+
+### The rule that actually bites
+
+`php artisan optimize` caches config, routes and views. **With that cache in
+place, editing `.env` has no effect until the cache is rebuilt.** `deploy.sh`
+already runs it; if you change `.env` by hand afterwards, run it again.
+
+### Dependency advisories
+
+`composer audit` was run before launch: 52 advisories across 19 packages,
+including 10 rated high, three of which touched this application directly —
+CRLF injection in Laravel's `email` validation rule (used by the public quote
+form), SMTP command injection in `symfony/mime` (mail is sent to a
+user-supplied address), and an XSS in Filament's RichEditor.
+
+After updating, **5 remain and none reach production**: `phpunit` and
+`symfony/yaml` are dev-only and excluded by `composer install --no-dev`, and
+`psy/psysh` arrives via `laravel/tinker`. Re-run `composer audit` periodically;
+it is the cheapest security check available.
