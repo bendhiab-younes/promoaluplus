@@ -408,6 +408,16 @@ server {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+    # Uploaded files are never executed. `^~` makes this prefix location win
+    # over the `\.php$` regex below, so nothing an admin uploads can be run
+    # even if it somehow lands with a .php name. Defence in depth: the
+    # application also derives the stored extension from file content.
+    location ^~ /uploads/ {
+        location ~ \.php$ { return 403; }
+        expires 1y;
+        add_header Cache-Control "public";
+    }
+
     location ~ \.php$ {
         fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
@@ -614,6 +624,7 @@ tail -f /var/log/nginx/error.log
 | 4 | MySQL block in `.env` / `.env.example` | ⚠️ config **done** (commented block + warning in `.env.example`); **the suite has not been run against a real MySQL server** — see note below |
 | 5 | Change the seeded admin password | post-deploy (§7.1) |
 | 6 | `trustProxies` if you add Cloudflare | only if needed |
+| 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
 
 > **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
 > (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
@@ -622,3 +633,46 @@ tail -f /var/log/nginx/error.log
 > SQLite. Before launch, run it once against a real MySQL database — most
 > cheaply on the VPS itself after §4.2, with
 > `DB_CONNECTION=mysql php artisan test`.
+
+---
+
+## 12. Security fixes applied before launch
+
+A pre-deployment audit of the whole application found four issues. All are
+fixed and covered by `tests/Feature/SecurityHardeningTest.php`.
+
+**1. Remote code execution through an admin image upload (HIGH).** Filament
+stored uploads under the client's own extension while `->image()` validated
+only the sniffed MIME type, so a valid GIF carrying a PHP payload and named
+`payload.php` was written into `public/uploads` as `<ulid>.php` — executable by
+any web server that runs PHP by extension. The stored extension is now derived
+from the file's actual content (`AppServiceProvider::hardenFileUploads()`),
+applied centrally so a future upload field cannot miss it, and the nginx block
+in §6.2 refuses to execute anything under `/uploads/`.
+
+**2. Stored XSS via SVG upload (MEDIUM).** `image/*` accepts `image/svg+xml`,
+and SVG is active content served same-origin. Uploads are now restricted to
+JPEG, PNG, WebP, AVIF and GIF.
+
+**3. Stored XSS via unsanitised admin HTML (MEDIUM).** A service's `svg_icon`
+and rich-text description were rendered through `{!! !!}` untouched, so anyone
+reaching the admin panel could store script that ran for every visitor. Both go
+through `App\Support\SafeHtml` now. SVG is scrubbed as XML rather than HTML so
+that `viewBox` keeps its capitalisation — sanitising SVG as HTML lower-cases it
+and every icon silently loses its scaling.
+
+**4. JSON-LD `</script>` breakout (MEDIUM).** The structured-data blocks used
+`JSON_UNESCAPED_SLASHES`, so a `</script>` sequence in any admin-editable value
+closed the block early. `JSON_HEX_TAG` is now set on all three. The FAQ schema
+was already safe via `strip_tags()`; the `LocalBusiness` schema in the shared
+layout — present on every page — was not.
+
+Also verified and found already correct: no secrets in git history, signed-URL
+protection on `GET /storage/{path}`, auth on the Filament export routes and the
+PDF/Excel routes, parameterised SQL, and mass assignment bounded by the
+validation allowlist.
+
+> `User::canAccessPanel()` returns `true` for every authenticated user. That is
+> safe **only** because the panel offers no registration and nothing outside the
+> seeders creates a `User`. If you ever enable self-registration, this becomes a
+> privilege-escalation bug — gate it first.
