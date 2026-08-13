@@ -58,9 +58,10 @@ This matches the two specs that matter — 2 vCores and 4 GB RAM, the latter bei
 
 These are changes to the codebase, not the server. **Do them first** — several are silent failures, not crashes.
 
-### 1.1 Blocker: four seeders read files outside the repo
+### 1.1 Blocker: four seeders read files outside the repo — ✅ fixed
 
-If you split `alu-workshop-laravel` into its own GitHub repo (recommended), these break:
+Kept here because it is the defect that would have made the deploy repo seed an
+empty site in silence. As originally found, four seeders read this:
 
 ```
 database/seeders/ServiceSeeder.php:15       base_path('../content_docs/json/services.json')
@@ -71,7 +72,9 @@ database/seeders/SiteSettingsSeeder.php:21  base_path('../content_docs/json/serv
 
 `readJson()` returns `[]` when a file is missing, so **seeding will succeed while doing nothing** — you get an empty site with no error.
 
-**Fix:** move `content_docs/json/*.json` (84 KB, 5 files) into the repo at `database/seeders/content/`, and change the four paths to `database_path('seeders/content/....json')`.
+**Fixed:** the JSON now lives at `database/seeders/content/` inside the repo and the four
+paths use `database_path()`. `SiteCoherenceTest` asserts every seeder source is in-repo and
+actually read, so this cannot silently regress.
 
 ### 1.2 A first-time visitor sees the site in English
 
@@ -107,25 +110,29 @@ There is nothing SQLite-specific in the code (the only raw SQL, in `StatsOvervie
 
 ---
 
-## 2. Split the repository (recommended)
+## 2. Split the repository — ✅ done
 
-Keeping the parent monorepo works, but a repo containing only the Laravel app makes the deploy path obvious and avoids shipping `content_docs`, scratch scripts and audit markdown to the server.
+The deploy repo is **`https://github.com/bendhiab-younes/promoaluplus`** (private). It holds
+the Laravel app at its root — no `alu-workshop-laravel/` prefix, so every path in this
+guide is literal on the server.
 
-**Keep the history** rather than starting fresh:
+The split kept the full history (125 of the monorepo's 136 commits touched the app) and
+was verified file-by-file against the monorepo subdirectory: 390 files, identical lists.
+Root-level scratch (`content_docs/`, `firecrawl_scrape_result.json`, `patch_seeder.py`,
+`.idea/`) is not in it, which is the point — none of it reaches the server.
+
+For the record, what was run:
 
 ```bash
 cd ~/Alu-workshop
 git subtree split --prefix=alu-workshop-laravel -b laravel-only
+git push https://github.com/bendhiab-younes/promoaluplus.git laravel-only:main
 ```
 
-Create an **empty private** repo on GitHub (no README, no .gitignore), then:
-
-```bash
-git remote add clean git@github.com:<you>/promoalu-plus.git
-git push clean laravel-only:main
-```
-
-Do §1.1 (move `content_docs/json`) **before** the split, or immediately after in the new repo.
+> **The split rewrote commit SHAs.** The two repos share no common ancestor and can never
+> be merged or rebased into each other. Pick one as the working copy — see §13.1 — and
+> keep the monorepo untouched until the first VPS deploy is verified, since it is the
+> only rollback.
 
 ---
 
@@ -255,14 +262,30 @@ Node 22 matches the local toolchain (Vite 7 / Tailwind 4).
 
 ### 5.1 Clone
 
+Generate the deploy key **first** — the repo is private, so the clone fails without it:
+
 ```bash
+su - deploy
+ssh-keygen -t ed25519 -C "vps-deploy" -f ~/.ssh/id_ed25519 -N ""
+cat ~/.ssh/id_ed25519.pub
+```
+
+Paste that public key at
+`https://github.com/bendhiab-younes/promoaluplus/settings/keys` → **Add deploy key**.
+Leave *Allow write access* **unchecked** — the server only ever pulls, and a read-only key
+cannot be used to push malicious code back if the VPS is compromised.
+
+Then clone (SSH, not HTTPS — the deploy key only authenticates over SSH):
+
+```bash
+exit                                    # back to root
 mkdir -p /var/www && chown deploy:deploy /var/www
 su - deploy
-git clone git@github.com:<you>/promoalu-plus.git /var/www/promoalu
+git clone git@github.com:bendhiab-younes/promoaluplus.git /var/www/promoalu
 cd /var/www/promoalu
 ```
 
-Use a **deploy key** (read-only) for a private repo: `ssh-keygen -t ed25519 -C "vps-deploy"`, then add the public key under the repo's Settings → Deploy keys.
+First connection asks to trust `github.com` — answer `yes`.
 
 ### 5.2 Environment
 
@@ -631,6 +654,7 @@ tail -f /var/log/nginx/error.log
 | 6 | `trustProxies` if you add Cloudflare | only if needed |
 | 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
 | 8 | Reproducible builds: PHP/Node pinned, dependency advisories cleared | ✅ **done** — see §13 |
+| 9 | Split into a deploy repo | ✅ **done** — `bendhiab-younes/promoaluplus` (private), 125 commits, 390 files verified identical; see §2 |
 
 > **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
 > (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
@@ -696,7 +720,34 @@ your machine  --git push-->  GitHub  <--git pull--  VPS (deploy.sh)
 
 Set up once: generate a key on the VPS (`ssh-keygen -t ed25519`) and add the
 public half to the repo's **Settings → Deploy keys** as read-only. That is what
-lets a private repo be pulled without a password.
+lets a private repo be pulled without a password. Full steps in §5.1.
+
+### 13.1 Which repo do you work in from now on?
+
+The split (§2) rewrote every commit SHA, so `Alu-workshop` and `promoaluplus`
+have no shared ancestor — git will refuse to merge or rebase between them. That
+makes this a decision, not a detail:
+
+**Recommended — make `promoaluplus` the working copy.** Clone it fresh and work
+there. `git push` then behaves normally forever, and the local layout matches
+the VPS exactly. One-time cost: copy over the untracked things git does not
+carry — `.env`, `database/database.sqlite`, `public/uploads/`, then run
+`composer install && npm ci && npm run build`.
+
+**Alternative — keep working in the monorepo.** Then every release needs an
+extra step to publish the app:
+
+```bash
+git subtree push --prefix=alu-workshop-laravel \
+    https://github.com/bendhiab-younes/promoaluplus.git main
+```
+
+That re-derives the split each time (slow, but correct). Use `subtree push`
+directly — re-running `subtree split -b laravel-only` onto the existing branch
+name errors out.
+
+Either way, **keep the monorepo until the first deploy is verified end to end.**
+It is the only rollback.
 
 ### What makes the build come out the same every time
 
