@@ -423,7 +423,7 @@
                             <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" style="background: var(--accent);"></span>
                             <div class="absolute bottom-3 start-3 w-12 h-12 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:-translate-y-0.5" style="color: var(--accent);">
                                 @if($service->svg_icon)
-                                    {!! $service->svg_icon !!}
+                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
                                 @elseif($cardIcon)
                                     <i data-lucide="{{ $cardIcon }}" class="w-6 h-6"></i>
                                 @else

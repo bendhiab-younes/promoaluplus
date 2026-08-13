@@ -143,7 +143,7 @@
         $features = array_values(array_filter($service->getTranslatedFeatures(), static fn ($feature) => is_string($feature) && trim($feature) !== ''));
         $materials = array_values(array_filter($service->getTranslatedMaterials(), static fn ($material) => is_string($material) && trim($material) !== ''));
         $specs = is_array($service->specs) ? $service->specs : [];
-        $descriptionHtml = trim((string) $service->getTranslatedDescription());
+        $descriptionHtml = \App\Support\SafeHtml::richText($service->getTranslatedDescription());
         $descriptionText = trim(strip_tags($descriptionHtml));
         $summaryText = trim($service->getTranslatedShortDescription());
         if ($summaryText === '') {
@@ -216,7 +216,7 @@
                             <div class="absolute inset-0 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600"></div>
                             <div class="relative z-10 flex h-full w-full items-center justify-center" aria-hidden="true">
                                 @if($service->svg_icon)
-                                    {!! $service->svg_icon !!}
+                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
                                 @elseif($serviceIcon)
                                     <i data-lucide="{{ $serviceIcon }}" class="w-20 h-20 text-white/70"></i>
                                 @endif
@@ -268,7 +268,7 @@
                     <div class="inline-flex items-center gap-4 mb-6">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
                             @if($service->svg_icon)
-                                {!! $service->svg_icon !!}
+                                {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
                             @elseif($serviceIcon)
                                 <i data-lucide="{{ $serviceIcon }}" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                             @else
@@ -417,7 +417,7 @@
     </section>
 
     <script type="application/ld+json">
-        {!! json_encode($servicesSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+        {!! json_encode($servicesSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_PRETTY_PRINT) !!}
     </script>
 
     <style>
