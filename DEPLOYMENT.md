@@ -489,6 +489,13 @@ Certbot rewrites the server block for TLS and installs a renewal timer. Confirm 
 
 Both mailables implement `ShouldQueue` and `QuoteController:33-34` dispatches with `->queue()`, on `QUEUE_CONNECTION=database`. **With no worker running, every quote request queues a job that is never processed.** The customer gets no confirmation and you get no notification, with no error anywhere.
 
+> **Install the worker even though you have deferred SMTP.** Without mail configured the
+> jobs still get created and still need draining — otherwise the `jobs` table grows
+> forever. Set `MAIL_MAILER=log` in `.env` until you wire up a real sender: the worker
+> then "delivers" to `storage/logs/laravel.log` and the queue stays clean. Nothing is
+> lost either way — **the quote itself is saved to the database before the mail is ever
+> queued**, so it appears in `/admin` regardless of whether email works.
+
 `/etc/systemd/system/promoalu-worker.service`:
 
 ```ini
@@ -515,6 +522,21 @@ systemctl status promoalu-worker
 ```
 
 `--max-time=3600` recycles the process hourly so a long-lived worker never holds stale code or leaks memory.
+
+**Let `deploy` restart the worker without a password.** `deploy.sh` (§9) ends with
+`sudo systemctl restart promoalu-worker`, and a normal `sudo` would sit there asking for a
+password — which nobody can type, because the script runs over a non-interactive
+`ssh deploy@<ip> '...'`. The deploy hangs, then times out with the site still in
+maintenance mode. As root:
+
+```bash
+echo 'deploy ALL=(root) NOPASSWD: /bin/systemctl restart promoalu-worker' \
+    > /etc/sudoers.d/promoalu-deploy
+chmod 440 /etc/sudoers.d/promoalu-deploy
+visudo -c                                    # must print "parsed OK"
+```
+
+Scoped to that one command — `deploy` gains no other root powers.
 
 ### 7.1 Change the admin password
 
