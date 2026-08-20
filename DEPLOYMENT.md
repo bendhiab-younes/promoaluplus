@@ -709,7 +709,7 @@ tail -f /var/log/nginx/error.log
 > **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
 > (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
 > MySQL in Laravel 11+, and JSON columns are supported on both. That is a
-> reading of the code, not a test result. The 199-test suite still runs on
+> reading of the code, not a test result. The 213-test suite still runs on
 > SQLite. Before launch, run it once against a real MySQL database — most
 > cheaply on the VPS itself after §4.2, with
 > `DB_CONNECTION=mysql php artisan test`.
