@@ -601,10 +601,35 @@ class PublicSiteFeatureTest extends TestCase
 
     // -------------------------------------------------------- admin surface
 
+    /**
+     * The panel was moved off `/admin` so an ordinary visitor guessing at the
+     * address bar does not land on a login form. Asserting the old path is
+     * *gone* is what makes that a rename rather than an addition — a panel
+     * reachable at both URLs would hide nothing.
+     */
+    public function test_the_panel_moved_off_the_default_admin_path(): void
+    {
+        $this->get('/admin')->assertNotFound();
+        $this->get('/admin/login')->assertNotFound();
+
+        $this->get('/pap/login')->assertOk();
+    }
+
+    /**
+     * The panel *ID* stays `admin` while the path is `pap`, because Filament
+     * builds route names from the ID. Renaming the ID to match the path would
+     * silently break redirectGuestsTo(), StatsOverview's quote link and the
+     * devis download tests, none of which mention a URL.
+     */
+    public function test_panel_route_names_are_unaffected_by_the_path(): void
+    {
+        $this->assertSame('/pap/login', parse_url(route('filament.admin.auth.login'), PHP_URL_PATH));
+    }
+
     public function test_admin_panel_redirects_guests_to_the_login_screen(): void
     {
-        $this->get('/admin')->assertRedirect();
-        $this->get('/admin/login')->assertOk();
+        $this->get('/pap')->assertRedirect();
+        $this->get('/pap/login')->assertOk();
     }
 
     public function test_admin_panel_is_reachable_outside_a_local_environment(): void
@@ -616,12 +641,12 @@ class PublicSiteFeatureTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         $this->assertNotSame('local', config('app.env'));
-        $this->get('/admin/quotes')->assertOk();
+        $this->get('/pap/quotes')->assertOk();
     }
 
     public function test_admin_panel_still_requires_authentication(): void
     {
-        $this->get('/admin/quotes')->assertRedirect();
+        $this->get('/pap/quotes')->assertRedirect();
     }
 
     public function test_every_filament_resource_index_renders(): void
@@ -638,11 +663,11 @@ class PublicSiteFeatureTest extends TestCase
         ];
 
         foreach ($slugs as $slug) {
-            $this->get("/admin/{$slug}")->assertOk();
+            $this->get("/pap/{$slug}")->assertOk();
         }
 
-        $this->get('/admin')->assertOk();
-        $this->get('/admin/site-settings')->assertOk();
+        $this->get('/pap')->assertOk();
+        $this->get('/pap/site-settings')->assertOk();
     }
 
     public function test_category_resource_registers_no_admin_routes(): void
@@ -673,7 +698,7 @@ class PublicSiteFeatureTest extends TestCase
         config(['app.env' => 'local']);
         $this->actingAs(User::factory()->create());
 
-        $this->get('/admin/project-types/create')->assertOk();
+        $this->get('/pap/project-types/create')->assertOk();
     }
 
     public function test_the_homepage_shows_no_invented_testimonials_when_the_table_is_empty(): void
@@ -713,7 +738,7 @@ class PublicSiteFeatureTest extends TestCase
         config(['app.env' => 'local']);
         $this->actingAs(User::factory()->create());
 
-        $this->get('/admin/testimonials/create')->assertOk();
+        $this->get('/pap/testimonials/create')->assertOk();
     }
 
     public function test_the_testimonial_edit_form_hydrates_a_root_relative_image_url(): void
@@ -735,6 +760,6 @@ class PublicSiteFeatureTest extends TestCase
             'sort_order' => 1,
         ]);
 
-        $this->get("/admin/testimonials/{$testimonial->id}/edit")->assertOk();
+        $this->get("/pap/testimonials/{$testimonial->id}/edit")->assertOk();
     }
 }

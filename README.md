@@ -59,7 +59,7 @@ php artisan serve
 ```
 
 **Application**: http://127.0.0.1:8000  
-**Admin Panel**: http://127.0.0.1:8000/admin
+**Admin Panel**: http://127.0.0.1:8000/pap
 
 ### Admin Credentials
 - **Email**: `admin@aluminiumcraft.tn`
@@ -135,12 +135,12 @@ lang/{fr,en,ar}/            # Translation files
 ### Admin Routes
 | URL | Description |
 |-----|-------------|
-| `/admin` | Dashboard |
-| `/admin/quotes` | Quote management |
-| `/admin/invoices` | Invoice management |
-| `/admin/projects` | Project management |
-| `/admin/services` | Service management |
-| `/admin/site-settings` | Site configuration |
+| `/pap` | Dashboard |
+| `/pap/quotes` | Quote management |
+| `/pap/invoices` | Invoice management |
+| `/pap/projects` | Project management |
+| `/pap/services` | Service management |
+| `/pap/site-settings` | Site configuration |
 
 ## 📋 Quote/Invoice Workflow
 

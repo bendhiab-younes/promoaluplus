@@ -26,8 +26,8 @@ class HeroSlideResourceTest extends TestCase
 
     public function test_the_index_and_create_pages_render(): void
     {
-        $this->get('/admin/hero-slides')->assertOk();
-        $this->get('/admin/hero-slides/create')->assertOk();
+        $this->get('/pap/hero-slides')->assertOk();
+        $this->get('/pap/hero-slides/create')->assertOk();
     }
 
     public function test_creating_a_slide_persists_translated_fields(): void

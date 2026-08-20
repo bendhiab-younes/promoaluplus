@@ -1,6 +1,6 @@
 # Deploying Promo Alu Plus on an OVHcloud VPS
 
-Target: a live, HTTPS-served public site at `https://promoaluplus.com` (or your domain) with a working `/admin` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
+Target: a live, HTTPS-served public site at `https://promoaluplus.com` (or your domain) with a working `/pap` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
 
 Written against the state of `main` at the time of writing: Laravel 12.60+, Filament 3.3.54, Vite/Tailwind 4.
 
@@ -104,7 +104,34 @@ There is nothing SQLite-specific in the code (the only raw SQL, in `StatsOvervie
 
 `database/seeders/DatabaseSeeder.php:20-23` creates `admin@promoaluplus.com` / `admin123`. **Change it before the site is reachable from the internet** — see §7.1.
 
-### 1.6 If you put Cloudflare in front
+### 1.6 The admin panel is at `/pap`, not `/admin` — ✅ done
+
+`AdminPanelProvider` sets `->path('pap')`, so a visitor idly trying `/admin` gets a 404
+instead of a login form. The panel *ID* deliberately stays `admin`: Filament builds route
+names from the ID, so they remain `filament.admin.*` and the three places that resolve
+them by name keep working.
+
+> **This is tidiness, not a security control.** Anyone who wants the panel will find it —
+> the login page is still reachable by anyone who types the right path. If you later want
+> a real barrier, do it in nginx rather than in Laravel:
+>
+> ```nginx
+> location ^~ /pap/ {
+>     allow <your.home.ip>;
+>     allow <your.office.ip>;
+>     deny all;
+>     try_files $uri $uri/ /index.php?$query_string;
+> }
+> ```
+>
+> That stops the request before PHP ever runs. The cost is that the path is then
+> hardcoded in a second place — rename it in one and you lock yourself out.
+
+`robots.txt` deliberately does **not** list the path. Adding `Disallow: /pap` would
+publish it to precisely the people you would rather not hand it to, and nothing on the
+public site links to the panel, so no crawler finds it anyway.
+
+### 1.7 If you put Cloudflare in front
 
 `bootstrap/app.php` configures no trusted proxies. Behind a proxy, Laravel sees the proxy's IP and may generate `http://` URLs. Add `$middleware->trustProxies(at: '*')` if you use Cloudflare or any CDN. Not needed for nginx talking directly to the internet.
 
@@ -344,7 +371,7 @@ try {
 } catch (\Exception $e) { \Log::error(...); }
 ```
 
-So **you can go live with no mail configured at all** and lose nothing: every request lands in the database and appears in `/admin` → Devis. What you lose is the notification — nobody tells you a request arrived, and the customer gets no confirmation. You would be relying on remembering to check the panel. Worth fixing, but it is not a launch gate.
+So **you can go live with no mail configured at all** and lose nothing: every request lands in the database and appears in `/pap` → Devis. What you lose is the notification — nobody tells you a request arrived, and the customer gets no confirmation. You would be relying on remembering to check the panel. Worth fixing, but it is not a launch gate.
 
 **You do not need a paid provider — you need an authenticated relay.** Sending straight from the VPS fails in practice: a new OVH IP has no sending reputation, no SPF and no DKIM, the admin notification goes to a Gmail address, and Gmail spam-folders or rejects unauthenticated mail from unknown IPs. You would also be running and securing Postfix for two emails a day, and some hosts throttle outbound port 25.
 
@@ -494,7 +521,7 @@ Both mailables implement `ShouldQueue` and `QuoteController:33-34` dispatches wi
 > forever. Set `MAIL_MAILER=log` in `.env` until you wire up a real sender: the worker
 > then "delivers" to `storage/logs/laravel.log` and the queue stays clean. Nothing is
 > lost either way — **the quote itself is saved to the database before the mail is ever
-> queued**, so it appears in `/admin` regardless of whether email works.
+> queued**, so it appears in `/pap` regardless of whether email works.
 
 `/etc/systemd/system/promoalu-worker.service`:
 
@@ -563,11 +590,11 @@ Work through this in a browser, not just curl:
 - [ ] The language switcher works for FR / EN / AR, and Arabic renders right-to-left
 - [ ] `/services` shows all 9 services with images
 - [ ] The footer service list is populated
-- [ ] `/contact` → submit a real quote request → it appears under `/admin` → Devis
+- [ ] `/contact` → submit a real quote request → it appears under `/pap` → Devis
 - [ ] *(only once mail is configured)* the same request delivers **both** emails — notification to you, confirmation to the customer. This is the queue-worker test; if the quote appears in the admin but no mail arrives, the worker is not running (§7). Skip this line if you launched without SMTP
-- [ ] `/admin` → log in → change a service title → confirm it changes on the public page
-- [ ] `/admin` → Contenu → Slides d'accueil → **upload an image** → confirm it appears on the homepage (this is the `public/uploads` permission test)
-- [ ] `/admin` → Devis → open one → download the PDF and the Excel export (this is the `gd` / `zip` test)
+- [ ] `/pap` → log in → change a service title → confirm it changes on the public page
+- [ ] `/pap` → Contenu → Slides d'accueil → **upload an image** → confirm it appears on the homepage (this is the `public/uploads` permission test)
+- [ ] `/pap` → Devis → open one → download the PDF and the Excel export (this is the `gd` / `zip` test)
 - [ ] `https://promoaluplus.com/.env` returns 404, not a file
 
 ---
@@ -677,6 +704,7 @@ tail -f /var/log/nginx/error.log
 | 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
 | 8 | Reproducible builds: PHP/Node pinned, dependency advisories cleared | ✅ **done** — see §13 |
 | 9 | Split into a deploy repo | ✅ **done** — `bendhiab-younes/promoaluplus` (private), 125 commits, 390 files verified identical; see §2 |
+| 10 | Move the panel off `/admin` to `/pap` | ✅ **done** — see §1.6; `/admin` now 404s, asserted by test |
 
 > **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
 > (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on

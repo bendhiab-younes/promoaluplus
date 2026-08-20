@@ -10,7 +10,7 @@ Laravel 12 + Filament 3 site for **Promo Alu Plus**, an aluminum joinery company
 
 ```bash
 composer run dev        # Run server + queue + pail logs + vite concurrently (primary dev loop)
-php artisan serve       # App only — http://127.0.0.1:8000, admin at /admin
+php artisan serve       # App only — http://127.0.0.1:8000, admin at /pap
 npm run dev             # Vite dev server (needed for asset changes to reflect)
 npm run build           # Production asset build — required once per checkout: the layout
                         # loads CSS via @vite, so pages 500 (missing manifest) until a
@@ -29,6 +29,10 @@ php artisan optimize:clear              # Clear all caches (config/route/view) �
 ```
 
 Admin login (from seeders): `admin@aluminiumcraft.tn` / `password`.
+
+The Filament panel is served at **`/pap`**, not `/admin`. Its panel *ID* is still
+`admin`, so every route name remains `filament.admin.*` — `AdminPanelProvider` explains
+why the two must not be made to match.
 
 ## Architecture
 
