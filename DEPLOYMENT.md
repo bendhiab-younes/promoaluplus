@@ -21,7 +21,7 @@ Written against the state of `main` at the time of writing: Laravel 12.60+, Fila
 | RAM | **4 GB** | 2 GB | MySQL alone wants ~512 MB–1 GB. `npm run build` (Vite) peaks around 1–1.5 GB and **will OOM-kill on a busy 2 GB box** |
 | Storage | **80 GB NVMe** | 40 GB | The app is small; this is headroom for uploads, MySQL, and backups |
 | Bandwidth | Whatever is included | — | A brochure site will not come close |
-| OS | **Debian 12** or **Ubuntu 24.04 LTS** | — | This guide uses Debian/Ubuntu package names |
+| OS | **Ubuntu 26.04 LTS** (chosen), Debian 12, or Ubuntu 24.04 | — | This guide uses Debian/Ubuntu package names. Note 26.04 defaults to PHP 8.5 — see §4.1 |
 | Datacenter | **Gravelines or Roubaix (France)** | — | Lowest latency to Tunisia of OVH's European regions, and the FR-TN storefront defaults there |
 
 ### Chosen: OVH **VPS-1** (2027 lineup)
@@ -46,11 +46,25 @@ This matches the two specs that matter — 2 vCores and 4 GB RAM, the latter bei
 
 > **"Sauvegarde automatisée 1 jour"** included with the VPS is a snapshot of the whole VM from yesterday. It is good for "I broke the server" and useless for "a client deleted an invoice last Tuesday." It does not replace the `mysqldump` cron in §10.
 
-### At order time
+### Purchased — the real coordinates
 
-- Choose **SSH key** authentication, not password
-- Note the IPv4 address — you point DNS at it
-- Pick a hostname you will recognise
+| | |
+|---|---|
+| Host | `vps-28cf29dc.vps.ovh.net` |
+| IPv4 | **`152.228.138.65`** |
+| IPv6 | `2001:41d0:404:200::8029` |
+| OS | **Ubuntu 26.04 LTS** ("Resolute Raccoon") |
+| Region | Strasbourg (SBG), `os-sbg6` |
+| Model | VPS-1 2027 — 2 vCores / 4 GB / 40 GB |
+| Domain | `promoaluplus.com` |
+| Renews | 25 August 2027, manual |
+
+Strasbourg rather than the Gravelines/Roubaix suggested above: the latency difference to
+Tunisia is single-digit milliseconds and irrelevant for a brochure site. No action needed.
+
+> **Ubuntu 26.04 changes one step.** It ships **PHP 8.5** as its default, and this app is
+> pinned to and tested on **8.4**. §4.1 installs 8.4 explicitly from the Sury repository —
+> do not `apt install php` and take what you get.
 
 ---
 
@@ -165,7 +179,17 @@ git push https://github.com/bendhiab-younes/promoaluplus.git laravel-only:main
 
 ## 3. First contact with the server
 
-SSH in as root using the key you registered at order time.
+```bash
+ssh ubuntu@152.228.138.65
+```
+
+OVH's Ubuntu images create a sudo-capable **`ubuntu`** user and disable direct root login,
+so try that first; if your order was configured for root access, `ssh root@152.228.138.65`
+works instead. From the `ubuntu` account, become root with `sudo -i` for the rest of §3
+and §4.
+
+If the key you registered at order time is not your default (`~/.ssh/id_ed25519`), point at
+it explicitly: `ssh -i ~/.ssh/<key> ubuntu@152.228.138.65`.
 
 ### 3.1 A non-root deploy user
 
@@ -211,17 +235,30 @@ timedatectl set-timezone Africa/Tunis
 
 ### 4.1 PHP 8.4 + extensions
 
-Debian 12 (via Sury):
+**Ubuntu 26.04 ships PHP 8.5 as its default `php` package. Do not use it.** The lockfile
+was resolved against `config.platform.php = 8.4.0` and the whole 213-test suite has only
+ever run on 8.4. Laravel 12's supported matrix is PHP 8.2–8.4; 8.5 is newer than the
+release this app was built and tested against. A first deploy is the wrong moment to also
+change PHP minor version — install 8.4 explicitly and revisit 8.5 later, deliberately,
+with the suite as the check.
+
+PHP 8.4 is not in Ubuntu 26.04's own repositories, so add Ondřej Surý's (the same
+repository Debian 12 and Ubuntu 24.04 need, for the opposite reason — they ship 8.3):
 
 ```bash
 apt install -y lsb-release ca-certificates curl gnupg
-curl -sSLo /tmp/debsury.gpg https://packages.sury.org/php/apt.gpg
-mv /tmp/debsury.gpg /etc/apt/trusted.gpg.d/
+curl -sSLo /tmp/php.gpg https://packages.sury.org/php/apt.gpg
+mv /tmp/php.gpg /etc/apt/trusted.gpg.d/
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 apt update
 ```
 
-Ubuntu 24.04 ships 8.3, not 8.4, so the Sury/ondrej repo is required there too.
+Confirm 8.4 is actually offered before installing — if Sury has not yet published for
+`resolute`, this prints nothing and the next command would silently pull 8.5:
+
+```bash
+apt-cache policy php8.4-fpm
+```
 
 ```bash
 apt install -y php8.4-fpm php8.4-cli php8.4-mysql php8.4-mbstring \
@@ -439,7 +476,23 @@ php artisan filament:assets
 > change except adding it to the `certbot -d` list and to `server_name`.
 
 
-At your registrar, point an **A record** for `promoaluplus.com` and `www` at the VPS IPv4. Wait for propagation (`dig +short promoaluplus.com`) before requesting a certificate — certbot fails otherwise.
+At your registrar, create these two records:
+
+| Type | Name | Value |
+|---|---|---|
+| A | `@` | `152.228.138.65` |
+| A | `www` | `152.228.138.65` |
+
+Optionally add `AAAA` records pointing at `2001:41d0:404:200::8029` for IPv6.
+
+**Do this first, before touching the server** — propagation is the only step here you
+cannot hurry, and it runs in the background while you work through §3–§5. Confirm before
+requesting a certificate, or certbot fails:
+
+```bash
+dig +short promoaluplus.com          # must print 152.228.138.65
+dig +short www.promoaluplus.com
+```
 
 ### 6.2 Server block
 
