@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Support\SafeHtml;
 use Database\Seeders\ServiceSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -119,5 +120,37 @@ class ServiceIconTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertStringContainsString('data-lucide="app-window"', $this->get(route('services'))->getContent());
+    }
+
+    /**
+     * The column was VARCHAR(255) and every real SVG overflows it. SQLite does not
+     * enforce VARCHAR length, so nothing here could ever have failed on it — asserting
+     * the declared *type* is the only guard that means the same thing on both engines.
+     * On MySQL 8, whose default sql_mode includes STRICT_TRANS_TABLES, the old column
+     * raised SQLSTATE[22001] and aborted the deploy's first db:seed.
+     */
+    public function test_the_svg_icon_column_is_wide_enough_for_a_real_icon(): void
+    {
+        $column = collect(Schema::getColumns('services'))->firstWhere('name', 'svg_icon');
+
+        $this->assertNotNull($column, 'services.svg_icon must exist.');
+        $this->assertStringContainsString(
+            'text',
+            strtolower((string) $column['type']),
+            'svg_icon must be TEXT. As VARCHAR(255) it truncates every real SVG on MySQL.'
+        );
+    }
+
+    public function test_every_default_icon_survives_a_round_trip_through_the_database(): void
+    {
+        foreach (Service::DEFAULT_SVG_ICON_BY_SLUG as $slug => $svg) {
+            $service = $this->service(['slug' => $slug, 'svg_icon' => $svg]);
+
+            $this->assertSame(
+                $svg,
+                $service->refresh()->svg_icon,
+                "The default icon for {$slug} came back changed — ".strlen($svg).' characters stored.'
+            );
+        }
     }
 }
