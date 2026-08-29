@@ -6,24 +6,38 @@ use App\Filament\Resources\InvoiceResource\Pages;
 use App\Models\Invoice;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Notifications\Notification;
 
 class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    
+
     protected static ?string $navigationGroup = 'Finances';
-    
+
     protected static ?string $modelLabel = 'Facture';
-    
+
     protected static ?string $pluralModelLabel = 'Factures';
 
     protected static ?int $navigationSort = 10;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Invoice::moduleEnabled();
+    }
+
+    /**
+     * Also closes the URLs: with the module off, /pap/invoices 403s instead of
+     * staying reachable to anyone who kept the link.
+     */
+    public static function canAccess(): bool
+    {
+        return Invoice::moduleEnabled();
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -90,7 +104,8 @@ class InvoiceResource extends Resource
                                             ->content(function ($get) {
                                                 $qty = floatval($get('quantity') ?? 0);
                                                 $price = floatval($get('unit_price') ?? 0);
-                                                return number_format($qty * $price, 2) . ' TND';
+
+                                                return number_format($qty * $price, 2).' TND';
                                             }),
                                     ])
                                     ->columns(7)
@@ -169,13 +184,13 @@ class InvoiceResource extends Resource
                                     ->live(onBlur: true),
                                 Forms\Components\Placeholder::make('calculated_subtotal')
                                     ->label('Sous-total HT')
-                                    ->content(fn ($record) => $record ? number_format($record->subtotal ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->subtotal ?? 0, 2).' TND' : '0.00 TND'),
                                 Forms\Components\Placeholder::make('calculated_tax')
                                     ->label('TVA')
-                                    ->content(fn ($record) => $record ? number_format($record->tax_amount ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->tax_amount ?? 0, 2).' TND' : '0.00 TND'),
                                 Forms\Components\Placeholder::make('calculated_total')
                                     ->label('Total TTC')
-                                    ->content(fn ($record) => $record ? number_format($record->total ?? 0, 2) . ' TND' : '0.00 TND'),
+                                    ->content(fn ($record) => $record ? number_format($record->total ?? 0, 2).' TND' : '0.00 TND'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

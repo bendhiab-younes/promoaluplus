@@ -51,6 +51,14 @@ class SiteSettings extends Page implements Forms\Contracts\HasForms
                                             ->helperText('Ajoutez d\'abord vos projets dans Contenu → Projets, puis activez cette option.')
                                             ->default(false),
                                     ]),
+                                Forms\Components\Section::make('Module Factures')
+                                    ->description('Affichez ou masquez la section Factures de l\'administration. Lorsqu\'elle est masquée, le menu Finances disparaît, les boutons « Facturer » d\'un devis ne s\'affichent plus et le PDF de facture n\'est plus téléchargeable. Aucune facture n\'est supprimée : tout revient en réactivant l\'option.')
+                                    ->schema([
+                                        Forms\Components\Toggle::make('invoices_enabled')
+                                            ->label('Activer la facturation')
+                                            ->helperText('Laissez désactivé tant que vous ne facturez que sur devis.')
+                                            ->default(false),
+                                    ]),
                             ]),
 
                         // === ENTREPRISE ===

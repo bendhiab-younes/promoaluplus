@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 
 class Invoice extends Model
 {
@@ -38,6 +39,21 @@ class Invoice extends Model
         'total' => 'decimal:2',
     ];
 
+    /**
+     * Facturation is an opt-in module. Until the workshop switches it on in
+     * Paramètres du site, the Factures resource, the "Facturer" actions on a
+     * devis and the invoice PDF route all stay hidden — existing invoices are
+     * left untouched and come back as soon as the toggle is flipped.
+     */
+    public static function moduleEnabled(): bool
+    {
+        if (! Schema::hasTable('site_settings')) {
+            return false;
+        }
+
+        return SiteSetting::enabled('invoices_enabled');
+    }
+
     public function quote(): BelongsTo
     {
         return $this->belongsTo(Quote::class);
@@ -55,8 +71,8 @@ class Invoice extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        $sequence = $lastInvoice ? (int)substr($lastInvoice->invoice_number, -4) + 1 : 1;
-        
+        $sequence = $lastInvoice ? (int) substr($lastInvoice->invoice_number, -4) + 1 : 1;
+
         return sprintf('FAC-%s-%04d', $year, $sequence);
     }
 
@@ -70,7 +86,7 @@ class Invoice extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'draft' => '📝 Brouillon',
             'sent' => '📤 Envoyée',
             'paid' => '✅ Payée',

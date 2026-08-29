@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\QuoteResource\Pages;
 
 use App\Filament\Resources\QuoteResource;
+use App\Models\Invoice;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -79,7 +80,7 @@ class ViewQuote extends ViewRecord
                 ->label('Créer la facture')
                 ->icon('heroicon-m-banknotes')
                 ->color('success')
-                ->visible(fn (): bool => $this->record->status === 'accepted' && ! $this->record->invoice()->exists())
+                ->visible(fn (): bool => Invoice::moduleEnabled() && $this->record->status === 'accepted' && ! $this->record->invoice()->exists())
                 ->requiresConfirmation()
                 ->modalDescription('Une facture reprenant les lignes et les totaux de ce devis sera créée.')
                 ->action(function (): void {

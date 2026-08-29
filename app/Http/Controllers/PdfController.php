@@ -20,6 +20,8 @@ class PdfController extends Controller
 
     public function invoice(Invoice $invoice)
     {
+        abort_unless(Invoice::moduleEnabled(), 404);
+
         $invoice->load('items');
 
         $pdf = Pdf::loadView('pdf.invoice', [

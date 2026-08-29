@@ -577,6 +577,9 @@ class PublicSiteFeatureTest extends TestCase
 
     public function test_authenticated_admin_can_download_an_invoice_pdf(): void
     {
+        // Facturation is off by default; the PDF route only opens with it on.
+        SiteSetting::set('invoices_enabled', '1');
+
         $quote = Quote::create($this->validQuotePayload(['status' => 'accepted']));
         $invoice = Invoice::create([
             'quote_id' => $quote->id,
@@ -653,6 +656,10 @@ class PublicSiteFeatureTest extends TestCase
     {
         config(['app.env' => 'local']);
         $this->actingAs(User::factory()->create());
+
+        // Facturation is an opt-in module hidden by default, so its index only
+        // renders with the toggle on — see InvoiceModuleToggleTest.
+        SiteSetting::set('invoices_enabled', '1');
 
         // categories is deliberately absent: its resource class is an empty
         // file and registers no routes — see report §F-05. project-types was
