@@ -31,11 +31,14 @@ class LatestQuotes extends BaseWidget
                     ->formatStateUsing(fn (Quote $record): string => $record->full_name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label('Téléphone'),
+                    ->label('Téléphone')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('project_types')
                     ->label('Type(s)')
                     ->badge()
                     ->color('gray')
+                    ->limitList(1)
+                    ->expandableLimitedList()
                     ->formatStateUsing(fn (string $state): string => Quote::projectTypeLabel($state, 'fr')),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Étape')
@@ -52,7 +55,9 @@ class LatestQuotes extends BaseWidget
                 Tables\Actions\Action::make('view')
                     ->label('Voir')
                     ->url(fn (Quote $record): string => QuoteResource::getUrl('view', ['record' => $record]))
-                    ->icon('heroicon-m-eye'),
+                    ->icon('heroicon-m-eye')
+                    ->iconButton()
+                    ->tooltip('Voir le détail'),
             ])
             ->paginated(false);
     }

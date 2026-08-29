@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuoteResource\Pages;
+use App\Models\Invoice;
 use App\Models\Quote;
 use App\Support\CanonicalServiceCatalog;
 use App\Support\DevisPricing;
@@ -344,26 +345,32 @@ class QuoteResource extends Resource
                                             ->label('Hauteur')
                                             ->numeric()
                                             ->step(0.01)
+                                            ->inputMode('decimal')
+                                            ->placeholder('0.00')
                                             ->suffix('m')
                                             ->live(onBlur: true)
                                             ->afterStateUpdated($recalculate)
-                                            ->columnSpan(2),
+                                            ->columnSpan(4),
                                         Forms\Components\TextInput::make('width')
                                             ->label('Largeur')
                                             ->numeric()
                                             ->step(0.01)
+                                            ->inputMode('decimal')
+                                            ->placeholder('0.00')
                                             ->suffix('m')
                                             ->live(onBlur: true)
                                             ->afterStateUpdated($recalculate)
-                                            ->columnSpan(2),
+                                            ->columnSpan(4),
                                         Forms\Components\TextInput::make('quantity')
                                             ->label('Quantité')
                                             ->numeric()
                                             ->default(1)
                                             ->minValue(0.01)
+                                            ->inputMode('decimal')
                                             ->required()
                                             ->live(onBlur: true)
-                                            ->columnSpan(2),
+                                            ->columnSpan(4),
+
                                         Forms\Components\Select::make('rate_label')
                                             ->label('Tarif menuiserie')
                                             ->options($rateOptions)
@@ -385,7 +392,8 @@ class QuoteResource extends Resource
                                                     ->tooltip('Recalculer depuis le tarif et les dimensions')
                                                     ->action($recalculate)
                                             )
-                                            ->columnSpan(4),
+                                            ->columnSpan(6),
+
                                         Forms\Components\Select::make('shutter_rate_label')
                                             ->label('Tarif volet')
                                             ->options($rateOptions)
@@ -396,14 +404,14 @@ class QuoteResource extends Resource
                                                     ? 0
                                                     : (DevisPricing::unitPrice($get('../../rates'), $state, $get('height'), $get('width')) ?? 0));
                                             })
-                                            ->columnSpan(4),
+                                            ->columnSpan(6),
                                         Forms\Components\TextInput::make('shutter_price')
                                             ->label('Prix volet / unité')
                                             ->numeric()
                                             ->default(0)
                                             ->suffix('dt')
                                             ->live(onBlur: true)
-                                            ->columnSpan(4),
+                                            ->columnSpan(6),
 
                                         Forms\Components\Placeholder::make('line_total')
                                             ->label('Total de la ligne')
@@ -558,7 +566,9 @@ class QuoteResource extends Resource
             'new' => 'Demande reçue — appelez le client, puis chiffrez le devis.',
             'contacted' => 'Client joint — ajoutez les lignes puis envoyez le devis.',
             'quoted' => 'Devis envoyé — en attente de la réponse du client.',
-            'accepted' => 'Accepté — vous pouvez créer la facture.',
+            'accepted' => Invoice::moduleEnabled()
+                ? 'Accepté — vous pouvez créer la facture.'
+                : 'Accepté — le devis est validé par le client.',
             'rejected' => 'Refusé — conservé pour l\'historique.',
             'completed' => 'Facturé — dossier clos.',
             default => '',
@@ -773,7 +783,7 @@ class QuoteResource extends Resource
                     ->copyable()
                     ->copyMessage('Numéro copié')
                     ->icon('heroicon-m-phone')
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('project_types')
                     ->label('Type(s)')
                     ->badge()
@@ -785,20 +795,22 @@ class QuoteResource extends Resource
                         'pergola' => 'primary',
                         default => 'gray',
                     })
+                    ->limitList(1)
+                    ->expandableLimitedList()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('items_count')
-                    ->label('Lignes')
-                    ->alignCenter()
-                    ->badge()
-                    ->color(fn (int $state): string => $state > 0 ? 'gray' : 'warning')
-                    ->formatStateUsing(fn (int $state): string => $state > 0 ? (string) $state : 'à chiffrer'),
+                // The line count rides under the amount instead of claiming a
+                // column of its own — "à chiffrer" is the same signal, and the
+                // Chiffrage filter still isolates the ones needing work.
                 Tables\Columns\TextColumn::make('total')
                     ->label('Net à payer')
                     ->money('TND')
                     ->sortable()
                     ->alignEnd()
                     ->weight(FontWeight::SemiBold)
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->description(fn (Quote $record): string => $record->items_count > 0
+                        ? $record->items_count.' ligne'.($record->items_count > 1 ? 's' : '')
+                        : 'à chiffrer'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Étape')
                     ->badge()
@@ -807,9 +819,10 @@ class QuoteResource extends Resource
                     ->color(fn (string $state): string => static::statusColor($state)),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Reçue le')
-                    ->dateTime('d/m/Y')
-                    ->description(fn (Quote $record): string => $record->created_at?->diffForHumans() ?? '')
-                    ->sortable(),
+                    ->date('d/m/Y')
+                    ->tooltip(fn (Quote $record): string => $record->created_at?->diffForHumans() ?? '')
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -860,14 +873,16 @@ class QuoteResource extends Resource
                     ->label('Chiffrer')
                     ->icon('heroicon-m-calculator')
                     ->color('primary')
-                    ->button()
+                    ->iconButton()
+                    ->tooltip('Chiffrer le devis')
                     ->visible(fn (Quote $record): bool => in_array($record->status, ['new', 'contacted'], true) && $record->items_count === 0)
                     ->url(fn (Quote $record): string => static::getUrl('edit', ['record' => $record])),
                 Tables\Actions\Action::make('send_quote')
                     ->label('Envoyer')
                     ->icon('heroicon-m-paper-airplane')
                     ->color('primary')
-                    ->button()
+                    ->iconButton()
+                    ->tooltip('Marquer comme envoyé')
                     ->visible(fn (Quote $record): bool => in_array($record->status, ['new', 'contacted'], true) && $record->items_count > 0)
                     ->requiresConfirmation()
                     ->modalHeading('Marquer le devis comme envoyé')
@@ -885,7 +900,8 @@ class QuoteResource extends Resource
                     ->label('Accepté')
                     ->icon('heroicon-m-check-circle')
                     ->color('success')
-                    ->button()
+                    ->iconButton()
+                    ->tooltip('Le client a accepté')
                     ->visible(fn (Quote $record): bool => $record->status === 'quoted')
                     ->requiresConfirmation()
                     ->modalHeading('Le client a accepté le devis')
@@ -897,8 +913,9 @@ class QuoteResource extends Resource
                     ->label('Facturer')
                     ->icon('heroicon-m-banknotes')
                     ->color('success')
-                    ->button()
-                    ->visible(fn (Quote $record): bool => $record->status === 'accepted' && ! $record->invoice_exists)
+                    ->iconButton()
+                    ->tooltip('Créer la facture')
+                    ->visible(fn (Quote $record): bool => Invoice::moduleEnabled() && $record->status === 'accepted' && ! $record->invoice_exists)
                     ->requiresConfirmation()
                     ->modalHeading('Créer une facture')
                     ->modalDescription('Une facture reprenant les lignes et les totaux de ce devis sera créée.')
