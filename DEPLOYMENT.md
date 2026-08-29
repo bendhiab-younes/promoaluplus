@@ -1,35 +1,47 @@
 # Deploying Promo Alu Plus on an OVHcloud VPS
 
-Target: a live, HTTPS-served public site at `https://promoaluplus.com` (or your domain) with a working `/pap` panel, quote emails actually sending, and a one-command way to ship changes afterwards.
+Target: a live, HTTPS-served public site at `https://promoaluplus.com` with a working
+`/pap` admin panel and a one-command way to ship changes afterwards.
 
-Written against the state of `main` at the time of writing: Laravel 12.60+, Filament 3.3.54, Vite/Tailwind 4.
+**Status as of 2026-08-29.** The application side is finished — every change this guide
+once asked for has been made, tested and pushed. The server has been bought and the domain
+registered. What remains is provisioning the box, and that work has been handed to an
+external engineer who has access to the OVH account and the deploy repository. Sections 3
+through 8 are addressed to whoever does that work; sections 9 through 13 are for whoever
+maintains the site afterwards.
 
-> **PHP 8.4 is required, not 8.3.** The locked dependencies (`symfony/string`,
-> `symfony/translation`, `symfony/clock`) declare `php >=8.4`, so
-> `composer install` fails outright on 8.3. `composer.json` pins
-> `config.platform.php` to 8.4.0 so this cannot drift silently again.
+Written against `main`: Laravel 12.66, Filament 3.3.54, Livewire 3.8.4, Vite/Tailwind 4.
+The suite is **213 tests**, green on PHP 8.4.
+
+> **PHP 8.4 exactly — not 8.3, not 8.5.** Below 8.4, `composer install` fails outright:
+> `symfony/string`, `symfony/translation` and `symfony/clock` all declare `php >=8.4`.
+> Above it, you are on a PHP this application has never been tested against — and Ubuntu
+> 26.04 makes that the *default*, so it is the likelier mistake here. `composer.json`
+> pins `config.platform.php` to 8.4.0. See §4.1.
 
 ---
 
-## 0. Buying the VPS
+## 0. The server
 
-### Recommended specs
+| | |
+|---|---|
+| Host | `vps-28cf29dc.vps.ovh.net` |
+| IPv4 | **`152.228.138.65`** |
+| IPv6 | `2001:41d0:404:200::8029` |
+| OS | **Ubuntu 26.04 LTS** ("Resolute Raccoon") |
+| Region | Strasbourg (SBG), `os-sbg6` |
+| Model | OVH VPS-1 2027 — 2 vCores / 4 GB / 40 GB NVMe |
+| Domain | `promoaluplus.com` |
+| Backup | OVH "Automated backup — Standard" |
+| Renews | 25 August 2027, manual renewal |
 
-| Resource | Recommended | Minimum | Why |
-|---|---|---|---|
-| vCores | **2** | 1 | PHP-FPM + MySQL + a queue worker + nginx. One core survives, two stops you thinking about it |
-| RAM | **4 GB** | 2 GB | MySQL alone wants ~512 MB–1 GB. `npm run build` (Vite) peaks around 1–1.5 GB and **will OOM-kill on a busy 2 GB box** |
-| Storage | **80 GB NVMe** | 40 GB | The app is small; this is headroom for uploads, MySQL, and backups |
-| Bandwidth | Whatever is included | — | A brochure site will not come close |
-| OS | **Ubuntu 26.04 LTS** (chosen), Debian 12, or Ubuntu 24.04 | — | This guide uses Debian/Ubuntu package names. Note 26.04 defaults to PHP 8.5 — see §4.1 |
-| Datacenter | **Gravelines or Roubaix (France)** | — | Lowest latency to Tunisia of OVH's European regions, and the FR-TN storefront defaults there |
+### Does it fit?
 
-### Chosen: OVH **VPS-1** (2027 lineup)
+Comfortably. The two specs that decide this are RAM and cores: `npm run build` peaks around
+1–1.5 GB and would be OOM-killed on a busy 2 GB box, and PHP-FPM, MySQL, nginx and the queue
+worker share the two cores without contention at brochure-site traffic.
 
-> 2 vCores · 4 GB RAM · 40 GB SSD NVMe · trafic illimité · 500 Mbit/s
-> ~12,92 DT HT / ~15,38 DT TTC per month
-
-This matches the two specs that matter — 2 vCores and 4 GB RAM, the latter being what decides whether `npm run build` survives on the server. The 40 GB disk is below the 80 GB suggested above, but that was headroom rather than a requirement. Measured against the actual project:
+Disk, measured against the actual project:
 
 | Item | Size |
 |---|---|
@@ -40,94 +52,83 @@ This matches the two specs that matter — 2 vCores and 4 GB RAM, the latter bei
 | `public/uploads` (all admin uploads today) | 8.7 MB |
 | Database | 352 KB |
 
-≈ **9 GB used, 31 GB free.** Uploads would have to grow roughly 100× before storage became the constraint. The only consequence is backup retention — see the note in §10.
+≈ **9 GB used, 31 GB free.** Uploads would have to grow roughly 100× before storage became
+the constraint. The only practical consequence is how many `mysqldump` archives you keep —
+see §10.
 
-**VPS-2** (4 vCores / 8 GB / 75 GB, ~2× the price) is not needed. It would only make sense if this box later also ran Redis, Meilisearch, or a second application; for one Laravel site plus a queue worker, the extra 4 GB sits idle.
+> **The included "Sauvegarde automatisée" is not a backup strategy.** It snapshots the whole
+> VM from yesterday. That is good for "I broke the server" and useless for "a client deleted
+> an invoice last Tuesday." It does not replace the `mysqldump` cron in §10.
 
-> **"Sauvegarde automatisée 1 jour"** included with the VPS is a snapshot of the whole VM from yesterday. It is good for "I broke the server" and useless for "a client deleted an invoice last Tuesday." It does not replace the `mysqldump` cron in §10.
-
-### Purchased — the real coordinates
-
-| | |
-|---|---|
-| Host | `vps-28cf29dc.vps.ovh.net` |
-| IPv4 | **`152.228.138.65`** |
-| IPv6 | `2001:41d0:404:200::8029` |
-| OS | **Ubuntu 26.04 LTS** ("Resolute Raccoon") |
-| Region | Strasbourg (SBG), `os-sbg6` |
-| Model | VPS-1 2027 — 2 vCores / 4 GB / 40 GB |
-| Domain | `promoaluplus.com` |
-| Renews | 25 August 2027, manual |
-
-Strasbourg rather than the Gravelines/Roubaix suggested above: the latency difference to
-Tunisia is single-digit milliseconds and irrelevant for a brochure site. No action needed.
-
-> **Ubuntu 26.04 changes one step.** It ships **PHP 8.5** as its default, and this app is
-> pinned to and tested on **8.4**. §4.1 installs 8.4 explicitly from the Sury repository —
-> do not `apt install php` and take what you get.
+> **Ubuntu 26.04 changes exactly one step.** It ships **PHP 8.5** as its default. §4.1
+> installs 8.4 explicitly from the Sury repository — do not `apt install php` and take what
+> you get.
 
 ---
 
-## 1. Project changes required BEFORE you deploy
+## Status board
 
-These are changes to the codebase, not the server. **Do them first** — several are silent failures, not crashes.
+| # | Change | Status |
+|---|---|---|
+| 1 | Move `content_docs/json/*` into the repo, fix 4 seeder paths | ✅ **done** — now `database/seeders/content/`; verified by a fresh `migrate:fresh --seed` |
+| 2 | `APP_LOCALE=fr` / `APP_FALLBACK_LOCALE=fr` | ✅ **done** — defaults in `.env.example`; still set them in the production `.env` |
+| 3 | `config/app.php` → `env('APP_TIMEZONE', 'UTC')`, set `Africa/Tunis` | ✅ **done** |
+| 4 | MySQL block in `.env` / `.env.example` | ⚠️ config **done** (commented block + warning in `.env.example`); **the suite has not been run against a real MySQL server** — see note below |
+| 5 | Change the seeded admin password | ⏳ **owed** — post-deploy, §7.1 |
+| 6 | `trustProxies` if Cloudflare goes in front | conditional — only if it does |
+| 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
+| 8 | Reproducible builds: PHP/Node pinned, dependency advisories cleared | ✅ **done** — see §13 |
+| 9 | Split into a deploy repo | ✅ **done** — `bendhiab-younes/promoaluplus` (private), 125 commits, 390 files verified identical; see §2 |
+| 10 | Move the panel off `/admin` to `/pap` | ✅ **done** — `/admin` now 404s, asserted by test |
+| 11 | Stop tracking Filament's generated panel assets | ✅ **done** — composer regenerates them on every install; the committed copies were 8 months stale |
+| 12 | Buy the VPS and register the domain | ✅ **done** — see §0 |
+| 13 | Provision the server (§3–§8) | ⏳ **in progress** — handed to an external engineer |
 
-### 1.1 Blocker: four seeders read files outside the repo — ✅ fixed
+> **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
+> (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
+> MySQL in Laravel 11+, and JSON columns are supported on both. That is a
+> reading of the code, not a test result. The 213-test suite still runs on
+> SQLite. Before launch, run it once against a real MySQL database — most
+> cheaply on the VPS itself after §4.2, with
+> `DB_CONNECTION=mysql php artisan test`.
 
-Kept here because it is the defect that would have made the deploy repo seed an
-empty site in silence. As originally found, four seeders read this:
+---
 
-```
-database/seeders/ServiceSeeder.php:15       base_path('../content_docs/json/services.json')
-database/seeders/FaqSeeder.php:16           base_path('../content_docs/json/questions_frequentes.json')
-database/seeders/SiteSettingsSeeder.php:20  base_path('../content_docs/json/notre_histoire.json')
-database/seeders/SiteSettingsSeeder.php:21  base_path('../content_docs/json/service_tunisiens_etranger.json')
-```
+## 1. The application side — done
 
-`readJson()` returns `[]` when a file is missing, so **seeding will succeed while doing nothing** — you get an empty site with no error.
+Where the board says "done", here is what was actually wrong. It is worth reading once:
+most of these were **silent failures** — the kind that deploy cleanly and then misbehave
+with no error anywhere — and recognising the shape of one is what stops it coming back.
 
-**Fixed:** the JSON now lives at `database/seeders/content/` inside the repo and the four
-paths use `database_path()`. `SiteCoherenceTest` asserts every seeder source is in-repo and
-actually read, so this cannot silently regress.
+| # | Was | Now |
+|---|---|---|
+| 1.1 | Four seeders read JSON from **outside** the repo. `readJson()` returns `[]` on a missing file, so a split-off repo would seed **successfully and empty** — a site with zero services and no error anywhere. | Sources live at `database/seeders/content/` and are read with `database_path()`. `SiteCoherenceTest` asserts every seeder source is in-repo and actually read, so it cannot regress. |
+| 1.2 | `APP_LOCALE=en` meant a first-time visitor got **English UI chrome over French content** — `SetLocale` only overrides once someone picks a language. | `.env.example` ships `APP_LOCALE=fr` / `APP_FALLBACK_LOCALE=fr`. The production `.env` must set them too — §5.2. |
+| 1.3 | `config/app.php` hardcoded `'timezone' => 'UTC'`. Tunisia is UTC+1, so a devis created at 00:30 was **dated the previous day** on its PDF. | Reads `env('APP_TIMEZONE', 'UTC')`; `.env.example` sets `Africa/Tunis`. |
+| 1.4 | SQLite in production would deadlock: sessions, cache **and** the queue all run on the database, and SQLite allows one writer — a worker polling while a visitor writes a session gives `SQLSTATE[HY000]: database is locked`. | MySQL block and a warning in `.env.example`. Nothing in the code is SQLite-specific; the only raw SQL (`StatsOverview.php:21-23`) is portable ANSI. |
+| 1.6 | The admin panel answered at `/admin`, so a visitor guessing at the address bar met a login form. | Panel is at **`/pap`**; `/admin` 404s. See below. |
+| 12 | Four security holes — upload RCE, stored XSS twice, JSON-LD breakout. | Fixed and regression-tested. §12. |
 
-### 1.2 A first-time visitor sees the site in English
+### Still depends on the deploy
 
-`config/app.php:81` reads `env('APP_LOCALE', 'en')` and `.env.example` sets `APP_LOCALE=en`. `SetLocale` middleware only overrides it once a visitor picks a language:
+- **The production `.env`** — §5.2 lists every value that must be set.
+- **The seeded admin password.** `database/seeders/DatabaseSeeder.php` creates
+  `admin@promoaluplus.com` / `admin123`. That is in git history, so it must be changed
+  before the URL is announced — §7.1.
+- **`trustProxies`, only if Cloudflare or a CDN goes in front.** `bootstrap/app.php`
+  configures no trusted proxies; behind one, Laravel sees the proxy's IP and can generate
+  `http://` URLs. Add `$middleware->trustProxies(at: '*')` in that case. Not needed for
+  nginx facing the internet directly.
 
-```php
-$locale = session('locale', config('app.locale'));
-```
+### On the panel living at `/pap`
 
-So the first page view renders **English UI chrome**, while all database content (`getTranslatedTitle()` and friends) falls back to **French**. A mixed-language homepage for a Tunisian company.
+`AdminPanelProvider` sets `->path('pap')`. The panel *ID* deliberately stays `admin`,
+because Filament builds route names from the ID — they remain `filament.admin.*`, and
+three places resolve them by name. Renaming the ID to match the path is the obvious-looking
+tidy-up that breaks all three silently.
 
-**Fix:** in the production `.env`, set `APP_LOCALE=fr` and `APP_FALLBACK_LOCALE=fr`.
-
-### 1.3 Timezone is hardcoded to UTC
-
-`config/app.php:68` is `'timezone' => 'UTC'` — hardcoded, not env-driven. Tunisia is UTC+1, so a devis created at 00:30 local time is dated the **previous day** on the PDF.
-
-**Fix:** change that line to `'timezone' => env('APP_TIMEZONE', 'UTC')` and set `APP_TIMEZONE=Africa/Tunis` in `.env`.
-
-### 1.4 Switch to MySQL
-
-SQLite is not suitable here because `.env` runs **sessions, cache and the queue** on the database. SQLite allows one writer at a time; a queue worker polling while a visitor writes a session row produces `SQLSTATE[HY000]: database is locked`.
-
-There is nothing SQLite-specific in the code (the only raw SQL, in `StatsOverview.php:21-23`, is portable ANSI), so the switch is just configuration on a fresh database.
-
-### 1.5 Change the default admin password
-
-`database/seeders/DatabaseSeeder.php:20-23` creates `admin@promoaluplus.com` / `admin123`. **Change it before the site is reachable from the internet** — see §7.1.
-
-### 1.6 The admin panel is at `/pap`, not `/admin` — ✅ done
-
-`AdminPanelProvider` sets `->path('pap')`, so a visitor idly trying `/admin` gets a 404
-instead of a login form. The panel *ID* deliberately stays `admin`: Filament builds route
-names from the ID, so they remain `filament.admin.*` and the three places that resolve
-them by name keep working.
-
-> **This is tidiness, not a security control.** Anyone who wants the panel will find it —
-> the login page is still reachable by anyone who types the right path. If you later want
-> a real barrier, do it in nginx rather than in Laravel:
+> **This is tidiness, not a security control.** The login page is still reachable by anyone
+> who types the right path. If a real barrier is wanted, it belongs in nginx, not Laravel:
 >
 > ```nginx
 > location ^~ /pap/ {
@@ -138,16 +139,12 @@ them by name keep working.
 > }
 > ```
 >
-> That stops the request before PHP ever runs. The cost is that the path is then
-> hardcoded in a second place — rename it in one and you lock yourself out.
+> That stops the request before PHP runs. The cost is that the path is then hardcoded in a
+> second place — rename it in one and you lock yourself out.
 
-`robots.txt` deliberately does **not** list the path. Adding `Disallow: /pap` would
-publish it to precisely the people you would rather not hand it to, and nothing on the
-public site links to the panel, so no crawler finds it anyway.
-
-### 1.7 If you put Cloudflare in front
-
-`bootstrap/app.php` configures no trusted proxies. Behind a proxy, Laravel sees the proxy's IP and may generate `http://` URLs. Add `$middleware->trustProxies(at: '*')` if you use Cloudflare or any CDN. Not needed for nginx talking directly to the internet.
+`robots.txt` deliberately does **not** list the path. `Disallow: /pap` would publish it to
+exactly the people you would rather not hand it to, and nothing on the public site links to
+the panel, so no crawler finds it anyway.
 
 ---
 
@@ -171,9 +168,9 @@ git push https://github.com/bendhiab-younes/promoaluplus.git laravel-only:main
 ```
 
 > **The split rewrote commit SHAs.** The two repos share no common ancestor and can never
-> be merged or rebased into each other. Pick one as the working copy — see §13.1 — and
-> keep the monorepo untouched until the first VPS deploy is verified, since it is the
-> only rollback.
+> be merged or rebased into each other. `promoaluplus` is now the working copy — §13.1 —
+> and the monorepo is kept untouched until the first VPS deploy is verified, since it is
+> the only rollback.
 
 ---
 
@@ -382,18 +379,17 @@ SESSION_DRIVER=database
 CACHE_STORE=database
 QUEUE_CONNECTION=database
 
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_SCHEME=tls
-MAIL_USERNAME=promoaluplus@gmail.com
-MAIL_PASSWORD=<16-character Gmail App Password>
-MAIL_FROM_ADDRESS="promoaluplus@gmail.com"
-MAIL_FROM_NAME="PromoAlu+"
+MAIL_MAILER=log
 MAIL_ADMIN_ADDRESS=promoaluplus@gmail.com
 ```
 
 > **`APP_DEBUG=false` is not optional.** With it on, any error page prints your database password to the visitor.
+
+> **`MAIL_MAILER=log` is the intended launch state**, not an oversight — SMTP has been
+> deliberately deferred and no credentials exist yet. Mail "delivers" to
+> `storage/logs/laravel.log`, which keeps the queue draining. Read the next subsection
+> before deciding this is a problem; it is not a launch gate. When a real sender is wanted,
+> the SMTP block is at the end of that subsection.
 
 #### Email: what it does and does not block
 
@@ -420,7 +416,22 @@ Ranked by effort:
 | **OVH email hosting** | often bundled with the domain | Mail from `contact@promoaluplus.com`, SPF/DKIM pre-wired |
 | **Brevo free tier** | free, 300/day | Mail from your domain; requires adding DNS records |
 
-Start with Gmail. Move to a domain sender when the domain exists and you care that customers see `@promoaluplus.com`.
+Start with Gmail; move to a domain sender when you care that customers see
+`@promoaluplus.com`. The block to paste in when that day comes:
+
+```dotenv
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_SCHEME=tls
+MAIL_USERNAME=promoaluplus@gmail.com
+MAIL_PASSWORD=<16-character Gmail App Password>
+MAIL_FROM_ADDRESS="promoaluplus@gmail.com"
+MAIL_FROM_NAME="PromoAlu+"
+MAIL_ADMIN_ADDRESS=promoaluplus@gmail.com
+```
+
+Then `php artisan optimize` — with the config cached, editing `.env` alone changes nothing.
 
 ### 5.3 Install and build
 
@@ -469,14 +480,12 @@ php artisan filament:assets
 
 ### 6.1 DNS first
 
-> **Domain: `.com`, decided.** `.tn` goes through ATI-accredited registrars and
-> generally wants company documents (registre de commerce / patente), which can
-> take days. `.com` registers in minutes and unblocks HTTPS immediately. You can
-> add the `.tn` later and point it at the same VPS — nothing in this guide has to
-> change except adding it to the `certbot -d` list and to `server_name`.
+`promoaluplus.com` is **registered**. A `.tn` was considered and deferred: it goes through
+ATI-accredited registrars and generally wants company documents, which takes days. One can
+be added later and pointed at the same VPS — nothing here changes except adding it to the
+`certbot -d` list and to `server_name`.
 
-
-At your registrar, create these two records:
+At the registrar, create these two records:
 
 | Type | Name | Value |
 |---|---|---|
@@ -565,7 +574,7 @@ Certbot rewrites the server block for TLS and installs a renewal timer. Confirm 
 
 ---
 
-## 7. The queue worker — without this, no emails are sent
+## 7. The queue worker — required even with mail deferred
 
 Both mailables implement `ShouldQueue` and `QuoteController:33-34` dispatches with `->queue()`, on `QUEUE_CONNECTION=database`. **With no worker running, every quote request queues a job that is never processed.** The customer gets no confirmation and you get no notification, with no error anywhere.
 
@@ -744,31 +753,6 @@ tail -f /var/log/nginx/error.log
 
 ---
 
-## Summary of what must change in the project
-
-| # | Change | Status |
-|---|---|---|
-| 1 | Move `content_docs/json/*` into the repo, fix 4 seeder paths | ✅ **done** — now `database/seeders/content/`; verified by a fresh `migrate:fresh --seed` |
-| 2 | `APP_LOCALE=fr` / `APP_FALLBACK_LOCALE=fr` | ✅ **done** — defaults in `.env.example`; still set them in the production `.env` |
-| 3 | `config/app.php` → `env('APP_TIMEZONE', 'UTC')`, set `Africa/Tunis` | ✅ **done** |
-| 4 | MySQL block in `.env` / `.env.example` | ⚠️ config **done** (commented block + warning in `.env.example`); **the suite has not been run against a real MySQL server** — see note below |
-| 5 | Change the seeded admin password | post-deploy (§7.1) |
-| 6 | `trustProxies` if you add Cloudflare | only if needed |
-| 7 | Security audit fixes (upload RCE, stored XSS, JSON-LD breakout) | ✅ **done** — see §12 |
-| 8 | Reproducible builds: PHP/Node pinned, dependency advisories cleared | ✅ **done** — see §13 |
-| 9 | Split into a deploy repo | ✅ **done** — `bendhiab-younes/promoaluplus` (private), 125 commits, 390 files verified identical; see §2 |
-| 10 | Move the panel off `/admin` to `/pap` | ✅ **done** — see §1.6; `/admin` now 404s, asserted by test |
-
-> **On row 4:** nothing in the codebase is SQLite-specific — the only raw SQL
-> (`StatsOverview.php:21-23`) is portable ANSI, `->change()` works natively on
-> MySQL in Laravel 11+, and JSON columns are supported on both. That is a
-> reading of the code, not a test result. The 213-test suite still runs on
-> SQLite. Before launch, run it once against a real MySQL database — most
-> cheaply on the VPS itself after §4.2, with
-> `DB_CONNECTION=mysql php artisan test`.
-
----
-
 ## 12. Security fixes applied before launch
 
 A pre-deployment audit of the whole application found four issues. All are
@@ -825,33 +809,26 @@ Set up once: generate a key on the VPS (`ssh-keygen -t ed25519`) and add the
 public half to the repo's **Settings → Deploy keys** as read-only. That is what
 lets a private repo be pulled without a password. Full steps in §5.1.
 
-### 13.1 Which repo do you work in from now on?
+### 13.1 Where the work happens now — settled
 
-The split (§2) rewrote every commit SHA, so `Alu-workshop` and `promoaluplus`
-have no shared ancestor — git will refuse to merge or rebase between them. That
-makes this a decision, not a detail:
+**`promoaluplus` is the working copy.** It is cloned locally, dependencies installed, suite
+green. `git push` behaves normally; there is no extra publish step.
 
-**Recommended — make `promoaluplus` the working copy.** Clone it fresh and work
-there. `git push` then behaves normally forever, and the local layout matches
-the VPS exactly. One-time cost: copy over the untracked things git does not
-carry — `.env`, `database/database.sqlite`, `public/uploads/`, then run
-`composer install && npm ci && npm run build`.
+The old `Alu-workshop` monorepo is kept **only as a rollback** until the first deploy is
+verified end to end. Do not make changes there.
 
-**Alternative — keep working in the monorepo.** Then every release needs an
-extra step to publish the app:
-
-```bash
-git subtree push --prefix=alu-workshop-laravel \
-    https://github.com/bendhiab-younes/promoaluplus.git main
-```
-
-That re-derives the split each time (slow — it walks every commit — but correct,
-and it fast-forwards the deploy repo cleanly; this is how the §2 doc update was
-published). Use `subtree push` directly; you do not need a `laravel-only`
-branch, and keeping a stale one around only invites pushing it by mistake.
-
-Either way, **keep the monorepo until the first deploy is verified end to end.**
-It is the only rollback.
+> **The two repos can never be merged.** The split (§2) rewrote every commit SHA, so they
+> share no common ancestor and git refuses to rebase or merge between them. If something is
+> committed to the monorepo by mistake, republish it rather than attempting a merge:
+>
+> ```bash
+> git subtree push --prefix=alu-workshop-laravel \
+>     https://github.com/bendhiab-younes/promoaluplus.git main
+> ```
+>
+> That re-derives the split — slow, since it walks every commit, but correct, and it
+> fast-forwards the deploy repo cleanly. No `laravel-only` branch is needed; keeping a
+> stale one around only invites pushing it by mistake.
 
 ### What makes the build come out the same every time
 
