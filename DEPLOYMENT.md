@@ -230,6 +230,20 @@ timedatectl set-timezone Africa/Tunis
 
 ## 4. Install the stack
 
+### 4.0 What the server needs — and what it does not
+
+| Component | | Notes |
+|---|---|---|
+| **PHP 8.4 + FPM** | required | 8.4 exactly. See §4.1 — this is the one item most likely to go wrong on Ubuntu 26.04. |
+| **MySQL 8.0+** | required | Not Postgres. §4.2. |
+| **nginx** | required | Use the hardened server block in §6.2, not a stock one — it carries the rule that stops anything under `/uploads/` executing. |
+| **Node 22 + npm** | required | Build-time only; not needed at runtime. But genuinely required: without `npm run build` every page returns 500. |
+| **Composer 2** | required | `composer install --no-dev`. Never `composer update` on the server. |
+| **certbot** | required | Let's Encrypt via the nginx plugin. §6.3. |
+| **Redis** | **not needed** | Cache, sessions and the queue all run on the `database` driver. Nothing in the codebase touches Redis, and neither `predis/predis` nor `ext-redis` is a dependency. The `REDIS_*` keys in `.env.example` are Laravel's stock defaults and are never read. |
+| **Memcached · SQS · S3** | **not needed** | Also stock config keys that are never read. Uploads go to local disk, not object storage. |
+| **Supervisor** | optional | The queue worker is specified as a systemd unit in §7. Supervisor is fine instead — the requirement is that a worker runs, not which supervisor runs it. |
+
 ### 4.1 PHP 8.4 + extensions
 
 **Ubuntu 26.04 ships PHP 8.5 as its default `php` package. Do not use it.** The lockfile
@@ -273,6 +287,11 @@ apt install -y php8.4-fpm php8.4-cli php8.4-mysql php8.4-mbstring \
 | `intl` | Filament, number/date formatting |
 | `mysql` | the database |
 | `bcmath` | monetary arithmetic on quote and invoice totals |
+
+`ctype`, `fileinfo`, `filter`, `hash`, `iconv`, `json`, `openssl`, `pcre`, `session`,
+`tokenizer` and `zlib` are required too — the production dependency graph declares all of
+them — but they ship inside `php8.4-cli` / `php8.4-common`, so they need no separate
+package and are easy to mistake for missing when auditing the list above.
 
 Tune `/etc/php/8.4/fpm/php.ini`:
 
