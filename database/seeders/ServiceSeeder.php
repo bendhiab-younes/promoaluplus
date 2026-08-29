@@ -30,7 +30,7 @@ class ServiceSeeder extends Seeder
             $descriptions = $this->buildLocalizedStrings($source, 'description');
             $gallery = $this->buildGallery($source);
 
-            Service::updateOrCreate(
+            $service = Service::updateOrCreate(
                 ['slug' => $slug],
                 [
                     'title' => $this->buildLocalizedStrings($source, 'title'),
@@ -45,6 +45,14 @@ class ServiceSeeder extends Seeder
                     'sort_order' => $sortOrder++,
                 ]
             );
+
+            // Deliberately outside the updateOrCreate payload: the fields above are
+            // re-applied on every reseed, but a custom SVG is something an admin
+            // pastes by hand, and stomping it would be unrecoverable. This fills the
+            // field only while it is still empty.
+            if (blank($service->svg_icon) && isset(Service::DEFAULT_SVG_ICON_BY_SLUG[$slug])) {
+                $service->forceFill(['svg_icon' => Service::DEFAULT_SVG_ICON_BY_SLUG[$slug]])->save();
+            }
         }
     }
 

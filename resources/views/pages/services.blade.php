@@ -216,7 +216,7 @@
                             <div class="absolute inset-0 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600"></div>
                             <div class="relative z-10 flex h-full w-full items-center justify-center" aria-hidden="true">
                                 @if($service->svg_icon)
-                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
+                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon, 'w-20 h-20 text-white/70') !!}
                                 @elseif($serviceIcon)
                                     <i data-lucide="{{ $serviceIcon }}" class="w-20 h-20 text-white/70"></i>
                                 @endif
@@ -268,7 +268,7 @@
                     <div class="inline-flex items-center gap-4 mb-6">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
                             @if($service->svg_icon)
-                                {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
+                                {!! \App\Support\SafeHtml::svgIcon($service->svg_icon, 'w-8 h-8 md:w-10 md:h-10 text-white') !!}
                             @elseif($serviceIcon)
                                 <i data-lucide="{{ $serviceIcon }}" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                             @else

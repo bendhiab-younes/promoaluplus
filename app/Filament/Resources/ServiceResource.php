@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use App\Support\MediaPath;
+use App\Support\SafeHtml;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
@@ -12,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ServiceResource extends Resource
@@ -67,7 +69,7 @@ class ServiceResource extends Resource
                                         Forms\Components\TextInput::make('icon')
                                             ->label('Nom d\'icône Lucide')
                                             ->placeholder('home, door-open, building')
-                                            ->helperText('Nom de l\'icône Lucide (lucide.dev)')
+                                            ->helperText('Nom de l\'icône Lucide (lucide.dev). Ignoré si un code SVG est renseigné ci-dessous.')
                                             ->columnSpan(1),
                                         Forms\Components\TextInput::make('sort_order')
                                             ->label('Ordre d\'affichage')
@@ -77,14 +79,40 @@ class ServiceResource extends Resource
                                     ])->columns(4),
 
                                 Forms\Components\Section::make('Icône SVG personnalisée')
-                                    ->description('SVG complet pour les icônes complexes (optionnel)')
-                                    ->collapsed()
+                                    ->description('Remplace l\'icône Lucide. Utile quand Lucide n\'a pas l\'icône voulue — c\'est le cas des moustiquaires, dont l\'icône est dessinée à la main.')
+                                    // Open when there is something to see: a service that
+                                    // already carries a custom SVG is exactly the one an
+                                    // admin came here to change.
+                                    ->collapsed(fn (?Service $record): bool => blank($record?->svg_icon))
                                     ->schema([
                                         Forms\Components\Textarea::make('svg_icon')
                                             ->label('Code SVG')
-                                            ->placeholder('<svg xmlns="http://www.w3.org/2000/svg" ...></svg>')
-                                            ->rows(4)
-                                            ->helperText('Collez le code SVG complet ici pour des icônes personnalisées'),
+                                            ->placeholder('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ...></svg>')
+                                            ->rows(8)
+                                            ->live(onBlur: true)
+                                            ->helperText('Collez un SVG complet. Pour qu\'il s\'adapte partout : gardez un viewBox, utilisez stroke="currentColor" ou fill="currentColor", et ne fixez pas width/height — la taille et la couleur sont appliquées par le site. Videz le champ pour revenir à l\'icône Lucide.'),
+                                        Forms\Components\Placeholder::make('svg_icon_preview')
+                                            ->label('Aperçu')
+                                            ->content(static function (Forms\Get $get): HtmlString {
+                                                $svg = SafeHtml::svgIcon($get('svg_icon'), 'w-10 h-10 text-white');
+
+                                                if ($svg === '') {
+                                                    return new HtmlString('<span class="text-sm text-gray-500">Aucun SVG valide — l\'icône Lucide sera utilisée.</span>');
+                                                }
+
+                                                $hex = Service::ACCENT_HEX_BY_COLOR[$get('color')] ?? '#2563eb';
+
+                                                // Mirrors the public service tile so the preview
+                                                // shows the icon on the background it will really
+                                                // sit on — a white-stroked SVG is invisible on the
+                                                // panel's own background.
+                                                return new HtmlString(
+                                                    '<div style="display:inline-flex;align-items:center;justify-content:center;'
+                                                    .'width:5rem;height:5rem;border-radius:1rem;background:'.e($hex).';">'
+                                                    .$svg
+                                                    .'</div>'
+                                                );
+                                            }),
                                     ]),
 
                                 Forms\Components\Section::make('Statut')

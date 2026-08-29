@@ -389,11 +389,7 @@
         
         <!-- Service Cards Grid -->
         @php
-            $serviceAccent = [
-                'rose' => '#e11d48', 'orange' => '#ea580c', 'blue' => '#2563eb',
-                'violet' => '#7c3aed', 'emerald' => '#059669', 'amber' => '#d97706',
-                'yellow' => '#ca8a04', 'teal' => '#0d9488', 'indigo' => '#4f46e5',
-            ];
+            $serviceAccent = \App\Models\Service::ACCENT_HEX_BY_COLOR;
         @endphp
         <div class="container mx-auto px-6 md:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -423,7 +419,7 @@
                             <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" style="background: var(--accent);"></span>
                             <div class="absolute bottom-3 start-3 w-12 h-12 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:-translate-y-0.5" style="color: var(--accent);">
                                 @if($service->svg_icon)
-                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon) !!}
+                                    {!! \App\Support\SafeHtml::svgIcon($service->svg_icon, 'w-6 h-6') !!}
                                 @elseif($cardIcon)
                                     <i data-lucide="{{ $cardIcon }}" class="w-6 h-6"></i>
                                 @else

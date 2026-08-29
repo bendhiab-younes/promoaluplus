@@ -76,8 +76,16 @@ class SafeHtml
      * Parsing as XML preserves the casing, so this walks the tree instead and
      * removes only what can execute: script-bearing elements, every `on*`
      * handler, and non-http(s) URL schemes.
+     *
+     * `$class` is the Tailwind class list the call site would have put on the
+     * `<i data-lucide>` this SVG replaces. Passing it is what makes the admin's
+     * SVG field usable: a pasted icon otherwise rendered at whatever `width` and
+     * `height` it happened to declare, identically in the 80px hero and the 24px
+     * card, because nothing downstream sized it. With the classes applied — and
+     * the intrinsic dimensions dropped so they cannot win — a pasted
+     * `stroke="currentColor"` icon behaves exactly like a Lucide one.
      */
-    public static function svgIcon(?string $svg): string
+    public static function svgIcon(?string $svg, string $class = ''): string
     {
         $svg = trim((string) $svg);
 
@@ -105,7 +113,30 @@ class SafeHtml
 
         self::scrubSvgTree($document);
 
+        if ($class !== '') {
+            self::applyIconClass($document->documentElement, $class);
+        }
+
         return trim((string) $document->saveXML($document->documentElement));
+    }
+
+    /**
+     * Hand sizing and colour to CSS.
+     *
+     * The intrinsic `width`/`height` are dropped only when a `viewBox` survives
+     * to carry the aspect ratio — an SVG that sizes itself purely through those
+     * two attributes would collapse to nothing without them.
+     */
+    private static function applyIconClass(DOMElement $root, string $class): void
+    {
+        if ($root->hasAttribute('viewBox')) {
+            $root->removeAttribute('width');
+            $root->removeAttribute('height');
+        }
+
+        $existing = trim($root->getAttribute('class'));
+
+        $root->setAttribute('class', trim($existing.' '.$class));
     }
 
     /**

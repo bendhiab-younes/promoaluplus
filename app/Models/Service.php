@@ -22,6 +22,22 @@ class Service extends Model
         'space_design' => 'layout-grid',
     ];
 
+    /**
+     * First-install `svg_icon` values, for services Lucide has no icon for.
+     *
+     * Lucide ships no mosquito (checked through 0.544) and its nearest match,
+     * `bug`, draws a beetle. So the glyph is drawn here in Lucide's own grammar —
+     * 24x24 box, `currentColor` stroke, 2px round caps, no intrinsic size — which
+     * is what lets `SafeHtml::svgIcon()` size and colour it per render site.
+     *
+     * These are seeded into the row rather than used as a runtime fallback on
+     * purpose: the point is that the SVG shows up in the admin panel's field,
+     * where it can be edited or replaced without touching this file.
+     */
+    public const DEFAULT_SVG_ICON_BY_SLUG = [
+        'mosquito_nets' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.8" cy="12.3" r="1.9"/><path d="M4 13 1 14.8"/><path d="M7.7 13.2c3.6 1.1 6.7 3.2 9.4 6.2"/><path d="M9.6 11.2c1.8-4 5.2-6.4 10.2-7.2-.6 4.3-3.6 7.1-8.9 8.3Z"/><path d="M10.7 12.3c3-2.6 7-3.4 11.6-2.4-2.6 3.3-6.2 4.5-10.6 3.6Z"/><path d="M8 14.6 5.6 18 2.4 18.6"/><path d="M11.5 15.4 10 19.4 6.6 20.6"/></svg>',
+    ];
+
     public const DEFAULT_COLOR_BY_SLUG = [
         'kitchen' => 'rose',
         'doors' => 'orange',
@@ -32,6 +48,26 @@ class Service extends Model
         'sun_breakers' => 'yellow',
         'mosquito_nets' => 'teal',
         'space_design' => 'indigo',
+    ];
+
+    /**
+     * Accent hex for each `DEFAULT_COLOR_BY_SLUG` value.
+     *
+     * The public pages need real hex to build gradients through CSS custom
+     * properties, and the admin panel needs the same values to preview an icon
+     * against the tile it will actually sit on. Two copies drifting apart would
+     * make the preview lie, so both read this one.
+     */
+    public const ACCENT_HEX_BY_COLOR = [
+        'rose' => '#e11d48',
+        'orange' => '#ea580c',
+        'blue' => '#2563eb',
+        'violet' => '#7c3aed',
+        'emerald' => '#059669',
+        'amber' => '#d97706',
+        'yellow' => '#ca8a04',
+        'teal' => '#0d9488',
+        'indigo' => '#4f46e5',
     ];
 
     protected $fillable = [
