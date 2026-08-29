@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Support\AdminNotes;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -10,12 +11,14 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -57,6 +60,32 @@ class AdminPanelProvider extends PanelProvider
                 'Paramètres',
             ])
             ->sidebarCollapsibleOnDesktop()
+            // One unscoped hook serves every section: Filament passes the
+            // current page's render-hook scopes to the closure, and AdminNotes
+            // maps those to a note. A page it does not know renders nothing.
+            // Same scope trick as the note itself, so the styles only load on a
+            // page that actually shows one.
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (array $scopes = []): string => AdminNotes::keyFor($scopes) === null
+                    ? ''
+                    : view('filament.admin-note-styles')->render(),
+            )
+            ->renderHook(
+                PanelsRenderHook::PAGE_START,
+                function (array $scopes = []): string {
+                    $key = AdminNotes::keyFor($scopes);
+
+                    if ($key === null) {
+                        return '';
+                    }
+
+                    return Blade::render(
+                        '<livewire:admin-note :note-key="$noteKey" :key="\'admin-note-\'.$noteKey" />',
+                        ['noteKey' => $key],
+                    );
+                },
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
