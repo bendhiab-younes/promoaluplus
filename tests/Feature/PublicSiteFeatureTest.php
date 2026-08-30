@@ -209,6 +209,47 @@ class PublicSiteFeatureTest extends TestCase
         $this->assertStringContainsString(asset('uploads/services/windows/g1.jpeg'), $html);
     }
 
+    /**
+     * Regression: a service with a long gallery broke the page sideways on phones.
+     *
+     * Grid items default to `min-width: auto`, so the gallery column refused to
+     * shrink below the intrinsic width of its thumbnail strip — 13 photos pushed
+     * it to 1720px inside a 390px viewport, and the strip's own `overflow-x-auto`
+     * could never engage because its parent had already grown to fit it. The
+     * document then scrolled horizontally, and because a section background only
+     * paints to viewport width, every service below it showed a white band down
+     * the right-hand side.
+     *
+     * Measured with a headless browser at 320/390/430px: document scrollWidth was
+     * 1736 before, and equals the viewport after. This asserts the class survives,
+     * since it reads like cosmetic clutter and invites deletion.
+     */
+    public function test_the_service_columns_can_shrink_below_their_content(): void
+    {
+        Service::create([
+            'slug' => 'windows',
+            'title' => ['fr' => 'Fenêtres'],
+            'short_description' => ['fr' => 'Courte'],
+            'description' => ['fr' => 'Longue'],
+            'image' => 'services/windows/thumb.jpeg',
+            'gallery' => array_map(
+                static fn (int $i): string => "services/windows/g{$i}.jpeg",
+                range(1, 13),
+            ),
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $html = $this->get(route('services'))->assertOk()->getContent();
+
+        $this->assertStringContainsString('class="min-w-0 ', $html,
+            'Both service grid columns need min-w-0, or a long thumbnail strip widens the whole page.');
+        $this->assertSame(2, substr_count($html, 'class="min-w-0 '),
+            'Both columns need it — the text column stretches too, from long unbroken content.');
+        $this->assertStringContainsString('overflow-x-auto', $html,
+            'The thumbnail strip must stay scrollable; min-w-0 is what lets it.');
+    }
+
     public function test_portfolio_filters_projects_by_category(): void
     {
         $this->seedContent();

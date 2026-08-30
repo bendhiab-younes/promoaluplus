@@ -155,8 +155,18 @@
     <!-- {{ $service->getTranslatedTitle() }} Section -->
     <section id="{{ $service->slug }}" class="py-16 md:py-24 {{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} scroll-fade scroll-mt-24">
         <div class="container mx-auto px-6 md:px-8">
+            {{--
+                min-w-0 on both columns is load-bearing, not tidying. A grid item
+                defaults to min-width:auto, so it refuses to shrink below its
+                content's intrinsic width — the thumbnail strip of a service with
+                13 photos forced the column to 1720px inside a 390px viewport, and
+                the strip's own overflow-x-auto could never engage because its
+                parent had already grown to fit it. The page then scrolled
+                sideways and every section background, which only paints to
+                viewport width, left a white band down the right-hand side.
+            --}}
             <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-                <div class="{{ $index % 2 == 1 ? 'order-2 md:order-1' : '' }}">
+                <div class="min-w-0 {{ $index % 2 == 1 ? 'order-2 md:order-1' : '' }}">
                     <!-- Interactive Gallery -->
                     @php
                         // Resolve the raw stored values, not $service->getGalleryImages():
@@ -263,7 +273,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="{{ $index % 2 == 1 ? 'order-1 md:order-2' : '' }}">
+                <div class="min-w-0 {{ $index % 2 == 1 ? 'order-1 md:order-2' : '' }}">
                     <!-- Service Icon -->
                     <div class="inline-flex items-center gap-4 mb-6">
                         <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-{{ $serviceColor }}-400 to-{{ $serviceColor }}-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
