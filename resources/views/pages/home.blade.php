@@ -125,29 +125,7 @@
 
     <script>
         (() => {
-            const siteHeader = document.querySelector('header');
-            let headerSyncFrame = null;
-
-            const syncHeroHeightToHeader = () => {
-                const headerHeight = siteHeader ? siteHeader.offsetHeight : 96;
-                document.documentElement.style.setProperty('--site-header-height', `${headerHeight}px`);
-            };
-
-            // Batch the read/write into a single frame so resize can't thrash layout.
-            const scheduleHeroHeightSync = () => {
-                if (headerSyncFrame !== null) {
-                    return;
-                }
-
-                headerSyncFrame = window.requestAnimationFrame(() => {
-                    headerSyncFrame = null;
-                    syncHeroHeightToHeader();
-                });
-            };
-
-            syncHeroHeightToHeader();
-            window.addEventListener('resize', scheduleHeroHeightSync, { passive: true });
-
+            // --site-header-height is published by the layout for every page.
             const slides = Array.from(document.querySelectorAll('.carousel-slide'))
                 .sort((leftSlide, rightSlide) => {
                     const leftOrder = Number(leftSlide.dataset.order ?? leftSlide.dataset.slide ?? 0);

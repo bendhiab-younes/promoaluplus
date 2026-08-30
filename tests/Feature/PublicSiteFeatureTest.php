@@ -250,6 +250,40 @@ class PublicSiteFeatureTest extends TestCase
             'The thumbnail strip must stay scrollable; min-w-0 is what lets it.');
     }
 
+    /**
+     * Regression: the page badge sat underneath the fixed header on every inner page.
+     *
+     * `.hero-gradient` cleared the header with a flat 5rem, but the header measures
+     * 97px on a phone and 113px at the 768px breakpoint, so the badge was overlapped
+     * by 17px and 33px respectively. The height is now measured and published as
+     * `--site-header-height` by the *layout*, so it is available on every page —
+     * previously only the homepage computed it, which is why only the homepage
+     * cleared its header correctly.
+     *
+     * Verified in headless Chromium at 320/390/430/768px across services, about and
+     * contact: the badge now sits a consistent 24px below the header everywhere.
+     */
+    public function test_every_page_publishes_the_measured_header_height(): void
+    {
+        foreach ([route('home'), route('services'), route('about'), route('contact')] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+
+            $this->assertStringContainsString('--site-header-height', $html,
+                "{$url} must publish the measured header height, or its hero padding falls back to a guess.");
+        }
+    }
+
+    public function test_the_header_height_is_measured_in_one_place_only(): void
+    {
+        $html = $this->get(route('home'))->assertOk()->getContent();
+
+        $this->assertSame(
+            1,
+            preg_match_all('/setProperty\(\s*[\'"]--site-header-height/', $html),
+            'The homepage must not re-declare the sync the layout already provides — two copies drift.'
+        );
+    }
+
     public function test_portfolio_filters_projects_by_category(): void
     {
         $this->seedContent();

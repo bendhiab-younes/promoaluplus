@@ -268,6 +268,47 @@
     <!-- Chatbot Widget -->
     @include('components.chatbot')
 
+    {{--
+        Publish the real height of the fixed header as --site-header-height, on
+        every page. Inner pages used to clear it with a hardcoded padding, which
+        went wrong the moment the logo made the header taller than the guess: the
+        page badge slid underneath it. Measuring is the only version that stays
+        correct when the branding changes.
+
+        Kept out of DOMContentLoaded and run inline so the value lands before
+        first paint where possible; the CSS fallback covers the gap regardless.
+    --}}
+    <script>
+        (() => {
+            const siteHeader = document.querySelector('header');
+            let frame = null;
+
+            const sync = () => {
+                document.documentElement.style.setProperty(
+                    '--site-header-height',
+                    `${siteHeader ? siteHeader.offsetHeight : 96}px`,
+                );
+            };
+
+            // Batch read/write into one frame so resize cannot thrash layout.
+            const schedule = () => {
+                if (frame !== null) {
+                    return;
+                }
+
+                frame = window.requestAnimationFrame(() => {
+                    frame = null;
+                    sync();
+                });
+            };
+
+            sync();
+            document.addEventListener('DOMContentLoaded', sync);
+            window.addEventListener('load', sync);
+            window.addEventListener('resize', schedule, { passive: true });
+        })();
+    </script>
+
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {

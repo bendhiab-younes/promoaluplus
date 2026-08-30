@@ -616,9 +616,17 @@ header.glass-effect {
         -webkit-backdrop-filter: none;
     }
 
+    /*
+     * Clear the fixed header rather than guessing at it. This was a flat 5rem
+     * (80px) while the header measures 97px on a phone and 113px at this
+     * breakpoint's upper edge, so the page badge sat underneath it on every
+     * inner page. The variable is published by the layout on every page; the
+     * fallback is deliberately larger than any header the current branding
+     * produces, so the pre-JS paint still clears it.
+     */
     .hero-gradient {
         min-height: auto;
-        padding-top: 5rem;
+        padding-top: calc(var(--site-header-height, 7rem) + 1.5rem);
         padding-bottom: 3rem;
     }
 
